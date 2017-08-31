@@ -1,0 +1,44 @@
+// @flow
+
+import React from 'react';
+import  { Text, View } from 'react-native';
+
+import { EyeQuestionComponent } from './Question.Eye.js';
+import { EmotionWordQuestionComponent } from './Question.Word.js';
+
+import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+
+type Props = {
+    question: Question,
+};
+export class QuestionComponent extends React.Component {
+
+    props: Props;
+
+    render() {
+        const { question } = this.props;
+        const DiscreteQuestionComponent = this._getQuestionComponent(question.type)
+            || UnknownQuestionComponent;
+
+
+        return <View>
+            <DiscreteQuestionComponent question={question} />
+        </View>
+    }
+
+    _getQuestionComponent(questionType: string) {
+        switch(questionType) {
+            case 'eye-question':
+                return EyeQuestionComponent;
+            case 'word-question':
+                return EmotionWordQuestionComponent;
+            default:
+                return null;
+        }
+    }
+}
+
+function UnknownQuestionComponent(props) {
+    const { question } = props;
+    return <div>Unknown question type { question.type } </div>;
+}
