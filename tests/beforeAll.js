@@ -1,0 +1,3 @@
+// @flow
+
+require("./toHaveMatcher.js");

@@ -12,7 +12,10 @@ export class EmotionWordQuestionComponent extends React.Component {
     props: Props;
 
     render() {
+        const { question } = this.props;
+
         return <View>
+            <Text>{ question.questionText }</Text>
         </View>
     }
 }
