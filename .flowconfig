@@ -31,6 +31,8 @@
 .*/node_modules/react-native-fbads/*
 
 .*/node_modules/react-native/*
+.*/node_modules/react-element-to-jsx-string/*
+.*/node_modules/editions/es2015/*
 
 [include]
 

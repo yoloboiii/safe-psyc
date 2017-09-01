@@ -8,8 +8,8 @@ export type EyeQuestion = {
     answer: string,
 };
 
-export type EmotionWordQuestion {
+export type EmotionWordQuestion = {
     type: 'word-question',
-    questionText: 'string',
+    questionText: string,
     answer: string,
 };

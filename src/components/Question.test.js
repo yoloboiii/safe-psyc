@@ -9,7 +9,11 @@ import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 
 it('renders without crashing', () => {
-    const anyQuestion = {};
+    const anyQuestion = {
+        type: 'eye-question',
+        image: 'test-image.png',
+        answer: 'THE ANSWER',
+    };
     const rendered = renderer.create(<QuestionComponent question={anyQuestion}/>).toJSON();
     expect(rendered).toBeTruthy();
 });

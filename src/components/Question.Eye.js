@@ -7,15 +7,13 @@ import type { EyeQuestion } from '../models/questions.js';
 type Props = {
     question: EyeQuestion,
 };
-export class EyeQuestionComponent extends React.Component {
+export function EyeQuestionComponent(props: Props) {
+    const { question } = props;
 
-    props: Props;
+    // $FlowFixMe
+    const imageSource = require(question.image);
 
-    render() {
-        const { question } = this.props;
-
-        return <View>
-            <Image source={require(question.image)} />
-        </View>
-    }
+    return <View>
+        <Image source={ imageSource } />
+    </View>
 }

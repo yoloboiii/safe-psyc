@@ -11,30 +11,26 @@ import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/quest
 type Props = {
     question: Question,
 };
-export class QuestionComponent extends React.Component {
+export function QuestionComponent(props: Props) {
 
-    props: Props;
+    const { question } = props;
+    const DiscreteQuestionComponent = getQuestionComponent(question.type)
+        || UnknownQuestionComponent;
 
-    render() {
-        const { question } = this.props;
-        const DiscreteQuestionComponent = this._getQuestionComponent(question.type)
-            || UnknownQuestionComponent;
+    return <View>
+        { /* $FlowFixMe */ }
+        <DiscreteQuestionComponent question={question} />
+    </View>
+}
 
-
-        return <View>
-            <DiscreteQuestionComponent question={question} />
-        </View>
-    }
-
-    _getQuestionComponent(questionType: string) {
-        switch(questionType) {
-            case 'eye-question':
-                return EyeQuestionComponent;
-            case 'word-question':
-                return EmotionWordQuestionComponent;
-            default:
-                return null;
-        }
+function getQuestionComponent(questionType: string) {
+    switch(questionType) {
+        case 'eye-question':
+            return EyeQuestionComponent;
+        case 'word-question':
+            return EmotionWordQuestionComponent;
+        default:
+            return null;
     }
 }
 

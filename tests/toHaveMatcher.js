@@ -36,14 +36,16 @@ expect.extend({
         const equals = this.equals;
 
         const children = getChildren(received);
+        const childProps_happyFlow = childProps;
 
         const matchingChildren = children.filter(c => {
             const correctType = c.type === childConstructor;
-            if (correctType && childProps) {
-                const correctProps = Object.keys(childProps).every(
+
+            if (correctType && childProps_happyFlow) {
+                const correctProps = Object.keys(childProps_happyFlow).every(
                     key =>
                         c.props.hasOwnProperty(key) &&
-                        equals(c.props[key], childProps[key])
+                        equals(c.props[key], childProps_happyFlow[key])
                     );
                 return correctType && correctProps;
             }

@@ -13,7 +13,9 @@ it('contains the image', () => {
     const component = render({ question: question });
 
     expect(component).toHaveChildMatching(child => {
-        return child.props.source === require('test-image.png');
+        // $FlowFixMe
+        const imageSource = require('test-image.png');
+        return child.props.source === imageSource;
     });
 });
 
