@@ -4,8 +4,6 @@ import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EyeQuestionComponent } from './Question.Eye.js';
 
-
-
 it('contains the image', () => {
     const question = {
         type: 'eye-question',

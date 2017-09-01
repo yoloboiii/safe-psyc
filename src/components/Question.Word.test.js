@@ -17,6 +17,17 @@ it('contains the question text', () => {
     });
 });
 
+it('contains the answer', () => {
+    const question = {
+        type: 'word-question',
+        questionText: 'THE QUESTION',
+        answer: 'THE ANSWER',
+    };
+    const component = render({ question: question });
+
+    expect(JSON.stringify(component)).toContain(question.answer);
+});
+
 function render(props) {
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<EmotionWordQuestionComponent {...props} />);
