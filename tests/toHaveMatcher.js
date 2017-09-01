@@ -1,6 +1,7 @@
 // @flow
 
 import reactElementToJSXString from 'react-element-to-jsx-string';
+import { Component } from 'react';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
@@ -66,7 +67,7 @@ expect.extend({
     },
 });
 
-function getChildren(component) {
+export function getChildren(component: Component<*,*>) {
     if (!component || !component.props || !component.props.children) {
         return [];
     }
