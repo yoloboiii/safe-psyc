@@ -8,7 +8,7 @@ expect.extend({
             const flow_elementIndex: number = (elementIndex: any);
 
             if (!elementsAndPositions.has(element)) {
-                elementsAndPositions.set(element, [flow_elementIndex]);
+                elementsAndPositions.set(element, []);
             }
 
             // $FlowFixMe

@@ -13,7 +13,13 @@ type Props = {
 
 export function EmotionWordQuestionComponent(props: Props) {
     const { question } = props;
-    const answers = answerService.getAnswersTo(question, 3);
+    const answers = answerService.getAnswersTo(question, 3)
+        .map(ans => {
+            return {
+                text: ans,
+                key: ans,
+            };
+        });
 
     return <View>
         <Text>{ question.questionText }</Text>
@@ -22,11 +28,11 @@ export function EmotionWordQuestionComponent(props: Props) {
 }
 
 function ButtonList(props) {
-    return <View><FlatList
+    return <FlatList
         data={props.buttons}
         renderItem={(button) => {
             return <Button
-                title={button} />
+                title={button.item.text}
+                onPress={ ()=>{} }/>
         }} />
-        </View>
 }

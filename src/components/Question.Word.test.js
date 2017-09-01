@@ -57,7 +57,9 @@ function getAnswers(root) {
         .filter(child => {
             return child.type && child.type.name === 'ButtonList';
         })
-        .map(b => b.props.buttons);
+        .map(b =>
+            b.props.buttons.map(b => b.text)
+        );
 
     const flattenedAnswers = [].concat.apply([], answers);
     return flattenedAnswers;
