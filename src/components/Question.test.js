@@ -14,8 +14,8 @@ it('renders without crashing', () => {
         image: 'test-image.png',
         answer: 'THE ANSWER',
     };
-    const rendered = renderer.create(<QuestionComponent question={anyQuestion}/>).toJSON();
-    expect(rendered).toBeTruthy();
+    const component = render({ question: anyQuestion });
+    expect(component).toBeTruthy();
 });
 
 it('renders eye questions', () => {
@@ -24,10 +24,7 @@ it('renders eye questions', () => {
         image: 'test-image.png',
         answer: 'THE ANSWER',
     };
-
-    const shallowRenderer = new ReactShallowRenderer();
-    shallowRenderer.render(<QuestionComponent question={question} />);
-    const component = shallowRenderer.getRenderOutput();
+    const component = render({ question: question });
 
     expect(component).toHaveChildWithProps(EyeQuestionComponent, {question: question});
     try {
@@ -43,11 +40,14 @@ it('renders word questions', () => {
         questionText: 'THE TEXT',
         answer: 'THE ANSWER',
     };
-
-    const shallowRenderer = new ReactShallowRenderer();
-    shallowRenderer.render(<QuestionComponent question={question} />);
-    const component = shallowRenderer.getRenderOutput();
+    const component = render({ question: question });
 
     expect(component).toHaveChildWithProps(EmotionWordQuestionComponent, {question: question});
     expect(component).not.toHaveChild(EyeQuestionComponent);
 });
+
+function render(props) {
+    const shallowRenderer = new ReactShallowRenderer();
+    shallowRenderer.render(<QuestionComponent {...props} />);
+    return shallowRenderer.getRenderOutput();
+}

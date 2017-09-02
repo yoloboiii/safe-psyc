@@ -1,9 +1,10 @@
 // @flow
 
 import React from 'react';
-import  { Text, View, FlatList, Button } from 'react-native';
+import  { Text, View } from 'react-native';
 
 import { answerService } from '../services/answer-service.js';
+import { ButtonList } from './ButtonList.js';
 
 import type { EmotionWordQuestion } from '../models/questions.js';
 
@@ -27,12 +28,3 @@ export function EmotionWordQuestionComponent(props: Props) {
     </View>
 }
 
-function ButtonList(props) {
-    return <FlatList
-        data={props.buttons}
-        renderItem={(button) => {
-            return <Button
-                title={button.item.text}
-                onPress={ ()=>{} }/>
-        }} />
-}
