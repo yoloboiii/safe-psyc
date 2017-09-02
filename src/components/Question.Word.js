@@ -5,6 +5,7 @@ import  { Text, View } from 'react-native';
 
 import { answerService } from '../services/answer-service.js';
 import { ButtonList } from './ButtonList.js';
+import { VerticalSpace } from './VerticalSpace.js';
 
 import type { EmotionWordQuestion } from '../models/questions.js';
 
@@ -14,6 +15,7 @@ type Props = {
 
 export function EmotionWordQuestionComponent(props: Props) {
     const { question } = props;
+
     const answers = answerService.getAnswersTo(question, 3)
         .map(ans => {
             return {
@@ -24,7 +26,9 @@ export function EmotionWordQuestionComponent(props: Props) {
 
     return <View>
         <Text>{ question.questionText }</Text>
+        <VerticalSpace multiplier={2} />
         <ButtonList buttons={ answers } />
     </View>
 }
+
 

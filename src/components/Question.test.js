@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import renderer from 'react-test-renderer';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 
 import { QuestionComponent } from './Question.js';

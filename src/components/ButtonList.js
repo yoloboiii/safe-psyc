@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, Button } from 'react-native';
+import { View, FlatList, Button } from 'react-native';
+import { VerticalSpace } from './VerticalSpace.js';
 
 type Props = {
     buttons: Array<{
@@ -11,8 +12,14 @@ export function ButtonList(props: Props) {
     return <FlatList
         data={props.buttons}
         renderItem={(button) => {
-            return <Button
+            return <View>
+                <Button
                 title={button.item.text}
                 onPress={ ()=>{} }/>
-        }} />
+                <VerticalSpace />
+            </View>
+        }}
+        itemSeparatorComponent={<VerticalSpace />}
+
+        />
 }
