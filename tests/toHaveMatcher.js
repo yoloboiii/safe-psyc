@@ -5,9 +5,9 @@ import { Component } from 'react';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
-        const children = getChildren(received);
+        const componentns = getChildrenAndParent(received);
 
-        const matchingChildren = children.filter(c => {
+        const matchingChildren = componentns.filter(c => {
             const correctType = c.type === childConstructor;
             return correctType;
         });
@@ -21,9 +21,9 @@ expect.extend({
     },
 
     toHaveChildMatching: function (received, childPredicate) {
-        const children = getChildren(received);
+        const componentns = getChildrenAndParent(received);
 
-        const matchingChildren = children.filter(childPredicate);
+        const matchingChildren = componentns.filter(childPredicate);
 
         const message = () => 'Could not find a child matching the predicate in ' + reactElementToJSXString(received);
 
@@ -36,10 +36,10 @@ expect.extend({
     toHaveChildWithProps: function (received, childConstructor, childProps) {
         const equals = this.equals;
 
-        const children = getChildren(received);
+        const componentns = getChildrenAndParent(received);
         const childProps_happyFlow = childProps;
 
-        const matchingChildren = children.filter(c => {
+        const matchingChildren = componentns.filter(c => {
             const correctType = c.type === childConstructor;
 
             if (correctType && childProps_happyFlow) {
@@ -66,6 +66,10 @@ expect.extend({
         };
     },
 });
+
+export function getChildrenAndParent(parent: Component<*,*>) {
+    return [parent].concat(getChildren(parent));
+}
 
 export function getChildren(component: Component<*,*>) {
     if (!component || !component.props || !component.props.children) {

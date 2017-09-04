@@ -55,11 +55,9 @@ function render(props) {
 function getAnswers(root) {
     const answers = getChildren(root)
         .filter(child => {
-            // $FlowFixMe
             return child.type && child.type.name === 'ButtonList';
         })
         .map(b =>
-            // $FlowFixMe
             b.props.buttons.map(b => b.text)
         );
 

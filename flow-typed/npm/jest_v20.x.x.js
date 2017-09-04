@@ -118,9 +118,11 @@ type JestPromiseType = {
  */
 type EnzymeMatchersType = {
   not: any,
+  toHaveChild(Function): void,
   toHaveChildWithProps(Function, Object): void,
   toHaveChildMatching(Object => boolean): void,
   toContainElementsOtherThan(mixed): void,
+  toContainStrings(...strings: Array<string>): void,
 
   toBeChecked(): void,
   toBeDisabled(): void,
