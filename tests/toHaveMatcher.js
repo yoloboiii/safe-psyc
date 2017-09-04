@@ -5,9 +5,10 @@ import { Component } from 'react';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
-        const componentns = getChildrenAndParent(received);
+        const components = getChildrenAndParent(received);
 
-        const matchingChildren = componentns.filter(c => {
+        const matchingChildren = components.filter(c => {
+            // $FlowFixMe
             const correctType = c.type === childConstructor;
             return correctType;
         });
@@ -21,9 +22,9 @@ expect.extend({
     },
 
     toHaveChildMatching: function (received, childPredicate) {
-        const componentns = getChildrenAndParent(received);
+        const components = getChildrenAndParent(received);
 
-        const matchingChildren = componentns.filter(childPredicate);
+        const matchingChildren = components.filter(childPredicate);
 
         const message = () => 'Could not find a child matching the predicate in ' + reactElementToJSXString(received);
 
@@ -36,10 +37,11 @@ expect.extend({
     toHaveChildWithProps: function (received, childConstructor, childProps) {
         const equals = this.equals;
 
-        const componentns = getChildrenAndParent(received);
+        const components = getChildrenAndParent(received);
         const childProps_happyFlow = childProps;
 
-        const matchingChildren = componentns.filter(c => {
+        const matchingChildren = components.filter(c => {
+            // $FlowFixMe
             const correctType = c.type === childConstructor;
 
             if (correctType && childProps_happyFlow) {

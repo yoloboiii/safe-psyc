@@ -7,6 +7,9 @@ import { QuestionComponent } from './Question.js';
 import { getChildrenAndParent } from '../../tests/toHaveMatcher.js';
 import { Button } from 'react-native';
 
+import renderer from 'react-test-renderer';
+import reactElementToJSXString from 'react-element-to-jsx-string';
+
 it('shows an error screen if no questions are given', () => {
     const questions = [];
     const component = render({ questions: questions });
@@ -30,7 +33,9 @@ it.only('shows another question when the first is answered', () => {
     clickAnswer(component);
     const secondQuestion = getQuestion(component);
 
-    expect(secondQuestion).not.toBe(firstQuestion);
+    console.log(firstQuestion);
+    console.log(secondQuestion);
+    expect(secondQuestion).not.toEqual(firstQuestion);
 });
 
 it('shows all questions eventually', () => {
@@ -62,21 +67,22 @@ it('repeats a question answered incorrectly thrice in a row at the end of the se
 });
 
 function render(props) {
-    const shallowRenderer = new ReactShallowRenderer();
+    /*const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<Session {...props} />);
-    return shallowRenderer.getRenderOutput();
+    return shallowRenderer.getRenderOutput();*/
+    return renderer.create(<Session {...props} />);
 }
 
 function randomQuestions() {
     const qs = [];
     for (let i = 0; i < 10; i++) {
-        qs.push(createRandomQuestion());
+        qs.push(createRandomQuestion(i));
     }
     return qs;
 }
 
-function createRandomQuestion() {
-    const uniqueString = '';
+function createRandomQuestion(c=0) {
+    const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     return {
         type: 'word-question',
         questionText: uniqueString,
@@ -85,26 +91,64 @@ function createRandomQuestion() {
 }
 
 function getQuestion(component) {
-    const questions = getChildrenAndParent(component)
+    const questions = getKidsAndParent(component)
+    //const questions = getChildrenAndParent(component.toJSON())
         .map(c => c.props)
-        .filter(p => p.question)
+        .filter(p => p && p.question)
 
     return questions[0];
 }
 
-function clickAnswer(component) {
-    const qComponent = getChildrenAndParent(component)
-        .filter(c => c.type === QuestionComponent)[0];
+function getKidsAndParent(component) {
+    const comps = [];
 
-    const buttons = getChildrenAndParent(qComponent)
+    const tree = component.toTree
+        ? component.toTree()
+        : component;
+    visitComponentTree(tree, c => comps.push(c));
+
+    return comps;
+}
+
+function visitComponentTree(root, visitor) {
+
+    const unvisited = [root];
+    while (unvisited.length > 0) {
+        const component = unvisited.pop();
+        if (!component) {
+            console.log('Tried to visit undefined component');
+            continue;
+        }
+
+        visitor(component);
+
+        if (component.rendered) {
+            if (Array.isArray(component.rendered)) {
+                for (const child of component.rendered) {
+                    unvisited.push(child);
+                }
+            } else {
+                unvisited.push(component.rendered);
+            }
+        }
+    }
+}
+
+function clickAnswer(component) {
+    const qComponent = getKidsAndParent(component)
         .filter(c => {
-            console.log(c);
+            return c.type === QuestionComponent;
+        })[0];
+
+    const buttons = getKidsAndParent(qComponent)
+        .filter(c => {
             return c.type === Button;
         });
 
-    console.log(qComponent);
-    console.log(buttons);
-    const correctAnswerButton = buttons[0];
-    correctAnswerButton.click();
+    if (buttons.length === 0) {
+        console.log('Found no buttons');
+    }
 
+    const correctAnswerButton = buttons[0];
+    correctAnswerButton.props.onPress();
 }
