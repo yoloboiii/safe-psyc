@@ -49,7 +49,7 @@ function render(customProps) {
     const defaultProps = {
         onCorrectAnswer: () => {},
     };
-    const props = Object.assign({}, customProps, defaultProps);
+    const props = Object.assign({}, defaultProps, customProps);
 
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<QuestionComponent {...props} />);

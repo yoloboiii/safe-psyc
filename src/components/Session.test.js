@@ -30,7 +30,7 @@ it('starts by showing a question', () => {
 
 it('shows another question when the first is answered', () => {
     const questions = randomQuestions();
-    const component = renderer.create(<Session questions={questions} />);
+    const component = render({ questions: questions });
 
     const firstQuestion = getQuestion(component);
     clickAnswer(component);
@@ -43,9 +43,10 @@ it('finishes the session if the last question was answered correctly', () => {
     const questions = randomQuestions(1);
     const sessionFinishedSpy = jest.fn();
 
-    const component = renderer.create(<Session
-        questions={questions}
-        onSessionFinished={sessionFinishedSpy} />);
+    const component = render({
+        questions: questions,
+        onSessionFinished: sessionFinishedSpy,
+    });
 
     clickAnswer(component);
 
@@ -54,9 +55,7 @@ it('finishes the session if the last question was answered correctly', () => {
 
 it('shows all questions eventually', () => {
     const questions = randomQuestions();
-    const component = renderer.create(<Session
-        questions={questions}
-        onSessionFinished={() => {}} />);
+    const component = render({ questions: questions });
 
     const seen = new Map();
     for (let i = 0; i < questions.length; i++) {
@@ -70,9 +69,7 @@ it('shows all questions eventually', () => {
 
 it('doesn\'t repeat correctly answered questions', () => {
     const questions = randomQuestions();
-    const component = renderer.create(<Session
-        questions={questions}
-        onSessionFinished={() => {}} />);
+    const component = render({ questions: questions });
 
     const seen = new Map();
     for (let i = 0; i < questions.length; i++) {
@@ -85,7 +82,7 @@ it('doesn\'t repeat correctly answered questions', () => {
 
 it('repeats an incorrectly answered question immediately', () => {
     const questions = randomQuestions();
-    const component = renderer.create(<Session questions={questions} />);
+    const component = render({ questions: questions });
 
     const firstQuestion = getQuestion(component);
     clickWrongAnswer(component);
@@ -105,6 +102,15 @@ function renderShallow(props) {
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<Session {...props} />);
     return shallowRenderer.getRenderOutput();
+}
+
+function render(customProps) {
+    const defaultProps = {
+        onSessionFinished: () => {},
+    };
+    const props = Object.assign({}, defaultProps, customProps);
+
+    return renderer.create(<Session {...props} />);
 }
 
 function randomQuestions(numberOfQuestions=10) {
