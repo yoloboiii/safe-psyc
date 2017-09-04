@@ -1,11 +1,15 @@
+// @flow
+
 import React from 'react';
 import { View, FlatList, Button } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
 
+type Apa = {
+    text: string,
+};
 type Props = {
-    buttons: Array<{
-        text: string,
-    }>,
+    buttons: Array<Apa>,
+    onPress: (Apa) => void,
 };
 
 export function ButtonList(props: Props) {
@@ -15,11 +19,9 @@ export function ButtonList(props: Props) {
             return <View>
                 <Button
                 title={button.item.text}
-                onPress={ ()=>{} }/>
+                onPress={ () => props.onPress(button.item) }/>
                 <VerticalSpace />
             </View>
         }}
-        itemSeparatorComponent={<VerticalSpace />}
-
         />
 }

@@ -46,7 +46,12 @@ it('contains wrong answers', () => {
     expect(answers).toContainElementsOtherThan(question.answer);
 });
 
-function render(props) {
+function render(customProps) {
+    const defaultProps = {
+        onCorrectAnswer: () => {},
+    };
+    const props = Object.assign({}, customProps, defaultProps);
+
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<EmotionWordQuestionComponent {...props} />);
     return shallowRenderer.getRenderOutput();

@@ -23,6 +23,6 @@ export function EyeQuestionComponent(props: Props) {
     });
     return <View>
         <Image source={ imageSource } />
-        <ButtonList buttons={ answerButtons } />
+        <ButtonList buttons={ answerButtons } onPress={ () => {} } />
     </View>
 }

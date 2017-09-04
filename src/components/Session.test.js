@@ -4,15 +4,18 @@ import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { Session } from './Session.js';
 import { QuestionComponent } from './Question.js';
-import { getChildrenAndParent } from '../../tests/toHaveMatcher.js';
 import { Button } from 'react-native';
+import { answerService } from '../services/answer-service.js';
 
 import renderer from 'react-test-renderer';
-import reactElementToJSXString from 'react-element-to-jsx-string';
+
+
+answerService.setAnswerPool(['a', 'b', 'c']);
+
 
 it('shows an error screen if no questions are given', () => {
     const questions = [];
-    const component = render({ questions: questions });
+    const component = renderShallow({ questions: questions });
 
     expect(component).toContainStrings('no', 'question');
     expect(component).not.toHaveChild(QuestionComponent);
@@ -20,62 +23,93 @@ it('shows an error screen if no questions are given', () => {
 
 it('starts by showing a question', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderShallow({ questions: questions });
 
     expect(component).toHaveChild(QuestionComponent);
 });
 
-it.only('shows another question when the first is answered', () => {
+it('shows another question when the first is answered', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderer.create(<Session questions={questions} />);
 
     const firstQuestion = getQuestion(component);
     clickAnswer(component);
     const secondQuestion = getQuestion(component);
 
-    console.log(firstQuestion);
-    console.log(secondQuestion);
     expect(secondQuestion).not.toEqual(firstQuestion);
+});
+
+it('finishes the session if the last question was answered correctly', () => {
+    const questions = randomQuestions(1);
+    const sessionFinishedSpy = jest.fn();
+
+    const component = renderer.create(<Session
+        questions={questions}
+        onSessionFinished={sessionFinishedSpy} />);
+
+    clickAnswer(component);
+
+    expect(sessionFinishedSpy.mock.calls.length).toBe(1);
 });
 
 it('shows all questions eventually', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderer.create(<Session
+        questions={questions}
+        onSessionFinished={() => {}} />);
 
-    expect(true).toBe(false);
+    const seen = new Map();
+    for (let i = 0; i < questions.length; i++) {
+        const question = getQuestion(component);
+        seen.set(question, true);
+        clickAnswer(component);
+    }
+
+    expect(seen.size).toBe(questions.length);
 });
 
 it('doesn\'t repeat correctly answered questions', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderer.create(<Session
+        questions={questions}
+        onSessionFinished={() => {}} />);
 
-    expect(true).toBe(false);
+    const seen = new Map();
+    for (let i = 0; i < questions.length; i++) {
+        const question = getQuestion(component);
+        expect(seen.has(question)).toBe(false);
+
+        clickAnswer(component);
+    }
 });
 
 it('repeats an incorrectly answered question immediately', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderer.create(<Session questions={questions} />);
 
-    expect(true).toBe(false);
+    const firstQuestion = getQuestion(component);
+    clickWrongAnswer(component);
+    const secondQuestion = getQuestion(component);
+
+    expect(secondQuestion).toEqual(firstQuestion);
 });
 
 it('repeats a question answered incorrectly thrice in a row at the end of the session', () => {
     const questions = randomQuestions();
-    const component = render({ questions: questions });
+    const component = renderShallow({ questions: questions });
 
     expect(true).toBe(false);
 });
 
-function render(props) {
-    /*const shallowRenderer = new ReactShallowRenderer();
+function renderShallow(props) {
+    const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<Session {...props} />);
-    return shallowRenderer.getRenderOutput();*/
-    return renderer.create(<Session {...props} />);
+    return shallowRenderer.getRenderOutput();
 }
 
-function randomQuestions() {
+function randomQuestions(numberOfQuestions=10) {
     const qs = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < numberOfQuestions; i++) {
         qs.push(createRandomQuestion(i));
     }
     return qs;
@@ -92,7 +126,6 @@ function createRandomQuestion(c=0) {
 
 function getQuestion(component) {
     const questions = getKidsAndParent(component)
-    //const questions = getChildrenAndParent(component.toJSON())
         .map(c => c.props)
         .filter(p => p && p.question)
 
@@ -135,6 +168,16 @@ function visitComponentTree(root, visitor) {
 }
 
 function clickAnswer(component) {
+    const buttons = findAnswerButtons(component);
+    const correctAnswerButton = buttons
+        .filter(b => {
+            return b.props.title.indexOf('ans') > -1;
+        })[0];
+
+    correctAnswerButton.props.onPress();
+}
+
+function findAnswerButtons(component) {
     const qComponent = getKidsAndParent(component)
         .filter(c => {
             return c.type === QuestionComponent;
@@ -149,6 +192,16 @@ function clickAnswer(component) {
         console.log('Found no buttons');
     }
 
-    const correctAnswerButton = buttons[0];
-    correctAnswerButton.props.onPress();
+    return buttons;
+}
+
+function clickWrongAnswer(component) {
+    const buttons = findAnswerButtons(component);
+    const wrongAnswerButton = buttons
+        .filter(b => {
+           return b.props.title.indexOf('ans') === -1;
+        })[0];
+
+
+    wrongAnswerButton.props.onPress();
 }

@@ -45,7 +45,12 @@ it('renders word questions', () => {
     expect(component).not.toHaveChild(EyeQuestionComponent);
 });
 
-function render(props) {
+function render(customProps) {
+    const defaultProps = {
+        onCorrectAnswer: () => {},
+    };
+    const props = Object.assign({}, customProps, defaultProps);
+
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<QuestionComponent {...props} />);
     return shallowRenderer.getRenderOutput();
