@@ -11,6 +11,7 @@ import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/quest
 type Props = {
     question: Question,
     onCorrectAnswer: () => void,
+    onWrongAnswer: () => void,
 };
 // TODO: Duolingo's discuss feature on each question is quite cool
 
@@ -24,7 +25,8 @@ export function QuestionComponent(props: Props) {
         { /* $FlowFixMe */ }
         <DiscreteQuestionComponent
             question={question}
-            onCorrectAnswer={ props.onCorrectAnswer } />
+            onCorrectAnswer={ props.onCorrectAnswer }
+            onWrongAnswer={ props.onWrongAnswer } />
     </View>
 }
 

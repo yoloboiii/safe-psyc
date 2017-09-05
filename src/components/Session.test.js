@@ -76,6 +76,8 @@ it('doesn\'t repeat correctly answered questions', () => {
         const question = getQuestion(component);
         expect(seen.has(question)).toBe(false);
 
+        seen.set(question, true);
+
         clickAnswer(component);
     }
 });
@@ -93,9 +95,24 @@ it('repeats an incorrectly answered question immediately', () => {
 
 it('repeats a question answered incorrectly thrice in a row at the end of the session', () => {
     const questions = randomQuestions();
-    const component = renderShallow({ questions: questions });
+    const component = render({ questions: questions });
 
-    expect(true).toBe(false);
+    // Answer the first question correctly, for some reason :)
+    clickAnswer(component);
+
+    // Answer the second question wrong three times in a row
+    const theDifficultQuestion = getQuestion(component);
+    clickWrongAnswer(component);
+    clickWrongAnswer(component);
+    clickWrongAnswer(component);
+
+    // Answer the rest of the questions correctly
+    for (let i = 2; i < questions.length; i++) {
+        clickAnswer(component);
+    }
+
+    const lastQuestion = getQuestion(component);
+    expect(lastQuestion).toBe(theDifficultQuestion);
 });
 
 function renderShallow(props) {
@@ -132,8 +149,10 @@ function createRandomQuestion(c=0) {
 
 function getQuestion(component) {
     const questions = getKidsAndParent(component)
+        .filter(c => c.type && c.type.name === 'QuestionComponent')
         .map(c => c.props)
         .filter(p => p && p.question)
+        .map(p => p.question);
 
     return questions[0];
 }

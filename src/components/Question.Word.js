@@ -12,6 +12,7 @@ import type { EmotionWordQuestion } from '../models/questions.js';
 type Props = {
     question: EmotionWordQuestion,
     onCorrectAnswer: () => void,
+    onWrongAnswer: () => void,
 };
 
 export function EmotionWordQuestionComponent(props: Props) {
@@ -48,6 +49,7 @@ export function EmotionWordQuestionComponent(props: Props) {
             props.onCorrectAnswer();
         } else {
             //console.log('It was not the correct answer :(');
+            props.onWrongAnswer();
         }
     }
 }
