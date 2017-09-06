@@ -6,6 +6,7 @@ import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { QuestionComponent } from './Question.js';
 import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
+import { answerService } from '../services/answer-service.js';
 
 it('renders without crashing', () => {
     const anyQuestion = {
@@ -47,7 +48,9 @@ it('renders word questions', () => {
 
 function render(customProps) {
     const defaultProps = {
+        answerService: answerService,
         onCorrectAnswer: () => {},
+        onWrongAnswer: () => {},
     };
     const props = Object.assign({}, defaultProps, customProps);
 

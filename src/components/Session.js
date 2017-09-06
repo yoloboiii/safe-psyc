@@ -3,6 +3,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { QuestionComponent } from './Question.js';
+import { answerService } from '../services/answer-service.js';
 
 import type { Question } from '../models/questions.js';
 
@@ -72,6 +73,7 @@ export class Session extends React.Component<*,*> {
 
             return <QuestionComponent
                 question={ currentQuestion }
+                answerService={ answerService }
                 onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                 onWrongAnswer={ this._wrongAnswer.bind(this) } />
         }

@@ -14,7 +14,10 @@ export default class App extends React.Component {
 
         return <View style={styles.container}>
             <View style={wtfClockBarHeightFuckStyle} />
-            <QuestionComponent question={ question } />
+
+            <QuestionComponent
+                question={ question }
+                answerService={ answerService } />
         </View>
     }
 }

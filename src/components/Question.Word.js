@@ -3,14 +3,15 @@
 import React from 'react';
 import  { Text, View } from 'react-native';
 
-import { answerService } from '../services/answer-service.js';
 import { ButtonList } from './ButtonList.js';
 import { VerticalSpace } from './VerticalSpace.js';
 
 import type { EmotionWordQuestion } from '../models/questions.js';
+import type { AnswerService } from '../services/answer-service.js';
 
 type Props = {
     question: EmotionWordQuestion,
+    answerService: AnswerService,
     onCorrectAnswer: () => void,
     onWrongAnswer: () => void,
 };
@@ -19,7 +20,7 @@ export function EmotionWordQuestionComponent(props: Props) {
     const { question } = props;
 
     const answers = new Map();
-    answerService.getAnswersTo(question, 3)
+    props.answerService.getAnswersTo(question, 3)
         .forEach(ans => {
             answers.set({
                 text: ans,

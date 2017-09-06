@@ -2,7 +2,12 @@
 
 import type { Question } from '../models/questions';
 
-class AnswerServiceImpl {
+export interface AnswerService {
+    getAnswersTo(Question, number): Array<string>;
+    setAnswerPool(Array<string>): void;
+}
+
+class AnswerServiceImpl implements AnswerService {
 
     _answerPool: Array<string> = [];
 
@@ -36,4 +41,4 @@ class AnswerServiceImpl {
     }
 }
 
-export const answerService = new AnswerServiceImpl();
+export const answerService: AnswerService = new AnswerServiceImpl();

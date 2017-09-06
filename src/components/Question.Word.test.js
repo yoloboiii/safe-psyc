@@ -48,7 +48,9 @@ it('contains wrong answers', () => {
 
 function render(customProps) {
     const defaultProps = {
+        answerService: answerService,
         onCorrectAnswer: () => {},
+        onWrongAnswer: () => {},
     };
     const props = Object.assign({}, defaultProps, customProps);
 

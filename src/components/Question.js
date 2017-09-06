@@ -7,9 +7,11 @@ import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { AnswerService } from '../services/answer-service.js';
 
 type Props = {
     question: Question,
+    answerService: AnswerService,
     onCorrectAnswer: () => void,
     onWrongAnswer: () => void,
 };
@@ -17,27 +19,30 @@ type Props = {
 
 export function QuestionComponent(props: Props) {
 
-    const { question } = props;
-    const DiscreteQuestionComponent = getQuestionComponent(question.type)
-        || UnknownQuestionComponent;
-
+    const questionView = getQuestionComponent(props);
     return <View>
-        { /* $FlowFixMe */ }
-        <DiscreteQuestionComponent
-            question={question}
-            onCorrectAnswer={ props.onCorrectAnswer }
-            onWrongAnswer={ props.onWrongAnswer } />
+        { questionView }
     </View>
 }
 
-function getQuestionComponent(questionType: string) {
-    switch(questionType) {
+function getQuestionComponent(props) {
+    const { question, answerService, onCorrectAnswer, onWrongAnswer } = props;
+
+    switch(question.type) {
         case 'eye-question':
-            return EyeQuestionComponent;
+            return <EyeQuestionComponent
+                        question={ question }
+                        answerService={ answerService }
+                        onCorrectAnswer={ onCorrectAnswer }
+                        onWrongAnswer={ onWrongAnswer } />
         case 'word-question':
-            return EmotionWordQuestionComponent;
+            return <EmotionWordQuestionComponent
+                        question={ question }
+                        answerService={ answerService }
+                        onCorrectAnswer={ onCorrectAnswer }
+                        onWrongAnswer={ onWrongAnswer } />
         default:
-            return null;
+            return <UnknownQuestionComponent question={ question } />;
     }
 }
 

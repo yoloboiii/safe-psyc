@@ -3,6 +3,9 @@
 import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EyeQuestionComponent } from './Question.Eye.js';
+import { answerService } from '../services/answer-service.js';
+
+answerService.setAnswerPool(['a', 'b', 'c', 'd', 'e']);
 
 it('contains the image', () => {
     const question = {
@@ -30,7 +33,14 @@ it('contains the answer', () => {
     expect(JSON.stringify(component)).toContain(question.answer);
 });
 
-function render(props) {
+function render(customProps) {
+    const defaultProps = {
+        answerService: answerService,
+        onCorrectAnswer: () => {},
+        onWrongAnswer: () => {},
+    };
+    const props = Object.assign({}, defaultProps, customProps);
+
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<EyeQuestionComponent {...props} />);
     return shallowRenderer.getRenderOutput();
