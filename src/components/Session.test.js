@@ -115,7 +115,12 @@ it('repeats a question answered incorrectly thrice in a row at the end of the se
     expect(lastQuestion).toBe(theDifficultQuestion);
 });
 
-function renderShallow(props) {
+function renderShallow(customProps) {
+    const defaultProps = {
+        onSessionFinished: () => {},
+    };
+    const props = Object.assign({}, defaultProps, customProps);
+
     const shallowRenderer = new ReactShallowRenderer();
     shallowRenderer.render(<Session {...props} />);
     return shallowRenderer.getRenderOutput();

@@ -11,14 +11,12 @@ type Props = {
     questions: Array<Question>,
     onSessionFinished: () => void,
 };
+type State = {
+    questions: QuestionCollection,
+    wrongAnswers: Map<Question, number>,
+};
 
-export class Session extends React.Component<*,*> {
-
-    props: Props;
-    state: {
-        questions: QuestionCollection,
-        wrongAnswers: Map<Question, number>,
-    };
+export class Session extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
