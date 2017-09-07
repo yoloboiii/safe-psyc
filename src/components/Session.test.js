@@ -215,6 +215,7 @@ function findAnswerButtons(component) {
 
     const buttons = getKidsAndParent(qComponent)
         .filter(c => {
+            //console.log(c);
             return c.type === Button;
         });
 

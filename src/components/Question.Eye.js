@@ -3,7 +3,7 @@
 import React from 'react';
 import { Text, View, Image} from 'react-native';
 
-import { ButtonList } from './ButtonList.js';
+import { VerticalAnswerList } from './VerticalAnswerList.js';
 
 import type { EyeQuestion } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -11,6 +11,8 @@ import type { AnswerService } from '../services/answer-service.js';
 type Props = {
     question: EyeQuestion,
     answerService: AnswerService,
+    onCorrectAnswer: () => void,
+    onWrongAnswer: () => void,
 };
 export function EyeQuestionComponent(props: Props) {
     const { question } = props;
@@ -24,6 +26,10 @@ export function EyeQuestionComponent(props: Props) {
     });
     return <View>
         <Image source={ imageSource } />
-        <ButtonList buttons={ answerButtons } onPress={ () => {} } />
+        <VerticalAnswerList
+            answers={ props.answerService.getAnswersTo(question, 3) }
+            correctAnswer={ question.answer }
+            onCorrectAnswer={ props.onCorrectAnswer }
+            onWrongAnswer={ props.onWrongAnswer } />
     </View>
 }

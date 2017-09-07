@@ -62,11 +62,9 @@ function render(customProps) {
 function getAnswers(root) {
     const answers = getChildren(root)
         .filter(child => {
-            return child.type && child.type.name === 'ButtonList';
+            return child.type && child.type.name === 'VerticalAnswerList';
         })
-        .map(b =>
-            b.props.buttons.map(b => b.text)
-        );
+        .map(b => b.props.answers);
 
     const flattenedAnswers = [].concat.apply([], answers);
     return flattenedAnswers;
