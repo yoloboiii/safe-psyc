@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
-import { getChildren } from '../../tests/toHaveMatcher.js';
+import { getChildrenAndParent } from '../../tests/utils.js';
 import { answerService } from '../services/answer-service.js';
 
 answerService.setAnswerPool(['a', 'b', 'c', 'd', 'e']);
@@ -60,10 +60,12 @@ function render(customProps) {
 }
 
 function getAnswers(root) {
-    const answers = getChildren(root)
+    const answers = getChildrenAndParent(root)
         .filter(child => {
+            // $FlowFixMe
             return child.type && child.type.name === 'VerticalAnswerList';
         })
+        // $FlowFixMe
         .map(b => b.props.answers);
 
     const flattenedAnswers = [].concat.apply([], answers);

@@ -1,20 +1,22 @@
 // @flow
 
 import React from 'react';
-import ReactShallowRenderer from 'react-test-renderer/shallow';
+import { render, renderShallow, randomQuestion, getChildrenAndParent, clickAnswer } from '../../tests/utils.js';
 
 import { QuestionComponent } from './Question.js';
 import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { answerService } from '../services/answer-service.js';
 
+const defaultProps = {
+    answerService: answerService,
+    onCorrectAnswer: () => {},
+    onWrongAnswer: () => {},
+};
+
 it('renders without crashing', () => {
-    const anyQuestion = {
-        type: 'eye-question',
-        image: 'test-image.png',
-        answer: 'THE ANSWER',
-    };
-    const component = render({ question: anyQuestion });
+    const anyQuestion = randomQuestion();
+    const component = renderShallow(QuestionComponent, { question: anyQuestion }, defaultProps);
     expect(component).toBeTruthy();
 });
 
@@ -24,7 +26,7 @@ it('renders eye questions', () => {
         image: 'test-image.png',
         answer: 'THE ANSWER',
     };
-    const component = render({ question: question });
+    const component = renderShallow(QuestionComponent, { question: question }, defaultProps);
 
     expect(component).toHaveChildWithProps(EyeQuestionComponent, {question: question});
     try {
@@ -40,21 +42,27 @@ it('renders word questions', () => {
         questionText: 'THE TEXT',
         answer: 'THE ANSWER',
     };
-    const component = render({ question: question });
+    const component = renderShallow(QuestionComponent, { question: question }, defaultProps);
 
     expect(component).toHaveChildWithProps(EmotionWordQuestionComponent, {question: question});
     expect(component).not.toHaveChild(EyeQuestionComponent);
 });
 
-function render(customProps) {
-    const defaultProps = {
-        answerService: answerService,
-        onCorrectAnswer: () => {},
-        onWrongAnswer: () => {},
-    };
-    const props = Object.assign({}, defaultProps, customProps);
+it('renders an overlay indicating that the answer was correct if the correct answer is given', () => {
 
-    const shallowRenderer = new ReactShallowRenderer();
-    shallowRenderer.render(<QuestionComponent {...props} />);
-    return shallowRenderer.getRenderOutput();
-}
+    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
+    clickAnswer(component);
+
+    const overlay = findChild(component, ResultOverlay);
+    expect(overlay).toBeDefined();
+    expect(overlay).toHaveText('correct');
+});
+
+it('apa', () => {
+    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
+    const c2 = renderShallow(QuestionComponent, { question: randomQuestion() }, defaultProps);
+
+    getChildrenAndParent(component);
+    getChildrenAndParent(c2);
+});
+

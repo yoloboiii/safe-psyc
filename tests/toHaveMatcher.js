@@ -2,17 +2,12 @@
 
 import reactElementToJSXString from 'react-element-to-jsx-string';
 import { Component } from 'react';
+import { getChildrenAndParent, findChildren } from './utils.js';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
-        const components = getChildrenAndParent(received);
 
-        const matchingChildren = components.filter(c => {
-            // $FlowFixMe
-            const correctType = c.type === childConstructor;
-            return correctType;
-        });
-
+        const matchingChildren = findChildren(received, childConstructor);
         const message = () => 'Could not find ' + childConstructor.name + ' in ' + reactElementToJSXString(received);
 
         return {
@@ -42,12 +37,14 @@ expect.extend({
 
         const matchingChildren = components.filter(c => {
             // $FlowFixMe
-            const correctType = c.type === childConstructor;
+            const correctType = c && c.type === childConstructor;
 
             if (correctType && childProps_happyFlow) {
                 const correctProps = Object.keys(childProps_happyFlow).every(
                     key =>
+                        // $FlowFixMe
                         c.props.hasOwnProperty(key) &&
+                        // $FlowFixMe
                         equals(c.props[key], childProps_happyFlow[key])
                     );
                 return correctType && correctProps;
@@ -69,21 +66,3 @@ expect.extend({
     },
 });
 
-export function getChildrenAndParent(parent: Component<*,*>) {
-    return [parent].concat(getChildren(parent));
-}
-
-export function getChildren(component: Component<*,*>) {
-    if (!component || !component.props || !component.props.children) {
-        return [];
-    }
-
-    let children = component.props.children;
-    if (!Array.isArray(children)) {
-        children = [children];
-    }
-
-    const grandchildren = children.map(c => getChildren(c));
-    const flattenedGrandChildren = [].concat.apply([], grandchildren);
-    return children.concat(flattenedGrandChildren);
-}
