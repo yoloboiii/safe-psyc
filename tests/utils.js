@@ -3,6 +3,8 @@
 import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import renderer from 'react-test-renderer';
+import reactElementToJSXString from 'react-element-to-jsx-string';
+import util from 'util';
 
 import { Button } from 'react-native';
 import { QuestionComponent } from '../src/components/Question.js';
@@ -169,4 +171,12 @@ export function findChildren(root: React.Component<*, *>, childType: Function) {
             const correctType = c && c.type === childType;
             return correctType;
         });
+}
+
+export function stringifyComponent(component: React.Component<*,*>): string {
+    if (isShallowRendered(component)) {
+        return reactElementToJSXString(component);
+    } else {
+        return util.inspect(component, { depth: 5 });
+    }
 }

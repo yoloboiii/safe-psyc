@@ -1,19 +1,21 @@
 // @flow
 
-import reactElementToJSXString from 'react-element-to-jsx-string';
+import { stringifyComponent } from './utils.js';
 
 expect.extend({
-    toContainStrings: (component, ...strings) => {
-        const needles = [].concat.apply([], strings);
-        const stringRep = stringifyComponent(component).toLowerCase();
-
-        return {
-            pass: needles.every(needle => stringRep.indexOf(needle) !== -1),
-            message: 'expected\n  ' + stringRep + '\n\nto contain all of\n  [' + needles.join(', ') + ']',
-        };
+    toContainString: (component, string) => {
+        return toContainStrings(component, string);
     },
+    toContainStrings: toContainStrings,
 });
 
-function stringifyComponent(component) {
-    return reactElementToJSXString(component);
+function toContainStrings(component, ...strings) {
+    const needles = [].concat.apply([], strings);
+    const stringRep = stringifyComponent(component).toLowerCase();
+
+    return {
+        pass: needles.every(needle => stringRep.indexOf(needle) !== -1),
+        message: 'expected\n  ' + stringRep + '\n\nto contain all of\n  [' + needles.join(', ') + ']',
+    };
 }
+

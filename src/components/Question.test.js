@@ -1,9 +1,10 @@
 // @flow
 
 import React from 'react';
-import { render, renderShallow, randomQuestion, getChildrenAndParent, clickAnswer } from '../../tests/utils.js';
+import { render, renderShallow, randomQuestion, getChildrenAndParent, clickAnswer, clickWrongAnswer, findChildren, stringifyComponent } from '../../tests/utils.js';
+import { Text } from 'react-native';
 
-import { QuestionComponent } from './Question.js';
+import { QuestionComponent, ResultOverlay } from './Question.js';
 import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { answerService } from '../services/answer-service.js';
@@ -29,11 +30,7 @@ it('renders eye questions', () => {
     const component = renderShallow(QuestionComponent, { question: question }, defaultProps);
 
     expect(component).toHaveChildWithProps(EyeQuestionComponent, {question: question});
-    try {
     expect(component).not.toHaveChild(EmotionWordQuestionComponent);
-    } catch(e) {
-        console.log(e);
-    }
 });
 
 it('renders word questions', () => {
@@ -53,16 +50,32 @@ it('renders an overlay indicating that the answer was correct if the correct ans
     const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
     clickAnswer(component);
 
-    const overlay = findChild(component, ResultOverlay);
+    const overlay = findChildren(component, ResultOverlay)[0];
     expect(overlay).toBeDefined();
-    expect(overlay).toHaveText('correct');
+
+    // $FlowFixMe
+    const textNodes = findChildren(overlay, Text);
+    expect(textNodes.some(n => {
+        // $FlowFixMe
+        const t = n.rendered.rendered[0];
+        return t.toLowerCase().indexOf('correct') > -1;
+    })).toBe(true);
 });
 
-it('apa', () => {
-    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
-    const c2 = renderShallow(QuestionComponent, { question: randomQuestion() }, defaultProps);
+it('renders an overlay indicating that the answer was incorrect if the wrong answer is given', () => {
 
-    getChildrenAndParent(component);
-    getChildrenAndParent(c2);
+    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
+    clickWrongAnswer(component);
+
+    const overlay = findChildren(component, ResultOverlay)[0];
+    expect(overlay).toBeDefined();
+
+    // $FlowFixMe
+    const textNodes = findChildren(overlay, Text);
+    expect(textNodes.some(n => {
+        // $FlowFixMe
+        const t = n.rendered.rendered[0];
+        return t.toLowerCase().indexOf('incorrect') > -1;
+    })).toBe(true);
 });
 

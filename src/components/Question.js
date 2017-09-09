@@ -48,7 +48,6 @@ export class QuestionComponent extends React.Component<Props,State> {
     }
 
     render() {
-        console.log('Q STATE', this.state);
         const questionView = this._getQuestionComponent();
         const resultOverlay = this._createResultOverLay();
         return <View>
@@ -115,12 +114,11 @@ type ResultOverlayProps = {
     question: Question,
     answeredCorrectly: boolean,
 }
-function ResultOverlay(props: ResultOverlayProps) {
+export function ResultOverlay(props: ResultOverlayProps) {
     const text = props.answeredCorrectly
-        ? 'Yaay'
-        : 'Naay';
+        ? 'Correct!'
+        : 'That is sadly incorrect';
 
-    console.log('RES OVERLAY', props);
     return <View style={resultOverlayStyleSheet.root}>
         <Text>{text}</Text>
     </View>

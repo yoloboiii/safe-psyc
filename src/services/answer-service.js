@@ -36,6 +36,10 @@ class AnswerServiceImpl implements AnswerService {
         return answers;
     }
 
+    poolSize(): number {
+        return this._answerPool.length;
+    }
+
     setAnswerPool(pool: Array<string>) {
         this._answerPool = pool;
     }

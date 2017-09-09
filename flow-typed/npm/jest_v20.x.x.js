@@ -122,6 +122,7 @@ type EnzymeMatchersType = {
   toHaveChildWithProps(Function, Object): void,
   toHaveChildMatching(Object => boolean): void,
   toContainElementsOtherThan(mixed): void,
+  toContainString(string: string): void,
   toContainStrings(...strings: Array<string>): void,
 
   toBeChecked(): void,
