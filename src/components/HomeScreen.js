@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { View, Button } from 'react-native';
+import { startRandomSession } from '../navigation-actions.js';
+
+import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
-    navigation: {
-        navigate: (string, Object) => void,
-    },
+    navigation: Navigation<{}>,
 }
 export class HomeScreen extends React.Component<Props, {}> {
     static navigationOptions = {
@@ -17,16 +18,8 @@ export class HomeScreen extends React.Component<Props, {}> {
         return <View>
             <Button
                 title='Start random session'
-                onPress={ () => startRandomSession(this.props.navigation.navigate) }
+                onPress={ () => startRandomSession(this.props.navigation) }
             />
         </View>
     }
-}
-
-function startRandomSession(navigate) {
-
-    navigate('Session', {
-        questions: [],
-        hej: 'HALLO',
-    });
 }
