@@ -7,7 +7,7 @@ import reactElementToJSXString from 'react-element-to-jsx-string';
 import util from 'util';
 
 import { Button } from 'react-native';
-import { QuestionComponent } from '../src/components/Question.js';
+import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 
 import type { Question } from '../src/models/questions.js';
 
@@ -94,6 +94,7 @@ function getChildren(component: React.Component<*,*>) {
 
     const grandchildren = children.map(c => getChildren(c));
     const flattenedGrandChildren = [].concat.apply([], grandchildren);
+    // $FlowFixMe
     return children.concat(flattenedGrandChildren);
 }
 
@@ -164,7 +165,25 @@ export function clickWrongAnswer(component: React.Component<*,*>) {
     wrongAnswerButton.props.onPress();
 }
 
-export function findChildren(root: React.Component<*, *>, childType: Function) {
+export function clickAnswerAndDismissOverlay(component: React.Component<*,*>) {
+    clickAnswer(component);
+    dismissOverlay(component);
+}
+
+function dismissOverlay(component) {
+    const overlay = findChildren(component, ResultOverlay)[0];
+    const buttons = findChildren(overlay, Button);
+    buttons.forEach( button => {
+        button.props.onPress && button.props.onPress();
+    });
+}
+
+export function clickWrongAnswerAndDismissOverlay(component: React.Component<*,*>) {
+    clickWrongAnswer(component);
+    dismissOverlay(component);
+}
+
+export function findChildren(root: React.Component<*, *>, childType: Function): Array<React.Component<*,*>> {
     return getChildrenAndParent(root)
         .filter(c => {
             // $FlowFixMe

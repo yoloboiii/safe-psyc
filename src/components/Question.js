@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import  { Text, View, StyleSheet } from 'react-native';
+import  { Text, Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
@@ -39,12 +39,18 @@ export class QuestionComponent extends React.Component<Props,State> {
 
     _correctAnswer() {
         this.setState({ currentAnswerState: 'CORRECT' });
-        this.props.onCorrectAnswer();
     }
 
     _wrongAnswer() {
         this.setState({ currentAnswerState: 'WRONG' });
-        this.props.onWrongAnswer();
+    }
+
+    // Invoked by the overlay to dismiss it
+    _questionFinished() {
+        const answeredCorrectly= this.state.currentAnswerState === 'CORRECT';
+        answeredCorrectly
+            ? this.props.onCorrectAnswer()
+            : this.props.onWrongAnswer();
     }
 
     render() {
@@ -86,7 +92,9 @@ export class QuestionComponent extends React.Component<Props,State> {
             case 'WRONG':
                 return <ResultOverlay
                     answeredCorrectly={this.state.currentAnswerState === 'CORRECT'}
-                    question={this.props.question} />
+                    question={this.props.question}
+                    onDismiss={this._questionFinished.bind(this)}
+                    />
 
             case 'NOT-ANSWERED':
             default:
@@ -113,6 +121,7 @@ const resultOverlayStyleSheet = StyleSheet.create({
 type ResultOverlayProps = {
     question: Question,
     answeredCorrectly: boolean,
+    onDismiss: () => void,
 }
 export function ResultOverlay(props: ResultOverlayProps) {
     const text = props.answeredCorrectly
@@ -121,5 +130,8 @@ export function ResultOverlay(props: ResultOverlayProps) {
 
     return <View style={resultOverlayStyleSheet.root}>
         <Text>{text}</Text>
+        <Button
+            title={'Ok'}
+            onPress={props.onDismiss} />
     </View>
 }

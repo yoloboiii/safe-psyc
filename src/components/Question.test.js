@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render, renderShallow, randomQuestion, getChildrenAndParent, clickAnswer, clickWrongAnswer, findChildren, stringifyComponent } from '../../tests/utils.js';
-import { Text } from 'react-native';
+import { Text, Button } from 'react-native';
 
 import { QuestionComponent, ResultOverlay } from './Question.js';
 import { EyeQuestionComponent } from './Question.Eye.js';
@@ -53,7 +53,6 @@ it('renders an overlay indicating that the answer was correct if the correct ans
     const overlay = findChildren(component, ResultOverlay)[0];
     expect(overlay).toBeDefined();
 
-    // $FlowFixMe
     const textNodes = findChildren(overlay, Text);
     expect(textNodes.some(n => {
         // $FlowFixMe
@@ -70,7 +69,6 @@ it('renders an overlay indicating that the answer was incorrect if the wrong ans
     const overlay = findChildren(component, ResultOverlay)[0];
     expect(overlay).toBeDefined();
 
-    // $FlowFixMe
     const textNodes = findChildren(overlay, Text);
     expect(textNodes.some(n => {
         // $FlowFixMe
@@ -79,3 +77,48 @@ it('renders an overlay indicating that the answer was incorrect if the wrong ans
     })).toBe(true);
 });
 
+it('has a button that triggers onCorrectAnswer in the overlay', () => {
+    const onCorrectAnswer = jest.fn();
+    const onWrongAnswer = jest.fn();
+    const component = render(QuestionComponent, {
+        question: randomQuestion(),
+        onCorrectAnswer: onCorrectAnswer,
+        onWrongAnswer, onWrongAnswer,
+    }, defaultProps);
+
+    clickAnswer(component);
+
+    expect(onCorrectAnswer).not.toHaveBeenCalled();
+
+    const overlay = findChildren(component, ResultOverlay)[0];
+    const buttons = findChildren(overlay, Button);
+    buttons.forEach( button => {
+        button.props.onPress && button.props.onPress();
+    });
+
+    expect(onCorrectAnswer).toHaveBeenCalledTimes(1);
+    expect(onWrongAnswer).not.toHaveBeenCalled();
+});
+
+it('has a button that triggers onWrongAnswer in the overlay', () => {
+    const onCorrectAnswer = jest.fn();
+    const onWrongAnswer = jest.fn();
+    const component = render(QuestionComponent, {
+        question: randomQuestion(),
+        onCorrectAnswer: onCorrectAnswer,
+        onWrongAnswer, onWrongAnswer,
+    }, defaultProps);
+
+    clickWrongAnswer(component);
+
+    expect(onWrongAnswer).not.toHaveBeenCalled();
+
+    const overlay = findChildren(component, ResultOverlay)[0];
+    const buttons = findChildren(overlay, Button);
+    buttons.forEach( button => {
+        button.props.onPress && button.props.onPress();
+    });
+
+    expect(onWrongAnswer).toHaveBeenCalledTimes(1);
+    expect(onCorrectAnswer).not.toHaveBeenCalled();
+});
