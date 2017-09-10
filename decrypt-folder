@@ -1,0 +1,10 @@
+set -eux
+
+filename="$1"
+archivename="${filename%.*}"
+foldername="${filename%.*}"
+
+mkdir -p "SECRETS"
+
+echo "DECRYPTING $1 as $foldername"
+gpg2 --decrypt $1 | tar -xvf -

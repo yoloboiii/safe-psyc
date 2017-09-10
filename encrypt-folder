@@ -1,0 +1,7 @@
+set -eux
+
+name="$(basename $1)"
+cd "$(dirname $1)"
+trap "cd -" EXIT
+
+tar -cvO $name | gpg2 --output $name.tar.gpg --symmetric -
