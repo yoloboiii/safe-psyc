@@ -5,6 +5,9 @@ import  { Text, Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
+import { VerticalSpace } from './VerticalSpace.js';
+
+import { constants } from '../styles/constants.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -112,10 +115,15 @@ const resultOverlayStyleSheet = StyleSheet.create({
     root: {
         position: 'absolute',
         top: 155,
+        width: '100%',
 
-        padding: 50,
-
-        backgroundColor: 'green',
+        padding: 3 * constants.space,
+    },
+    correct: {
+        backgroundColor: constants.green,
+    },
+    wrong: {
+        backgroundColor: constants.red,
     },
 });
 type ResultOverlayProps = {
@@ -127,9 +135,13 @@ export function ResultOverlay(props: ResultOverlayProps) {
     const text = props.answeredCorrectly
         ? 'Correct!'
         : 'That is sadly incorrect';
+    const style = props.answeredCorrectly
+        ? resultOverlayStyleSheet.correct
+        : resultOverlayStyleSheet.wrong;
 
-    return <View style={resultOverlayStyleSheet.root}>
+    return <View style={[resultOverlayStyleSheet.root, style]}>
         <Text>{text}</Text>
+        <VerticalSpace />
         <Button
             title={'Ok'}
             onPress={props.onDismiss} />
