@@ -6,8 +6,8 @@ import { answerService } from '../services/answer-service.js';
 import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
 
-import { render, renderShallow, randomQuestions, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/utils.js';
-
+import { render, renderShallow } from '../../tests/render-utils.js';
+import { randomQuestions, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
 
 answerService.setAnswerPool(['a', 'b', 'c']);
 

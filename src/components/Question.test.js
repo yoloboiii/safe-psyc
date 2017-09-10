@@ -1,7 +1,9 @@
 // @flow
 
 import React from 'react';
-import { render, renderShallow, randomQuestion, getChildrenAndParent, clickAnswer, clickWrongAnswer, findChildren, stringifyComponent } from '../../tests/utils.js';
+import { render, renderShallow } from '../../tests/render-utils.js';
+import { randomQuestion, clickAnswer, clickWrongAnswer } from '../../tests/question-utils.js';
+import { getChildrenAndParent, findChildren, stringifyComponent } from '../../tests/component-tree-utils.js';
 import { Text, Button } from 'react-native';
 
 import { QuestionComponent, ResultOverlay } from './Question.js';

@@ -2,7 +2,7 @@
 
 import reactElementToJSXString from 'react-element-to-jsx-string';
 import { Component } from 'react';
-import { getChildrenAndParent, findChildren } from './utils.js';
+import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
@@ -42,9 +42,7 @@ expect.extend({
             if (correctType && childProps_happyFlow) {
                 const correctProps = Object.keys(childProps_happyFlow).every(
                     key =>
-                        // $FlowFixMe
                         c.props.hasOwnProperty(key) &&
-                        // $FlowFixMe
                         equals(c.props[key], childProps_happyFlow[key])
                     );
                 return correctType && correctProps;

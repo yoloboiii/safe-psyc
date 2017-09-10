@@ -1,6 +1,6 @@
 // @flow
 
-import { stringifyComponent } from './utils.js';
+import { stringifyComponent } from './component-tree-utils.js';
 
 expect.extend({
     toContainString: (component, string) => {
