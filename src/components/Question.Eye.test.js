@@ -3,9 +3,8 @@
 import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EyeQuestionComponent } from './Question.Eye.js';
+import { randomQuestion } from '../../tests/question-utils.js';
 import { answerService } from '../services/answer-service.js';
-
-answerService.setAnswerPool(['a', 'b', 'c', 'd', 'e']);
 
 it('contains the image', () => {
     const question = {
@@ -32,8 +31,10 @@ it('contains the answer', () => {
 });
 
 function render(customProps) {
+    const question = customProps.question || randomQuestion();
     const defaultProps = {
-        answerService: answerService,
+        question: question,
+        answers: answerService.getAnswersTo(question, 3),
         onCorrectAnswer: () => {},
         onWrongAnswer: () => {},
     };

@@ -44,6 +44,10 @@ export class AnswerService {
         return answers;
     }
 
+    getAnswerPool(): Array<string> {
+        return this._answerPool.slice();
+    }
+
     setAnswerPool(pool: Array<string>) {
         this._answerPool = pool;
     }

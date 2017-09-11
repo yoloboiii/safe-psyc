@@ -10,13 +10,12 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
-import type { AnswerService } from '../services/answer-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
 type Props = {
     question: Question,
-    answerService: AnswerService,
+    answers: Array<string>,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: string) => void,
 };
@@ -75,7 +74,7 @@ export class QuestionComponent extends React.Component<Props,State> {
     }
 
     _getQuestionComponent() {
-        const { question, answerService } = this.props;
+        const { question, answers } = this.props;
 
         const onCorrectAnswer = this._correctAnswer.bind(this);
         const onWrongAnswer = this._wrongAnswer.bind(this);
@@ -84,13 +83,13 @@ export class QuestionComponent extends React.Component<Props,State> {
             case 'eye-question':
                 return <EyeQuestionComponent
                             question={ question }
-                            answerService={ answerService }
+                            answers={ answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
             case 'word-question':
                 return <EmotionWordQuestionComponent
                             question={ question }
-                            answerService={ answerService }
+                            answers={ answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
             default:

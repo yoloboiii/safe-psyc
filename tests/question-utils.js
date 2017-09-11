@@ -79,8 +79,9 @@ export function clickWrongAnswer(component: React.Component<*,*>) {
 }
 
 export function clickAnswerAndDismissOverlay(component: React.Component<*,*>) {
-    clickAnswer(component);
+    const button = clickAnswer(component);
     dismissOverlay(component);
+    return button;
 }
 
 function dismissOverlay(component) {
@@ -92,6 +93,7 @@ function dismissOverlay(component) {
 }
 
 export function clickWrongAnswerAndDismissOverlay(component: React.Component<*,*>) {
-    clickWrongAnswer(component);
+    const button = clickWrongAnswer(component);
     dismissOverlay(component);
+    return button;
 }

@@ -10,8 +10,6 @@ import { render, renderShallow } from '../../tests/render-utils.js';
 import { findChildren } from '../../tests/component-tree-utils.js';
 import { randomQuestions, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
 
-answerService.setAnswerPool(['a', 'b', 'c']);
-
 const defaultProps = {
     onSessionFinished: () => {},
     answerService: answerService,
@@ -68,7 +66,8 @@ it('shows all questions eventually', () => {
     for (let i = 0; i < questions.length; i++) {
         const question = getQuestion(component);
         seen.set(question, true);
-        clickAnswerAndDismissOverlay(component);
+
+        const button = clickAnswerAndDismissOverlay(component);
     }
 
     expect(seen.size).toBe(questions.length);
@@ -138,3 +137,16 @@ it('shows a gratualtory message when the session is finished', () => {
     expect(onFinishedMock).not.toHaveBeenCalled();
     expect(component).toContainString('congratulations');
 });
+
+function props(customProps) {
+    const question = customProps.question || randomQuestion();
+    const defaultProps = {
+        question: question,
+        answers: answerService.getAnswersTo(question, 3),
+        onCorrectAnswer: () => {},
+        onWrongAnswer: () => {},
+    };
+
+    return Object.assign({}, defaultProps, customProps);
+};
+

@@ -15,6 +15,7 @@ type Props = {
 type State = {
     isFinished: boolean,
     questions: QuestionCollection,
+    answers: Array<string>,
     wrongAnswers: Map<Question, number>,
 };
 
@@ -22,17 +23,25 @@ export class Session extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
+        const questions = new QuestionCollection(props.questions);
         this.state = {
             isFinished: false,
-            questions: new QuestionCollection(props.questions),
+            questions: questions,
+            answers: questions.size() === 0
+                ? []
+                : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
         };
     }
 
     componentWillReceiveProps(newProps: Props) {
+        const questions = new QuestionCollection(props.questions);
         this.setState({
             isFinished: false,
-            questions: new QuestionCollection(newProps.questions),
+            questions: questions,
+            answers: questions.size() === 0
+                ? []
+                : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
         });
     }
@@ -47,9 +56,17 @@ export class Session extends React.Component<Props, State> {
         if(isLastQuestion) {
             this.setState({ isFinished: true });
         } else {
-            this.state.questions.next();
-            this.forceUpdate();
+            this._nextQuestion();
         }
+    }
+
+    _nextQuestion() {
+        this.state.questions.next();
+        const q = this.state.questions.peek();
+        this.setState({
+            answers: this.props.answerService.getAnswersTo(q, 3),
+        });
+        this.forceUpdate();
     }
 
     _wrongAnswer() {
@@ -59,11 +76,11 @@ export class Session extends React.Component<Props, State> {
         this.state.wrongAnswers.set(currentQ, prev + 1);
 
         if (prev === 2) {
-            this.state.questions.next();
             this.state.questions.push(currentQ);
+            this._nextQuestion();
+        } else {
+            this.forceUpdate();
         }
-
-        this.forceUpdate();
     }
 
     render() {
@@ -81,7 +98,7 @@ export class Session extends React.Component<Props, State> {
 
             return <QuestionComponent
                 question={ currentQuestion }
-                answerService={ this.props.answerService }
+                answers={ this.state.answers }
                 onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                 onWrongAnswer={ this._wrongAnswer.bind(this) } />
         }

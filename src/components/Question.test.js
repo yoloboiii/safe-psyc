@@ -11,16 +11,9 @@ import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { answerService } from '../services/answer-service.js';
 
-const defaultProps = {
-    question: randomQuestion(),
-    answerService: answerService,
-    onCorrectAnswer: () => {},
-    onWrongAnswer: () => {},
-};
-
 it('renders without crashing', () => {
     const anyQuestion = randomQuestion();
-    const component = renderShallow(QuestionComponent, { question: anyQuestion }, defaultProps);
+    const component = renderShallow(QuestionComponent, props({ question: anyQuestion }));
     expect(component).toBeTruthy();
 });
 
@@ -30,7 +23,7 @@ it('renders eye questions', () => {
         image: 'test-image.png',
         answer: 'THE ANSWER',
     };
-    const component = renderShallow(QuestionComponent, { question: question }, defaultProps);
+    const component = renderShallow(QuestionComponent, props({ question: question }));
 
     expect(component).toHaveChildWithProps(EyeQuestionComponent, {question: question});
     expect(component).not.toHaveChild(EmotionWordQuestionComponent);
@@ -42,7 +35,7 @@ it('renders word questions', () => {
         questionText: 'THE TEXT',
         answer: 'THE ANSWER',
     };
-    const component = renderShallow(QuestionComponent, { question: question }, defaultProps);
+    const component = renderShallow(QuestionComponent, props({ question: question }));
 
     expect(component).toHaveChildWithProps(EmotionWordQuestionComponent, {question: question});
     expect(component).not.toHaveChild(EyeQuestionComponent);
@@ -50,7 +43,7 @@ it('renders word questions', () => {
 
 it('renders an overlay indicating that the answer was correct if the correct answer is given', () => {
 
-    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
+    const component = render(QuestionComponent, props({ question: randomQuestion() }));
     clickAnswer(component);
 
     const overlay = findChildren(component, ResultOverlay)[0];
@@ -66,7 +59,7 @@ it('renders an overlay indicating that the answer was correct if the correct ans
 
 it('renders an overlay indicating that the answer was incorrect if the wrong answer is given', () => {
 
-    const component = render(QuestionComponent, { question: randomQuestion() }, defaultProps);
+    const component = render(QuestionComponent, props({ question: randomQuestion() }));
     clickWrongAnswer(component);
 
     const overlay = findChildren(component, ResultOverlay)[0];
@@ -83,11 +76,11 @@ it('renders an overlay indicating that the answer was incorrect if the wrong ans
 it('has a button that triggers onCorrectAnswer in the overlay', () => {
     const onCorrectAnswer = jest.fn();
     const onWrongAnswer = jest.fn();
-    const component = render(QuestionComponent, {
+    const component = render(QuestionComponent, props({
         question: randomQuestion(),
         onCorrectAnswer: onCorrectAnswer,
         onWrongAnswer, onWrongAnswer,
-    }, defaultProps);
+    }));
 
     clickAnswer(component);
 
@@ -106,11 +99,11 @@ it('has a button that triggers onCorrectAnswer in the overlay', () => {
 it('has a button that triggers onWrongAnswer in the overlay', () => {
     const onCorrectAnswer = jest.fn();
     const onWrongAnswer = jest.fn();
-    const component = render(QuestionComponent, {
+    const component = render(QuestionComponent, props({
         question: randomQuestion(),
         onCorrectAnswer: onCorrectAnswer,
         onWrongAnswer, onWrongAnswer,
-    }, defaultProps);
+    }));
 
     const button = clickWrongAnswer(component);
 
@@ -129,7 +122,7 @@ it('has a button that triggers onWrongAnswer in the overlay', () => {
 
 it('contains the clicked text in the overlay - correct', () => {
     const question = randomQuestion();
-    const component = render(QuestionComponent, { question }, defaultProps);
+    const component = render(QuestionComponent, props({ question }));
 
     const button = clickAnswer(component);
     const overlay = findChildren(component, ResultOverlay)[0];
@@ -144,7 +137,7 @@ it('contains the clicked text in the overlay - correct', () => {
 
 it('contains the clicked text in the overlay - wrong', () => {
     const question = randomQuestion();
-    const component = render(QuestionComponent, { question }, defaultProps);
+    const component = render(QuestionComponent, props({ question }));
 
     const button = clickWrongAnswer(component);
     const overlay = findChildren(component, ResultOverlay)[0];
@@ -156,3 +149,16 @@ it('contains the clicked text in the overlay - wrong', () => {
         ])
     );
 });
+
+function props(customProps) {
+    const question = customProps.question || randomQuestion();
+    const defaultProps = {
+        question: question,
+        answers: answerService.getAnswersTo(question, 3),
+        onCorrectAnswer: () => {},
+        onWrongAnswer: () => {},
+    };
+
+    return Object.assign({}, defaultProps, customProps);
+};
+

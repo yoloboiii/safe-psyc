@@ -4,6 +4,7 @@ import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
+import { randomQuestion } from '../../tests/question-utils.js';
 import { answerService } from '../services/answer-service.js';
 
 const defaultQuestion = {
@@ -45,8 +46,10 @@ it('contains wrong answers', () => {
 });
 
 function render(customProps) {
+    const question = customProps.question || randomQuestion();
     const defaultProps = {
-        answerService: answerService,
+        question: question,
+        answers: answerService.getAnswersTo(question, 3),
         onCorrectAnswer: () => {},
         onWrongAnswer: () => {},
     };
