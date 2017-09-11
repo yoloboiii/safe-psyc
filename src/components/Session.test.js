@@ -7,6 +7,7 @@ import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
 
 import { render, renderShallow } from '../../tests/render-utils.js';
+import { findChildren } from '../../tests/component-tree-utils.js';
 import { randomQuestions, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
 
 answerService.setAnswerPool(['a', 'b', 'c']);
@@ -53,7 +54,10 @@ it('finishes the session if the last question was answered correctly', () => {
 
     clickAnswerAndDismissOverlay(component);
 
-    expect(sessionFinishedSpy.mock.calls.length).toBe(1);
+    // Click all buttons to dismiss the finishing congrats
+    findChildren(component, Button).forEach( button => button.props.onPress && button.props.onPress());
+
+    expect(sessionFinishedSpy).toHaveBeenCalledTimes(1);
 });
 
 it('shows all questions eventually', () => {
@@ -118,3 +122,19 @@ it('repeats a question answered incorrectly thrice in a row at the end of the se
     expect(lastQuestion).toBe(theDifficultQuestion);
 });
 
+it('shows a gratualtory message when the session is finished', () => {
+    const onFinishedMock = jest.fn();
+
+    const questions = randomQuestions();
+    const component = render(Session, {
+        questions: questions,
+        onSessionFinished: onFinishedMock,
+    }, defaultProps);
+
+    for (let i = 0; i < questions.length; i++) {
+        clickAnswerAndDismissOverlay(component);
+    }
+
+    expect(onFinishedMock).not.toHaveBeenCalled();
+    expect(component).toContainString('congratulations');
+});

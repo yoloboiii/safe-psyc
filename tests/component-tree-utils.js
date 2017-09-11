@@ -16,6 +16,8 @@ export function findChildren(root: React.Component<*, *>, childType: Function): 
 export function stringifyComponent(component: React.Component<*,*>): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);
+    } else if (component.toTree) {
+        return stringifyComponent(component.toTree());
     } else {
         return util.inspect(component, { depth: 5 });
     }

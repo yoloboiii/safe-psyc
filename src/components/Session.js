@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
 
 import type { Question } from '../models/questions.js';
@@ -13,6 +13,7 @@ type Props = {
     answerService: AnswerService,
 };
 type State = {
+    isFinished: boolean,
     questions: QuestionCollection,
     wrongAnswers: Map<Question, number>,
 };
@@ -22,6 +23,7 @@ export class Session extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
+            isFinished: false,
             questions: new QuestionCollection(props.questions),
             wrongAnswers: new Map(),
         };
@@ -29,6 +31,7 @@ export class Session extends React.Component<Props, State> {
 
     componentWillReceiveProps(newProps: Props) {
         this.setState({
+            isFinished: false,
             questions: new QuestionCollection(newProps.questions),
             wrongAnswers: new Map(),
         });
@@ -42,7 +45,7 @@ export class Session extends React.Component<Props, State> {
 
         const isLastQuestion = this.state.questions.size() === 1;
         if(isLastQuestion) {
-            this.props.onSessionFinished();
+            this.setState({ isFinished: true });
         } else {
             this.state.questions.next();
             this.forceUpdate();
@@ -67,6 +70,12 @@ export class Session extends React.Component<Props, State> {
         if (this.state.questions.isEmpty()) {
             return <Text>No question in session</Text>
 
+        } else if (this.state.isFinished) {
+            return <View>
+                <Text>Great job! Congratulations on finishing the session</Text>
+
+                <Button title={'Thanks!'} onPress={this.props.onSessionFinished} />
+            </View>
         } else {
             const currentQuestion = this.state.questions.peek();
 
