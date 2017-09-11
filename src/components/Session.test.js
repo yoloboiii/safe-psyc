@@ -13,6 +13,7 @@ answerService.setAnswerPool(['a', 'b', 'c']);
 
 const defaultProps = {
     onSessionFinished: () => {},
+    answerService: answerService,
 };
 
 it('shows an error screen if no questions are given', () => {

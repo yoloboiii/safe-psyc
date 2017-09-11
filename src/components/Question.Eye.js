@@ -24,8 +24,17 @@ export function EyeQuestionComponent(props: Props) {
     const answerButtons = answers.map(answer => {
         return { text: answer };
     });
+
+    /* TODO: this height is to make sure that the elements below the
+     * image doesn't jump around so it needs to be at least as high as
+     * the highest image. This information is only available in the
+     * session though, so I need some way to push that data down here */
+
     return <View>
-        <Image source={ imageSource } />
+        <Image
+            style={{ height: 200 }}
+            source={ imageSource } />
+
         <VerticalAnswerList
             answers={ props.answerService.getAnswersTo(question, 3) }
             correctAnswer={ question.answer }

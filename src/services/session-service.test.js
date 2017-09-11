@@ -8,7 +8,6 @@ it('returns the correct number of random questions', () => {
     expect(sessionService.getRandomQuestions(10).length).toBe(10);
 });
 
-
 it('includes each random question only once', () => {
     for (let i=0; i<100; i++) {
         const questions = sessionService.getRandomQuestions(10);

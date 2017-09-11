@@ -3,13 +3,14 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { QuestionComponent } from './Question.js';
-import { answerService } from '../services/answer-service.js';
 
 import type { Question } from '../models/questions.js';
+import type { AnswerService } from '../services/answer-service.js';
 
 type Props = {
     questions: Array<Question>,
     onSessionFinished: () => void,
+    answerService: AnswerService,
 };
 type State = {
     questions: QuestionCollection,
@@ -71,7 +72,7 @@ export class Session extends React.Component<Props, State> {
 
             return <QuestionComponent
                 question={ currentQuestion }
-                answerService={ answerService }
+                answerService={ this.props.answerService }
                 onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                 onWrongAnswer={ this._wrongAnswer.bind(this) } />
         }

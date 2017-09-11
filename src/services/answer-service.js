@@ -2,14 +2,13 @@
 
 import type { Question } from '../models/questions';
 
-export interface AnswerService {
-    getAnswersTo(Question, number): Array<string>;
-    setAnswerPool(Array<string>): void;
-}
+export class AnswerService {
 
-class AnswerServiceImpl implements AnswerService {
+    _answerPool: Array<string>;
 
-    _answerPool: Array<string> = [];
+    constructor(pool?: Array<string>) {
+        this._answerPool = pool || [];
+    }
 
     getAnswersTo(question: Question, numAnswers: number): Array<string> {
         const answers = this._getRandomAnswersFromPool(numAnswers - 1);
@@ -27,7 +26,6 @@ class AnswerServiceImpl implements AnswerService {
         for (let i = 0; i < numAnswers && poolCopy.length > 0; i++) {
             const rnd = Math.floor(Math.random() * poolCopy.length);
 
-            const answer = poolCopy[rnd];
             answers.push(poolCopy[rnd]);
 
             poolCopy.splice(rnd, 1);
@@ -41,4 +39,4 @@ class AnswerServiceImpl implements AnswerService {
     }
 }
 
-export const answerService: AnswerService = new AnswerServiceImpl();
+export const answerService = new AnswerService();
