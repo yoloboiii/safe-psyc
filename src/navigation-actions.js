@@ -13,7 +13,6 @@ export type Navigation<P> = {
 export function startRandomSession(navigation: Navigation<*>) {
     const questions = sessionService.getRandomQuestions(20);
     const answers = questions.map(question => question.answer);
-
     navigation.navigate('Session', {
         questions: questions,
         answerService: new AnswerService(answers),

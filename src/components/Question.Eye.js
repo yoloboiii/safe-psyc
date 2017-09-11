@@ -17,9 +17,6 @@ type Props = {
 export function EyeQuestionComponent(props: Props) {
     const { question } = props;
 
-    // $FlowFixMe
-    const imageSource = require(question.image);
-
     const answers = props.answerService.getAnswersTo(question, 3);
     const answerButtons = answers.map(answer => {
         return { text: answer };
@@ -33,7 +30,7 @@ export function EyeQuestionComponent(props: Props) {
     return <View>
         <Image
             style={{ height: 200 }}
-            source={ imageSource } />
+            source={{ uri: question.image }} />
 
         <VerticalAnswerList
             answers={ props.answerService.getAnswersTo(question, 3) }

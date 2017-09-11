@@ -14,3 +14,15 @@ it('includes each random question only once', () => {
         expect(questions).not.toContainDuplicates();
     }
 });
+
+it('converts image paths to something that can be shown in the app', () => {
+    const questions = sessionService.getRandomQuestions(10);
+
+    expect(questions.some(q => q.type === 'eye-question')).toBe(true);
+
+    for (const question of questions) {
+        if (question.type === 'eye-question') {
+            expect(question.image).toEqual(expect.stringMatching(/^data\:image\//));
+        }
+    }
+});

@@ -36,6 +36,5 @@ export class SessionScreen extends React.Component<Props, {}> {
             return <Text>No navigation state! Don't know what to do</Text>
 
         }
-
     }
 }
