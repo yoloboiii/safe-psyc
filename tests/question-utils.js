@@ -43,6 +43,7 @@ export function clickAnswer(component: React.Component<*,*>) {
         })[0];
 
     correctAnswerButton.props.onPress();
+    return correctAnswerButton;
 }
 
 function findAnswerButtons(component: React.Component<*,*>): Array<React.Component<*,*>> {
@@ -74,6 +75,7 @@ export function clickWrongAnswer(component: React.Component<*,*>) {
 
 
     wrongAnswerButton.props.onPress();
+    return wrongAnswerButton;
 }
 
 export function clickAnswerAndDismissOverlay(component: React.Component<*,*>) {

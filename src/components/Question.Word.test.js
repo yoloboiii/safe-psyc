@@ -6,8 +6,6 @@ import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
 import { answerService } from '../services/answer-service.js';
 
-answerService.setAnswerPool(['a', 'b', 'c', 'd', 'e']);
-
 const defaultQuestion = {
     type: 'word-question',
     questionText: 'THE QUESTION',

@@ -13,7 +13,7 @@ type Props = {
     question: EmotionWordQuestion,
     answerService: AnswerService,
     onCorrectAnswer: () => void,
-    onWrongAnswer: () => void,
+    onWrongAnswer: (answer: string) => void,
 };
 
 export function EmotionWordQuestionComponent(props: Props) {

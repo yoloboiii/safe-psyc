@@ -1,14 +1,13 @@
 // @flow
 
-import reactElementToJSXString from 'react-element-to-jsx-string';
 import { Component } from 'react';
-import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
+import { getChildrenAndParent, findChildren, stringifyComponent } from './component-tree-utils.js';
 
 expect.extend({
     toHaveChild: function (received, childConstructor) {
 
         const matchingChildren = findChildren(received, childConstructor);
-        const message = () => 'Could not find ' + childConstructor.name + ' in ' + reactElementToJSXString(received);
+        const message = () => 'Could not find ' + childConstructor.name + ' in ' + stringifyComponent(received);
 
         return {
             pass: matchingChildren.length > 0,
@@ -21,7 +20,7 @@ expect.extend({
 
         const matchingChildren = components.filter(childPredicate);
 
-        const message = () => 'Could not find a child matching the predicate in ' + reactElementToJSXString(received);
+        const message = () => 'Could not find a child matching the predicate in ' + stringifyComponent(received);
 
         return {
             pass: matchingChildren.length > 0,
@@ -55,7 +54,7 @@ expect.extend({
         if (childProps) {
             propsMessage = ' with props ' + JSON.stringify(childProps, null, 2);
         }
-        const message = () => 'Could not find ' + childConstructor.name + propsMessage + ' in ' + reactElementToJSXString(received);
+        const message = () => 'Could not find ' + childConstructor.name + propsMessage + ' in ' + stringifyComponent(received);
 
         return {
             pass: matchingChildren.length > 0,

@@ -18,10 +18,11 @@ type Props = {
     question: Question,
     answerService: AnswerService,
     onCorrectAnswer: () => void,
-    onWrongAnswer: () => void,
+    onWrongAnswer: (answer: string) => void,
 };
 type State = {
     currentAnswerState: CurrentAnswerState,
+    currentAnswer: string,
 };
 
 // TODO: Duolingo's discuss feature on each question is quite cool
@@ -31,21 +32,29 @@ export class QuestionComponent extends React.Component<Props,State> {
         super(props);
         this.state = {
             currentAnswerState: 'NOT-ANSWERED',
+            currentAnswer: '',
         };
     }
 
     componentWillReceiveProps(newProps: Props) {
         this.setState({
             currentAnswerState: 'NOT-ANSWERED',
+            currentAnswer: '',
         });
     }
 
     _correctAnswer() {
-        this.setState({ currentAnswerState: 'CORRECT' });
+        this.setState({
+            currentAnswerState: 'CORRECT',
+            currentAnswer: this.props.question.answer,
+        });
     }
 
-    _wrongAnswer() {
-        this.setState({ currentAnswerState: 'WRONG' });
+    _wrongAnswer(answer: string) {
+        this.setState({
+            currentAnswerState: 'WRONG',
+            currentAnswer: answer,
+        });
     }
 
     // Invoked by the overlay to dismiss it
@@ -53,7 +62,7 @@ export class QuestionComponent extends React.Component<Props,State> {
         const answeredCorrectly= this.state.currentAnswerState === 'CORRECT';
         answeredCorrectly
             ? this.props.onCorrectAnswer()
-            : this.props.onWrongAnswer();
+            : this.props.onWrongAnswer(this.state.currentAnswer);
     }
 
     render() {
@@ -95,6 +104,7 @@ export class QuestionComponent extends React.Component<Props,State> {
             case 'WRONG':
                 return <ResultOverlay
                     answeredCorrectly={this.state.currentAnswerState === 'CORRECT'}
+                    answer={this.state.currentAnswer}
                     question={this.props.question}
                     onDismiss={this._questionFinished.bind(this)}
                     />
@@ -128,13 +138,14 @@ const resultOverlayStyleSheet = StyleSheet.create({
 });
 type ResultOverlayProps = {
     question: Question,
+    answer: string,
     answeredCorrectly: boolean,
     onDismiss: () => void,
 }
 export function ResultOverlay(props: ResultOverlayProps) {
     const text = props.answeredCorrectly
-        ? 'Correct!'
-        : 'That is sadly incorrect';
+        ? props.answer + ' is correct!'
+        : props.answer + ' is sadly incorrect';
     const style = props.answeredCorrectly
         ? resultOverlayStyleSheet.correct
         : resultOverlayStyleSheet.wrong;

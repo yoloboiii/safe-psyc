@@ -11,7 +11,7 @@ type Props = {
     correctAnswer: string,
     answers: Array<string>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: () => void,
+    onWrongAnswer: (answer: string) => void,
 };
 
 export function VerticalAnswerList(props: Props) {
@@ -49,6 +49,6 @@ function onAnswerPress(answer, props) {
     if (answer === props.correctAnswer) {
         props.onCorrectAnswer();
     } else {
-        props.onWrongAnswer();
+        props.onWrongAnswer(answer);
     }
 }

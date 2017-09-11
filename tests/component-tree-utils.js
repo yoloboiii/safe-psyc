@@ -2,7 +2,10 @@
 
 import React from 'react';
 import reactElementToJSXString from 'react-element-to-jsx-string';
+import prettyFormat from 'pretty-format';
 import util from 'util';
+
+const {ReactElement, ReactTestComponent} = prettyFormat.plugins;
 
 export function findChildren(root: React.Component<*, *>, childType: Function): Array<React.Component<*,*>> {
     return getChildrenAndParent(root)
@@ -16,11 +19,15 @@ export function findChildren(root: React.Component<*, *>, childType: Function): 
 export function stringifyComponent(component: React.Component<*,*>): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);
-    } else if (component.toTree) {
+    } else if (component.toJSON) {
         // $FlowFixMe
-        return stringifyComponent(component.toTree());
+        return stringifyComponent(component.toJSON());
     } else {
-        return util.inspect(component, { depth: 5 });
+        return prettyFormat(component, {
+            plugins: [ReactTestComponent],
+            printFunctionName: false,
+            maxDepth: 5,
+        });
     }
 }
 
@@ -33,10 +40,8 @@ export function getChildrenAndParent(parent: React.Component<*,*>): Array<React.
     }
 }
 
-
 function isShallowRendered(component) {
-    // $FlowFixMe
-    return component['$$typeof'] !== undefined;
+    return component.hasOwnProperty('_owner');
 }
 
 function getChildrenAndParent_TestRenderer(parent) {
@@ -95,3 +100,12 @@ export function visitComponentTree(root: React.Component<*,*>, visitor: (React.C
     }
 }
 
+export function getAllRenderedStrings(component: React.Component<*,*>): Array<string> {
+    const strings = [];
+    visitComponentTree(component, (node) => {
+        if (typeof node === 'string') {
+            strings.push(node);
+        }
+    });
+    return strings;
+}

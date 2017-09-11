@@ -3,7 +3,7 @@
 import React from 'react';
 import { render, renderShallow } from '../../tests/render-utils.js';
 import { randomQuestion, clickAnswer, clickWrongAnswer } from '../../tests/question-utils.js';
-import { getChildrenAndParent, findChildren, stringifyComponent } from '../../tests/component-tree-utils.js';
+import { getChildrenAndParent, findChildren, stringifyComponent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Text, Button } from 'react-native';
 
 import { QuestionComponent, ResultOverlay } from './Question.js';
@@ -12,6 +12,7 @@ import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { answerService } from '../services/answer-service.js';
 
 const defaultProps = {
+    question: randomQuestion(),
     answerService: answerService,
     onCorrectAnswer: () => {},
     onWrongAnswer: () => {},
@@ -111,7 +112,7 @@ it('has a button that triggers onWrongAnswer in the overlay', () => {
         onWrongAnswer, onWrongAnswer,
     }, defaultProps);
 
-    clickWrongAnswer(component);
+    const button = clickWrongAnswer(component);
 
     expect(onWrongAnswer).not.toHaveBeenCalled();
 
@@ -122,5 +123,36 @@ it('has a button that triggers onWrongAnswer in the overlay', () => {
     });
 
     expect(onWrongAnswer).toHaveBeenCalledTimes(1);
+    expect(onWrongAnswer).toHaveBeenCalledWith(button.props.title);
     expect(onCorrectAnswer).not.toHaveBeenCalled();
+});
+
+it('contains the clicked text in the overlay - correct', () => {
+    const question = randomQuestion();
+    const component = render(QuestionComponent, { question }, defaultProps);
+
+    const button = clickAnswer(component);
+    const overlay = findChildren(component, ResultOverlay)[0];
+
+    const s = getAllRenderedStrings(overlay);
+    expect(s).toEqual(
+        expect.arrayContaining([
+            expect.stringContaining(button.props.title)
+        ])
+    );
+});
+
+it('contains the clicked text in the overlay - wrong', () => {
+    const question = randomQuestion();
+    const component = render(QuestionComponent, { question }, defaultProps);
+
+    const button = clickWrongAnswer(component);
+    const overlay = findChildren(component, ResultOverlay)[0];
+
+    const s = getAllRenderedStrings(overlay);
+    expect(s).toEqual(
+        expect.arrayContaining([
+            expect.stringContaining(button.props.title)
+        ])
+    );
 });

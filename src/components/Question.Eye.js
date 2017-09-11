@@ -12,7 +12,7 @@ type Props = {
     question: EyeQuestion,
     answerService: AnswerService,
     onCorrectAnswer: () => void,
-    onWrongAnswer: () => void,
+    onWrongAnswer: (answer: string) => void,
 };
 export function EyeQuestionComponent(props: Props) {
     const { question } = props;
