@@ -29,14 +29,6 @@ it('contains the answer', () => {
     expect(getAnswers(component)).toContain(question.answer);
 });
 
-it('contains three answers', () => {
-    const question = defaultQuestion;
-    const component = render({ question: question });
-
-    const answers = getAnswers(component);
-    expect(answers.length).toBe(3);
-});
-
 it('contains wrong answers', () => {
     const question = defaultQuestion;
     const component = render({ question: question });

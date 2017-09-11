@@ -24,7 +24,16 @@ export class Session extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         const questions = new QuestionCollection(props.questions);
-        this.state = {
+        this.state = this._propsToState(props);
+    }
+
+    componentWillReceiveProps(newProps: Props) {
+        this.setState(this._propsToState(newProps));
+    }
+
+    _propsToState(props) {
+        const questions = new QuestionCollection(props.questions);
+        return {
             isFinished: false,
             questions: questions,
             answers: questions.size() === 0
@@ -32,18 +41,6 @@ export class Session extends React.Component<Props, State> {
                 : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
         };
-    }
-
-    componentWillReceiveProps(newProps: Props) {
-        const questions = new QuestionCollection(props.questions);
-        this.setState({
-            isFinished: false,
-            questions: questions,
-            answers: questions.size() === 0
-                ? []
-                : props.answerService.getAnswersTo(questions.peek(), 3),
-            wrongAnswers: new Map(),
-        });
     }
 
     _answeredCorrectly() {
