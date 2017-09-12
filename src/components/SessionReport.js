@@ -45,32 +45,35 @@ function renderRow(props) {
     }
 }
 
+const eyeContainerStyle = {
+    paddingBottom: 2 * constants.space,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+};
+const subtextStyle = {
+    fontSize: 8,
+};
+const imageContainerStyle = {
+    width: '40%',
+    height: 4 * constants.space,
+};
+const imageStyle = {
+    height: '100%',
+};
 function EyeQuestionRow(props) {
     const subtext = getSubText();
-    const style = {
-        paddingBottom: 2 * constants.space,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    };
 
-    return <View style={ style }>
+    return <View style={ eyeContainerStyle }>
         <View>
             <Text>{ props.question.answer }</Text>
-            <Text style={{
-                fontSize: 8,
-            }}>{ subtext }</Text>
+            <Text style={ subtextStyle }>{ subtext }</Text>
         </View>
-        <View style={{
-            width: '40%',
-            height: 4 * constants.space,
-        }}>
+        <View style={ imageContainerStyle }>
             <Image
                 source={{ uri: props.question.image }}
                 resizeMode='cover'
-                style={{
-                    height: '100%',
-                }} />
+                style={ imageStyle } />
         </View>
     </View>
 
