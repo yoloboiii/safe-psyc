@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { View, Image, Text, FlatList } from 'react-native';
+import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
@@ -46,20 +47,31 @@ function renderRow(props) {
 
 function EyeQuestionRow(props) {
     const subtext = getSubText();
-
-    return <View style={{
-        padding: constants.space,
+    const style = {
         paddingBottom: 2 * constants.space,
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'space-between',
-    }}>
+    };
+
+    return <View style={ style }>
         <View>
             <Text>{ props.question.answer }</Text>
             <Text style={{
                 fontSize: 8,
             }}>{ subtext }</Text>
         </View>
-        <Image source={{ uri: props.question.image }} />
+        <View style={{
+            width: '40%',
+            height: 4 * constants.space,
+        }}>
+            <Image
+                source={{ uri: props.question.image }}
+                resizeMode='cover'
+                style={{
+                    height: '100%',
+                }} />
+        </View>
     </View>
 
     function getSubText() {

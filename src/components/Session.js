@@ -1,9 +1,11 @@
 // @flow
 
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, ScrollView, Text, Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
+import { VerticalSpace } from './VerticalSpace.js';
+import { constants } from '../styles/constants.js';
 
 import type { Question } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -100,12 +102,17 @@ export class Session extends React.Component<Props, State> {
             return <Text>No question in session</Text>
 
         } else if (this.state.isFinished) {
-            return <View>
-                <Text>Great job! Congratulations on finishing the session</Text>
+            return <ScrollView style={{
+                padding: constants.space,
+            }}>
+                <Text>Great job! Congratulations on finishing the session, here's a summary of how it went!</Text>
+
+                <VerticalSpace multiplier={4}/>
                 <SessionReport report={ this.state.report } />
+                <VerticalSpace multiplier={2}/>
 
                 <Button title={'Thanks!'} onPress={this._onSessionFinished.bind(this)} />
-            </View>
+            </ScrollView>
         } else {
             const currentQuestion = this.state.questions.peek();
 
