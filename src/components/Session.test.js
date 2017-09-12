@@ -5,6 +5,7 @@ import { Session } from './Session.js';
 import { answerService } from '../services/answer-service.js';
 import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
+import { SessionReport } from './SessionReport.js';
 
 import { render, renderShallow } from '../../tests/render-utils.js';
 import { findChildren } from '../../tests/component-tree-utils.js';
@@ -121,7 +122,7 @@ it('repeats a question answered incorrectly thrice in a row at the end of the se
     expect(lastQuestion).toBe(theDifficultQuestion);
 });
 
-it('shows a gratualtory message when the session is finished', () => {
+it('shows a report when the session is finished', () => {
     const onFinishedMock = jest.fn();
 
     const questions = randomQuestions();
@@ -135,6 +136,37 @@ it('shows a gratualtory message when the session is finished', () => {
     }
 
     expect(onFinishedMock).not.toHaveBeenCalled();
-    expect(component).toContainString('congratulations');
+    expect(component).toHaveChild(SessionReport);
 });
 
+it('outputs a report at the end of the session', () => {
+    const onFinishedMock = jest.fn();
+
+    const questions = randomQuestions();
+    const component = render(Session, {
+        questions: questions,
+        onSessionFinished: onFinishedMock,
+    }, defaultProps);
+
+    const report = new Map();
+    for (let i = 0; i < questions.length; i++) {
+        const q = getQuestion(component);
+
+        const wrongAnswers = [];
+        if (i % 2 === 0) {
+            const button = clickWrongAnswerAndDismissOverlay(component);
+            wrongAnswers.push(button.props.title);
+        }
+
+        clickAnswerAndDismissOverlay(component);
+        report.set(q, wrongAnswers);
+    }
+
+    // Press all buttons to finish the session
+    const buttons = findChildren(component, Button);
+    buttons.forEach( button => {
+        button.props.onPress && button.props.onPress();
+    });
+
+    expect(onFinishedMock).toHaveBeenCalledWith(report);
+});

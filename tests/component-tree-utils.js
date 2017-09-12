@@ -57,10 +57,10 @@ function getChildrenAndParent_TestRenderer(parent) {
 }
 
 function getChildrenAndParent_ShallowRenderer(parent) {
-    return [parent].concat(getChildren(parent));
+    return [parent].concat(getChildren_ShallowRenderer(parent));
 }
 
-function getChildren(component: React.Component<*,*>) {
+function getChildren_ShallowRenderer(component: React.Component<*,*>) {
     if (!component || !component.props || !component.props.children) {
         return [];
     }
@@ -70,7 +70,7 @@ function getChildren(component: React.Component<*,*>) {
         children = [children];
     }
 
-    const grandchildren = children.map(c => getChildren(c));
+    const grandchildren = children.map(c => getChildren_ShallowRenderer(c));
     const flattenedGrandChildren = [].concat.apply([], grandchildren);
     return children.concat(flattenedGrandChildren);
 }
@@ -89,8 +89,10 @@ export function visitComponentTree(root: React.Component<*,*>, visitor: (React.C
         if (component.rendered) {
             if (Array.isArray(component.rendered)) {
                 for (const child of component.rendered) {
-                    // $FlowFixMe
-                    unvisited.push(child);
+                    if (child) {
+                        // $FlowFixMe
+                        unvisited.push(child);
+                    }
                 }
             } else {
                 // $FlowFixMe
@@ -101,11 +103,11 @@ export function visitComponentTree(root: React.Component<*,*>, visitor: (React.C
 }
 
 export function getAllRenderedStrings(component: React.Component<*,*>): Array<string> {
-    const strings = [];
-    visitComponentTree(component, (node) => {
-        if (typeof node === 'string') {
-            strings.push(node);
-        }
-    });
-    return strings;
+    const strings = getChildrenAndParent(component)
+        .filter(node => {
+            return typeof node === 'string';
+        });
+
+
+    return ((strings: any): Array<string>);
 }

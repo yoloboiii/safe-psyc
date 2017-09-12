@@ -3,13 +3,14 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
+import { SessionReport } from './SessionReport.js';
 
 import type { Question } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
 
 type Props = {
     questions: Array<Question>,
-    onSessionFinished: () => void,
+    onSessionFinished: (report: Map<Question, Array<string>>) => void,
     answerService: AnswerService,
 };
 type State = {
@@ -17,13 +18,13 @@ type State = {
     questions: QuestionCollection,
     answers: Array<string>,
     wrongAnswers: Map<Question, number>,
+    report: Map<Question, Array<string>>,
 };
 
 export class Session extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        const questions = new QuestionCollection(props.questions);
         this.state = this._propsToState(props);
     }
 
@@ -40,14 +41,20 @@ export class Session extends React.Component<Props, State> {
                 ? []
                 : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
+            report: new Map(),
         };
     }
 
     _answeredCorrectly() {
+        const currentQ = this.state.questions.peek();
         this.state.wrongAnswers.set(
-            this.state.questions.peek(),
+            currentQ,
             0
         );
+
+        if (!this.state.report.has(currentQ)) {
+            this.state.report.set(currentQ, []);
+        }
 
         const isLastQuestion = this.state.questions.size() === 1;
         if(isLastQuestion) {
@@ -66,18 +73,26 @@ export class Session extends React.Component<Props, State> {
         this.forceUpdate();
     }
 
-    _wrongAnswer() {
+    _wrongAnswer(answer: string) {
         const currentQ = this.state.questions.peek();
-        const prev = this.state.wrongAnswers.get(currentQ) || 0;
+        const prevCount = this.state.wrongAnswers.get(currentQ) || 0;
+        const reportArray = this.state.report.get(currentQ) || [];
 
-        this.state.wrongAnswers.set(currentQ, prev + 1);
+        this.state.wrongAnswers.set(currentQ, prevCount + 1);
 
-        if (prev === 2) {
+        reportArray.push(answer);
+        this.state.report.set(currentQ, reportArray);
+
+        if (prevCount === 2) {
             this.state.questions.push(currentQ);
             this._nextQuestion();
         } else {
             this.forceUpdate();
         }
+    }
+
+    _onSessionFinished() {
+        this.props.onSessionFinished(this.state.report);
     }
 
     render() {
@@ -87,8 +102,9 @@ export class Session extends React.Component<Props, State> {
         } else if (this.state.isFinished) {
             return <View>
                 <Text>Great job! Congratulations on finishing the session</Text>
+                <SessionReport report={ this.state.report } />
 
-                <Button title={'Thanks!'} onPress={this.props.onSessionFinished} />
+                <Button title={'Thanks!'} onPress={this._onSessionFinished.bind(this)} />
             </View>
         } else {
             const currentQuestion = this.state.questions.peek();

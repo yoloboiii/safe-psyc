@@ -5,23 +5,48 @@ import { Button } from 'react-native';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
 
-import type { Question } from '../src/models/questions.js';
+import type { Question, EyeQuestion, EmotionWordQuestion } from '../src/models/questions.js';
 
-export function randomQuestions(numberOfQuestions:number = 10): Array<Question> {
+export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQuestion> {
     const qs = [];
     for (let i = 0; i < numberOfQuestions; i++) {
-        qs.push(randomQuestion(i));
+        qs.push(randomEyeQuestion(i));
     }
     return qs;
 }
 
-export function randomQuestion(c: number=0): Question {
+export function randomEyeQuestion(c: number=0): EyeQuestion {
+    const uniqueString = 'IMAGE-'+c;
+    return {
+        type: 'eye-question',
+        image: uniqueString,
+        answer: 'ans-' + uniqueString,
+    };
+}
+
+export function randomWordQuestions(numberOfQuestions:number = 10): Array<EmotionWordQuestion> {
+    const qs = [];
+    for (let i = 0; i < numberOfQuestions; i++) {
+        qs.push(randomWordQuestion(i));
+    }
+    return qs;
+}
+
+export function randomWordQuestion(c: number=0): EmotionWordQuestion {
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     return {
         type: 'word-question',
         questionText: uniqueString,
         answer: 'ans-' + uniqueString,
     };
+}
+
+export function randomQuestions(numberOfQuestions:number = 10) {
+    return randomWordQuestions(numberOfQuestions);
+}
+
+export function randomQuestion(): Question {
+    return randomWordQuestion();
 }
 
 export function getQuestion(component: React.Component<*,*>) {
