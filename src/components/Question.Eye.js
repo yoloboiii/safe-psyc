@@ -15,9 +15,6 @@ const containerStyle = {
     height: '100%',
 };
 const imageStyle = { height: 200 };
-const fillerStyle = {
-    flex: 2,
-};
 
 type Props = {
     question: EyeQuestion,
@@ -40,8 +37,6 @@ export function EyeQuestionComponent(props: Props) {
             <Image
                 style={ imageStyle }
                 source={{ uri: question.image }} />
-
-        <View style={ fillerStyle }/>
 
         <VerticalAnswerList
             answers={ props.answers }
