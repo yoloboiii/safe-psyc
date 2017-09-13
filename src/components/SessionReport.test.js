@@ -50,7 +50,10 @@ it('navigates to the question details when clicking the image', () => {
     const image = findChildren(component, Image)[0];
     const touchable = findParent(image, TouchableHighlight);
 
+    expect(touchable).toBeDefined();
+
     expect(navigateMock).not.toHaveBeenCalled();
+    // $FlowFixMe
     touchable.props.onPress();
     expect(navigateMock).toHaveBeenCalledWith('QuestionDetails', { question: eyeQuestion });
 });
