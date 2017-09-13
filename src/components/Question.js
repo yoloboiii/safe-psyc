@@ -129,10 +129,10 @@ const resultOverlayStyleSheet = StyleSheet.create({
         padding: 3 * constants.space,
     },
     correct: {
-        backgroundColor: constants.green,
+        backgroundColor: constants.positiveColor,
     },
     wrong: {
-        backgroundColor: constants.red,
+        backgroundColor: constants.negativeColor,
     },
 });
 type ResultOverlayProps = {
@@ -154,6 +154,7 @@ export function ResultOverlay(props: ResultOverlayProps) {
         <VerticalSpace />
         <Button
             title={'Ok'}
+            color={ constants.hilightColor2 }
             onPress={props.onDismiss} />
     </View>
 }

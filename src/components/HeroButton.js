@@ -9,9 +9,11 @@ const containerStyle = {
     margin: constants.space,
     padding: 3 * constants.space,
     borderRadius: 10,
+    elevation: 2,
 };
 const textStyle = {
     ...constants.largeText,
+    color: 'white',
     alignSelf: 'center',
 };
 

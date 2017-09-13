@@ -116,7 +116,10 @@ export class Session extends React.Component<Props, State> {
                     navigation={ this.props.navigation }/>
                 <VerticalSpace multiplier={2}/>
 
-                <Button title={'Thanks!'} onPress={this._onSessionFinished.bind(this)} />
+                <Button
+                    color={ constants.hilightColor2 }
+                    title={'Thanks!'}
+                    onPress={this._onSessionFinished.bind(this)} />
             </ScrollView>
         } else {
             const currentQuestion = this.state.questions.peek();

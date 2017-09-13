@@ -15,7 +15,7 @@ it('contains the image', () => {
     const component = render({ question: question });
 
     expect(component).toHaveChildMatching(child => {
-        return child.props.source && child.props.source.uri === question.image;
+        return child.props && child.props.source && child.props.source.uri === question.image;
     });
 });
 

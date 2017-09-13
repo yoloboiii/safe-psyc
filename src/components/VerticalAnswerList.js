@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, FlatList, Button } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
+import { constants } from '../styles/constants.js';
 
 type Apa = {
     text: string,
@@ -16,7 +17,6 @@ type Props = {
 
 export function VerticalAnswerList(props: Props) {
 
-    //console.log('RENDERING ANSWER LIST', props.answers);
     return <FlatList
         data={ answersToButtonData(props.answers) }
         renderItem={ dataForItem => AnswerButton({
@@ -35,10 +35,10 @@ function answersToButtonData(answers) {
 }
 
 function AnswerButton(props) {
-    //console.log('RENDERING ANSWER BUTTON WITH KEY', props.key);
     return <View>
         <Button
         title={ props.text }
+        color={ constants.hilightColor2 }
         onPress={ () => props.onPress(props.text) }/>
         <VerticalSpace />
     </View>
