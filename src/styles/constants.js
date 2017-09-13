@@ -5,4 +5,8 @@ export const constants = {
     green: 'green',
 
     space: 10,
+
+    smallText: {
+        fontSize: 8,
+    }
 };

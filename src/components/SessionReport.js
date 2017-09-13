@@ -51,9 +51,6 @@ const eyeContainerStyle = {
     flexDirection: 'row',
     justifyContent: 'space-between',
 };
-const subtextStyle = {
-    fontSize: 8,
-};
 const imageContainerStyle = {
     width: '40%',
     height: 4 * constants.space,
@@ -67,7 +64,7 @@ function EyeQuestionRow(props) {
     return <View style={ eyeContainerStyle }>
         <View>
             <Text>{ props.question.answer }</Text>
-            <Text style={ subtextStyle }>{ subtext }</Text>
+            <Text style={ constants.smallText }>{ subtext }</Text>
         </View>
         <View style={ imageContainerStyle }>
             <Image
