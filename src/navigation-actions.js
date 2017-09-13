@@ -3,6 +3,8 @@
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
 
+import type { Question } from './models/questions.js';
+
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
     state?: {
@@ -19,3 +21,8 @@ export function startRandomSession(navigation: Navigation<*>) {
     });
 }
 
+export function navigateToQuestionDetails(navigation: Navigation<*>, question: Question) {
+    navigation.navigate('QuestionDetails', {
+        question: question,
+    });
+}

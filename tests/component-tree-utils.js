@@ -16,6 +16,20 @@ export function findChildren(root: React.Component<*, *>, childType: Function): 
         });
 }
 
+export function findParent(child: React.Component<*,*>, parentType: Function): ?React.Component<*,*> {
+
+    while (child.parent !== undefined) {
+        // $FlowFixMe
+        if (child.parent.type === parentType) {
+            // $FlowFixMe
+            return child.parent;
+        } else {
+            // $FlowFixMe
+            child = child.parent;
+        }
+    }
+}
+
 export function stringifyComponent(component: React.Component<*,*>): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);
@@ -70,6 +84,9 @@ function getChildren_ShallowRenderer(component: React.Component<*,*>) {
         children = [children];
     }
 
+    children.forEach(c => {
+        if (c) c.parent = component
+    });
     const grandchildren = children.map(c => getChildren_ShallowRenderer(c));
     const flattenedGrandChildren = [].concat.apply([], grandchildren);
     return children.concat(flattenedGrandChildren);
@@ -91,10 +108,14 @@ export function visitComponentTree(root: React.Component<*,*>, visitor: (React.C
                 for (const child of component.rendered) {
                     if (child) {
                         // $FlowFixMe
+                        child.parent = component;
+                        // $FlowFixMe
                         unvisited.push(child);
                     }
                 }
             } else {
+                // $FlowFixMe
+                component.rendered.parent = component;
                 // $FlowFixMe
                 unvisited.push(component.rendered);
             }
@@ -111,3 +132,4 @@ export function getAllRenderedStrings(component: React.Component<*,*>): Array<st
 
     return ((strings: any): Array<string>);
 }
+

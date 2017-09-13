@@ -1,9 +1,12 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { answerService } from './src/services/answer-service.js';
+import { StatusBar, Platform } from 'react-native';
+
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
-import { StatusBar, Platform } from 'react-native';
+import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
+
+import { answerService } from './src/services/answer-service.js';
 
 answerService.setAnswerPool(['a', 'b', 'c']);
 
@@ -24,5 +27,6 @@ const headerHeightFix = {
 export default App = StackNavigator({
     Home: { screen: HomeScreen, ...headerHeightFix },
     Session: { screen: SessionScreen, ...headerHeightFix },
+    QuestionDetails: { screen: QuestionDetailsScreen, ...headerHeightFix },
 });
 

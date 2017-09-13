@@ -8,5 +8,9 @@ export const constants = {
 
     smallText: {
         fontSize: 8,
-    }
+    },
+
+    largeText: {
+        fontSize: 18,
+    },
 };

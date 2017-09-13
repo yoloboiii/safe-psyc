@@ -9,11 +9,13 @@ import { constants } from '../styles/constants.js';
 
 import type { Question } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
+import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
     questions: Array<Question>,
     onSessionFinished: (report: Map<Question, Array<string>>) => void,
     answerService: AnswerService,
+    navigation: Navigation<{}>,
 };
 type State = {
     isFinished: boolean,
@@ -109,7 +111,9 @@ export class Session extends React.Component<Props, State> {
                 <Text>Great job! Congratulations on finishing the session, here's a summary of how it went!</Text>
 
                 <VerticalSpace multiplier={4}/>
-                <SessionReport report={ this.state.report } />
+                <SessionReport
+                    report={ this.state.report }
+                    navigation={ this.props.navigation }/>
                 <VerticalSpace multiplier={2}/>
 
                 <Button title={'Thanks!'} onPress={this._onSessionFinished.bind(this)} />
