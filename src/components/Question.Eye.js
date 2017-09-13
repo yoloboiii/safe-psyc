@@ -6,6 +6,7 @@ import { Text, View, Image} from 'react-native';
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
+import { sessionService } from '../services/session-service.js';
 
 import type { EyeQuestion } from '../models/questions.js';
 
@@ -47,5 +48,30 @@ export function EyeQuestionComponent(props: Props) {
             correctAnswer={ question.answer }
             onCorrectAnswer={ props.onCorrectAnswer }
             onWrongAnswer={ props.onWrongAnswer } />
+    </View>
+}
+
+export function EyeQuestionOverlay(props: OverlayProps) {
+    console.log('APPPA');
+    const { text, answeredCorrectly, answer } = props;
+
+    const answerImage = sessionService.getQuestionPool()
+        .filter(q => q.answer === answer)
+        .map(q => q.image)[0];
+    // TODO: what if there is no image?
+
+    const otherEmotion = answeredCorrectly
+        ? null
+        : <View>
+            <Text>{answer} looks like</Text>
+            <Image
+                style={{ height: 100, }}
+                resizeMode='contain'
+                source={{ uri: answerImage }} />
+        </View>
+    return <View>
+        <Text>{ text }</Text>
+        <VerticalSpace />
+        { otherEmotion }
     </View>
 }

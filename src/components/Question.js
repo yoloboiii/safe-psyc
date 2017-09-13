@@ -3,7 +3,7 @@
 import React from 'react';
 import  { Text, Button, View, StyleSheet } from 'react-native';
 
-import { EyeQuestionComponent } from './Question.Eye.js';
+import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { VerticalSpace } from './VerticalSpace.js';
 
@@ -145,12 +145,20 @@ export function ResultOverlay(props: ResultOverlayProps) {
     const text = props.answeredCorrectly
         ? props.answer + ' is correct!'
         : props.answer + ' is sadly incorrect';
+
     const style = props.answeredCorrectly
         ? resultOverlayStyleSheet.correct
         : resultOverlayStyleSheet.wrong;
 
+    const specificOverlay = props.question.type === 'eye-question'
+        ? <EyeQuestionOverlay
+            text={text}
+            answeredCorrectly={props.answeredCorrectly}
+            answer={props.answer} />
+        : <Text>{text}</Text>;
+
     return <View style={[resultOverlayStyleSheet.root, style]}>
-        <Text>{text}</Text>
+        { specificOverlay }
         <VerticalSpace />
         <Button
             title={'Ok'}

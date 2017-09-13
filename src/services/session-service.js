@@ -7,10 +7,10 @@ class SessionService {
     _questionPool = undefined;
 
     getRandomQuestions(numQuestions: number): Array<Question> {
-        return getRandomElementsFromArray(numQuestions, this._getQuestionPool());
+        return getRandomElementsFromArray(numQuestions, this.getQuestionPool());
     }
 
-    _getQuestionPool(): Array<Question> {
+    getQuestionPool(): Array<Question> {
         if (this._questionPool === undefined) {
             this._questionPool = require('../../SECRETS/eye-questions/eye-questions.json');
         }
