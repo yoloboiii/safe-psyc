@@ -56,18 +56,20 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps) {
         .map(q => q.image)[0];
 
     const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
-    if (shouldShowOtherEmotion) {
-    return <View>
-        <Text>That's sadly incorrect. {startOfSentence(answer)} looks like this</Text>
-        <VerticalSpace />
-        <Image
-            style={{ height: 100, }}
-            resizeMode='contain'
-            source={{ uri: answerImage }} />
-    </View>
+    if (answeredCorrectly) {
+        return <Text>{answer} is correct!</Text>
+    } else if (!answerImage) {
 
-    } else {
         return <Text>{answer} is sadly incorrect</Text>
+    } else {
+        return <View>
+            <Text>That's sadly incorrect. {startOfSentence(answer)} looks like this</Text>
+            <VerticalSpace />
+            <Image
+                style={{ height: 100, }}
+                resizeMode='contain'
+                source={{ uri: answerImage }} />
+        </View>
     }
 }
 

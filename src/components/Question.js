@@ -155,18 +155,7 @@ export function ResultOverlay(props: ResultOverlayProps) {
         ? resultOverlayStyleSheet.correct
         : resultOverlayStyleSheet.wrong;
 
-    const specificOverlay = props.question.type === 'eye-question'
-        ? <EyeQuestionOverlay
-            question={props.question}
-            sessionService={ sessionService }
-            answeredCorrectly={props.answeredCorrectly}
-            answer={props.answer} />
-
-        : <Text>{
-            props.answeredCorrectly
-                ? props.answer + ' is correct!'
-                : props.answer + ' is sadly incorrect'
-        }</Text>;
+    const specificOverlay = getQuestionSpecificOverlay(props);
 
     return <View style={[resultOverlayStyleSheet.root, style]}>
         { specificOverlay }
@@ -176,4 +165,21 @@ export function ResultOverlay(props: ResultOverlayProps) {
             color={ constants.hilightColor2 }
             onPress={props.onDismiss} />
     </View>
+
+    function getQuestionSpecificOverlay(props) {
+
+        if (props.question.type === 'eye-question') {
+            return <EyeQuestionOverlay
+                question={props.question}
+                sessionService={ sessionService }
+                answeredCorrectly={props.answeredCorrectly}
+                answer={props.answer} />
+
+        } else {
+            const text = props.answeredCorrectly
+                ? props.answer + ' is correct!'
+                : props.answer + ' is sadly incorrect'
+            return <Text>{ text }</Text>;
+        }
+    }
 }
