@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, ActivityIndicator } from 'react-native';
 import { HeroButton } from './HeroButton.js';
 import { startRandomSession } from '../navigation-actions.js';
 
@@ -21,23 +21,52 @@ const contentStyle = {
 
 type Props = {
     navigation: Navigation<{}>,
-}
-export class HomeScreen extends React.Component<Props, {}> {
+};
+type State = {
+    loading: boolean,
+};
+export class HomeScreen extends React.Component<Props, State> {
     static navigationOptions = {
         header: null,
     };
 
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            loading: false,
+        };
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            loading: false,
+        });
+    }
+
+    _startRandomSession() {
+        this.setState({
+            loading: true,
+        }, () => {
+            startRandomSession(this.props.navigation);
+        });
+    }
+
     render() {
         // $FlowFixMe
         const img = require('../../images/home-bg.jpg');
+
+        const buttonContent = this.state.loading
+            ? <ActivityIndicator />
+            : 'Start random session';
+
         return <View>
             <Image source={ img }
                 resizeMode='cover'
                 style={ bgImageStyle }>
                 <View style={ contentStyle }>
                     <HeroButton
-                        title='Start random session'
-                        onPress={ () => startRandomSession(this.props.navigation) }
+                        title={ buttonContent }
+                        onPress={ this._startRandomSession.bind(this) }
                     />
                 </View>
             </Image>

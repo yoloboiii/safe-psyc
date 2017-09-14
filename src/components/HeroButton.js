@@ -18,14 +18,17 @@ const textStyle = {
 };
 
 type Props = {
-    title: string,
+    title: any,
 };
 export function HeroButton(props: Props) {
     const { title, ...restProps } = props;
+    const content = typeof title === 'string'
+        ? <Text style={ textStyle }>{title.toUpperCase()}</Text>
+        : title
 
     return <TouchableHighlight
         style={ containerStyle }
         {...restProps} >
-        <Text style={ textStyle }>{title.toUpperCase()}</Text>
+        { content }
     </TouchableHighlight>
 }

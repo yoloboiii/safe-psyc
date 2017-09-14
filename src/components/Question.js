@@ -125,7 +125,7 @@ function UnknownQuestionComponent(props) {
 const resultOverlayStyleSheet = StyleSheet.create({
     root: {
         position: 'absolute',
-        top: 155,
+        top: 155, // TODO: I want the overlay to show just beneath the question image in case the user wants to compare them
         width: '100%',
 
         padding: 3 * constants.space,
