@@ -4,7 +4,7 @@ import type { Question } from '../models/questions.js';
 
 type DataPoint = {
         question: Question,
-        points: number,
+        wrongAnswers: number,
         when: Date,
 }
 export class SessionService {
@@ -48,7 +48,7 @@ export class SessionService {
         for (const dataPoint of dataPoints) {
             const timeSince = now - dataPoint.when;
 
-            score += scaleForTime(dataPoint.points, timeSince);
+            score += scaleForTime(dataPoint.wrongAnswers, timeSince);
             score += timePenalty(timeSince);
         }
 
