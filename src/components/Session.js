@@ -107,7 +107,7 @@ export class Session extends React.Component<Props, State> {
             return <Text>No question in session</Text>
 
         } else if (this.state.isFinished) {
-            return <ScrollView style={paddingStyle}>
+            return <ScrollView contentContainerStyle={ paddingStyle }>
                 <Text>Great job! Congratulations on finishing the session, here's a summary of how it went!</Text>
 
                 <VerticalSpace multiplier={4}/>
