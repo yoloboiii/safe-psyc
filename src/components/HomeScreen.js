@@ -37,18 +37,16 @@ export class HomeScreen extends React.Component<Props, State> {
         };
     }
 
-    componentWillUnmount() {
-        this.setState({
-            loading: false,
-        });
-    }
-
     _startRandomSession() {
-        this.setState({
-            loading: true,
-        }, () => {
-            startRandomSession(this.props.navigation);
-        });
+        const onNavDataLoaded = () => {
+            this.setState({ loading: false });
+        };
+
+        const onStateUpdated = () => {
+            startRandomSession(this.props.navigation, onNavDataLoaded);
+        };
+
+        this.setState({ loading: true, }, onStateUpdated);
     }
 
     render() {
