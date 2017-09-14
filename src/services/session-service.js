@@ -2,12 +2,57 @@
 
 import type { Question } from '../models/questions.js';
 
+type DataPoint = {
+        question: Question,
+        points: number,
+        when: Date,
+}
 export class SessionService {
 
     _questionPool = undefined;
 
     getRandomQuestions(numQuestions: number): Array<Question> {
         return getRandomElementsFromArray(numQuestions, this.getQuestionPool());
+    }
+
+    getRecommendedQuestions(numQuestions: number): Array<Question> {
+        // Get this data from somewhere
+        const data: Map<Question, Array<DataPoint>> = new Map();
+
+        const sortableData: Array<{q: Question, score: number}> = [];
+        data.forEach((dataPoints, question) => {
+            const score = this._calculateScore(dataPoints);
+
+            if (score) {
+                sortableData.push({q: question, score});
+            } else {
+                console.log('Didn\'t have enough data to calculate a score for', question);
+            }
+        });
+
+
+        sortableData.sort((a, b) => {
+            return a[1] - b[1];
+        });
+        return sortableData.slice(0, numQuestions).map(obj => obj.q);
+    }
+
+    _calculateScore(dataPoints: Array<DataPoint>): ?number {
+        if (dataPoints.length === 0) {
+            // IMPORTANT for some reason I don't remember :)
+            return null;
+        }
+
+        const now = new Date();
+        let score = 0;
+        for (const dataPoint of dataPoints) {
+            const timeSince = now - dataPoint.when;
+
+            score += scaleForTime(dataPoint.points, timeSince);
+            score += timePenalty(timeSince);
+        }
+
+        return score;
     }
 
     getQuestionPool(): Array<Question> {
@@ -32,6 +77,14 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
     }
 
     return elements;
+}
+
+function scaleForTime(num: number, timeSince: number): number {
+    return 0;
+}
+
+function timePenalty(tiemSince: number): number {
+    return 0;
 }
 
 
