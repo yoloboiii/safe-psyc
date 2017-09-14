@@ -8,8 +8,10 @@ import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { VerticalSpace } from './VerticalSpace.js';
 
 import { constants } from '../styles/constants.js';
+import { sessionService } from '../services/session-service.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
@@ -135,27 +137,36 @@ const resultOverlayStyleSheet = StyleSheet.create({
         backgroundColor: constants.negativeColor,
     },
 });
+
 type ResultOverlayProps = {
     question: Question,
     answer: string,
     answeredCorrectly: boolean,
     onDismiss: () => void,
 }
+export type SpecificOverlayProps = {
+    sessionService: SessionService,
+    answeredCorrectly: boolean,
+    answer: string,
+    question: Question,
+};
 export function ResultOverlay(props: ResultOverlayProps) {
-    const text = props.answeredCorrectly
-        ? props.answer + ' is correct!'
-        : props.answer + ' is sadly incorrect';
-
     const style = props.answeredCorrectly
         ? resultOverlayStyleSheet.correct
         : resultOverlayStyleSheet.wrong;
 
     const specificOverlay = props.question.type === 'eye-question'
         ? <EyeQuestionOverlay
-            text={text}
+            question={props.question}
+            sessionService={ sessionService }
             answeredCorrectly={props.answeredCorrectly}
             answer={props.answer} />
-        : <Text>{text}</Text>;
+
+        : <Text>{
+            props.answeredCorrectly
+                ? props.answer + ' is correct!'
+                : props.answer + ' is sadly incorrect'
+        }</Text>;
 
     return <View style={[resultOverlayStyleSheet.root, style]}>
         { specificOverlay }

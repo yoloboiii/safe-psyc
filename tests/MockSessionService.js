@@ -1,20 +1,20 @@
 // @flow
 
-import type { Question } from '../models/questions.js';
+import type { Question } from '../src/models/questions.js';
 
-export class SessionService {
+export class MockSessionService {
 
-    _questionPool = undefined;
+    _questionPool: Array<Question>;
+
+    constructor(pool: Array<Question>) {
+        this._questionPool = pool;
+    }
 
     getRandomQuestions(numQuestions: number): Array<Question> {
         return getRandomElementsFromArray(numQuestions, this.getQuestionPool());
     }
 
     getQuestionPool(): Array<Question> {
-        if (this._questionPool === undefined) {
-            this._questionPool = require('../../SECRETS/eye-questions/eye-questions.json');
-        }
-
         return this._questionPool;
     }
 }
@@ -33,6 +33,3 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
 
     return elements;
 }
-
-
-export const sessionService = new SessionService();

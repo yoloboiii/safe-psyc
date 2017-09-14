@@ -6,9 +6,9 @@ import { Text, View, Image} from 'react-native';
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
-import { sessionService } from '../services/session-service.js';
 
 import type { EyeQuestion } from '../models/questions.js';
+import type { SpecificOverlayProps } from './Question.js';
 
 const containerStyle = {
     padding: constants.space,
@@ -46,27 +46,31 @@ export function EyeQuestionComponent(props: Props) {
     </View>
 }
 
-export function EyeQuestionOverlay(props: OverlayProps) {
-    console.log('APPPA');
-    const { text, answeredCorrectly, answer } = props;
 
-    const answerImage = sessionService.getQuestionPool()
-        .filter(q => q.answer === answer)
+export function EyeQuestionOverlay(props: SpecificOverlayProps) {
+    const { answeredCorrectly, answer } = props;
+
+    const answerImage = props.sessionService.getQuestionPool()
+        .filter(q => q.type === 'eye-question' && q.answer === answer)
+        // $FlowFixMe
         .map(q => q.image)[0];
-    // TODO: what if there is no image?
 
-    const otherEmotion = answeredCorrectly
-        ? null
-        : <View>
-            <Text>{answer} looks like</Text>
-            <Image
-                style={{ height: 100, }}
-                resizeMode='contain'
-                source={{ uri: answerImage }} />
-        </View>
+    const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
+    if (shouldShowOtherEmotion) {
     return <View>
-        <Text>{ text }</Text>
+        <Text>That's sadly incorrect. {startOfSentence(answer)} looks like this</Text>
         <VerticalSpace />
-        { otherEmotion }
+        <Image
+            style={{ height: 100, }}
+            resizeMode='contain'
+            source={{ uri: answerImage }} />
     </View>
+
+    } else {
+        return <Text>{answer} is sadly incorrect</Text>
+    }
+}
+
+function startOfSentence(s) {
+    return s.charAt(0).toUpperCase() + s.substr(1);
 }
