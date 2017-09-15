@@ -4,13 +4,13 @@ export const constants = {
     space: 10,
 
     smallText: {
-        fontSize: 8,
+        fontSize: 12,
     },
     normalText: {
-        fontSize: 14,
+        fontSize: 16,
     },
     largeText: {
-        fontSize: 18,
+        fontSize: 22,
     },
 
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151
