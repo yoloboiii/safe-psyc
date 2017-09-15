@@ -5,6 +5,7 @@ import { StatusBar, Platform } from 'react-native';
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
+import { constants } from './src/styles/constants.js';
 
 import { answerService } from './src/services/answer-service.js';
 
@@ -18,7 +19,9 @@ const headerHeightFix = {
     navigationOptions: {
         headerStyle: {
             marginTop: statusBarHeight,
+            backgroundColor: constants.primaryColor,
         },
+        headerTintColor: constants.notReallyWhite,
     }
 };
 

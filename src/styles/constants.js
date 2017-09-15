@@ -19,4 +19,5 @@ export const constants = {
     negativeColor: '#ff5151',
     hilightColor1: '#33658a',
     hilightColor2: '#86bbd8',
+    notReallyWhite: '#FAFAFF',
 };
