@@ -1,10 +1,12 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView, Text, Button } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { StandardButton } from './StandardButton.js';
+import { StandardText } from './StandardText.js';
 import { constants } from '../styles/constants.js';
 
 import type { Question } from '../models/questions.js';
@@ -104,11 +106,11 @@ export class Session extends React.Component<Props, State> {
 
     render() {
         if (this.state.questions.isEmpty()) {
-            return <Text>No question in session</Text>
+            return <StandardText>No question in session</StandardText>
 
         } else if (this.state.isFinished) {
             return <ScrollView contentContainerStyle={ paddingStyle }>
-                <Text>Great job! Congratulations on finishing the session, here's a summary of how it went!</Text>
+                <StandardText>Great job! Congratulations on finishing the session, here's a summary of how it went!</StandardText>
 
                 <VerticalSpace multiplier={4}/>
                 <SessionReport
@@ -116,8 +118,7 @@ export class Session extends React.Component<Props, State> {
                     navigation={ this.props.navigation }/>
                 <VerticalSpace multiplier={2}/>
 
-                <Button
-                    color={ constants.hilightColor2 }
+                <StandardButton
                     title={'Thanks!'}
                     onPress={this._onSessionFinished.bind(this)} />
             </ScrollView>

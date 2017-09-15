@@ -1,11 +1,13 @@
 // @flow
 
 import React from 'react';
-import  { Text, Button, View, StyleSheet } from 'react-native';
+import  { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { StandardText } from './StandardText.js';
+import { StandardButton } from './StandardButton.js';
 
 import { constants } from '../styles/constants.js';
 import { sessionService } from '../services/session-service.js';
@@ -160,9 +162,8 @@ export function ResultOverlay(props: ResultOverlayProps) {
     return <View style={[resultOverlayStyleSheet.root, style]}>
         { specificOverlay }
         <VerticalSpace />
-        <Button
+        <StandardButton
             title={'Ok'}
-            color={ constants.hilightColor2 }
             onPress={props.onDismiss} />
     </View>
 
@@ -179,7 +180,7 @@ export function ResultOverlay(props: ResultOverlayProps) {
             const text = props.answeredCorrectly
                 ? props.answer + ' is correct!'
                 : props.answer + ' is sadly incorrect'
-            return <Text>{ text }</Text>;
+            return <StandardText>{ text }</StandardText>;
         }
     }
 }

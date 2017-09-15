@@ -1,9 +1,10 @@
 // @flow
 
 import React from 'react';
-import { FlatList, View,  Text, Modal } from 'react-native';
+import { FlatList, View,  Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { QuestionDetails } from './QuestionDetails.js';
+import { StandardText } from './StandardText.js';
 import { navigateToQuestionDetails } from '../navigation-actions.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
@@ -44,13 +45,13 @@ function renderRow(item, navigation) {
             wrongAnswers={ wrongAnswers }
             />
     } else  {
-        return <Text>Unknown question {question.type}</Text>
+        return <StandardText>Unknown question {question.type}</StandardText>
     }
 }
 
 // TODO: Move to separate file
 function WordQuestionRow(props) {
     return <View>
-        <Text>{ props.question.questionText }</Text>
+        <StandardText>{ props.question.questionText }</StandardText>
     </View>
 }

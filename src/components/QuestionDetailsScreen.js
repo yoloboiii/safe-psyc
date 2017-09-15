@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { QuestionDetails } from './QuestionDetails.js';
-import { Text } from 'react-native';
+import { StandardText } from './StandardText.js';
 
 import type { Navigation } from '../navigation-actions.js';
 import type { Question } from '../models/questions.js';
@@ -26,7 +26,7 @@ export class QuestionDetailsScreen extends React.Component<Props, {}> {
                 question={ navParams.question } />
 
         } else {
-            return <Text>No navigation state! Don't know what to do</Text>
+            return <StandardText>No navigation state! Don't know what to do</StandardText>
 
         }
     }

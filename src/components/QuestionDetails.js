@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image } from 'react-native';
+import { StandardText } from './StandardText.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 
@@ -15,16 +16,16 @@ export function QuestionDetails(props: Props) {
         case 'eye-question':
             return <EyeQuestionDetails question={ (props.question: EyeQuestion) }/>;
         default:
-            return <Text>naaah {props.question.type} </Text>
+            return <StandardText>naaah {props.question.type} </StandardText>
     }
 }
 
 function EyeQuestionDetails(props) {
     return <View style={{ padding: constants.space }}>
-        <Text style={ constants.largeText }>Question Details</Text>
+        <StandardText style={ constants.largeText }>Question Details</StandardText>
         <VerticalSpace />
 
-        <Text>{ props.question.answer }</Text>
+        <StandardText>{ props.question.answer }</StandardText>
 
         <Image source={{ uri: props.question.image }}
             resizeMode='cover'
@@ -34,8 +35,8 @@ function EyeQuestionDetails(props) {
             }}/>
         <VerticalSpace />
 
-        <Text>Strength meter, 3/5</Text>
+        <StandardText>Strength meter, 3/5</StandardText>
 
-        <Text>You usually get this confused with...</Text>
+        <StandardText>You usually get this confused with...</StandardText>
     </View>
 }

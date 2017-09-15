@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react';
-import { View, FlatList, Button } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
-import { constants } from '../styles/constants.js';
+import { StandardButton } from './StandardButton.js';
 
 type Apa = {
     text: string,
@@ -17,12 +17,14 @@ type Props = {
 
 export function VerticalAnswerList(props: Props) {
 
-    return <FlatList
+    return <View>
+        <FlatList
         data={ answersToButtonData(props.answers) }
         renderItem={ dataForItem => AnswerButton({
             onPress: (answer) => onAnswerPress(answer, props),
             ...dataForItem.item,
         }) } />
+    </View>
 }
 
 function answersToButtonData(answers) {
@@ -36,16 +38,14 @@ function answersToButtonData(answers) {
 
 function AnswerButton(props) {
     return <View>
-        <Button
+        <StandardButton
         title={ props.text }
-        color={ constants.hilightColor2 }
         onPress={ () => props.onPress(props.text) }/>
         <VerticalSpace />
     </View>
 }
 
 function onAnswerPress(answer, props) {
-    //console.log('KEUKEN', answer);
     if (answer === props.correctAnswer) {
         props.onCorrectAnswer();
     } else {

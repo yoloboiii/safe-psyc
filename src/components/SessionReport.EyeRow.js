@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableHighlight } from 'react-native';
+import { StandardText } from './StandardText.js';
 import { constants } from '../styles/constants.js';
 import type { EyeQuestion } from '../models/questions.js';
 
@@ -29,8 +30,8 @@ export function EyeQuestionRow(props: Props) {
 
     return <View style={ eyeContainerStyle }>
         <View>
-            <Text>{ props.question.answer }</Text>
-            <Text style={ constants.smallText }>{ subtext }</Text>
+            <StandardText>{ props.question.answer }</StandardText>
+            <StandardText style={ constants.smallText }>{ subtext }</StandardText>
         </View>
         <View style={ imageContainerStyle }>
             <TouchableHighlight onPress={ props.onPopoutQuestion }>

@@ -1,10 +1,11 @@
 // @flow
 
 import React from 'react';
-import { Text, View, Image} from 'react-native';
+import { View, Image} from 'react-native';
 
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { StandardText } from './StandardText.js';
 import { constants } from '../styles/constants.js';
 
 import type { EyeQuestion } from '../models/questions.js';
@@ -13,6 +14,7 @@ import type { SpecificOverlayProps } from './Question.js';
 const containerStyle = {
     padding: constants.space,
     height: '100%',
+    justifyContent: 'space-between',
 };
 const imageStyle = { height: 200 };
 
@@ -30,13 +32,16 @@ export function EyeQuestionComponent(props: Props) {
      * the highest image. This information is only available in the
      * session though, so I need some way to push that data down here */
 
+
     return <View style={ containerStyle }>
-            <Text>Which of the following emotion best describes what the person in the image is feeling?</Text>
+        <View>
+            <StandardText>Which of the following emotion best describes what the person in the image is feeling?</StandardText>
             <VerticalSpace multiplier={2} />
 
             <Image
                 style={ imageStyle }
                 source={{ uri: question.image }} />
+        </View>
 
         <VerticalAnswerList
             answers={ props.answers }
@@ -57,13 +62,13 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps) {
 
     const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
     if (answeredCorrectly) {
-        return <Text>{answer} is correct!</Text>
+        return <StandardText>{answer} is correct!</StandardText>
     } else if (!answerImage) {
 
-        return <Text>{answer} is sadly incorrect</Text>
+        return <StandardText>{answer} is sadly incorrect</StandardText>
     } else {
         return <View>
-            <Text>That's sadly incorrect. {startOfSentence(answer)} looks like this</Text>
+            <StandardText>That's sadly incorrect. {startOfSentence(answer)} looks like this</StandardText>
             <VerticalSpace />
             <Image
                 style={{ height: 100, }}
