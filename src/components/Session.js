@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -30,8 +30,12 @@ type State = {
 const paddingStyle = {
     padding: constants.space,
 };
-const backgroundColor = {
-    backgroundColor: constants.hilightColor2,
+const backgroundImageStyle = {
+    // width and height need to be undefined to make
+    // the background image component fill only the
+    // screen and not overflow in any direction.
+    width: undefined,
+    height: undefined
 };
 export class Session extends React.Component<Props, State> {
 
@@ -108,12 +112,19 @@ export class Session extends React.Component<Props, State> {
     }
 
     render() {
+        return <Image
+            style={ backgroundImageStyle }
+            source={ require('../../images/session-bg.png') }>
+            { this._renderContents() }
+        </Image>
+    }
+
+    _renderContents() {
         if (this.state.questions.isEmpty()) {
             return <StandardText>No question in session</StandardText>
 
         } else if (this.state.isFinished) {
             return <ScrollView
-                style={ backgroundColor }
                 contentContainerStyle={ paddingStyle }>
 
                 <StandardText>Great job! Congratulations on finishing the session, here's a summary of how it went!</StandardText>
@@ -131,13 +142,11 @@ export class Session extends React.Component<Props, State> {
         } else {
             const currentQuestion = this.state.questions.peek();
 
-            return <View style={ backgroundColor } >
-                <QuestionComponent
+            return <QuestionComponent
                 question={ currentQuestion }
                 answers={ this.state.answers }
                 onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                 onWrongAnswer={ this._wrongAnswer.bind(this) } />
-            </View>
         }
     }
 }
