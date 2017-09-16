@@ -30,12 +30,8 @@ type State = {
 const paddingStyle = {
     padding: constants.space,
 };
-const backgroundImageStyle = {
-    // width and height need to be undefined to make
-    // the background image component fill only the
-    // screen and not overflow in any direction.
-    width: undefined,
-    height: undefined
+const backgroundStyle = {
+    backgroundColor: constants.notReallyWhite,
 };
 export class Session extends React.Component<Props, State> {
 
@@ -112,11 +108,10 @@ export class Session extends React.Component<Props, State> {
     }
 
     render() {
-        return <Image
-            style={ backgroundImageStyle }
-            source={ require('../../images/session-bg.png') }>
+        return <View
+            style={ backgroundStyle }>
             { this._renderContents() }
-        </Image>
+        </View>
     }
 
     _renderContents() {
