@@ -161,7 +161,7 @@ export function ResultOverlay(props: ResultOverlayProps) {
 
     return <View style={[resultOverlayStyleSheet.root, style]}>
         { specificOverlay }
-        <VerticalSpace />
+        <VerticalSpace multiplier={2} />
         <StandardButton
             title={'Ok'}
             onPress={props.onDismiss} />
