@@ -5,8 +5,9 @@
 /// component
 
 import React from 'react';
-import { Session } from './Session.js';
 import { Text } from 'react-native';
+import { Session } from './Session.js';
+import { onSessionFinished } from '../navigation-actions.js';
 
 import type { Navigation } from '../navigation-actions.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -30,7 +31,7 @@ export class SessionScreen extends React.Component<Props, {}> {
             return <Session
                 questions={ navParams.questions }
                 answerService={ navParams.answerService }
-                onSessionFinished={ () => navigate('Home')}
+                onSessionFinished={ onSessionFinished }
                 navigation={ ((this.props.navigation: any): Navigation<{}>) } />
 
         } else {

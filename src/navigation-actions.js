@@ -27,3 +27,16 @@ export function navigateToQuestionDetails(navigation: Navigation<*>, question: Q
         question: question,
     });
 }
+
+export function onSessionFinished(navigation: Navigation<*>) {
+    const haveAlreadyAnswered = false; // TODO: implement this
+    const neverWantsToBeAsked = false; // TODO: implement this
+
+    const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
+
+    if (shouldAskHowTheUserIsFeeling) {
+        navigation.navigate('CurrentFeeling');
+    } else {
+        navigation.navigate('HomeScreen');
+    }
+}

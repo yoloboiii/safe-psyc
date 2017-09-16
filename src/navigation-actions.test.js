@@ -1,6 +1,6 @@
 // @flow
 
-import { startRandomSession } from './navigation-actions.js';
+import { startRandomSession, onSessionFinished } from './navigation-actions.js';
 
 describe('startRandomSession', () => {
 
@@ -41,5 +41,22 @@ describe('startRandomSession', () => {
                 args.questions.every( question => pool.indexOf(question.answer) > -1 )
             ).toBe(true);
         }
+    });
+});
+
+describe('onSessionFinished', () => {
+    it('should redirect to howrufeelin once per day', () => {
+        const navigateMock = jest.fn();
+        const navigation = { navigate: navigateMock };
+
+        onSessionFinished(navigation);
+
+        expect(navigateMock).toHaveBeenCalledTimes(1);
+        expect(navigateMock).toHaveBeenCalledWith('CurrentFeeling');
+
+        navigateMock.mockReset();
+        onSessionFinished(navigation);
+        expect(navigateMock).toHaveBeenCalledTimes(1);
+        expect(navigateMock).not.toHaveBeenCalledWith('CurrentFeeling');
     });
 });
