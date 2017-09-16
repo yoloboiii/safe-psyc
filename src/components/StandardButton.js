@@ -7,7 +7,11 @@ import { constants } from '../styles/constants.js';
 const defaultColor = constants.primaryColor;
 const defaultStyle = { };
 
-export function StandardButton(props) {
+type Props = {
+    customStyle?: Object,
+    customColor?: string,
+};
+export function StandardButton(props: Props) {
     const { customStyle, customColor, ...restProps } = props;
 
     const style = customStyle

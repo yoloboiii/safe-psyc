@@ -32,7 +32,7 @@ it('gives a higher score for a hard question than an easy question when they wer
     const easyQuestion = randomQuestion();
     const hardQuestion = randomQuestion();
 
-    const when = new Date() - 10;
+    const when = new Date(new Date() - 10);
 
     const easyDataPoint = {
         question: easyQuestion,
@@ -46,8 +46,8 @@ it('gives a higher score for a hard question than an easy question when they wer
         when: when,
     };
 
-    const easyScore = sessionService._calculateScore([easyQuestion]);
-    const hardScore = sessionService._calculateScore([hardQuestion]);
+    const easyScore = sessionService._calculateScore([easyDataPoint]);
+    const hardScore = sessionService._calculateScore([hardDataPoint]);
 
     // $FlowFixMe
     expect(hardScore).toBeGreaterThan(easyScore);
@@ -57,8 +57,8 @@ it('gives a higher score for an easy question not seen in a long time than a har
     const easyQuestion = randomQuestion();
     const hardQuestion = randomQuestion();
 
-    const longAgo  = new Date() - 100000;
-    const recently = new Date() - 10;
+    const longAgo  = new Date(new Date() - 100000);
+    const recently = new Date(new Date() - 10);
 
     const easyDataPoint = {
         question: easyQuestion,
@@ -72,8 +72,8 @@ it('gives a higher score for an easy question not seen in a long time than a har
         when: recently,
     };
 
-    const easyScore = sessionService._calculateScore([easyQuestion]);
-    const hardScore = sessionService._calculateScore([hardQuestion]);
+    const easyScore = sessionService._calculateScore([easyDataPoint]);
+    const hardScore = sessionService._calculateScore([hardDataPoint]);
 
     // $FlowFixMe
     expect(easyScore).toBeGreaterThan(hardScore);

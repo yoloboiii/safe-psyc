@@ -6,7 +6,10 @@ import { constants } from '../styles/constants.js';
 
 const defaultStyle = constants.normalText;
 
-export function StandardText(props) {
+type Props = {
+    customStyle?: Object,
+};
+export function StandardText(props: Props) {
     const { customStyle, ...restProps } = props;
 
     const style = customStyle
