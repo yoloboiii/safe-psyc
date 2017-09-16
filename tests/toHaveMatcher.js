@@ -40,10 +40,17 @@ expect.extend({
 
             if (correctType && childProps_happyFlow) {
                 const correctProps = Object.keys(childProps_happyFlow).every(
-                    key =>
-                        c.props.hasOwnProperty(key) &&
-                        equals(c.props[key], childProps_happyFlow[key])
-                    );
+                    key => {
+                        const hasProp = c.props.hasOwnProperty(key);
+                        const prop = c.props[key];
+
+                        let propValuesAreEqual = equals(c.props[key], childProps_happyFlow[key]);
+                        if (typeof prop === 'function' && !propValuesAreEqual) {
+                            propValuesAreEqual = prop.name === childProps_happyFlow[key].name;
+                        }
+
+                        return hasProp && propValuesAreEqual;
+                    });
                 return correctType && correctProps;
             }
             return correctType;
@@ -52,7 +59,7 @@ expect.extend({
 
         let propsMessage = '';
         if (childProps) {
-            propsMessage = ' with props ' + JSON.stringify(childProps, null, 2);
+            propsMessage = ' with props ' + JSON.stringify(childProps_happyFlow, null, 2);
         }
         const message = () => 'Could not find ' + childConstructor.name + propsMessage + ' in ' + stringifyComponent(received);
 
