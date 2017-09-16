@@ -15,22 +15,21 @@ const statusBarHeight = Platform.OS === 'ios'
     ? 20
     : StatusBar.currentHeight;
 
-const headerHeightFix = {
+const defaultScreenProps = {
     navigationOptions: {
         headerStyle: {
-            marginTop: statusBarHeight,
+            marginTop: statusBarHeight, // Fixes the header height
             backgroundColor: constants.primaryColor,
         },
         headerTintColor: constants.notReallyWhite,
     }
 };
 
-// ALL ROUTES HERE MUST CONTAIN THE ...headerHeightFix SHIT TO
-// MAKE THE VIEW RENDER BELOW THE STATUS BAR
 export default App = StackNavigator({
-    Home: { screen: HomeScreen, ...headerHeightFix },
-    Session: { screen: SessionScreen, ...headerHeightFix },
-    QuestionDetails: { screen: QuestionDetailsScreen, ...headerHeightFix },
+    Home: { screen: HomeScreen, ...defaultScreenProps },
+    Session: { screen: SessionScreen, ...defaultScreenProps },
+    QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },
+    CurrentFeeling: { screen: HomeScreen, ...defaultScreenProps }
 });
 
 
