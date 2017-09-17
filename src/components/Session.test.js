@@ -13,6 +13,10 @@ import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-
 import { randomQuestions, randomQuestion, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
 
 const defaultProps = {
+    backendFacade: {
+        registerCorrectAnswer: () => {},
+        registerIncorrectAnswer: () => {},
+    },
     onSessionFinished: () => {},
     answerService: answerService,
 };
@@ -199,4 +203,34 @@ it('increases the number of questions left after three wrong answers', () => {
 
     const currentTotal = findChildren(component, QuestionProgress)[0].props.total;
     expect(currentTotal).toBe(prevTotal + 1);
+});
+
+it('invokes the backend facade on correct answers', () => {
+    const backendFacade = {
+        registerCorrectAnswer: jest.fn()
+    };
+    const questions = randomQuestions(1);
+    const component = render(Session, {
+        questions,
+        backendFacade,
+    }, defaultProps);
+
+    clickAnswerAndDismissOverlay(component);
+    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledTimes(1);
+    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledWith(questions[0]);
+});
+
+it('invokes the backend facade on wrong answers', () => {
+    const backendFacade = {
+        registerIncorrectAnswer: jest.fn()
+    };
+    const questions = randomQuestions(1);
+    const component = render(Session, {
+        questions,
+        backendFacade,
+    }, defaultProps);
+
+    const b = clickWrongAnswerAndDismissOverlay(component);
+    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledTimes(1);
+    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(questions[0],b.props.title);
 });

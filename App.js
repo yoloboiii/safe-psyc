@@ -7,10 +7,6 @@ import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
 import { constants } from './src/styles/constants.js';
 
-import { answerService } from './src/services/answer-service.js';
-
-answerService.setAnswerPool(['a', 'b', 'c']);
-
 const statusBarHeight = Platform.OS === 'ios'
     ? 20
     : StatusBar.currentHeight;

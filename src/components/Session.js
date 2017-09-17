@@ -10,11 +10,13 @@ import { StandardText } from './StandardText.js';
 import { QuestionProgress } from './QuestionProgress.js';
 import { constants } from '../styles/constants.js';
 
+import type { BackendFacade } from '../services/backend.js';
 import type { Question } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
+    backendFacade: BackendFacade,
     questions: Array<Question>,
     onSessionFinished: (report: Map<Question, Array<string>>) => void,
     answerService: AnswerService,
@@ -73,6 +75,8 @@ export class Session extends React.Component<Props, State> {
             this.state.report.set(currentQ, []);
         }
 
+        this.props.backendFacade.registerCorrectAnswer(currentQ);
+
         const isLastQuestion = this.state.questions.size() === 1;
         if(isLastQuestion) {
             this.setState({ isFinished: true });
@@ -102,6 +106,8 @@ export class Session extends React.Component<Props, State> {
 
         reportArray.push(answer);
         this.state.report.set(currentQ, reportArray);
+
+        this.props.backendFacade.registerIncorrectAnswer(currentQ, answer);
 
         if (prevCount === 2) {
             this.state.questions.push(currentQ);

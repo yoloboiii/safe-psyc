@@ -8,6 +8,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Session } from './Session.js';
 import { onSessionFinished } from '../navigation-actions.js';
+import { backendFacade } from '../services/backend.js';
 
 import type { Navigation } from '../navigation-actions.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -29,6 +30,7 @@ export class SessionScreen extends React.Component<Props, {}> {
             const navParams = state.params;
 
             return <Session
+                backendFacade={ backendFacade }
                 questions={ navParams.questions }
                 answerService={ navParams.answerService }
                 onSessionFinished={ () => onSessionFinished(this.props.navigation) }
