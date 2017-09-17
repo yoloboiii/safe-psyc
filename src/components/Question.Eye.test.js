@@ -73,7 +73,6 @@ it('shows the image of the answer in the overlay - image doesn\'t exists', () =>
     expect(askedQuestion.image).not.toEqual(answeredQuestion.image);
 
     const component = render(EyeQuestionOverlay, {
-        text: 'hai',
         answeredCorrectly: false,
         question: askedQuestion,
         answer: answeredQuestion.answer,
