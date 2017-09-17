@@ -6,9 +6,10 @@ import { answerService } from '../services/answer-service.js';
 import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
+import { QuestionProgress } from './QuestionProgress.js'
 
 import { render, renderShallow } from '../../tests/render-utils.js';
-import { findChildren } from '../../tests/component-tree-utils.js';
+import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { randomQuestions, randomQuestion, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
 
 const defaultProps = {
@@ -169,4 +170,33 @@ it('outputs a report at the end of the session', () => {
     });
 
     expect(onFinishedMock).toHaveBeenCalledWith(report);
+});
+
+it('shows how many questions are left', () => {
+    const questions = randomQuestions(5);
+    const component = render(Session, { questions }, defaultProps);
+
+    let questionProgress = findChildren(component, QuestionProgress)[0];
+
+    expect(questionProgress.props).toMatchObject({ current: 1, total: questions.length });
+    for (let i = 0; i < questions.length - 1; i++) {
+        clickAnswerAndDismissOverlay(component);
+
+        questionProgress = findChildren(component, QuestionProgress)[0];
+        expect(questionProgress.props).toMatchObject({ current: i + 2, total: questions.length });
+    }
+});
+
+it('increases the number of questions left after three wrong answers', () => {
+    const questions = randomQuestions(5);
+    const component = render(Session, { questions }, defaultProps);
+
+    const prevTotal = findChildren(component, QuestionProgress)[0].props.total;
+
+    clickWrongAnswerAndDismissOverlay(component);
+    clickWrongAnswerAndDismissOverlay(component);
+    clickWrongAnswerAndDismissOverlay(component);
+
+    const currentTotal = findChildren(component, QuestionProgress)[0].props.total;
+    expect(currentTotal).toBe(prevTotal + 1);
 });

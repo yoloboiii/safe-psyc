@@ -16,7 +16,7 @@ export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQues
 }
 
 export function randomEyeQuestion(c?: number): EyeQuestion {
-    c = c || Math.random();
+    c = c === undefined ? Math.random() : c;
     const uniqueString = 'IMAGE-'+c;
     return {
         type: 'eye-question',
@@ -34,7 +34,7 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<Emotio
 }
 
 export function randomWordQuestion(c?: number): EmotionWordQuestion {
-    c = c || Math.random();
+    c = c === undefined ? Math.random() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     return {
         type: 'word-question',

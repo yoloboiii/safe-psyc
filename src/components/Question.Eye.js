@@ -12,7 +12,6 @@ import type { EyeQuestion } from '../models/questions.js';
 import type { SpecificOverlayProps } from './Question.js';
 
 const containerStyle = {
-    padding: constants.space,
     height: '100%',
     justifyContent: 'space-between',
 };

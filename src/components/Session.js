@@ -7,6 +7,7 @@ import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardButton } from './StandardButton.js';
 import { StandardText } from './StandardText.js';
+import { QuestionProgress } from './QuestionProgress.js';
 import { constants } from '../styles/constants.js';
 
 import type { Question } from '../models/questions.js';
@@ -25,6 +26,8 @@ type State = {
     answers: Array<string>,
     wrongAnswers: Map<Question, number>,
     report: Map<Question, Array<string>>,
+    currentQuestionIndex: number,
+    totalNumberOfQuestions: number,
 };
 
 const paddingStyle = {
@@ -54,6 +57,8 @@ export class Session extends React.Component<Props, State> {
                 : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
             report: new Map(),
+            currentQuestionIndex: 1,
+            totalNumberOfQuestions: questions.size(),
         };
     }
 
@@ -79,8 +84,11 @@ export class Session extends React.Component<Props, State> {
     _nextQuestion() {
         this.state.questions.next();
         const q = this.state.questions.peek();
-        this.setState({
-            answers: this.props.answerService.getAnswersTo(q, 3),
+        this.setState((prevState) => {
+            return {
+                answers: this.props.answerService.getAnswersTo(q, 3),
+                currentQuestionIndex: prevState.currentQuestionIndex + 1,
+            };
         });
         this.forceUpdate();
     }
@@ -97,6 +105,7 @@ export class Session extends React.Component<Props, State> {
 
         if (prevCount === 2) {
             this.state.questions.push(currentQ);
+            this.state.totalNumberOfQuestions++;
             this._nextQuestion();
         } else {
             this.forceUpdate();
@@ -137,11 +146,17 @@ export class Session extends React.Component<Props, State> {
         } else {
             const currentQuestion = this.state.questions.peek();
 
-            return <QuestionComponent
+            return <View style={ paddingStyle }>
+                <QuestionProgress current={ this.state.currentQuestionIndex } total={ this.state.totalNumberOfQuestions } />
+
+                <VerticalSpace />
+
+                <QuestionComponent
                 question={ currentQuestion }
                 answers={ this.state.answers }
                 onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                 onWrongAnswer={ this._wrongAnswer.bind(this) } />
+            </View>
         }
     }
 }
