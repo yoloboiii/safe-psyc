@@ -11,6 +11,10 @@ export class BackendFacade {
     registerIncorrectAnswer(question: Question, answer: string) {
 
     }
+
+    registerCurrentEmotion(emotion: string) {
+
+    }
 }
 
 export const backendFacade = new BackendFacade();

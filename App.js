@@ -5,6 +5,7 @@ import { StatusBar, Platform } from 'react-native';
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
+import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { constants } from './src/styles/constants.js';
 
 const statusBarHeight = Platform.OS === 'ios'
@@ -25,7 +26,7 @@ export default App = StackNavigator({
     Home: { screen: HomeScreen, ...defaultScreenProps },
     Session: { screen: SessionScreen, ...defaultScreenProps },
     QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },
-    CurrentFeeling: { screen: HomeScreen, ...defaultScreenProps }
+    CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
 });
 
 
