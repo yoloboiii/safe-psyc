@@ -1,5 +1,6 @@
 // @flow
 
+import { InteractionManager } from 'react-native';
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
 
@@ -13,12 +14,14 @@ export type Navigation<P> = {
 }
 
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void) {
-    const questions = sessionService.getRandomQuestions(20);
-    const answers = questions.map(question => question.answer);
-    onDataLoaded && onDataLoaded();
-    navigation.navigate('Session', {
-        questions: questions,
-        answerService: new AnswerService(answers),
+    InteractionManager.runAfterInteractions(() => {
+        const questions = sessionService.getRandomQuestions(20);
+        const answers = questions.map(question => question.answer);
+        onDataLoaded && onDataLoaded();
+        navigation.navigate('Session', {
+            questions: questions,
+            answerService: new AnswerService(answers),
+        });
     });
 }
 
