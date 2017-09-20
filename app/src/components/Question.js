@@ -71,7 +71,7 @@ export class QuestionComponent extends React.Component<Props,State> {
     render() {
         const questionView = this._getQuestionComponent();
         const resultOverlay = this._createResultOverLay();
-        return <View>
+        return <View style={{ flex: 1 }}>
             { questionView }
             { resultOverlay }
         </View>
