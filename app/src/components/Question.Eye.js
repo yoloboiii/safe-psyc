@@ -12,7 +12,8 @@ import type { EyeQuestion } from '../models/questions.js';
 import type { SpecificOverlayProps } from './Question.js';
 
 const containerStyle = {
-    height: '100%',
+    flex: 1,
+    justifyContent: 'space-between'
 };
 const imageStyle = { height: 200 };
 
@@ -30,16 +31,15 @@ export function EyeQuestionComponent(props: Props) {
      * the highest image. This information is only available in the
      * session though, so I need some way to push that data down here */
 
-
     return <View style={ containerStyle }>
-        <StandardText>Which of the following emotion best describes what the person in the image is feeling?</StandardText>
-        <VerticalSpace multiplier={2} />
+        <View>
+            <StandardText>Which of the following emotion best describes what the person in the image is feeling?</StandardText>
+            <VerticalSpace multiplier={2} />
 
-        <Image
-            style={ imageStyle }
-            source={{ uri: question.image }} />
-
-        <VerticalSpace multiplier={2} />
+            <Image
+                style={ imageStyle }
+                source={{ uri: question.image }} />
+        </View>
 
         <VerticalAnswerList
             answers={ props.answers }

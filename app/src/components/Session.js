@@ -34,9 +34,11 @@ type State = {
 
 const paddingStyle = {
     padding: constants.space,
+    flex: 1,
 };
 const backgroundStyle = {
     backgroundColor: constants.notReallyWhite,
+    flex: 1,
 };
 export class Session extends React.Component<Props, State> {
 
