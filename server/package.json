@@ -18,11 +18,12 @@
     "jest-cli": "^20.0.4",
     "rollup": "^0.45.1",
     "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-node-resolve": "^3.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development node bundle.js",
-    "build": "NODE_ENV=development rollup -c",
+    "start": "NODE_ENV=development rollup -c && NODE_ENV=development node bundle.js",
+    "build": "NODE_ENV=production rollup -c",
     "flow": "flow",
     "test": "jest"
   },
