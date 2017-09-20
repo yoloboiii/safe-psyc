@@ -33,7 +33,7 @@ export class SessionScreen extends React.Component<Props, {}> {
                 backendFacade={ backendFacade }
                 questions={ navParams.questions }
                 answerService={ navParams.answerService }
-                onSessionFinished={ () => onSessionFinished(this.props.navigation) }
+                onSessionFinished={ () => { onSessionFinished(this.props.navigation, backendFacade);} }
                 navigation={ ((this.props.navigation: any): Navigation<{}>) } />
 
         } else {

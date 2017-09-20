@@ -32,8 +32,7 @@ type State = {
     totalNumberOfQuestions: number,
 };
 
-const paddingStyle = {
-    padding: constants.space,
+const questionContainer = {
     flex: 1,
 };
 const backgroundStyle = {
@@ -137,7 +136,7 @@ export class Session extends React.Component<Props, State> {
 
         } else if (this.state.isFinished) {
             return <ScrollView
-                contentContainerStyle={ paddingStyle }>
+                contentContainerStyle={{ padding: constants.space }}>
 
                 <StandardText>Great job! Congratulations on finishing the session, here's a summary of how it went!</StandardText>
 
@@ -154,7 +153,7 @@ export class Session extends React.Component<Props, State> {
         } else {
             const currentQuestion = this.state.questions.peek();
 
-            return <View style={ paddingStyle }>
+            return <View style={ questionContainer }>
                 <QuestionProgress current={ this.state.currentQuestionIndex } total={ this.state.totalNumberOfQuestions } />
 
                 <VerticalSpace />

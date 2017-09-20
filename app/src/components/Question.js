@@ -72,7 +72,9 @@ export class QuestionComponent extends React.Component<Props,State> {
         const questionView = this._getQuestionComponent();
         const resultOverlay = this._createResultOverLay();
         return <View style={{ flex: 1 }}>
-            { questionView }
+            <View style={{ padding: constants.space, flex: 1 }}>
+                { questionView }
+            </View>
             { resultOverlay }
         </View>
     }
@@ -131,6 +133,7 @@ const resultOverlayStyleSheet = StyleSheet.create({
         width: '100%',
 
         padding: 3 * constants.space,
+        elevation: 10,
     },
     correct: {
         backgroundColor: constants.positiveColor,

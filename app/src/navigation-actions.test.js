@@ -2,6 +2,9 @@
 
 import { InteractionManager } from 'react-native';
 import { startRandomSession, onSessionFinished } from './navigation-actions.js';
+import moment from 'moment';
+
+import type { BackendFacade } from './services/backend.js';
 
 describe('startRandomSession', () => {
 
@@ -52,19 +55,41 @@ describe('startRandomSession', () => {
 });
 
 describe('onSessionFinished', () => {
-    it('should redirect to howrufeelin once per day', (done) => {
+    it('should redirect to howrufeelin once per day', () => {
+
+        // $FlowFixMe
+        Date.now = jest.fn(() => new Date(Date.UTC(2017, 0, 1)).valueOf());
+
+        const backendFacade = (({
+            getLastFeelingAnswer: jest.fn()
+                .mockReturnValueOnce(new Promise(r => {
+                    r({
+                        when: moment().subtract(10, 'hours'),
+                    });
+                }))
+                .mockReturnValueOnce(new Promise(r => {
+                    r({
+                        when: moment(),
+                    });
+                })),
+        }: any): BackendFacade);
+
         const navigateMock = jest.fn();
         const navigation = { navigate: navigateMock };
 
-        onSessionFinished(navigation);
-
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith('CurrentFeeling');
-
-        navigateMock.mockReset();
-        onSessionFinished(navigation);
-        expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).not.toHaveBeenCalledWith('CurrentFeeling');
+        return onSessionFinished(navigation, backendFacade)
+            .then( () => {
+                expect(navigateMock).toHaveBeenCalledTimes(1);
+                expect(navigateMock).toHaveBeenCalledWith('CurrentFeeling');
+            })
+            .then( () => {
+                navigateMock.mockReset();
+                return onSessionFinished(navigation, backendFacade);
+            })
+            .then( () => {
+                expect(navigateMock).toHaveBeenCalledTimes(1);
+                expect(navigateMock).not.toHaveBeenCalledWith('CurrentFeeling');
+            });
     });
 });
 
@@ -74,6 +99,7 @@ function checkNextTick(done, check) {
             check();
             done();
         } catch (e) {
+            // $FlowFixMe
             done(e);
         }
     });

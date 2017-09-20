@@ -2,6 +2,9 @@
 
 import type { Question } from '../models/questions.js';
 
+type LastFeelingAnswer = {
+    when: Date,
+};
 export class BackendFacade {
 
     registerCorrectAnswer(question: Question) {
@@ -14,6 +17,14 @@ export class BackendFacade {
 
     registerCurrentEmotion(emotion: string) {
 
+    }
+
+    getLastFeelingAnswer(): Promise<LastFeelingAnswer> {
+        return new Promise(r => {
+            r({
+                when: new Date(),
+            });
+        });
     }
 }
 

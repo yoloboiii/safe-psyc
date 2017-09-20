@@ -39,6 +39,7 @@ export function EyeQuestionComponent(props: Props) {
             <Image
                 style={ imageStyle }
                 source={{ uri: question.image }} />
+            <VerticalSpace multiplier={2} />
         </View>
 
         <VerticalAnswerList

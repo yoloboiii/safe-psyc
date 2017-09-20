@@ -1,10 +1,12 @@
 // @flow
 
-import { InteractionManager } from 'react-native';
+import { InteractionManager, Alert } from 'react-native';
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
+import moment from 'moment';
 
 import type { Question } from './models/questions.js';
+import type { BackendFacade } from './services/backend.js';
 
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
@@ -31,15 +33,33 @@ export function navigateToQuestionDetails(navigation: Navigation<*>, question: Q
     });
 }
 
-export function onSessionFinished(navigation: Navigation<*>) {
-    const haveAlreadyAnswered = false; // TODO: implement this
-    const neverWantsToBeAsked = false; // TODO: implement this
+export function onSessionFinished(navigation: Navigation<*>, backend: BackendFacade): Promise<*> {
+    return backend.getLastFeelingAnswer()
+        .then( answer => {
+            const eightHoursAgo = moment().subtract(8, 'hours');
+            const haveAlreadyAnswered = eightHoursAgo.isBefore(answer.when);
 
-    const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
+            return haveAlreadyAnswered;
+        })
+        .then( haveAlreadyAnswered => {
+            const neverWantsToBeAsked = false; // TODO: implement this
+            return {
+                haveAlreadyAnswered,
+                neverWantsToBeAsked,
+            };
+        })
+        .then( context => {
 
-    if (shouldAskHowTheUserIsFeeling) {
-        navigation.navigate('CurrentFeeling');
-    } else {
-        navigation.navigate('HomeScreen');
-    }
+            const { haveAlreadyAnswered, neverWantsToBeAsked } = context;
+            const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
+            if (shouldAskHowTheUserIsFeeling) {
+                navigation.navigate('CurrentFeeling');
+            } else {
+                navigation.navigate('HomeScreen');
+            }
+        })
+        .catch(e => {
+            console.log('UNABLE TO NAVIGATE!', e);
+            Alert.alert( 'ERROR', 'Unable to navigate onSessionFinished.\n' + e);
+        });
 }
