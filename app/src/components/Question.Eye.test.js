@@ -12,11 +12,7 @@ import { MockSessionService } from '../../tests/MockSessionService.js';
 import type { Question } from '../models/questions.js';
 
 it('contains the image', () => {
-    const question = {
-        type: 'eye-question',
-        image: 'test-image.png',
-        answer: 'THE ANSWER',
-    };
+    const question = randomEyeQuestion();
     const component = customRender({ question: question });
 
     expect(component).toHaveChildMatching(child => {
@@ -25,11 +21,7 @@ it('contains the image', () => {
 });
 
 it('contains the answer', () => {
-    const question = {
-        type: 'eye-question',
-        image: 'test-image.png',
-        answer: 'THE ANSWER',
-    };
+    const question = randomEyeQuestion();
     const component = customRender({ question: question });
 
     expect(JSON.stringify(component)).toContain(question.answer);

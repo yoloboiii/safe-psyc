@@ -4,14 +4,10 @@ import React from 'react';
 import ReactShallowRenderer from 'react-test-renderer/shallow';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
-import { randomQuestion } from '../../tests/question-utils.js';
+import { randomWordQuestion } from '../../tests/question-utils.js';
 import { answerService } from '../services/answer-service.js';
 
-const defaultQuestion = {
-    type: 'word-question',
-    questionText: 'THE QUESTION',
-    answer: 'THE ANSWER',
-};
+const defaultQuestion = randomWordQuestion();
 
 it('contains the question text', () => {
     const question = defaultQuestion;
@@ -38,7 +34,7 @@ it('contains wrong answers', () => {
 });
 
 function render(customProps) {
-    const question = customProps.question || randomQuestion();
+    const question = customProps.question || randomWordQuestion();
     const defaultProps = {
         question: question,
         answers: answerService.getAnswersTo(question, 3),

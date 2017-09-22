@@ -3,12 +3,14 @@
 export type Question = EyeQuestion | EmotionWordQuestion;
 
 export type EyeQuestion = {
+    id: number,
     type: 'eye-question',
     image: string,
     answer: string,
 };
 
 export type EmotionWordQuestion = {
+    id: number,
     type: 'word-question',
     questionText: string,
     answer: string,

@@ -17,7 +17,7 @@ import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
-type Props = {
+export type Props = {
     question: Question,
     answers: Array<string>,
     onCorrectAnswer: () => void,

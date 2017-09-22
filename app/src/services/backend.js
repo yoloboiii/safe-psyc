@@ -2,6 +2,7 @@
 
 import firebase from 'firebase';
 import { firebaseApp } from '../services/firebase.js';
+import moment from 'moment';
 import type { Question } from '../models/questions.js';
 
 const db = firebaseApp.database();
@@ -21,26 +22,39 @@ type LastFeelingAnswer = {
 };
 export class BackendFacade {
 
-    registerCorrectAnswer(question: Question) {
-        if (!signedInUser) {
-            logUnauthAttempt(new Error());
-        }
+    registerCorrectAnswer(question: Question): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const user = signedInUser;
+            if (!user) {
+                const err = new Error('Unauthorized write attempt');
+                logUnauthAttempt(err);
+                throw err;
+            }
 
-        question.id = 1;
-        db.ref('correct-question-answers/').push({ user: signedInUser.uid, question: question.id });
+            const path = 'user-data/' + user.uid + '/correct-answers';
+            const toWrite = {
+                question: question.id,
+                when: moment(),
+            };
+            db.ref(path).push(toWrite, thenableToPromise(resolve, reject));
+        });
     }
 
-    registerIncorrectAnswer(question: Question, answer: string) {
-
+    registerIncorrectAnswer(question: Question, answer: string): Promise<void> {
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
-    registerCurrentEmotion(emotion: string) {
-
+    registerCurrentEmotion(emotion: string): Promise<void> {
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     getLastFeelingAnswer(): Promise<LastFeelingAnswer> {
-        return new Promise(r => {
-            r({
+        return new Promise((resolve) => {
+            resolve({
                 when: new Date(),
             });
         });
@@ -50,5 +64,14 @@ export class BackendFacade {
 export const backendFacade = new BackendFacade();
 function logUnauthAttempt(e) {
     console.log('UNAUTHORIZED ATTEMPT', e);
-    throw e;
+}
+
+function thenableToPromise(resolve, reject): (Function)=>void {
+    return (err) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve();
+        }
+    };
 }

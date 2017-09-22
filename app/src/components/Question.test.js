@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render, renderShallow } from '../../tests/render-utils.js';
-import { randomQuestion, clickAnswer, clickWrongAnswer } from '../../tests/question-utils.js';
+import { randomQuestion, randomWordQuestion, randomEyeQuestion, clickAnswer, clickWrongAnswer } from '../../tests/question-utils.js';
 import { getChildrenAndParent, findChildren, stringifyComponent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Text, Button } from 'react-native';
 
@@ -11,6 +11,8 @@ import { EyeQuestionComponent } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { answerService } from '../services/answer-service.js';
 
+import type { Props as QuestionProps } from './Question.js';
+
 it('renders without crashing', () => {
     const anyQuestion = randomQuestion();
     const component = renderShallow(QuestionComponent, props({ question: anyQuestion }));
@@ -18,11 +20,7 @@ it('renders without crashing', () => {
 });
 
 it('renders eye questions', () => {
-    const question = {
-        type: 'eye-question',
-        image: 'test-image.png',
-        answer: 'THE ANSWER',
-    };
+    const question = randomEyeQuestion();
     const component = renderShallow(QuestionComponent, props({ question: question }));
 
     expect(component).toHaveChildWithProps(EyeQuestionComponent, {question: question});
@@ -30,11 +28,7 @@ it('renders eye questions', () => {
 });
 
 it('renders word questions', () => {
-    const question = {
-        type: 'word-question',
-        questionText: 'THE TEXT',
-        answer: 'THE ANSWER',
-    };
+    const question = randomWordQuestion();
     const component = renderShallow(QuestionComponent, props({ question: question }));
 
     expect(component).toHaveChildWithProps(EmotionWordQuestionComponent, {question: question});
@@ -150,7 +144,7 @@ it('contains the clicked text in the overlay - wrong', () => {
     );
 });
 
-function props(customProps) {
+function props(customProps: $Shape<QuestionProps>) {
     const question = customProps.question || randomQuestion();
     const defaultProps = {
         question: question,

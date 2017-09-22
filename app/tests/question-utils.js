@@ -19,6 +19,7 @@ export function randomEyeQuestion(c?: number): EyeQuestion {
     c = c === undefined ? Math.random() : c;
     const uniqueString = 'IMAGE-'+c;
     return {
+        id: c,
         type: 'eye-question',
         image: uniqueString,
         answer: 'ans-' + uniqueString,
@@ -37,6 +38,7 @@ export function randomWordQuestion(c?: number): EmotionWordQuestion {
     c = c === undefined ? Math.random() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     return {
+        id: c,
         type: 'word-question',
         questionText: uniqueString,
         answer: 'ans-' + uniqueString,

@@ -2,12 +2,9 @@
 
 import React from 'react';
 import { answerService } from './answer-service.js';
+import { randomQuestion } from '../../tests/question-utils.js';
 
-const question = {
-    type: 'eye-question',
-    image: '',
-    answer: 'THE ANSWER',
-};
+const question = randomQuestion();
 
 it('includes the correct answer', () => {
     const answers = answerService.getAnswersTo(question, 3);
