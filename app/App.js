@@ -8,10 +8,6 @@ import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { constants } from './src/styles/constants.js';
 
-
-
-import { Firebase } from './src/components/TEST/firebase.js';
-
 const statusBarHeight = Platform.OS === 'ios'
     ? 20
     : StatusBar.currentHeight;

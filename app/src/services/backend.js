@@ -18,7 +18,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 type LastFeelingAnswer = {
-    when: Date,
+    when: moment$Moment,
 };
 export class BackendFacade {
 
@@ -63,14 +63,51 @@ export class BackendFacade {
     }
 
     registerIncorrectAnswer(question: Question, answer: string): Promise<void> {
-        return new Promise((resolve) => {
-            resolve();
+        return new Promise((resolve, reject) => {
+            const user = signedInUser;
+            if (!user) {
+                const err = new Error('Unauthorized write attempt');
+                console.log(err);
+                throw err;
+            }
+
+            console.log('Registering incorrect answer', answer, 'to', question.id);
+            const path = 'user-data/' + user.uid + '/incorrect-answers';
+            const toWrite = {
+                question: question.id,
+                answer: answer,
+                when: moment().format('x'), // x is the unix timestamps in ms
+            };
+
+            db.ref(path).push(toWrite, thenableToPromise(resolve, reject));
         });
     }
 
     registerCurrentEmotion(emotion: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const user = signedInUser;
+            if (!user) {
+                const err = new Error('Unauthorized write attempt');
+                console.log(err);
+                throw err;
+            }
+
+            console.log('Registering current emotion', emotion);
+            const path = 'user-data/' + user.uid + '/emotions';
+            const toWrite = {
+                emotion: emotion,
+                when: moment().format('x'), // x is the unix timestamps in ms
+            };
+
+            db.ref(path).push(toWrite, thenableToPromise(resolve, reject));
+        });
+    }
+
+    getEmotionWords(): Promise<Array<string>> {
         return new Promise((resolve) => {
-            resolve();
+            const emotions = ["Fear", "Anger", "Sadness", "Joy", "Disgust", "Surprise", "Trust", "Anticipation"];
+
+            resolve(emotions);
         });
     }
 
@@ -85,7 +122,7 @@ export class BackendFacade {
 
 export const backendFacade = new BackendFacade();
 
-function thenableToPromise(resolve, reject): (Function)=>void {
+function thenableToPromise(resolve, reject): (?Object)=>void {
     return (err) => {
         if (err) {
             reject(err);

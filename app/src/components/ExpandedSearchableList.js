@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, TextInput, FlatList } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
+import { constants } from '../styles/constants.js';
 
 type Props = {
     data: Array<{ item: string, key: string }>,
@@ -34,9 +35,10 @@ export class ExpandedSearchableList extends React.Component<Props, State> {
         const { renderRow } = this.props;
         const { searchString, data } = this.state;
 
-        return <View>
+        return <View style={{ flex: 1 }} >
             <TextInput
-                placeholder={ 'search...' }
+                style={{ paddingHorizontal: constants.space, paddingBottom: 6, }}
+                placeholder={ 'Search...' }
                 onChangeText={ this._onSearch.bind(this) }
                 value={ searchString } />
 

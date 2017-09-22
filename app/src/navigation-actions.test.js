@@ -11,7 +11,7 @@ describe('startRandomSession', () => {
     it('navigates to "Session"', (done) => {
         const navigateMock = jest.fn();
 
-        startRandomSession({ navigate: navigateMock });
+        startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
 
         checkNextTick(done, () => {
             expect(navigateMock).toHaveBeenCalledTimes(1);
@@ -22,7 +22,7 @@ describe('startRandomSession', () => {
     it('contains 20 questions', (done) => {
         const navigateMock = jest.fn();
 
-        startRandomSession({ navigate: navigateMock });
+        startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
 
         checkNextTick(done, () => {
             const args = navigateMock.mock.calls[0][1];
@@ -38,7 +38,7 @@ describe('startRandomSession', () => {
         const navigateMock = jest.fn();
 
         checkNextTick(done, () => {
-            startRandomSession({ navigate: navigateMock });
+            startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
             const args = navigateMock.mock.calls[0][1];
             if (!args || !args.questions || !args.answerService) {
                 throw 'was not called with questions or an AnswerService';
@@ -75,7 +75,7 @@ describe('onSessionFinished', () => {
         }: any): BackendFacade);
 
         const dispatchMock = jest.fn();
-        const navigation = { dispatch: dispatchMock };
+        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
         return onSessionFinished(navigation, backendFacade)
             .then( () => {

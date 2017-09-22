@@ -1,9 +1,12 @@
 // @flow
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { StandardText } from './StandardText.js';
+import { StandardButton } from './StandardButton.js';
 import { ExpandedSearchableList } from './ExpandedSearchableList.js';
+import { constants } from '../styles/constants.js';
+import { VerticalSpace } from './VerticalSpace.js';
 
 import type { BackendFacade } from '../services/backend.js';
 
@@ -18,14 +21,25 @@ export function CurrentFeeling(props: Props) {
             key: word,
         };
     });
-    return <View>
+    listData.push({
+        item:'apa',
+        key: 'apa',
+    });
+    listData.push({
+        item:'a1pa',
+        key: '1apa',
+    });
+    return <View style={{ flex: 1, padding: constants.space }} >
         <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
+        <VerticalSpace />
 
-        <ExpandedSearchableList
-            data={ listData }
-            // $FlowFixMe
-            renderRow={ (d) => _renderEmotionRow(d.item.item) }
-        />
+        <ScrollView>
+            <ExpandedSearchableList
+                data={ listData }
+                // $FlowFixMe
+                renderRow={ (d) => _renderEmotionRow(d.item.item) }
+            />
+        </ScrollView>
     </View>
 
     function _chooseEmotionWord(emotion) {
@@ -35,10 +49,11 @@ export function CurrentFeeling(props: Props) {
 
     function _renderEmotionRow(emotion) {
 
-        return <StandardText
-            onPress={ _chooseEmotionWord }>
-            { emotion }
-        </StandardText>
+        return <View style={{ padding: constants.space }}>
+            <StandardButton
+            onPress={ _chooseEmotionWord }
+            title={ emotion } />
+        </View>
     }
 }
 

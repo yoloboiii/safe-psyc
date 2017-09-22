@@ -63,6 +63,9 @@ export class HomeScreen extends React.Component<Props, State> {
                 style={ bgImageStyle }>
                 <View style={ contentStyle }>
                     <HeroButton
+                        title={ 'How are you feeling right now? '}
+                        onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
+                    <HeroButton
                         title={ buttonContent }
                         onPress={ this._startRandomSession.bind(this) }
                     />

@@ -2,6 +2,7 @@
 
 import { InteractionManager, Alert } from 'react-native';
 import moment from 'moment';
+// $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
@@ -11,6 +12,7 @@ import type { BackendFacade } from './services/backend.js';
 
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
+    dispatch: (Object) => void,
     state?: {
         params: P,
     },
@@ -18,7 +20,7 @@ export type Navigation<P> = {
 
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void) {
     InteractionManager.runAfterInteractions(() => {
-        const questions = sessionService.getRandomQuestions(2);
+        const questions = sessionService.getRandomQuestions(10);
         const answers = questions.map(question => question.answer);
         onDataLoaded && onDataLoaded();
         navigation.navigate('Session', {
