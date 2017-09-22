@@ -74,21 +74,27 @@ describe('onSessionFinished', () => {
                 })),
         }: any): BackendFacade);
 
-        const navigateMock = jest.fn();
-        const navigation = { navigate: navigateMock };
+        const dispatchMock = jest.fn();
+        const navigation = { dispatch: dispatchMock };
 
         return onSessionFinished(navigation, backendFacade)
             .then( () => {
-                expect(navigateMock).toHaveBeenCalledTimes(1);
-                expect(navigateMock).toHaveBeenCalledWith('CurrentFeeling');
+                expect(dispatchMock).toHaveBeenCalledTimes(1);
+
+                const action = dispatchMock.mock.calls[0][0];
+                expect(action.type).toContain('RESET');
+
+                expect(action.actions.map(a => a.routeName)).toEqual(['Home', 'CurrentFeeling']);
             })
             .then( () => {
-                navigateMock.mockReset();
+                dispatchMock.mockReset();
                 return onSessionFinished(navigation, backendFacade);
             })
             .then( () => {
-                expect(navigateMock).toHaveBeenCalledTimes(1);
-                expect(navigateMock).not.toHaveBeenCalledWith('CurrentFeeling');
+                expect(dispatchMock).toHaveBeenCalledTimes(1);
+                expect(
+                    dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)
+                ).not.toContain('CurrentFeeling');
             });
     });
 });

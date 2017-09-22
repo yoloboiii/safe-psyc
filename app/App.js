@@ -27,7 +27,6 @@ const defaultScreenProps = {
 };
 
 export default App = StackNavigator({
-    FirebaseTest: { screen: Firebase, ...defaultScreenProps },
     Home: { screen: HomeScreen, ...defaultScreenProps },
     Session: { screen: SessionScreen, ...defaultScreenProps },
     QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },

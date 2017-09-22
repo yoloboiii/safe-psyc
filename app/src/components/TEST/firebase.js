@@ -9,7 +9,7 @@ import { firebaseApp } from '../../services/firebase.js';
 
 export function Firebase(props) {
     return <View>
-        <Button onPress={ createUser } title={'b Create user'} />
+        <Button onPress={ createUser } title={'Create user'} />
         <Button onPress={ login } title={'Login'} />
         <Button onPress={ regAns } title={'Register correct answer'} />
         <Button onPress={ readAns } title={'READ DATA'} />
@@ -17,10 +17,10 @@ export function Firebase(props) {
 }
 
 function createUser() {
-    const email = 'apa@larko.se';
+    const email = 'apaa@larko.se';
     const password = '123456';
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    backendFacade.createNewUser(email, password)
         .then( () => {
             Alert.alert('USAR KRIIAITED' ,'');
         })
@@ -30,10 +30,10 @@ function createUser() {
 }
 
 function login() {
-    const email = 'apa@larko.se';
+    const email = 'apaa@larko.se';
     const password = '123456';
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    backendFacade.login(email, password)
         .then( function() {
             Alert.alert('LOGGED IN', JSON.stringify(arguments));
         })
@@ -42,23 +42,33 @@ function login() {
         });
 }
 
-let signedInUser = null;
+let signedinuser = null;
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        // User is signed in.
-        signedInUser = user;
-        Alert.alert('User signed in!', '');
+        // user is signed in.
+        signedinuser = user;
+        Alert.alert('user signed in!', '');
     } else {
-        // User is signed out.
-        signedInUser = null;
+        // user is signed out.
+        signedinuser = null;
     }
 });
 
 function regAns() {
+    const q = {
+        id: 1,
+        type: 'eye-question',
+        image: 'LIMAGE',
+        answer: 'ans',
+    };
 
-    firebase.database().ref("correct-question-answers/"+signedInUser.uid).push({ question: 1 }, (e) => {
-        Alert.alert('STORED MAYHAPS', '' + e);
-    });
+    backendFacade.registerCorrectAnswer(q)
+        .then( () => {
+            Alert.alert('STORED!');
+        })
+        .catch(e => {
+            Alert.alert('Not stored', '' + e);
+        });
 }
 
 function readAns() {

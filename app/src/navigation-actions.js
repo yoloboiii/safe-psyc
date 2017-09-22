@@ -1,9 +1,10 @@
 // @flow
 
 import { InteractionManager, Alert } from 'react-native';
+import moment from 'moment';
+import { NavigationActions } from 'react-navigation';
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
-import moment from 'moment';
 
 import type { Question } from './models/questions.js';
 import type { BackendFacade } from './services/backend.js';
@@ -17,7 +18,7 @@ export type Navigation<P> = {
 
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void) {
     InteractionManager.runAfterInteractions(() => {
-        const questions = sessionService.getRandomQuestions(20);
+        const questions = sessionService.getRandomQuestions(2);
         const answers = questions.map(question => question.answer);
         onDataLoaded && onDataLoaded();
         navigation.navigate('Session', {
@@ -52,10 +53,24 @@ export function onSessionFinished(navigation: Navigation<*>, backend: BackendFac
 
             const { haveAlreadyAnswered, neverWantsToBeAsked } = context;
             const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
+
             if (shouldAskHowTheUserIsFeeling) {
-                navigation.navigate('CurrentFeeling');
+                const resetAction = NavigationActions.reset({
+                    index: 1,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Home' }),
+                        NavigationActions.navigate({ routeName: 'CurrentFeeling' }),
+                    ],
+                });
+                navigation.dispatch(resetAction);
             } else {
-                navigation.navigate('HomeScreen');
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Home' }),
+                    ],
+                });
+                navigation.dispatch(resetAction);
             }
         })
         .catch(e => {
