@@ -1,10 +1,9 @@
 // @flow
 
 import React from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, Picker, ActivityIndicator } from 'react-native';
 import { StandardText } from './StandardText.js';
 import { StandardButton } from './Buttons.js';
-import { ExpandedSearchableList } from './ExpandedSearchableList.js';
 import { constants } from '../styles/constants.js';
 import { VerticalSpace } from './VerticalSpace.js';
 
@@ -13,41 +12,85 @@ import type { BackendFacade } from '../services/backend.js';
 type Props = {
     backendFacade: BackendFacade,
     emotionWords: Array<string>,
+   onAnswered: () => void,
 };
-export function CurrentFeeling(props: Props) {
-    const listData = props.emotionWords.map(word => {
-        return {
-            item: word,
-            key: word,
+type State = {
+    selectedEmotion: string,
+    submissionState: 'not-started' | 'submitting' | 'successful' | 'failed';
+};
+export class CurrentFeeling extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            selectedEmotion: props.emotionWords[0],
+            submissionState: 'not-started',
         };
-    });
-
-    return <View style={ constants.padflex } >
-        <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
-        <VerticalSpace />
-
-        <ExpandedSearchableList
-            data={ listData }
-            // $FlowFixMe
-            renderRow={ (d) => _renderEmotionRow(d.item.item) }
-        />
-    </View>
-
-    function _chooseEmotionWord(emotion) {
-        console.log('Chose', emotion);
-        props.backendFacade.registerCurrentEmotion(emotion)
-            .catch( e => {
-                Alert.alert('Save failure', e.message);
-            });
     }
 
-    function _renderEmotionRow(emotion) {
+    componentWillReceiveProps(newProps: Props) {
+        this.setState({
+            selectedEmotion: newProps.emotionWords[0],
+            submissionState: 'not-started',
+        });
+    }
 
-        return <View style={ constants.padding }>
-            <StandardButton
-                onPress={ () => _chooseEmotionWord(emotion) }
-                title={ emotion } />
+    render() {
+        const words = this.props.emotionWords.map(word => {
+            return <Picker.Item key={word} label={word} value={word} />;
+        });
+
+        const button = this._createButton();
+
+        return <View style={ constants.padflex } >
+            <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
+            <VerticalSpace />
+
+            <Picker
+                selectedValue={ this.state.selectedEmotion }
+                onValueChange={ itemValue => this.setState({ selectedEmotion: itemValue})}>
+
+                { words }
+            </Picker>
+
+            <VerticalSpace multiplier={2} />
+            { button }
         </View>
+    }
+
+    _createButton() {
+        switch(this.state.submissionState) {
+            case 'successful':
+                return <StandardButton
+                    title={ 'Success!' }
+                    onPress={ this.props.onAnswered } />
+            case 'failed':
+            case 'not-started':
+                return <StandardButton
+                    title={ 'Submit' }
+                    onPress={ () => this._chooseEmotionWord(this.state.selectedEmotion) } />
+
+            case 'submitting':
+                return <ActivityIndicator />
+        }
+    }
+
+    _chooseEmotionWord(emotion) {
+        this.setState({
+            submissionState: 'submitting',
+        }, () => {
+            this.props.backendFacade.registerCurrentEmotion(emotion)
+                .then( () => {
+                    this.setState({
+                        submissionState: 'successful',
+                    });
+                })
+                .catch( e => {
+                    this.setState({
+                        submissionState: 'failed',
+                    });
+                    Alert.alert('Save failure', e.message);
+                });
+        });
     }
 }
 

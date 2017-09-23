@@ -1,7 +1,7 @@
 // @flow
 
-//import firebase from 'firebase';
-import firebase from '../../tests/firebase-mock.js';
+import firebase from 'firebase';
+//import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
 import type { Question } from '../models/questions.js';
 
@@ -21,9 +21,9 @@ firebase.initializeApp(firebaseConfig);
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////
 //////////////////////////////////////////////////////////
+let loggedInUser = null;
 const onLoggedInListeners = [];
 const onLoggedOutListeners = [];
-let loggedInUser = null;
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         console.log('User logged in');
@@ -40,6 +40,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 const db = firebase.database();
 type LastFeelingAnswer = {
+    emotion: string,
     when: moment$Moment,
 };
 export class BackendFacade {
@@ -155,10 +156,28 @@ export class BackendFacade {
     }
 
     getLastFeelingAnswer(): Promise<LastFeelingAnswer> {
+        console.log('Reading last recorded feeling');
         return new Promise((resolve) => {
-            resolve({
-                when: moment().subtract(8, 'days'),
-            });
+            const user = loggedInUser;
+            if (!user) {
+                const err = new Error('Unauthorized read attempt');
+                console.log(err);
+                throw err;
+            }
+
+            firebase.database().ref('user-data/' + user.uid + '/emotions')
+                .orderByChild('when')
+                .limitToLast(1)
+                .once('value', (snap) => {
+                    const firebaseWeirdValue = snap.val();
+                    const firebaseWeirdKey = Object.keys(firebaseWeirdValue)[0];
+                    const value = firebaseWeirdValue[firebaseWeirdKey];
+
+                    resolve({
+                        emotion: value.emotion,
+                        when: moment(value.when, 'x'),
+                    });
+                });
         });
     }
 }
@@ -167,6 +186,7 @@ export const backendFacade = new BackendFacade();
 
 function thenableToPromise(resolve, reject): (?Object)=>void {
     return (err) => {
+        console.log('HERP', err);
         if (err) {
             reject(err);
         } else {

@@ -27,10 +27,8 @@ const mockObj = {
         return {
             ref: () => {
                 return {
-                    push: () => {
-                        return new Promise(resolve => {
-                            resolve();
-                        });
+                    push: (_, cb) => {
+                        cb();
                     },
                 };
             },

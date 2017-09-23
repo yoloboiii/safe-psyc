@@ -95,7 +95,7 @@ export class LoginScreen extends React.Component<{}, State> {
 
     render() {
         const loginButton = this.state.loading === 'login'
-            ? <ActivityIndicator />
+            ? <ActivityIndicator style={ constants.flex1 } />
             : <LargeButton
                 style={ loginStyle }
                 onPress={ this._login.bind(this) }
@@ -103,7 +103,7 @@ export class LoginScreen extends React.Component<{}, State> {
                 title={ 'Login' } />
 
         const registerButton = this.state.loading === 'register'
-            ? <ActivityIndicator />
+            ? <ActivityIndicator style={ constants.flex1 } />
             : <LargeButton
                 style={ registerStyle }
                 onPress={ this._register.bind(this) }

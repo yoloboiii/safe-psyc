@@ -7,7 +7,7 @@ import util from 'util';
 
 const {ReactElement, ReactTestComponent} = prettyFormat.plugins;
 
-export function findChildren(root: React.Component<*, *>, childType: Function): Array<React.Component<*,*>> {
+export function findChildren(root: React.Component<*, *>, childType: Function|string): Array<React.Component<*,*>> {
     return getChildrenAndParent(root)
         .filter(c => {
             // $FlowFixMe
