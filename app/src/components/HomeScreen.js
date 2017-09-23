@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Image, ActivityIndicator, TouchableHighlight, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
+import { VerticalSpace } from './VerticalSpace.js';
 import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../../App.js';
 import { constants } from '../styles/constants.js';
@@ -71,6 +72,7 @@ export class HomeScreen extends React.Component<Props, State> {
                     <HeroButton
                         title={ 'How are you feeling right now? '}
                         onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
+                    <VerticalSpace />
                     <HeroButton
                         title={ buttonContent }
                         onPress={ this._startRandomSession.bind(this) }

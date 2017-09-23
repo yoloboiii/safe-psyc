@@ -51,7 +51,6 @@ export function LargeButton(props: LargeButtonProps) {
 ///////////////////////////////////////////////////////
 const heroContainerStyle = {
     backgroundColor: constants.hilightColor2,
-    margin: constants.space,
     padding: 3 * constants.space,
     borderRadius: 10,
     elevation: 2,
