@@ -58,6 +58,8 @@ export class HomeScreen extends React.Component<Props, State> {
             ? <ActivityIndicator />
             : 'Start random session';
 
+        // $FlowFixMe
+        const cogwheel = require('../../images/settings.png');
         return <ImageBackground>
             <View style={ contentStyle }>
                 <View style={{ alignItems: 'flex-end' }}>
@@ -65,7 +67,7 @@ export class HomeScreen extends React.Component<Props, State> {
                         onPress={ this._openSettings.bind(this) } >
                         <Image
                             style={{ width: 40, height: 40 }}
-                            source={ require('../../images/settings.png') } />
+                            source={ cogwheel } />
                     </TouchableHighlight>
                 </View>
                 <View>

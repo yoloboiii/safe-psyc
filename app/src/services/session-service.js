@@ -80,12 +80,15 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
 }
 
 function scaleForTime(num: number, timeSince: number): number {
-    return 0;
+    return num * sigmoid(-num/20);
 }
 
-function timePenalty(tiemSince: number): number {
-    return 0;
+function timePenalty(timeSince: number): number {
+    return timeSince;
 }
 
+function sigmoid(t) {
+    return 1/(1+Math.pow(Math.E, -t));
+}
 
 export const sessionService = new SessionService();
