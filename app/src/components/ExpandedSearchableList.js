@@ -37,7 +37,7 @@ export class ExpandedSearchableList extends React.Component<Props, State> {
         const { renderRow } = this.props;
         const { searchString, data } = this.state;
 
-        return <View style={{ flex: 1 }} >
+        return <View style={ constants.flex1 } >
             <TextInput
                 style={{ paddingHorizontal: constants.space, paddingBottom: 6, }}
                 placeholder={ 'Search...' }

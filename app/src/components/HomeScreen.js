@@ -3,10 +3,10 @@
 import React from 'react';
 import { View, Image, ActivityIndicator } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
-import { HeroButton } from './HeroButton.js';
+import { HeroButton } from './Buttons.js';
 import { startRandomSession } from '../navigation-actions.js';
 
-import { StandardButton } from './StandardButton.js';
+import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { backendFacade } from '../services/backend.js';
 

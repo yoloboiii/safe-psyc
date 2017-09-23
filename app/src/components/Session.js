@@ -5,7 +5,7 @@ import { View, ScrollView, Image } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { StandardButton } from './StandardButton.js';
+import { StandardButton } from './Buttons.js';
 import { StandardText } from './StandardText.js';
 import { QuestionProgress } from './QuestionProgress.js';
 import { constants } from '../styles/constants.js';
@@ -136,7 +136,7 @@ export class Session extends React.Component<Props, State> {
 
         } else if (this.state.isFinished) {
             return <ScrollView
-                contentContainerStyle={{ padding: constants.space }}>
+                contentContainerStyle={ constants.padding }>
 
                 <StandardText>Great job! Congratulations on finishing the session, here's a summary of how it went!</StandardText>
 

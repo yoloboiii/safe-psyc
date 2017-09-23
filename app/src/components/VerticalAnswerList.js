@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
-import { StandardButton } from './StandardButton.js';
+import { StandardButton } from './Buttons.js';
 
 type Apa = {
     text: string,

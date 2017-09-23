@@ -20,8 +20,13 @@ export function QuestionDetails(props: Props) {
     }
 }
 
+const detailsContainerStyle = { padding: constants.space };
+const detailsImageStyle = {
+    height: 200,
+    backgroundColor: 'red',
+};
 function EyeQuestionDetails(props) {
-    return <View style={{ padding: constants.space }}>
+    return <View style={ detailsContainerStyle }>
         <StandardText style={ constants.largeText }>Question Details</StandardText>
         <VerticalSpace />
 
@@ -29,10 +34,7 @@ function EyeQuestionDetails(props) {
 
         <Image source={{ uri: props.question.image }}
             resizeMode='cover'
-            style={{
-                height: 200,
-                backgroundColor: 'red',
-            }}/>
+            style={ detailsImageStyle }/>
         <VerticalSpace />
 
         <StandardText>Strength meter, 3/5</StandardText>

@@ -1,7 +1,14 @@
 // @flow
 
+const space = 10;
+const flex1 = {
+    flex: 1,
+};
+const padding = {
+    padding: space,
+};
 export const constants = {
-    space: 10,
+    space,
 
     smallText: {
         fontSize: 12,
@@ -11,6 +18,13 @@ export const constants = {
     },
     largeText: {
         fontSize: 22,
+    },
+
+    flex1,
+    padding,
+    padflex: {
+        ...flex1,
+        ...padding,
     },
 
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151

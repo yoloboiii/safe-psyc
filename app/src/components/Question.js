@@ -7,7 +7,7 @@ import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './StandardText.js';
-import { StandardButton } from './StandardButton.js';
+import { StandardButton } from './Buttons.js';
 
 import { constants } from '../styles/constants.js';
 import { sessionService } from '../services/session-service.js';
@@ -71,8 +71,8 @@ export class QuestionComponent extends React.Component<Props,State> {
     render() {
         const questionView = this._getQuestionComponent();
         const resultOverlay = this._createResultOverLay();
-        return <View style={{ flex: 1 }}>
-            <View style={{ padding: constants.space, flex: 1 }}>
+        return <View style={ constants.flex1 }>
+            <View style={ constants.padflex }>
                 { questionView }
             </View>
             { resultOverlay }

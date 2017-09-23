@@ -14,6 +14,13 @@ const mockObj = {
                     authListeners.forEach(l => l(user));
                 });
             },
+            signOut: () => {
+                return new Promise(resolve => {
+                    resolve();
+                    authListeners.forEach(l => l(undefined));
+                });
+            },
+
         };
     },
     database: () => {

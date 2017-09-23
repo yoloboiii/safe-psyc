@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, Alert } from 'react-native';
 import { StandardText } from './StandardText.js';
-import { StandardButton } from './StandardButton.js';
+import { StandardButton } from './Buttons.js';
 import { ExpandedSearchableList } from './ExpandedSearchableList.js';
 import { constants } from '../styles/constants.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -22,7 +22,7 @@ export function CurrentFeeling(props: Props) {
         };
     });
 
-    return <View style={{ flex: 1, padding: constants.space }} >
+    return <View style={ constants.padflex } >
         <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
         <VerticalSpace />
 
@@ -43,7 +43,7 @@ export function CurrentFeeling(props: Props) {
 
     function _renderEmotionRow(emotion) {
 
-        return <View style={{ padding: constants.space }}>
+        return <View style={ constants.padding }>
             <StandardButton
                 onPress={ () => _chooseEmotionWord(emotion) }
                 title={ emotion } />

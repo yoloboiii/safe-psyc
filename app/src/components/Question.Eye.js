@@ -51,6 +51,7 @@ export function EyeQuestionComponent(props: Props) {
 }
 
 
+const overlayImageStyle = { height: 100, };
 export function EyeQuestionOverlay(props: SpecificOverlayProps) {
     const { answeredCorrectly, answer } = props;
 
@@ -70,7 +71,7 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps) {
             <StandardText>That's sadly incorrect. {startOfSentence(answer)} looks like this</StandardText>
             <VerticalSpace />
             <Image
-                style={{ height: 100, }}
+                style={ overlayImageStyle }
                 resizeMode='contain'
                 source={{ uri: answerImage }} />
         </View>
