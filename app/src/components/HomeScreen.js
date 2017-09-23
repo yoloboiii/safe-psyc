@@ -1,21 +1,21 @@
 // @flow
 
 import React from 'react';
-import { View, Image, ActivityIndicator } from 'react-native';
+import { View, Image, ActivityIndicator, TouchableHighlight, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
-import { startRandomSession } from '../navigation-actions.js';
-
-import { StandardButton } from './Buttons.js';
-import { VerticalSpace } from './VerticalSpace.js';
-import { backendFacade } from '../services/backend.js';
+import { startRandomSession, openSettings } from '../navigation-actions.js';
+import { statusBarHeight } from '../../App.js';
+import { constants } from '../styles/constants.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
 const contentStyle = {
+    marginTop: statusBarHeight,
+    padding: constants.space,
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
 };
 
 type Props = {
@@ -36,6 +36,10 @@ export class HomeScreen extends React.Component<Props, State> {
         };
     }
 
+    _openSettings() {
+        openSettings(this.props.navigation);
+    }
+
     _startRandomSession() {
         const onNavDataLoaded = () => {
             this.setState({ loading: false });
@@ -54,17 +58,24 @@ export class HomeScreen extends React.Component<Props, State> {
             : 'Start random session';
 
         return <ImageBackground>
-                <View style={ contentStyle }>
-                <HeroButton
-                    title={ 'How are you feeling right now? '}
-                    onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
-                <HeroButton
-                    title={ buttonContent }
-                    onPress={ this._startRandomSession.bind(this) }
-                />
-
-                <VerticalSpace multiplier={4} />
-                <StandardButton onPress={ backendFacade.logOut } title={ 'Log out' } />
+            <View style={ contentStyle }>
+                <View style={{ alignItems: 'flex-end' }}>
+                    <TouchableHighlight
+                        onPress={ this._openSettings.bind(this) } >
+                        <Image
+                            style={{ width: 40, height: 40 }}
+                            source={ require('../../images/settings.png') } />
+                    </TouchableHighlight>
+                </View>
+                <View>
+                    <HeroButton
+                        title={ 'How are you feeling right now? '}
+                        onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
+                    <HeroButton
+                        title={ buttonContent }
+                        onPress={ this._startRandomSession.bind(this) }
+                    />
+                </View>
             </View>
         </ImageBackground>
     }

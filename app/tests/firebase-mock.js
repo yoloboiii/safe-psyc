@@ -1,5 +1,5 @@
 const authListeners = [];
-const user = {};
+const user = { email: 'a@b.c' };
 
 const mockObj = {
     initializeApp: () => {},

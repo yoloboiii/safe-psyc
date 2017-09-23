@@ -1,7 +1,7 @@
 // @flow
 
-import firebase from 'firebase';
-//import firebase from '../../tests/firebase-mock.js';
+//import firebase from 'firebase';
+import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
 import type { Question } from '../models/questions.js';
 
@@ -84,6 +84,10 @@ export class BackendFacade {
 
     onUserLoggedOut(callback: ()=>void) {
         onLoggedOutListeners.push(callback);
+    }
+
+    getLoggedInUser(): ?Object {
+        return loggedInUser;
     }
 
     registerCorrectAnswer(question: Question): Promise<void> {

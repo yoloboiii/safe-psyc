@@ -3,6 +3,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 import { StatusBar, Platform } from 'react-native';
 
 import { HomeScreen } from './src/components/HomeScreen.js';
+import { SettingsScreen } from './src/components/SettingsScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
@@ -10,7 +11,7 @@ import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 
-const statusBarHeight = Platform.OS === 'ios'
+export const statusBarHeight = Platform.OS === 'ios'
     ? 20
     : StatusBar.currentHeight;
 
@@ -25,8 +26,9 @@ const defaultScreenProps = {
 };
 
 const Navigator = StackNavigator({
-    Login: { screen: LoginScreen, ...defaultScreenProps },
-    Home: { screen: HomeScreen, ...defaultScreenProps },
+    Login: { screen: LoginScreen },
+    Home: { screen: HomeScreen },
+    Settings: { screen: SettingsScreen, ...defaultScreenProps },
 
     Session: { screen: SessionScreen, ...defaultScreenProps },
     QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },

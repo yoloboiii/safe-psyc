@@ -80,3 +80,7 @@ export function onSessionFinished(navigation: Navigation<*>, backend: BackendFac
             Alert.alert( 'ERROR', 'Unable to navigate onSessionFinished.\n' + e);
         });
 }
+
+export function openSettings(navigation: Navigation<*>) {
+    navigation.navigate('Settings');
+}
