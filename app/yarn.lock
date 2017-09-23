@@ -4772,6 +4772,10 @@ react-native-tab-view@^0.0.65:
   dependencies:
     prop-types "^15.5.8"
 
+react-native-textinput-effects@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-textinput-effects/-/react-native-textinput-effects-0.4.0.tgz#96c27e8fb8a5e95a0e3fc46aaa23c071c4e8be15"
+
 react-native-vector-icons@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.1.1.tgz#9ac75bde77d9243346668c51dca7756775428087"

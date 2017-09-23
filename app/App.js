@@ -1,12 +1,14 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import { StatusBar, Platform } from 'react-native';
 
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
+import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
+import { backendFacade } from './src/services/backend.js';
 
 const statusBarHeight = Platform.OS === 'ios'
     ? 20
@@ -22,12 +24,61 @@ const defaultScreenProps = {
     }
 };
 
-export default App = StackNavigator({
+const Navigator = StackNavigator({
+    Login: { screen: LoginScreen, ...defaultScreenProps },
     Home: { screen: HomeScreen, ...defaultScreenProps },
+
     Session: { screen: SessionScreen, ...defaultScreenProps },
     QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },
     CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
 });
+
+export default class App extends React.Component<{}, { loginListenersRegistered: boolean}> {
+
+    constructor() {
+        super();
+        this.loginListenersRegistered = false;
+    }
+
+    _setNavigator(navigator) {
+        this.navigator = navigator;
+        this._registerLoginListeners();
+    }
+
+    _registerLoginListeners() {
+
+        if (!this.loginListenersRegistered) {
+            console.log('Registering login listeners');
+            backendFacade.onUserLoggedIn(() => {
+                this.navigator.dispatch(
+                    NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Home' })
+                        ],
+                    })
+                );
+            });
+
+            backendFacade.onUserLoggedOut(() => {
+                this.navigator.dispatch(
+                    NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Login' })
+                        ],
+                    })
+                );
+            });
+
+            this.loginListenersRegistered = true;
+        }
+    }
+
+    render() {
+        return <Navigator ref={ this._setNavigator.bind(this) } />
+    }
+}
 
 
 

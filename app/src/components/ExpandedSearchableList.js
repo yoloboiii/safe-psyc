@@ -24,7 +24,9 @@ export class ExpandedSearchableList extends React.Component<Props, State> {
     }
 
     _onSearch(text) {
-        const data = this.props.data.filter(d => d.item.indexOf(text) > -1);
+        const data = this.props.data.filter(d => {
+            return d.item.toLowerCase().indexOf(text.toLowerCase()) > -1
+        });
         this.setState({
             searchString: text,
             data: data,

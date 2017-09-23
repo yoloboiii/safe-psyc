@@ -1,22 +1,44 @@
 // @flow
 
-import firebase from 'firebase';
-import { firebaseApp } from '../services/firebase.js';
+//import firebase from 'firebase';
+import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
 import type { Question } from '../models/questions.js';
 
-const db = firebaseApp.database();
-let signedInUser = null;
+//////////////////////////////////////////////////////////
+///////////////////// INIT FIREBASE //////////////////////
+//////////////////////////////////////////////////////////
+const firebaseConfig = {
+    apiKey: "AIzaSyBi5UdLAheAzbIFQObjQ2-3QJfkWWSTWGc",
+    authDomain: "safe-psyc.firebaseapp.com",
+    databaseURL: "https://safe-psyc.firebaseio.com",
+    projectId: "safe-psyc",
+    storageBucket: "safe-psyc.appspot.com",
+    messagingSenderId: "1023992322811"
+};
+firebase.initializeApp(firebaseConfig);
+
+//////////////////////////////////////////////////////////
+//////////////////// AUTH LISTENERS //////////////////////
+//////////////////////////////////////////////////////////
+const onLoggedInListeners = [];
+const onLoggedOutListeners = [];
+let loggedInUser = null;
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        console.log('User signed in');
-        signedInUser = user;
+        console.log('User logged in');
+        loggedInUser = user;
+
+        onLoggedInListeners.forEach(l => l());
     } else {
-        console.log('User signed out');
-        signedInUser = null;
+        console.log('User logged out');
+        loggedInUser = null;
+
+        onLoggedOutListeners.forEach(l => l());
     }
 });
 
+const db = firebase.database();
 type LastFeelingAnswer = {
     when: moment$Moment,
 };
@@ -29,6 +51,7 @@ export class BackendFacade {
             })
             .catch(function(error) {
                 console.log('Failed creating user', email, error);
+                throw error;
             });
     }
 
@@ -39,12 +62,32 @@ export class BackendFacade {
             })
             .catch(function(error) {
                 console.log('Failed logging in as', email, error);
+                throw error;
             });
+    }
+
+    logOut(): Promise<void> {
+        return firebase.auth().signOut()
+            .then( () => {
+                console.log('User logged out');
+            })
+            .catch( e => {
+                console.log('Failed logging out', e);
+                throw e;
+            });
+    }
+
+    onUserLoggedIn(callback: ()=>void) {
+        onLoggedInListeners.push(callback);
+    }
+
+    onUserLoggedOut(callback: ()=>void) {
+        onLoggedOutListeners.push(callback);
     }
 
     registerCorrectAnswer(question: Question): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = signedInUser;
+            const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
                 console.log(err);
@@ -64,7 +107,7 @@ export class BackendFacade {
 
     registerIncorrectAnswer(question: Question, answer: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = signedInUser;
+            const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
                 console.log(err);
@@ -85,7 +128,7 @@ export class BackendFacade {
 
     registerCurrentEmotion(emotion: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = signedInUser;
+            const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
                 console.log(err);
