@@ -1,6 +1,6 @@
 // @flow
 
-import { QuestionDetails, TriangularMeter } from './QuestionDetails.js';
+import { QuestionDetails, StrengthMeter } from './QuestionDetails.js';
 import { render } from '../../tests/render-utils.js';
 import { randomQuestion, randomEyeQuestion } from '../../tests/question-utils.js';
 import { getAllRenderedStrings } from '../../tests/component-tree-utils.js';
@@ -31,7 +31,7 @@ it('contains a strength meter', () => {
         },
     }, defaultProps);
 
-    expect(component).toHaveChild(TriangularMeter);
+    expect(component).toHaveChild(StrengthMeter);
 });
 
 it('is humble about the strength meter when there\'s not enough data', () => {
@@ -42,7 +42,7 @@ it('is humble about the strength meter when there\'s not enough data', () => {
         },
     }, defaultProps);
 
-    expect(component).not.toHaveChild(TriangularMeter);
+    expect(component).not.toHaveChild(StrengthMeter);
 });
 
 it('shows emotions that the user often confuse with the main emotion', () => {

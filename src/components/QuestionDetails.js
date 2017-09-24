@@ -11,7 +11,11 @@ import type { Question, EyeQuestion } from '../models/questions.js';
 import type { Navigation } from '../navigation-actions.js';
 import type moment from 'moment';
 
-const detailsContainerStyle = { padding: constants.space };
+const detailsContainerStyle = {
+    flex: 1,
+    padding: constants.space,
+    backgroundColor: constants.notReallyWhite,
+};
 const detailsImageStyle = {
     height: 200,
 };
@@ -34,46 +38,60 @@ export function QuestionDetails(props: Props) {
             <Image source={{ uri: props.question.image }}
                 resizeMode='cover'
                 style={ detailsImageStyle }/>
-            <VerticalSpace />
+            <VerticalSpace multiplier={2} />
           </View>
         : undefined;
 
     const details = props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4
         ? <StandardText>You haven't encountered this emotion enough to give any stats</StandardText>
-        : <View>
-            <StrengthMeter dataPoints={ props.dataPoints } />
+        : <View style={{ flexDirection: 'row' }}>
             <ConfusionList
+                style={{ flex: 2 }}
                 dataPoints={ props.dataPoints }
                 navigation={ props.navigation } />
+
+            <StrengthMeter
+                style={ constants.flex1 }
+                dataPoints={ props.dataPoints } />
         </View>
 
     return <View style={ detailsContainerStyle }>
-        <StandardText style={ constants.largeText }>Question Details</StandardText>
+        <StandardText style={ constants.largeText }>{ props.question.answer }</StandardText>
         <VerticalSpace />
 
-        <StandardText>{ props.question.answer }</StandardText>
         { image }
 
         { details }
     </View>
 }
 
-function StrengthMeter(props) {
+const filledMeterStyle = {
+    width: constants.space * 4,
+    height: constants.space * 20,
+    backgroundColor: constants.hilightColor2,
+};
+const unfilledMeterStyle = {
+    width: filledMeterStyle.width,
+    backgroundColor: 'lightgray',
+};
+type StrengthMeterProps = {
+    dataPoints: {
+        correct: Array<*>,
+        incorrect: Array<*>,
+    },
+};
+export function StrengthMeter(props: StrengthMeterProps) {
     const { correct, incorrect } = props.dataPoints;
 
-    const percent = correct.length / (correct.length + incorrect.length);
-    return <TriangularMeter percent={ percent } />
-}
-
-export function TriangularMeter(props: { percent: number }) {
-    const { percent } = props;
-    return <View>
-        <StandardText>{percent}%</StandardText>
+    const factor = correct.length / (correct.length + incorrect.length);
+    const percent = Math.floor(factor * 100);
+    return <View style={ filledMeterStyle }>
+        <View style={ {...unfilledMeterStyle, ...{ height: (100 - percent)+'%'}} } />
     </View>
 }
 
 function ConfusionList(props) {
-    const { navigation } = props;
+    const { navigation, ...restProps } = props;
     const { correct, incorrect } = props.dataPoints;
 
     if (incorrect.length < 4) {
@@ -85,8 +103,9 @@ function ConfusionList(props) {
         question: i.question,
         key: i.question.answer,
     }));
-    return <View>
+    return <View {...restProps} >
         <StandardText>You sometimes get this confused with...</StandardText>
+        <VerticalSpace />
         <FlatList
             data={ Array.from(data.values()) }
             renderItem={ renderRow } />
