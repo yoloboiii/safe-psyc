@@ -9,9 +9,6 @@ import { CurrentFeeling } from './CurrentFeeling.js';
 import { NavigationActions } from 'react-navigation';
 import { backendFacade } from '../services/backend.js';
 
-// $FlowFixMe
-import { Svg, Circle, Rect } from 'react-native-svg';
-
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
@@ -65,34 +62,4 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
                 backendFacade={ backendFacade } />
         }
     }
-}
-
-function ClickableSvgBody(props: {}) {
-
-        return (
-            <Svg
-                height="100"
-                width="100"
-            >
-                <Circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    stroke="blue"
-                    strokeWidth="2.5"
-                    fill="green"
-                    onPress={ () => console.log('CLICKED CIRCLE') }
-                />
-                <Rect
-                    x="15"
-                    y="15"
-                    width="70"
-                    height="70"
-                    stroke="red"
-                    strokeWidth="2"
-                    fill="yellow"
-                    onPress={ () => console.log('CLICKED RECT') }
-                />
-            </Svg>
-        );
 }
