@@ -14,7 +14,7 @@ import { backendFacade } from './src/services/backend.js';
 
 export const statusBarHeight = Platform.OS === 'ios'
     ? 20
-    : StatusBar.currentHeight;
+    : 0; //StatusBar.currentHeight;
 
 const defaultScreenProps = {
     navigationOptions: {
