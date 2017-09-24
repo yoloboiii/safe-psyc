@@ -74,7 +74,7 @@ export class LoginScreen extends React.Component<Props, State> {
                 this.setState({
                     loading: 'no',
                 });
-                Alert.alert('Login failed', e);
+                Alert.alert('Login failed', e.message);
             });
     }
 

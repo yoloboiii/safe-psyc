@@ -140,6 +140,15 @@ export class BackendFacade {
         });
     }
 
+    getAnswersTo(question: Question): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ question: Question, when: moment$Moment}>}> {
+        return new Promise((resolve) => {
+            resolve({
+                correct: [],
+                incorrect: [],
+            });
+        });
+    }
+
     createNewUser(email: string, password: string): Promise<void> {
         return firebase.auth().createUserWithEmailAndPassword(email, password)
             .then( () => {

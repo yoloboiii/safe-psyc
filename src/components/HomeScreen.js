@@ -9,6 +9,9 @@ import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../../App.js';
 import { constants } from '../styles/constants.js';
 
+import { navigateToQuestionDetails } from '../navigation-actions.js';
+import { sessionService } from '../services/session-service.js';
+
 import type { Navigation } from '../navigation-actions.js';
 
 const contentStyle = {
@@ -71,6 +74,10 @@ export class HomeScreen extends React.Component<Props, State> {
                     </TouchableHighlight>
                 </View>
                 <View>
+                    <HeroButton
+                        title={ 'Question details'}
+                        onPress={ () => navigateToQuestionDetails(this.props.navigation, sessionService.getQuestionPool()[0]) } />
+                    <VerticalSpace />
                     <HeroButton
                         title={ 'How are you feeling right now? '}
                         onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
