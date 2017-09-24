@@ -5,7 +5,7 @@ import { Image, TouchableHighlight } from 'react-native';
 
 import { render } from '../../tests/render-utils.js';
 import { randomEyeQuestion, randomEyeQuestions, randomWordQuestions } from '../../tests/question-utils.js';
-import { stringifyComponent, findChildren, findParent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
+import { stringifyComponent, findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 
 it('contains all images of eye-questions', () => {
     const eyeQuestions = randomEyeQuestions(5);
@@ -47,9 +47,7 @@ it('navigates to the question details when clicking the image', () => {
         navigation: { navigate: navigateMock },
     });
 
-    const image = findChildren(component, Image)[0];
-    const touchable = findParent(image, TouchableHighlight);
-
+    const touchable = findChildren(component, TouchableHighlight)[0];
     expect(touchable).toBeDefined();
 
     expect(navigateMock).not.toHaveBeenCalled();

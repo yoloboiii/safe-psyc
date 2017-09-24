@@ -5,11 +5,14 @@ import { findChildren, stringifyComponent } from '../../tests/component-tree-uti
 import { Button } from 'react-native';
 import { CurrentFeeling } from './CurrentFeeling.js';
 
+const defaultProps = {
+    onAnswered: () => {},
+};
 it('has a list of emotion words', () => {
     const expectedWords = ['a', 'b', 'c'];
     const component = render(CurrentFeeling, {
         emotionWords: expectedWords,
-    });
+    }, defaultProps);
 
 
     const wordList = findChildren(component, 'RCTPicker')[0]
@@ -29,7 +32,7 @@ it('submits the chosen emotion to the backend', () => {
     const component = render(CurrentFeeling, {
         emotionWords: ['a', 'b'],
         backendFacade: backendFacade,
-    });
+    }, defaultProps);
 
     const button = findChildren(component, Button)
         .filter(b => b.props.title === 'Submit')[0];

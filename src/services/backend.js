@@ -142,10 +142,27 @@ export class BackendFacade {
 
     getAnswersTo(question: Question): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ question: Question, when: moment$Moment}>}> {
         return new Promise((resolve) => {
-            resolve({
-                correct: [],
-                incorrect: [],
+            const user = loggedInUser;
+            if (!user) {
+                const err = new Error('Unauthorized read attempt');
+                console.log(err);
+                throw err;
+            }
+
+            const correctPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value', (snap) => {
+                return ['corr'];
             });
+            const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value', (snap) => {
+                return ['incorr'];
+            });
+            return firebase.Promise.all([correctPromise, incorrectPromise])
+                .then( (something) => {
+                    console.log('PROMISE ALL', something.val());
+                })
+                .catch( e => {
+                    console.log('PROMISE ALL FAILED', e);
+                    throw e;
+                });
         });
     }
 

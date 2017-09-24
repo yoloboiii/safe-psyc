@@ -18,14 +18,18 @@ export type Navigation<P> = {
     },
 }
 
-export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void) {
-    InteractionManager.runAfterInteractions(() => {
-        const questions = sessionService.getRandomQuestions(10);
-        const answers = sessionService.getQuestionPool().map(question => question.answer);
-        onDataLoaded && onDataLoaded();
-        navigation.navigate('Session', {
-            questions: questions,
-            answerService: new AnswerService(answers),
+export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void): Promise<{}> {
+    return new Promise( resolve => {
+        InteractionManager.runAfterInteractions(() => {
+            const questions = sessionService.getRandomQuestions(10);
+            const answers = sessionService.getQuestionPool().map(question => question.answer);
+            onDataLoaded && onDataLoaded();
+            navigation.navigate('Session', {
+                questions: questions,
+                answerService: new AnswerService(answers),
+            });
+
+            resolve();
         });
     });
 }
@@ -89,4 +93,26 @@ export function toResetPassword(navigation: Navigation<*>, email?: string) {
 
 export function openSettings(navigation: Navigation<*>) {
     navigation.navigate('Settings');
+}
+
+export function onUserLoggedIn(navigation: Navigation<*>) {
+    navigation.dispatch(
+        NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Home' })
+            ],
+        })
+    );
+}
+
+export function onUserLoggedOut(navigation: Navigation<*>) {
+    this.navigator.dispatch(
+        NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Login' })
+            ],
+        })
+    );
 }

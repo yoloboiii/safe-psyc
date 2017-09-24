@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator, NavigationActions } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 import { StatusBar, Platform } from 'react-native';
 
 import { HomeScreen } from './src/components/HomeScreen.js';
@@ -53,27 +53,9 @@ export default class App extends React.Component<{}, { loginListenersRegistered:
 
         if (!this.loginListenersRegistered) {
             console.log('Registering login listeners');
-            backendFacade.onUserLoggedIn(() => {
-                this.navigator.dispatch(
-                    NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Home' })
-                        ],
-                    })
-                );
-            });
 
-            backendFacade.onUserLoggedOut(() => {
-                this.navigator.dispatch(
-                    NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Login' })
-                        ],
-                    })
-                );
-            });
+            backendFacade.onUserLoggedIn(() => onUserLoggedIn(this.navigator));
+            backendFacade.onUserLoggedOut(() => onUserLoggedOut(this.navigator));
 
             this.loginListenersRegistered = true;
         }
