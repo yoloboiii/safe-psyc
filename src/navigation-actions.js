@@ -21,7 +21,7 @@ export type Navigation<P> = {
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void) {
     InteractionManager.runAfterInteractions(() => {
         const questions = sessionService.getRandomQuestions(10);
-        const answers = questions.map(question => question.answer);
+        const answers = sessionService.getQuestionPool().map(question => question.answer);
         onDataLoaded && onDataLoaded();
         navigation.navigate('Session', {
             questions: questions,
