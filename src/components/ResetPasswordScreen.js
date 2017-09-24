@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, Alert } from 'react-native';
 import { Kaede } from'react-native-textinput-effects';
+// $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { LargeButton, StandardButton } from './Buttons.js';
 import { StandardText } from './StandardText.js';
