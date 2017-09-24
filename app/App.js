@@ -4,6 +4,7 @@ import { StatusBar, Platform } from 'react-native';
 
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SettingsScreen } from './src/components/SettingsScreen.js';
+import { ResetPasswordScreen } from './src/components/ResetPasswordScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
 import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
@@ -29,6 +30,7 @@ const Navigator = StackNavigator({
     Login: { screen: LoginScreen },
     Home: { screen: HomeScreen },
     Settings: { screen: SettingsScreen, ...defaultScreenProps },
+    ResetPassword: { screen: ResetPasswordScreen, ...defaultScreenProps },
 
     Session: { screen: SessionScreen, ...defaultScreenProps },
     QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },

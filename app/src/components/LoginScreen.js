@@ -9,6 +9,9 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { constants } from '../styles/constants.js';
 import { backendFacade } from '../services/backend.js';
+import { toResetPassword } from '../navigation-actions.js';
+
+import type { Navigation } from '../navigation-actions.js';
 
 const containerStyle = {
     flex: 1,
@@ -32,17 +35,20 @@ const registerStyle = {
     backgroundColor: 'transparent',
 };
 
+type Props = {
+    navigation: Navigation<{}>,
+};
 type State = {
     loading: 'no' | 'login' | 'register',
     email: string,
     password: string,
 };
-export class LoginScreen extends React.Component<{}, State> {
+export class LoginScreen extends React.Component<Props, State> {
     static navigationOptions = {
         header: null,
     };
 
-    constructor(props: {}) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             loading: 'no',
@@ -93,6 +99,10 @@ export class LoginScreen extends React.Component<{}, State> {
             });
     }
 
+    _resetPassword() {
+        toResetPassword(this.props.navigation, this.state.email);
+    }
+
     render() {
         const loginButton = this.state.loading === 'login'
             ? <ActivityIndicator style={ constants.flex1 } />
@@ -134,7 +144,9 @@ export class LoginScreen extends React.Component<{}, State> {
                     </View>
 
                     <VerticalSpace />
-                    <StandardText>Forgot password</StandardText>
+                    <StandardText onPress={this._resetPassword.bind(this) }>
+                        Forgot password
+                    </StandardText>
                 </View>
             </ImageBackground>
     }

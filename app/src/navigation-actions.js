@@ -81,6 +81,12 @@ export function onSessionFinished(navigation: Navigation<*>, backend: BackendFac
         });
 }
 
+export function toResetPassword(navigation: Navigation<*>, email?: string) {
+    navigation.navigate('ResetPassword', {
+        email: email,
+    });
+}
+
 export function openSettings(navigation: Navigation<*>) {
     navigation.navigate('Settings');
 }

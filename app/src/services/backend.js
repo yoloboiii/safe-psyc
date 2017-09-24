@@ -1,7 +1,7 @@
 // @flow
 
-//import firebase from 'firebase';
-import firebase from '../../tests/firebase-mock.js';
+import firebase from 'firebase';
+//import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
 import type { Question } from '../models/questions.js';
 
@@ -44,51 +44,6 @@ type LastFeelingAnswer = {
     when: moment$Moment,
 };
 export class BackendFacade {
-
-    createNewUser(email: string, password: string): Promise<void> {
-        return firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then( () => {
-                console.log('Created user', email);
-            })
-            .catch(function(error) {
-                console.log('Failed creating user', email, error);
-                throw error;
-            });
-    }
-
-    login(email: string, password: string): Promise<void> {
-        return firebase.auth().signInWithEmailAndPassword(email, password)
-            .then( function() {
-                console.log('Login as', email, 'successful');
-            })
-            .catch(function(error) {
-                console.log('Failed logging in as', email, error);
-                throw error;
-            });
-    }
-
-    logOut(): Promise<void> {
-        return firebase.auth().signOut()
-            .then( () => {
-                console.log('User logged out');
-            })
-            .catch( e => {
-                console.log('Failed logging out', e);
-                throw e;
-            });
-    }
-
-    onUserLoggedIn(callback: ()=>void) {
-        onLoggedInListeners.push(callback);
-    }
-
-    onUserLoggedOut(callback: ()=>void) {
-        onLoggedOutListeners.push(callback);
-    }
-
-    getLoggedInUser(): ?Object {
-        return loggedInUser;
-    }
 
     registerCorrectAnswer(question: Question): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -183,6 +138,62 @@ export class BackendFacade {
                     });
                 });
         });
+    }
+
+    createNewUser(email: string, password: string): Promise<void> {
+        return firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then( () => {
+                console.log('Created user', email);
+            })
+            .catch(function(error) {
+                console.log('Failed creating user', email, error);
+                throw error;
+            });
+    }
+
+    login(email: string, password: string): Promise<void> {
+        return firebase.auth().signInWithEmailAndPassword(email, password)
+            .then( function() {
+                console.log('Login as', email, 'successful');
+            })
+            .catch(function(error) {
+                console.log('Failed logging in as', email, error);
+                throw error;
+            });
+    }
+
+    logOut(): Promise<void> {
+        return firebase.auth().signOut()
+            .then( () => {
+                console.log('User logged out');
+            })
+            .catch( e => {
+                console.log('Failed logging out', e);
+                throw e;
+            });
+    }
+
+    resetPassword(email: string): Promise<void> {
+        return firebase.auth().sendPasswordResetEmail(email)
+            .then( () => {
+                console.log('Password reset sent to', email);
+            })
+            .catch( e => {
+                console.log('Failed sending password reset to', email, e);
+                throw e;
+            });
+    }
+
+    onUserLoggedIn(callback: ()=>void) {
+        onLoggedInListeners.push(callback);
+    }
+
+    onUserLoggedOut(callback: ()=>void) {
+        onLoggedOutListeners.push(callback);
+    }
+
+    getLoggedInUser(): ?Object {
+        return loggedInUser;
     }
 }
 
