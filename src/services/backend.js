@@ -3,6 +3,7 @@
 import firebase from 'firebase';
 //import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
+import { sessionService} from './session-service.js';
 import type { Question } from '../models/questions.js';
 
 //////////////////////////////////////////////////////////
@@ -141,7 +142,6 @@ export class BackendFacade {
     }
 
     getAnswersTo(question: Question): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ question: Question, when: moment$Moment}>}> {
-        return new Promise((resolve) => {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
@@ -149,21 +149,53 @@ export class BackendFacade {
                 throw err;
             }
 
-            const correctPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value', (snap) => {
-                return ['corr'];
-            });
-            const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value', (snap) => {
-                return ['incorr'];
-            });
+            const correctPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value')
+                .then( (snap) => {
+                    const correctAnswers = [];
+                    snap.forEach(correctAnswer => {
+                        const val = correctAnswer.val();
+                        if (val.question === question.id) {
+                            correctAnswers.push(moment(val.when, 'x'));
+                        }
+
+                        return false;
+                    });
+                    return correctAnswers;
+                });
+
+            const questionLookupTable = new Map();
+            sessionService.getQuestionPool().forEach(question => questionLookupTable.set(question.answer, question));
+            const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
+                .then( (snap) => {
+                    const incorrectAnswers = [];
+                    snap.forEach(incorrectAnswer => {
+                        const val = incorrectAnswer.val();
+                        if (val.question === question.id) {
+                            incorrectAnswers.push({
+                                question: questionLookupTable.get(val.answer),
+                                when: moment(val.when, 'x'),
+                            });
+                        }
+
+                        return false;
+                    });
+                    return incorrectAnswers;
+                });
+
+            // $FlowFixMe
             return firebase.Promise.all([correctPromise, incorrectPromise])
-                .then( (something) => {
-                    console.log('PROMISE ALL', something.val());
+                .then( (results) => {
+                    const correct = results[0];
+                    const incorrect = results[1];
+                    return {
+                        correct,
+                        incorrect,
+                    };
                 })
                 .catch( e => {
-                    console.log('PROMISE ALL FAILED', e);
+                    console.log('Failed getting answers to', question, e);
                     throw e;
                 });
-        });
     }
 
     createNewUser(email: string, password: string): Promise<void> {

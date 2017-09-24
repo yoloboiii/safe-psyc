@@ -42,18 +42,23 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
             this.setState({
                 loadingState: 'started',
             });
+            console.log('asking be', this);
             backendFacade.getAnswersTo(question)
                 .then( (answers) => {
+                    console.log('got ans');
                     this.setState({
                         loadingState: 'successful',
                         dataPoints: answers,
                     });
                 })
                 .catch( e => {
+                    console.log('got ans fail', this);
                     this.setState({
                         loadingState: 'failed',
                     });
+                    console.log('state set');
                     Alert.alert('Unable read data', e.message);
+                    console.log('alerted');
                 });
         }
     }

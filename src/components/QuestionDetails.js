@@ -14,7 +14,6 @@ import type moment from 'moment';
 const detailsContainerStyle = { padding: constants.space };
 const detailsImageStyle = {
     height: 200,
-    backgroundColor: 'red',
 };
 
 export type DataPoints = {

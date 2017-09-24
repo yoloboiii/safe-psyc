@@ -11,6 +11,7 @@ import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
+import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
 
 export const statusBarHeight = Platform.OS === 'ios'
     ? 20
