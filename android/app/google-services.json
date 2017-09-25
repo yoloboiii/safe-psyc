@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1023992322811",
+    "firebase_url": "https://safe-psyc.firebaseio.com",
+    "project_id": "safe-psyc",
+    "storage_bucket": "safe-psyc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023992322811:android:fbb5eb361c29e9e2",
+        "android_client_info": {
+          "package_name": "se.larko.safepsyc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023992322811-b5ar80usdfko5hiru5an2ig4h15cpii9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAumzsjCW3vSk9dQSQLqtS07iMOi8aDkJw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,24 +1,15 @@
 // @flow
 
-import firebase from 'firebase';
+import RNfirebase from 'react-native-firebase';
 //import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
 import { sessionService} from './session-service.js';
 import type { Question } from '../models/questions.js';
 
-//////////////////////////////////////////////////////////
-///////////////////// INIT FIREBASE //////////////////////
-//////////////////////////////////////////////////////////
-const firebaseConfig = {
-    apiKey: "AIzaSyBi5UdLAheAzbIFQObjQ2-3QJfkWWSTWGc",
-    authDomain: "safe-psyc.firebaseapp.com",
-    databaseURL: "https://safe-psyc.firebaseio.com",
-    projectId: "safe-psyc",
-    storageBucket: "safe-psyc.appspot.com",
-    messagingSenderId: "1023992322811"
-};
-firebase.initializeApp(firebaseConfig);
-
+const firebase = RNfirebase.initializeApp({
+    debug: true,
+    persistence: true,
+});
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////
 //////////////////////////////////////////////////////////
@@ -189,7 +180,6 @@ export class BackendFacade {
                     return incorrectAnswers;
                 });
 
-            // $FlowFixMe
             return firebase.Promise.all([correctPromise, incorrectPromise])
                 .then( (results) => {
                     const correct = results[0];
