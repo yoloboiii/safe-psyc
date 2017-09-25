@@ -18,6 +18,7 @@ import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
+import io.invertase.firebase.crash.RNFirebaseCrashPackage; // Firebase Crash Reporting
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebasePackage(),  // <-- Add this line
           // Add these packages as appropriate
           new RNFirebaseAuthPackage(),
+          new RNFirebaseCrashPackage(),
           new RNFirebaseDatabasePackage(),
           new RNFirebasePerformancePackage()
       );

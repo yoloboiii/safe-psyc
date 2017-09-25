@@ -1,14 +1,5 @@
 // @flow
 
-jest.mock('react-native-firebase', () => ({
-    initializeApp: () => ({
-        auth: () => ({
-            onAuthStateChanged: () => {},
-        }),
-        database: () => {},
-    }),
-}));
-
 import { renderShallow } from '../../tests/render-utils.js';
 import { SessionScreen } from './SessionScreen.js';
 import { Session } from './Session.js';

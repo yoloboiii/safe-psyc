@@ -1,5 +1,14 @@
 // @flow
 
+jest.mock('react-native-firebase', () => ({
+    initializeApp: () => ({
+        auth: () => ({
+            onAuthStateChanged: () => {},
+        }),
+        database: () => {},
+    }),
+}));
+
 require("./toHaveMatcher.js");
 require("./duplicateMatcher.js");
 require("./elementsOtherThanMatcher.js");
