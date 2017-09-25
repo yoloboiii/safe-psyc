@@ -149,6 +149,7 @@ export class BackendFacade {
                 throw err;
             }
 
+            // Get all correct answers
             const correctPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value')
                 .then( (snap) => {
                     const correctAnswers = [];
@@ -163,8 +164,11 @@ export class BackendFacade {
                     return correctAnswers;
                 });
 
+            // Store all questions in a string: Question map
             const questionLookupTable = new Map();
             sessionService.getQuestionPool().forEach(question => questionLookupTable.set(question.answer, question));
+
+            // Get all incorrect answers
             const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
                 .then( (snap) => {
                     const incorrectAnswers = [];
@@ -172,6 +176,9 @@ export class BackendFacade {
                         const val = incorrectAnswer.val();
                         if (val.question === question.id) {
                             incorrectAnswers.push({
+                                // We only store the question id in the db,
+                                // so we need to join in the real question
+                                // objects.
                                 question: questionLookupTable.get(val.answer),
                                 when: moment(val.when, 'x'),
                             });
