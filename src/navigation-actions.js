@@ -6,6 +6,7 @@ import moment from 'moment';
 import { NavigationActions } from 'react-navigation';
 import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
+import { log } from './services/logger.js';
 
 import type { Question } from './models/questions.js';
 import type { BackendFacade } from './services/backend.js';
@@ -80,7 +81,7 @@ export function onSessionFinished(navigation: Navigation<*>, backend: BackendFac
             }
         })
         .catch(e => {
-            console.log('UNABLE TO NAVIGATE!', e);
+            log.error('Unable to navigate onSessionFinished', e);
             Alert.alert( 'ERROR', 'Unable to navigate onSessionFinished.\n' + e);
         });
 }

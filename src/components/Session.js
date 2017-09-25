@@ -9,6 +9,7 @@ import { StandardButton } from './Buttons.js';
 import { StandardText } from './StandardText.js';
 import { QuestionProgress } from './QuestionProgress.js';
 import { constants } from '../styles/constants.js';
+import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';
 import type { Question } from '../models/questions.js';
@@ -76,7 +77,13 @@ export class Session extends React.Component<Props, State> {
             this.state.report.set(currentQ, []);
         }
 
-        this.props.backendFacade.registerCorrectAnswer(currentQ);
+        this.props.backendFacade.registerCorrectAnswer(currentQ)
+            .then( () => {
+                log.debug('Correct answer to ' + currentQ.id + ' saved');
+            })
+            .catch( e => {
+                log.error('Failed saving answer to ' + currentQ.id, e);
+            });
 
         const isLastQuestion = this.state.questions.size() === 1;
         if(isLastQuestion) {
@@ -108,7 +115,13 @@ export class Session extends React.Component<Props, State> {
         reportArray.push(answer);
         this.state.report.set(currentQ, reportArray);
 
-        this.props.backendFacade.registerIncorrectAnswer(currentQ, answer);
+        this.props.backendFacade.registerIncorrectAnswer(currentQ, answer)
+            .then( () => {
+                log.debug('Incorrect answer to ' + currentQ.id + ' saved');
+            })
+            .catch( e => {
+                log.error('Failed saving incorrect answer to ' + currentQ.id, e);
+            });
 
         if (prevCount === 2) {
             this.state.questions.push(currentQ);

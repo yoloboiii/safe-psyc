@@ -14,8 +14,8 @@ import { randomQuestions, randomQuestion, getQuestion, clickAnswerAndDismissOver
 
 const defaultProps = {
     backendFacade: {
-        registerCorrectAnswer: () => {},
-        registerIncorrectAnswer: () => {},
+        registerCorrectAnswer: promiseMock(),
+        registerIncorrectAnswer: promiseMock(),
     },
     onSessionFinished: () => {},
     answerService: answerService,
@@ -207,7 +207,7 @@ it('increases the number of questions left after three wrong answers', () => {
 
 it('invokes the backend facade on correct answers', () => {
     const backendFacade = {
-        registerCorrectAnswer: jest.fn()
+        registerCorrectAnswer: promiseMock(),
     };
     const questions = randomQuestions(1);
     const component = render(Session, {
@@ -222,7 +222,7 @@ it('invokes the backend facade on correct answers', () => {
 
 it('invokes the backend facade on wrong answers', () => {
     const backendFacade = {
-        registerIncorrectAnswer: jest.fn()
+        registerIncorrectAnswer: promiseMock(),
     };
     const questions = randomQuestions(1);
     const component = render(Session, {
@@ -234,3 +234,7 @@ it('invokes the backend facade on wrong answers', () => {
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledTimes(1);
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(questions[0],b.props.title);
 });
+
+function promiseMock() {
+    return jest.fn().mockReturnValue(new Promise(() => {}));
+}

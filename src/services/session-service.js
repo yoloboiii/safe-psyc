@@ -1,5 +1,6 @@
 // @flow
 
+import { log } from './logger.js';
 import type { Question } from '../models/questions.js';
 
 type DataPoint = {
@@ -26,7 +27,7 @@ export class SessionService {
             if (score) {
                 sortableData.push({q: question, score});
             } else {
-                console.log('Didn\'t have enough data to calculate a score for', question);
+                log.debug('Didn\'t have enough data to calculate a score for', question);
             }
         });
 

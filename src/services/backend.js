@@ -3,6 +3,7 @@
 import moment from 'moment';
 import { firebase } from './firebase.js';
 import { sessionService} from './session-service.js';
+import { log } from './logger.js';
 import type { Question } from '../models/questions.js';
 
 //////////////////////////////////////////////////////////
@@ -13,12 +14,12 @@ const onLoggedInListeners = [];
 const onLoggedOutListeners = [];
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        console.log('User logged in');
+        log.debug('onAuthStateChange - user logged in');
         loggedInUser = user;
 
         onLoggedInListeners.forEach(l => l());
     } else {
-        console.log('User logged out');
+        log.debug('onAuthStateChange - user logged out');
         loggedInUser = null;
 
         onLoggedOutListeners.forEach(l => l());
@@ -37,11 +38,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                console.log(err);
+                log.error('Not logged in - registerCorrectAnswer', err);
                 throw err;
             }
 
-            console.log('Registering correct answer to', question.id);
+            log.debug('Registering correct answer to', question.id);
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
                 question: question.id,
@@ -57,11 +58,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                console.log(err);
+                log.error('Not logged in - registerIncorrectAnswer', err);
                 throw err;
             }
 
-            console.log('Registering incorrect answer', answer, 'to', question.id);
+            log.debug('Registering incorrect answer', answer, 'to', question.id);
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
                 question: question.id,
@@ -78,11 +79,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                console.log(err);
+                log.error('Not logged in - registerCurrentEmotion', err);
                 throw err;
             }
 
-            console.log('Registering current emotion', emotion);
+            log.debug('Registering current emotion', emotion);
             const path = 'user-data/' + user.uid + '/emotions';
             const toWrite = {
                 emotion: emotion,
@@ -102,12 +103,12 @@ export class BackendFacade {
     }
 
     getLastFeelingAnswer(): Promise<LastFeelingAnswer> {
-        console.log('Reading last recorded feeling');
+        log.debug('Reading last recorded feeling');
         return new Promise((resolve) => {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
-                console.log(err);
+                log.error('Not logged in - getLastFeelingAnswer', err);
                 throw err;
             }
 
@@ -131,7 +132,7 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
-                console.log(err);
+                log.error('Not logged in - getAnswersTo', err);
                 throw err;
             }
 
@@ -185,7 +186,7 @@ export class BackendFacade {
                     };
                 })
                 .catch( e => {
-                    console.log('Failed getting answers to', question, e);
+                    log.error('Failed getting answers to', question, e);
                     throw e;
                 });
     }
@@ -193,10 +194,10 @@ export class BackendFacade {
     createNewUser(email: string, password: string): Promise<void> {
         return firebase.auth().createUserWithEmailAndPassword(email, password)
             .then( () => {
-                console.log('Created user', email);
+                log.debug('Created user');
             })
             .catch(function(error) {
-                console.log('Failed creating user', email, error);
+                log.error('Failed creating user', error);
                 throw error;
             });
     }
@@ -204,10 +205,10 @@ export class BackendFacade {
     login(email: string, password: string): Promise<void> {
         return firebase.auth().signInWithEmailAndPassword(email, password)
             .then( function() {
-                console.log('Login as', email, 'successful');
+                log.debug('Login successful');
             })
             .catch(function(error) {
-                console.log('Failed logging in as', email, error);
+                log.error('Failed logging in ', error);
                 throw error;
             });
     }
@@ -215,10 +216,10 @@ export class BackendFacade {
     logOut(): Promise<void> {
         return firebase.auth().signOut()
             .then( () => {
-                console.log('User logged out');
+                log.debug('User logged out');
             })
             .catch( e => {
-                console.log('Failed logging out', e);
+                log.error('Failed logging out', e);
                 throw e;
             });
     }
@@ -226,10 +227,10 @@ export class BackendFacade {
     resetPassword(email: string): Promise<void> {
         return firebase.auth().sendPasswordResetEmail(email)
             .then( () => {
-                console.log('Password reset sent to', email);
+                log.debug('Password reset sent');
             })
             .catch( e => {
-                console.log('Failed sending password reset to', email, e);
+                log.error('Failed sending password reset, ', e);
                 throw e;
             });
     }
@@ -251,7 +252,6 @@ export const backendFacade = new BackendFacade();
 
 function thenableToPromise(resolve, reject): (?Object)=>void {
     return (err) => {
-        console.log('HERP', err);
         if (err) {
             reject(err);
         } else {

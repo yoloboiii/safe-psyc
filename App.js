@@ -12,6 +12,7 @@ import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
+import { log } from './src/services/logger.js';
 
 export const statusBarHeight = Platform.OS === 'ios'
     ? 20
@@ -53,10 +54,16 @@ export default class App extends React.Component<{}, { loginListenersRegistered:
     _registerLoginListeners() {
 
         if (!this.loginListenersRegistered) {
-            console.log('Registering login listeners');
+            log.debug('Registering login listeners');
 
-            backendFacade.onUserLoggedIn(() => onUserLoggedIn(this.navigator));
-            backendFacade.onUserLoggedOut(() => onUserLoggedOut(this.navigator));
+            backendFacade.onUserLoggedIn(() => {
+                log.debug('User logged in, redirecting to home');
+                onUserLoggedIn(this.navigator);
+            });
+            backendFacade.onUserLoggedOut(() => {
+                log.debug('User logged out, redirecting to login');
+                onUserLoggedOut(this.navigator);
+            });
 
             this.loginListenersRegistered = true;
         }

@@ -5,6 +5,7 @@ import { ActivityIndicator, Alert } from 'react-native';
 import { QuestionDetails } from './QuestionDetails.js';
 import { StandardText } from './StandardText.js';
 import { backendFacade } from '../services/backend.js';
+import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
 import type { Question } from '../models/questions.js';
@@ -42,23 +43,21 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
             this.setState({
                 loadingState: 'started',
             });
-            console.log('asking be', this);
+
             backendFacade.getAnswersTo(question)
                 .then( (answers) => {
-                    console.log('got ans');
+                    log.debug('Got answers to question', question, answers);
                     this.setState({
                         loadingState: 'successful',
                         dataPoints: answers,
                     });
                 })
                 .catch( e => {
-                    console.log('got ans fail', this);
+                    log.error('Failed getting answers to question', question, e);
                     this.setState({
                         loadingState: 'failed',
                     });
-                    console.log('state set');
                     Alert.alert('Unable read data', e.message);
-                    console.log('alerted');
                 });
         }
     }

@@ -2,21 +2,6 @@
 
 import { Logger } from './logger';
 
-function createLog() {
-    const localMock = {
-        log: jest.fn(),
-    };
-    const remoteMock = {
-        report: jest.fn(),
-    };
-    const log = new Logger(localMock, remoteMock);
-
-    return {
-        localMock,
-        remoteMock,
-        log,
-    };
-}
 it('logs to local logger if there isn\'t an error',  () => {
     const { log, localMock } = createLog();
 
@@ -24,6 +9,7 @@ it('logs to local logger if there isn\'t an error',  () => {
 
     expect(localMock.log).toHaveBeenCalled();
 });
+
 it('logs to local logger if there\'s an error',  () => {
     const { log, localMock } = createLog();
 
@@ -47,3 +33,20 @@ it('logs to remote logger if there\'s an error', () => {
 
     expect(remoteMock.report).toHaveBeenCalled();
 });
+
+function createLog() {
+    const localMock = {
+        log: jest.fn(),
+        error: jest.fn(),
+    };
+    const remoteMock = {
+        report: jest.fn(),
+    };
+    const log = new Logger(localMock, remoteMock);
+
+    return {
+        localMock,
+        remoteMock,
+        log,
+    };
+}

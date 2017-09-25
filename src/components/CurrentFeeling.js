@@ -6,6 +6,7 @@ import { StandardText } from './StandardText.js';
 import { StandardButton } from './Buttons.js';
 import { constants } from '../styles/constants.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';
 
@@ -80,11 +81,13 @@ export class CurrentFeeling extends React.Component<Props, State> {
         }, () => {
             this.props.backendFacade.registerCurrentEmotion(emotion)
                 .then( () => {
+                    log.debug('Current emotion saved');
                     this.setState({
                         submissionState: 'successful',
                     });
                 })
                 .catch( e => {
+                    log.error('Failed saving current emotion', e);
                     this.setState({
                         submissionState: 'failed',
                     });
