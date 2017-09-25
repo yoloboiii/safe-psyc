@@ -1,15 +1,10 @@
 // @flow
 
-import RNfirebase from 'react-native-firebase';
-//import firebase from '../../tests/firebase-mock.js';
 import moment from 'moment';
+import { firebase } from './firebase.js';
 import { sessionService} from './session-service.js';
 import type { Question } from '../models/questions.js';
 
-const firebase = RNfirebase.initializeApp({
-    debug: true,
-    persistence: true,
-});
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////
 //////////////////////////////////////////////////////////
