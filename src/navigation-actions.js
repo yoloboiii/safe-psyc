@@ -107,7 +107,7 @@ export function onUserLoggedIn(navigation: Navigation<*>) {
 }
 
 export function onUserLoggedOut(navigation: Navigation<*>) {
-    this.navigator.dispatch(
+    navigation.dispatch(
         NavigationActions.reset({
             index: 0,
             actions: [

@@ -180,7 +180,7 @@ export class BackendFacade {
                     return incorrectAnswers;
                 });
 
-            return firebase.Promise.all([correctPromise, incorrectPromise])
+            return Promise.all([correctPromise, incorrectPromise])
                 .then( (results) => {
                     const correct = results[0];
                     const incorrect = results[1];
