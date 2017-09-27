@@ -6,6 +6,7 @@ jest.mock('react-native-firebase', () => ({
             onAuthStateChanged: () => {},
         }),
         database: () => {},
+        crash: () => {},
     }),
 }));
 
@@ -14,5 +15,6 @@ require("./duplicateMatcher.js");
 require("./elementsOtherThanMatcher.js");
 require("./containsStringMatcher.js");
 
+import { randomEmotions } from './emotion-utils.js';
 import { answerService } from '../src/services/answer-service.js';
-answerService.setAnswerPool(['aaaaaaaaaaa', 'bbbbbbbbbbb', 'ccccccc', 'ddddd', 'eeeeeeee']);
+answerService.setAnswerPool(randomEmotions(5));

@@ -7,12 +7,13 @@ import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
 
 import type { EmotionWordQuestion } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 
 type Props = {
     question: EmotionWordQuestion,
-    answers: Array<string>,
+    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: (answer: string) => void,
+    onWrongAnswer: (answer: Emotion) => void,
 };
 
 export function EmotionWordQuestionComponent(props: Props) {
@@ -23,7 +24,7 @@ export function EmotionWordQuestionComponent(props: Props) {
         <VerticalSpace multiplier={2} />
         <VerticalAnswerList
             answers={ props.answers }
-            correctAnswer={ question.answer }
+            correctAnswer={ question.emotion }
             onCorrectAnswer={ props.onCorrectAnswer }
             onWrongAnswer={ props.onWrongAnswer } />
     </View>

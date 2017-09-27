@@ -3,15 +3,16 @@
 import React from 'react';
 import { FlatList, View,  Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
-import { QuestionDetails } from './QuestionDetails.js';
+import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './StandardText.js';
-import { navigateToQuestionDetails } from '../navigation-actions.js';
+import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
-    report: Map<Question, Array<string>>,
+    report: Map<Question, Array<Emotion>>,
     navigation: Navigation<{}>,
 };
 export function SessionReport(props: Props) {
@@ -37,7 +38,7 @@ function renderRow(item, navigation) {
         return <EyeQuestionRow
             question={ (question: EyeQuestion) }
             wrongAnswers={ wrongAnswers }
-            onPopoutQuestion={ () => navigateToQuestionDetails(navigation, question) }
+            onPress={ () => navigateToEmotionDetails(navigation, question.emotion) }
             />
     } else if (question.type === 'word-question') {
         return <WordQuestionRow

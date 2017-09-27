@@ -52,7 +52,7 @@ it('navigates to the question details when clicking the image', () => {
 
     expect(navigateMock).not.toHaveBeenCalled();
     touchable.props.onPress();
-    expect(navigateMock).toHaveBeenCalledWith('QuestionDetails', { question: eyeQuestion });
+    expect(navigateMock).toHaveBeenCalledWith('EmotionDetails', { emotion: eyeQuestion.emotion });
 });
 
 function createReportWithNoWrongAnswers(questions) {

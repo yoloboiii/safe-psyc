@@ -2,22 +2,23 @@
 
 import { knuthShuffle } from 'knuth-shuffle';
 import type { Question } from '../models/questions';
+import type { Emotion } from '../models/emotion.js';
 
 export class AnswerService {
 
-    _answerPool: Array<string>;
+    _answerPool: Array<Emotion>;
 
-    constructor(pool?: Array<string>) {
+    constructor(pool?: Array<Emotion>) {
         this._answerPool = pool || [];
     }
 
-    getAnswersTo(question: Question, numAnswers: number): Array<string> {
-        const answers = this._getRandomAnswersFromPool(numAnswers, question.answer);
+    getAnswersTo(question: Question, numAnswers: number): Array<Emotion> {
+        const answers = this._getRandomAnswersFromPool(numAnswers, question.emotion);
 
         return answers;
     }
 
-    _getRandomAnswersFromPool(numAnswers: number, alwaysInclude: string): Array<string> {
+    _getRandomAnswersFromPool(numAnswers: number, alwaysInclude: Emotion): Array<Emotion> {
         const poolCopy = this._answerPool.slice();
 
         // Remove the answer to always include it it's in the pool.
@@ -44,11 +45,11 @@ export class AnswerService {
         return answers;
     }
 
-    getAnswerPool(): Array<string> {
+    getAnswerPool(): Array<Emotion> {
         return this._answerPool.slice();
     }
 
-    setAnswerPool(pool: Array<string>) {
+    setAnswerPool(pool: Array<Emotion>) {
         this._answerPool = pool;
     }
 }

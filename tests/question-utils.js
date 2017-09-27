@@ -4,6 +4,8 @@ import React from 'react';
 import { Button } from 'react-native';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
+import { Emotion } from '../src/models/emotion.js';
+import uuid from 'uuid';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../src/models/questions.js';
 
@@ -16,13 +18,13 @@ export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQues
 }
 
 export function randomEyeQuestion(c?: number): EyeQuestion {
-    c = c === undefined ? Math.random() : c;
+    c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'IMAGE-'+c;
     return {
         id: c,
         type: 'eye-question',
         image: uniqueString,
-        answer: 'ans-' + uniqueString,
+        emotion: new Emotion(uuid.v4(), 'ans-' + uniqueString),
     };
 }
 
@@ -35,13 +37,14 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<Emotio
 }
 
 export function randomWordQuestion(c?: number): EmotionWordQuestion {
-    c = c === undefined ? Math.random() : c;
+    c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     return {
         id: c,
         type: 'word-question',
         questionText: uniqueString,
         answer: 'ans-' + uniqueString,
+        emotion: new Emotion(c, 'ans-' + uniqueString),
     };
 }
 
@@ -70,6 +73,7 @@ export function clickAnswer(component: React.Component<*,*>) {
         .filter(b => {
             return b.props.title.indexOf('ans') > -1;
         })[0];
+
 
     correctAnswerButton.props.onPress();
     return correctAnswerButton;

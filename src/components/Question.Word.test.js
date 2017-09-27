@@ -22,7 +22,7 @@ it('contains the answer', () => {
     const question = defaultQuestion;
     const component = render({ question: question });
 
-    expect(getAnswers(component)).toContain(question.answer);
+    expect(getAnswers(component)).toContain(question.emotion);
 });
 
 it('contains wrong answers', () => {
@@ -30,7 +30,7 @@ it('contains wrong answers', () => {
     const component = render({ question: question });
 
     const answers = getAnswers(component);
-    expect(answers).toContainElementsOtherThan(question.answer);
+    expect(answers).toContainElementsOtherThan(question.emotion);
 });
 
 function render(customProps) {

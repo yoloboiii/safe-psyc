@@ -5,6 +5,7 @@ import { firebase } from './firebase.js';
 import { sessionService} from './session-service.js';
 import { log } from './logger.js';
 import type { Question } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////
@@ -27,7 +28,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 const db = firebase.database();
-type LastFeelingAnswer = {
+type LastEmotionAnswer = {
     emotion: string,
     when: moment$Moment,
 };
@@ -43,9 +44,10 @@ export class BackendFacade {
             }
 
             log.debug('Registering correct answer to', question.id);
+            const emotion = question.emotion;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
-                question: question.id,
+                emotion: emotion.id,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -53,7 +55,7 @@ export class BackendFacade {
         });
     }
 
-    registerIncorrectAnswer(question: Question, answer: string): Promise<void> {
+    registerIncorrectAnswer(question: Question, answer: Emotion): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = loggedInUser;
             if (!user) {
@@ -63,10 +65,11 @@ export class BackendFacade {
             }
 
             log.debug('Registering incorrect answer', answer, 'to', question.id);
+            const emotion = question.emotion;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
-                question: question.id,
-                answer: answer,
+                emotion: emotion.id,
+                answer: answer.id,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -102,7 +105,7 @@ export class BackendFacade {
         });
     }
 
-    getLastFeelingAnswer(): Promise<LastFeelingAnswer> {
+    getLastEmotionAnswer(): Promise<LastEmotionAnswer> {
         log.debug('Reading last recorded feeling');
         return new Promise((resolve) => {
             const user = loggedInUser;
@@ -128,7 +131,7 @@ export class BackendFacade {
         });
     }
 
-    getAnswersTo(question: Question): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ question: Question, when: moment$Moment}>}> {
+    getAnswersTo(emotion: Emotion): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ emotion: Emotion, when: moment$Moment}>}> {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
@@ -142,7 +145,7 @@ export class BackendFacade {
                     const correctAnswers = [];
                     snap.forEach(correctAnswer => {
                         const val = correctAnswer.val();
-                        if (val.question === question.id) {
+                        if (val.emotion === emotion.id) {
                             correctAnswers.push(moment(val.when, 'x'));
                         }
 
@@ -151,17 +154,13 @@ export class BackendFacade {
                     return correctAnswers;
                 });
 
-            // Store all questions in a string: Question map
-            const questionLookupTable = new Map();
-            sessionService.getQuestionPool().forEach(question => questionLookupTable.set(question.answer, question));
-
             // Get all incorrect answers
             const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
                 .then( (snap) => {
                     const incorrectAnswers = [];
                     snap.forEach(incorrectAnswer => {
                         const val = incorrectAnswer.val();
-                        if (val.question === question.id) {
+                        if (val.emotion === emotion.id) {
                             incorrectAnswers.push({
                                 // We only store the question id in the db,
                                 // so we need to join in the real question
@@ -186,7 +185,7 @@ export class BackendFacade {
                     };
                 })
                 .catch( e => {
-                    log.error('Failed getting answers to', question, e);
+                    log.error('Failed getting answers to', emotion, e);
                     throw e;
                 });
     }

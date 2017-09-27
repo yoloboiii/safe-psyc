@@ -42,5 +42,5 @@ export class Logger {
 
     }
 }
-export const log = new Logger(console, firebase);
+export const log = new Logger(console, firebase.crash());
 

@@ -13,22 +13,23 @@ import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';
 import type { Question } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
     backendFacade: BackendFacade,
     questions: Array<Question>,
-    onSessionFinished: (report: Map<Question, Array<string>>) => void,
+    onSessionFinished: () => void,
     answerService: AnswerService,
     navigation: Navigation<{}>,
 };
 type State = {
     isFinished: boolean,
     questions: QuestionCollection,
-    answers: Array<string>,
+    answers: Array<Emotion>,
     wrongAnswers: Map<Question, number>,
-    report: Map<Question, Array<string>>,
+    report: Map<Question, Array<Emotion>>,
     currentQuestionIndex: number,
     totalNumberOfQuestions: number,
 };
@@ -105,7 +106,7 @@ export class Session extends React.Component<Props, State> {
         this.forceUpdate();
     }
 
-    _wrongAnswer(answer: string) {
+    _wrongAnswer(answer: Emotion) {
         const currentQ = this.state.questions.peek();
         const prevCount = this.state.wrongAnswers.get(currentQ) || 0;
         const reportArray = this.state.report.get(currentQ) || [];
@@ -133,7 +134,7 @@ export class Session extends React.Component<Props, State> {
     }
 
     _onSessionFinished() {
-        this.props.onSessionFinished(this.state.report);
+        this.props.onSessionFinished();
     }
 
     render() {

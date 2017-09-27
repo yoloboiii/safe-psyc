@@ -49,7 +49,7 @@ describe('startRandomSession', () => {
 
                     expect(pool.length).toBe(sessionService.getQuestionPool().length);
                     expect(
-                        args.questions.every( question => pool.indexOf(question.answer) > -1 )
+                        args.questions.every( question => pool.indexOf(question.emotion) > -1 )
                     ).toBe(true);
                 }
             });

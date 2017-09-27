@@ -1,19 +1,20 @@
 // @flow
 
+import type { Emotion } from './emotion.js';
 export type Question = EyeQuestion | EmotionWordQuestion;
 
 export type EyeQuestion = {
     id: number,
     type: 'eye-question',
     image: string,
-    answer: string,
+    emotion: Emotion,
 };
 
 export type EmotionWordQuestion = {
     id: number,
     type: 'word-question',
     questionText: string,
-    answer: string,
+    emotion: Emotion,
 };
 
 // To be asked at the end of the first training session

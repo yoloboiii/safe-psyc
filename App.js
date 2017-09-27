@@ -6,7 +6,7 @@ import { HomeScreen } from './src/components/HomeScreen.js';
 import { SettingsScreen } from './src/components/SettingsScreen.js';
 import { ResetPasswordScreen } from './src/components/ResetPasswordScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
-import { QuestionDetailsScreen } from './src/components/QuestionDetailsScreen.js';
+import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
@@ -35,7 +35,7 @@ const Navigator = StackNavigator({
     ResetPassword: { screen: ResetPasswordScreen, ...defaultScreenProps },
 
     Session: { screen: SessionScreen, ...defaultScreenProps },
-    QuestionDetails: { screen: QuestionDetailsScreen, ...defaultScreenProps },
+    EmotionDetails: { screen: EmotionDetailsScreen, ...defaultScreenProps },
     CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
 });
 

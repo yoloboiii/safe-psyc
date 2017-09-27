@@ -11,21 +11,23 @@ import { StandardButton } from './Buttons.js';
 
 import { constants } from '../styles/constants.js';
 import { sessionService } from '../services/session-service.js';
+import { log } from '../services/logger.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
 export type Props = {
     question: Question,
-    answers: Array<string>,
+    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: (answer: string) => void,
+    onWrongAnswer: (answer: Emotion) => void,
 };
 type State = {
     currentAnswerState: CurrentAnswerState,
-    currentAnswer: string,
+    currentAnswer: ?Emotion,
 };
 
 // TODO: Duolingo's discuss feature on each question is quite cool
@@ -35,25 +37,25 @@ export class QuestionComponent extends React.Component<Props,State> {
         super(props);
         this.state = {
             currentAnswerState: 'NOT-ANSWERED',
-            currentAnswer: '',
+            currentAnswer: undefined,
         };
     }
 
     componentWillReceiveProps(newProps: Props) {
         this.setState({
             currentAnswerState: 'NOT-ANSWERED',
-            currentAnswer: '',
+            currentAnswer: undefined,
         });
     }
 
     _correctAnswer() {
         this.setState({
             currentAnswerState: 'CORRECT',
-            currentAnswer: this.props.question.answer,
+            currentAnswer: this.props.question.emotion,
         });
     }
 
-    _wrongAnswer(answer: string) {
+    _wrongAnswer(answer: Emotion) {
         this.setState({
             currentAnswerState: 'WRONG',
             currentAnswer: answer,
@@ -62,10 +64,16 @@ export class QuestionComponent extends React.Component<Props,State> {
 
     // Invoked by the overlay to dismiss it
     _questionFinished() {
+        const answer = this.state.currentAnswer;
+        if (!answer) {
+            log.error('A question finished with a null answer. Bat country!');
+            return;
+        }
+
         const answeredCorrectly= this.state.currentAnswerState === 'CORRECT';
         answeredCorrectly
             ? this.props.onCorrectAnswer()
-            : this.props.onWrongAnswer(this.state.currentAnswer);
+            : this.props.onWrongAnswer(answer);
     }
 
     render() {
@@ -107,9 +115,15 @@ export class QuestionComponent extends React.Component<Props,State> {
         switch(this.state.currentAnswerState) {
             case 'CORRECT':
             case 'WRONG':
+                const answer = this.state.currentAnswer;
+                if (!answer) {
+                    log.error('Tried to render the resultoverlay with a null answer. Bat country!');
+                    return;
+                }
+
                 return <ResultOverlay
                     answeredCorrectly={this.state.currentAnswerState === 'CORRECT'}
-                    answer={this.state.currentAnswer}
+                    answer={answer}
                     question={this.props.question}
                     onDismiss={this._questionFinished.bind(this)}
                     />
@@ -145,14 +159,14 @@ const resultOverlayStyleSheet = StyleSheet.create({
 
 type ResultOverlayProps = {
     question: Question,
-    answer: string,
+    answer: Emotion,
     answeredCorrectly: boolean,
     onDismiss: () => void,
 }
 export type SpecificOverlayProps = {
     sessionService: SessionService,
     answeredCorrectly: boolean,
-    answer: string,
+    answer: Emotion,
     question: Question,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
@@ -181,8 +195,8 @@ export function ResultOverlay(props: ResultOverlayProps) {
 
         } else {
             const text = props.answeredCorrectly
-                ? props.answer + ' is correct!'
-                : props.answer + ' is sadly incorrect'
+                ? props.answer.name + ' is correct!'
+                : props.answer.name + ' is sadly incorrect'
             return <StandardText>{ text }</StandardText>;
         }
     }

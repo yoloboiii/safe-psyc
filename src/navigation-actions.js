@@ -8,7 +8,7 @@ import { sessionService } from './services/session-service.js';
 import { AnswerService } from './services/answer-service.js'
 import { log } from './services/logger.js';
 
-import type { Question } from './models/questions.js';
+import type { Emotion } from './models/emotion.js';
 import type { BackendFacade } from './services/backend.js';
 
 export type Navigation<P> = {
@@ -23,7 +23,7 @@ export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=
     return new Promise( resolve => {
         InteractionManager.runAfterInteractions(() => {
             const questions = sessionService.getRandomQuestions(10);
-            const answers = sessionService.getQuestionPool().map(question => question.answer);
+            const answers = sessionService.getQuestionPool().map(question => question.emotion);
             onDataLoaded && onDataLoaded();
             navigation.navigate('Session', {
                 questions: questions,
@@ -35,14 +35,14 @@ export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=
     });
 }
 
-export function navigateToQuestionDetails(navigation: Navigation<*>, question: Question) {
-    navigation.navigate('QuestionDetails', {
-        question: question,
+export function navigateToEmotionDetails(navigation: Navigation<*>, emotion: Emotion) {
+    navigation.navigate('EmotionDetails', {
+        emotion: emotion,
     });
 }
 
 export function onSessionFinished(navigation: Navigation<*>, backend: BackendFacade): Promise<*> {
-    return backend.getLastFeelingAnswer()
+    return backend.getLastEmotionAnswer()
         .then( answer => {
             const eightHoursAgo = moment().subtract(8, 'hours');
             const haveAlreadyAnswered = eightHoursAgo.isBefore(answer.when);

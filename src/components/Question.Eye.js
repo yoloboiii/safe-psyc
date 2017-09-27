@@ -9,6 +9,7 @@ import { StandardText } from './StandardText.js';
 import { constants } from '../styles/constants.js';
 
 import type { EyeQuestion } from '../models/questions.js';
+import type { Emotion } from '../models/emotion.js';
 import type { SpecificOverlayProps } from './Question.js';
 
 const containerStyle = {
@@ -19,9 +20,9 @@ const imageStyle = { height: 200 };
 
 type Props = {
     question: EyeQuestion,
-    answers: Array<string>,
+    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: (answer: string) => void,
+    onWrongAnswer: (answer: Emotion) => void,
 };
 export function EyeQuestionComponent(props: Props) {
     const { question } = props;
@@ -44,7 +45,7 @@ export function EyeQuestionComponent(props: Props) {
 
         <VerticalAnswerList
             answers={ props.answers }
-            correctAnswer={ question.answer }
+            correctAnswer={ question.emotion }
             onCorrectAnswer={ props.onCorrectAnswer }
             onWrongAnswer={ props.onWrongAnswer } />
     </View>
@@ -56,19 +57,19 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps) {
     const { answeredCorrectly, answer } = props;
 
     const answerImage = props.sessionService.getQuestionPool()
-        .filter(q => q.type === 'eye-question' && q.answer === answer)
+        .filter(q => q.type === 'eye-question' && q.emotion === answer)
         // $FlowFixMe
         .map(q => q.image)[0];
 
     const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
     if (answeredCorrectly) {
-        return <StandardText>{answer} is correct!</StandardText>
+        return <StandardText>{answer.name} is correct!</StandardText>
     } else if (!answerImage) {
 
-        return <StandardText>{answer} is sadly incorrect</StandardText>
+        return <StandardText>{answer.name} is sadly incorrect</StandardText>
     } else {
         return <View>
-            <StandardText>That's sadly incorrect. {startOfSentence(answer)} looks like this</StandardText>
+            <StandardText>That's sadly incorrect. {startOfSentence(answer.name)} looks like this</StandardText>
             <VerticalSpace />
             <Image
                 style={ overlayImageStyle }

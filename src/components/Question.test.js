@@ -3,6 +3,7 @@
 import React from 'react';
 import { render, renderShallow } from '../../tests/render-utils.js';
 import { randomQuestion, randomWordQuestion, randomEyeQuestion, clickAnswer, clickWrongAnswer } from '../../tests/question-utils.js';
+import { randomEmotion } from '../../tests/emotion-utils.js';
 import { getChildrenAndParent, findChildren, stringifyComponent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Text, Button } from 'react-native';
 
@@ -93,13 +94,15 @@ it('has a button that triggers onCorrectAnswer in the overlay', () => {
 it('has a button that triggers onWrongAnswer in the overlay', () => {
     const onCorrectAnswer = jest.fn();
     const onWrongAnswer = jest.fn();
+    const answer = randomEmotion();
     const component = render(QuestionComponent, props({
         question: randomQuestion(),
+        answers: [answer],
         onCorrectAnswer: onCorrectAnswer,
         onWrongAnswer, onWrongAnswer,
     }));
 
-    const button = clickWrongAnswer(component);
+    clickWrongAnswer(component);
 
     expect(onWrongAnswer).not.toHaveBeenCalled();
 
@@ -110,7 +113,7 @@ it('has a button that triggers onWrongAnswer in the overlay', () => {
     });
 
     expect(onWrongAnswer).toHaveBeenCalledTimes(1);
-    expect(onWrongAnswer).toHaveBeenCalledWith(button.props.title);
+    expect(onWrongAnswer).toHaveBeenCalledWith(answer);
     expect(onCorrectAnswer).not.toHaveBeenCalled();
 });
 

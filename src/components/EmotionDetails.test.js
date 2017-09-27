@@ -1,30 +1,30 @@
 // @flow
 
-import { QuestionDetails, StrengthMeter } from './QuestionDetails.js';
+import { EmotionDetails, StrengthMeter } from './EmotionDetails.js';
 import { render } from '../../tests/render-utils.js';
-import { randomQuestion, randomEyeQuestion } from '../../tests/question-utils.js';
+import { randomEmotion, randomEmotionWithImage } from '../../tests/emotion-utils.js';
 import { getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Image } from 'react-native';
 import moment from 'moment';
 
 const defaultProps = {
-    question: randomQuestion(),
+    emotion: randomEmotion(0, 'EMOTION NAME'),
     dataPoints: {
         correct: [],
         incorrect: [],
     },
 };
 
-it('contains the image and answer of an eye question', () => {
-    const question = randomEyeQuestion();
-    const component = render(QuestionDetails, { question }, defaultProps);
+it('contains the image and name of an emotion with an image', () => {
+    const emotion = randomEmotionWithImage();
+    const component = render(EmotionDetails, { emotion }, defaultProps);
 
-    expect(component).toHaveChildWithProps(Image, { source: {uri: question.image }});
-    expect(getAllRenderedStrings(component)).toEqual(expect.arrayContaining([question.answer]));
+    expect(component).toHaveChildWithProps(Image, { source: {uri: emotion.image }});
+    expect(getAllRenderedStrings(component)).toEqual(expect.arrayContaining([emotion.name]));
 });
 
 it('contains a strength meter', () => {
-    const component = render(QuestionDetails, {
+    const component = render(EmotionDetails, {
         dataPoints: {
             correct: [moment(), moment(), moment(), moment()],
             incorrect: [],
@@ -35,7 +35,7 @@ it('contains a strength meter', () => {
 });
 
 it('is humble about the strength meter when there\'s not enough data', () => {
-    const component = render(QuestionDetails, {
+    const component = render(EmotionDetails, {
         dataPoints: {
             correct: [],
             incorrect: [],
@@ -46,22 +46,22 @@ it('is humble about the strength meter when there\'s not enough data', () => {
 });
 
 it('shows emotions that the user often confuse with the main emotion', () => {
-    const questionA = randomQuestion();
-    const questionB = randomQuestion();
+    const emotionA = randomEmotion(1, 'EMOTION A');
+    const emotionB = randomEmotion(2, 'EMOTION B');
 
-    const component = render(QuestionDetails, {
+    const component = render(EmotionDetails, {
         dataPoints: {
             correct: [],
             incorrect: [
-                { question: questionA, when: moment() } ,
-                { question: questionA, when: moment() } ,
-                { question: questionA, when: moment() } ,
-                { question: questionB, when: moment() } ,
+                { emotion: emotionA, when: moment() } ,
+                { emotion: emotionA, when: moment() } ,
+                { emotion: emotionA, when: moment() } ,
+                { emotion: emotionB, when: moment() } ,
             ],
         },
     }, defaultProps);
 
     const strings = getAllRenderedStrings(component);
     expect(strings).toEqual(expect.arrayContaining([expect.stringContaining('confused')]));
-    expect(strings).toEqual(expect.arrayContaining([questionA.answer, questionB.answer]));
+    expect(strings).toEqual(expect.arrayContaining([emotionA.name, emotionB.name]));
 });

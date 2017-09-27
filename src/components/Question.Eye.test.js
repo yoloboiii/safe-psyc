@@ -24,7 +24,7 @@ it('contains the answer', () => {
     const question = randomEyeQuestion();
     const component = customRender({ question: question });
 
-    expect(JSON.stringify(component)).toContain(question.answer);
+    expect(JSON.stringify(component)).toContain(question.emotion.name);
 });
 
 function customRender(customProps) {
@@ -48,7 +48,7 @@ it('shows the image of the answer in the overlay - image exists', () => {
         text: 'hai',
         answeredCorrectly: false,
         question: askedQuestion,
-        answer: answeredQuestion.answer,
+        answer: answeredQuestion.emotion,
         sessionService: new MockSessionService(((questionPool: any): Array<Question>)),
     });
 
@@ -67,7 +67,7 @@ it('shows the image of the answer in the overlay - image doesn\'t exists', () =>
     const component = render(EyeQuestionOverlay, {
         answeredCorrectly: false,
         question: askedQuestion,
-        answer: answeredQuestion.answer,
+        answer: answeredQuestion.emotion,
         sessionService: new MockSessionService(questionPool),
     });
 

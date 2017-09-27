@@ -9,7 +9,7 @@ import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../../App.js';
 import { constants } from '../styles/constants.js';
 
-import { navigateToQuestionDetails } from '../navigation-actions.js';
+import { navigateToEmotionDetails } from '../navigation-actions.js';
 import { sessionService } from '../services/session-service.js';
 
 import type { Navigation } from '../navigation-actions.js';
@@ -75,8 +75,8 @@ export class HomeScreen extends React.Component<Props, State> {
                 </View>
                 <View>
                     <HeroButton
-                        title={ 'Question details'}
-                        onPress={ () => navigateToQuestionDetails(this.props.navigation, sessionService.getQuestionPool()[0]) } />
+                        title={ 'Emotion details'}
+                        onPress={ () => navigateToEmotionDetails(this.props.navigation, sessionService.getQuestionPool()[0].emotion) } />
                     <VerticalSpace />
                     <HeroButton
                         title={ 'How are you feeling right now? '}

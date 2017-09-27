@@ -48,7 +48,7 @@ it('shows another question when the first is answered', () => {
 });
 
 it('finishes the session if the last question was answered correctly', () => {
-    const questions = randomQuestions(1);
+    const questions = [randomQuestion()];
     const sessionFinishedSpy = jest.fn();
 
     const component = render(Session, {
@@ -144,38 +144,6 @@ it('shows a report when the session is finished', () => {
     expect(component).toHaveChild(SessionReport);
 });
 
-it('outputs a report at the end of the session', () => {
-    const onFinishedMock = jest.fn();
-
-    const questions = randomQuestions();
-    const component = render(Session, {
-        questions: questions,
-        onSessionFinished: onFinishedMock,
-    }, defaultProps);
-
-    const report = new Map();
-    for (let i = 0; i < questions.length; i++) {
-        const q = getQuestion(component);
-
-        const wrongAnswers = [];
-        if (i % 2 === 0) {
-            const button = clickWrongAnswerAndDismissOverlay(component);
-            wrongAnswers.push(button.props.title);
-        }
-
-        clickAnswerAndDismissOverlay(component);
-        report.set(q, wrongAnswers);
-    }
-
-    // Press all buttons to finish the session
-    const buttons = findChildren(component, Button);
-    buttons.forEach( button => {
-        button.props.onPress && button.props.onPress();
-    });
-
-    expect(onFinishedMock).toHaveBeenCalledWith(report);
-});
-
 it('shows how many questions are left', () => {
     const questions = randomQuestions(5);
     const component = render(Session, { questions }, defaultProps);
@@ -232,7 +200,7 @@ it('invokes the backend facade on wrong answers', () => {
 
     const b = clickWrongAnswerAndDismissOverlay(component);
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledTimes(1);
-    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(questions[0],b.props.title);
+    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(questions[0], expect.objectContaining({name: b.props.title}));
 });
 
 function promiseMock() {

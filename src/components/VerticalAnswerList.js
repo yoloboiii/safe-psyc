@@ -5,14 +5,13 @@ import { View, FlatList } from 'react-native';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardButton } from './Buttons.js';
 
-type Apa = {
-    text: string,
-};
+import type { Emotion } from '../models/emotion.js';
+
 type Props = {
-    correctAnswer: string,
-    answers: Array<string>,
+    correctAnswer: Emotion,
+    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: (answer: string) => void,
+    onWrongAnswer: (answer: Emotion) => void,
 };
 
 export function VerticalAnswerList(props: Props) {
@@ -30,8 +29,8 @@ export function VerticalAnswerList(props: Props) {
 function answersToButtonData(answers) {
     return answers.map(ans => {
         return {
-            text: ans,
-            key: ans + Math.random(),
+            emotion: ans,
+            key: ans.id,
         };
     });
 }
@@ -39,8 +38,8 @@ function answersToButtonData(answers) {
 function AnswerButton(props) {
     return <View>
         <StandardButton
-        title={ props.text }
-        onPress={ () => props.onPress(props.text) }/>
+        title={ props.emotion.name }
+        onPress={ () => props.onPress(props.emotion) }/>
         <VerticalSpace />
     </View>
 }

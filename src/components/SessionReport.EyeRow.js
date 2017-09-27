@@ -23,18 +23,18 @@ const imageStyle = {
 type Props = {
     question: EyeQuestion,
     wrongAnswers: Array<string>,
-    onPopoutQuestion: () => void,
+    onPress: () => void,
 }
 export function EyeQuestionRow(props: Props) {
     const subtext = getSubText();
 
     return <View style={ eyeContainerStyle }>
         <View>
-            <StandardText>{ props.question.answer }</StandardText>
+            <StandardText>{ props.question.emotion.name }</StandardText>
             <StandardText style={ constants.smallText }>{ subtext }</StandardText>
         </View>
         <View style={ imageContainerStyle }>
-            <TouchableHighlight onPress={ props.onPopoutQuestion }>
+            <TouchableHighlight onPress={ props.onPress }>
                 <Image
                     source={{ uri: props.question.image }}
                     resizeMode='cover'

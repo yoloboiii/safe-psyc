@@ -2,27 +2,27 @@
 
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
-import { QuestionDetails } from './QuestionDetails.js';
+import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './StandardText.js';
 import { backendFacade } from '../services/backend.js';
 import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
-import type { Question } from '../models/questions.js';
-import type { DataPoints } from './QuestionDetails.js';
+import type { Emotion } from '../models/emotion.js';
+import type { DataPoints } from './EmotionDetails.js';
 
 type Props = {
     navigation: Navigation<{
-        question: Question,
+        emotion: Emotion,
     }>,
 }
 type State = {
     dataPoints: DataPoints,
     loadingState: 'not-started' | 'started' | 'failed' | 'successful';
 };
-export class QuestionDetailsScreen extends React.Component<Props, State> {
+export class EmotionDetailsScreen extends React.Component<Props, State> {
     static navigationOptions = {
-        title: 'QUESTION DETAILS',
+        title: 'EMOTION DETAILS',
     };
 
     constructor(props: Props) {
@@ -39,21 +39,21 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
     componentDidMount() {
         const { state, navigate } = this.props.navigation;
         if (state) {
-            const { question } = state.params;
+            const { emotion } = state.params;
             this.setState({
                 loadingState: 'started',
             });
 
-            backendFacade.getAnswersTo(question)
+            backendFacade.getAnswersTo(emotion)
                 .then( (answers) => {
-                    log.debug('Got answers to question', question, answers);
+                    log.debug('Got answers to emotion', emotion, answers);
                     this.setState({
                         loadingState: 'successful',
                         dataPoints: answers,
                     });
                 })
                 .catch( e => {
-                    log.error('Failed getting answers to question', question, e);
+                    log.error('Failed getting answers to emotion', emotion, e);
                     this.setState({
                         loadingState: 'failed',
                     });
@@ -66,7 +66,7 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
         const { state, navigate } = this.props.navigation;
         if (state) {
             const navParams = state.params;
-            return this._renderQuestion(navParams.question);
+            return this._renderEmotion(navParams.emotion);
 
         } else {
             return <StandardText>No navigation state! Don't know what to do</StandardText>
@@ -74,7 +74,7 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
         }
     }
 
-    _renderQuestion(question) {
+    _renderEmotion(emotion) {
         switch(this.state.loadingState) {
             case 'started':
                 return <ActivityIndicator />
@@ -83,8 +83,8 @@ export class QuestionDetailsScreen extends React.Component<Props, State> {
             case 'failed':
                 return <StandardText>Unable to load data!</StandardText>
             case 'successful':
-                return <QuestionDetails
-                    question={ question }
+                return <EmotionDetails
+                    emotion={ emotion }
                     dataPoints={ this.state.dataPoints }
                     navigation={ this.props.navigation }
                     />
