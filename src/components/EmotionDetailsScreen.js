@@ -3,7 +3,7 @@
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { EmotionDetails } from './EmotionDetails.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { backendFacade } from '../services/backend.js';
 import { log } from '../services/logger.js';
 

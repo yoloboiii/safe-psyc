@@ -192,11 +192,12 @@ export class BackendFacade {
                 });
     }
 
-    createNewUser(email: string, password: string): Promise<void> {
+    createNewUser(email: string, password: string): Promise<{email: string}> {
         email = email.trim();
         return firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then( () => {
+            .then( (user) => {
                 log.debug('Created user');
+                return user;
             })
             .catch(function(error) {
                 log.error('Failed creating user, %j', error);

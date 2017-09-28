@@ -6,7 +6,7 @@ import { Kaede } from'react-native-textinput-effects';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { LargeButton, StandardButton } from './Buttons.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { backendFacade } from '../services/backend.js';
 import { constants } from '../styles/constants.js';

@@ -5,7 +5,7 @@ import { View, Image} from 'react-native';
 
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { constants } from '../styles/constants.js';
 
 import type { EyeQuestion } from '../models/questions.js';

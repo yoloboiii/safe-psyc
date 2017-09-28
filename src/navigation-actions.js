@@ -95,6 +95,12 @@ export function openSettings(navigation: Navigation<*>) {
     navigation.navigate('Settings');
 }
 
+export function onUserRegistered(navigation: Navigation<*>, username: string) {
+    navigation.navigate('Welcome', {
+        username: username,
+    });
+}
+
 export function onUserLoggedIn(navigation: Navigation<*>) {
     resetToHome(navigation);
 }

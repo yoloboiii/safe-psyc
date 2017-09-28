@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { Credits } from './Credits.js';

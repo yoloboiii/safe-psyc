@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Image, TouchableHighlight } from 'react-native';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { constants } from '../styles/constants.js';
 import type { EyeQuestion } from '../models/questions.js';
 

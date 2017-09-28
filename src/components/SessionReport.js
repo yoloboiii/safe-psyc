@@ -4,7 +4,7 @@ import React from 'react';
 import { FlatList, View,  Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { EmotionDetails } from './EmotionDetails.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';

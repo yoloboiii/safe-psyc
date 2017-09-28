@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Alert, Picker, ActivityIndicator } from 'react-native';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 import { constants } from '../styles/constants.js';
 import { VerticalSpace } from './VerticalSpace.js';

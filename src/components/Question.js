@@ -6,7 +6,7 @@ import  { Button, View, StyleSheet } from 'react-native';
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 
 import { constants } from '../styles/constants.js';

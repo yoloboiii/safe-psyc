@@ -4,12 +4,12 @@ import React from 'react';
 import { Text, View, TextInput, Alert, Keyboard, ActivityIndicator, TouchableHighlight } from 'react-native';
 import { Kaede } from 'react-native-textinput-effects';
 import { LargeButton } from './Buttons.js';
-import { StandardText } from './StandardText.js';
+import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { constants } from '../styles/constants.js';
 import { backendFacade } from '../services/backend.js';
-import { toResetPassword } from '../navigation-actions.js';
+import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
@@ -69,8 +69,7 @@ export class LoginScreen extends React.Component<Props, State> {
         backendFacade.login(email, password)
             .then( () => {
                 Keyboard.dismiss();
-                // If the login is successful a listener registered in
-                // App.js is invoked and navigates to the home screen
+                onUserLoggedIn(this.props.navigation);
             })
             .catch( e => {
                 this.setState({
@@ -88,10 +87,9 @@ export class LoginScreen extends React.Component<Props, State> {
         });
 
         backendFacade.createNewUser(email, password)
-            .then( () => {
+            .then( (user) => {
                 Keyboard.dismiss();
-                // If the login is successful a listener registered in
-                // App.js is invoked and navigates to the home screen
+                onUserRegistered(this.props.navigation, user.email);
             })
             .catch( e => {
                 this.setState({
