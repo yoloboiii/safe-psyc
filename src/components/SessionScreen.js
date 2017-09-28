@@ -11,12 +11,10 @@ import { onSessionFinished } from '../navigation-actions.js';
 import { backendFacade } from '../services/backend.js';
 
 import type { Navigation } from '../navigation-actions.js';
-import type { AnswerService } from '../services/answer-service.js';
 
 type Props = {
     navigation: Navigation<{
         questions: Array<*>,
-        answerService: AnswerService,
     }>,
 }
 export class SessionScreen extends React.Component<Props, {}> {
@@ -32,7 +30,6 @@ export class SessionScreen extends React.Component<Props, {}> {
             return <Session
                 backendFacade={ backendFacade }
                 questions={ navParams.questions }
-                answerService={ navParams.answerService }
                 onSessionFinished={ () => { onSessionFinished(this.props.navigation, backendFacade);} }
                 navigation={ ((this.props.navigation: any): Navigation<{}>) } />
 

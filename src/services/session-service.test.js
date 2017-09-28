@@ -78,3 +78,7 @@ it('gives a higher score for an easy question not seen in a long time than a har
     // $FlowFixMe
     expect(easyScore).toBeGreaterThan(hardScore);
 });
+
+it('includes all emotions in it\'s answer pool', () => {
+
+});

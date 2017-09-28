@@ -5,7 +5,6 @@ import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { sessionService } from './services/session-service.js';
-import { AnswerService } from './services/answer-service.js'
 import { log } from './services/logger.js';
 
 import type { Emotion } from './models/emotion.js';
@@ -23,11 +22,9 @@ export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=
     return new Promise( resolve => {
         InteractionManager.runAfterInteractions(() => {
             const questions = sessionService.getRandomQuestions(10);
-            const answers = sessionService.getQuestionPool().map(question => question.emotion);
             onDataLoaded && onDataLoaded();
             navigation.navigate('Session', {
                 questions: questions,
-                answerService: new AnswerService(answers),
             });
 
             resolve();

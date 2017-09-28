@@ -1,7 +1,6 @@
 // @flow
 
 import { knuthShuffle } from 'knuth-shuffle';
-import type { Question } from '../models/questions';
 import type { Emotion } from '../models/emotion.js';
 
 export class AnswerService {
@@ -12,8 +11,8 @@ export class AnswerService {
         this._answerPool = pool || [];
     }
 
-    getAnswersTo(question: Question, numAnswers: number): Array<Emotion> {
-        const answers = this._getRandomAnswersFromPool(numAnswers, question.emotion);
+    getAnswersTo(emotion: Emotion, numAnswers: number): Array<Emotion> {
+        const answers = this._getRandomAnswersFromPool(numAnswers, emotion);
 
         return answers;
     }
@@ -21,7 +20,7 @@ export class AnswerService {
     _getRandomAnswersFromPool(numAnswers: number, alwaysInclude: Emotion): Array<Emotion> {
         const poolCopy = this._answerPool.slice();
 
-        // Remove the answer to always include it it's in the pool.
+        // Remove the answer to always include if it's in the pool.
         const apa = poolCopy.indexOf(alwaysInclude);
         if (apa > -1) {
             poolCopy.splice(apa, 1);

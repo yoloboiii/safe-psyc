@@ -51,7 +51,7 @@ export class QuestionComponent extends React.Component<Props,State> {
     _correctAnswer() {
         this.setState({
             currentAnswerState: 'CORRECT',
-            currentAnswer: this.props.question.emotion,
+            currentAnswer: this.props.question.correctAnswer,
         });
     }
 
@@ -164,7 +164,6 @@ type ResultOverlayProps = {
     onDismiss: () => void,
 }
 export type SpecificOverlayProps = {
-    sessionService: SessionService,
     answeredCorrectly: boolean,
     answer: Emotion,
     question: Question,
@@ -189,7 +188,6 @@ export function ResultOverlay(props: ResultOverlayProps) {
         if (props.question.type === 'eye-question') {
             return <EyeQuestionOverlay
                 question={props.question}
-                sessionService={ sessionService }
                 answeredCorrectly={props.answeredCorrectly}
                 answer={props.answer} />
 

@@ -4,17 +4,17 @@ import type { Emotion } from './emotion.js';
 export type Question = EyeQuestion | EmotionWordQuestion;
 
 export type EyeQuestion = {
-    id: number,
     type: 'eye-question',
     image: string,
-    emotion: Emotion,
+    correctAnswer: Emotion,
+    answers: Array<Emotion>,
 };
 
 export type EmotionWordQuestion = {
-    id: number,
     type: 'word-question',
     questionText: string,
-    emotion: Emotion,
+    correctAnswer: Emotion,
+    answers: Array<Emotion>,
 };
 
 // To be asked at the end of the first training session

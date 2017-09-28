@@ -151,7 +151,7 @@ function props(customProps: $Shape<QuestionProps>) {
     const question = customProps.question || randomQuestion();
     const defaultProps = {
         question: question,
-        answers: answerService.getAnswersTo(question, 3),
+        answers: question.answers,
         onCorrectAnswer: () => {},
         onWrongAnswer: () => {},
     };

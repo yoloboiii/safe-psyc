@@ -45,7 +45,7 @@ export function EyeQuestionComponent(props: Props) {
 
         <VerticalAnswerList
             answers={ props.answers }
-            correctAnswer={ question.emotion }
+            correctAnswer={ question.correctAnswer }
             onCorrectAnswer={ props.onCorrectAnswer }
             onWrongAnswer={ props.onWrongAnswer } />
     </View>
@@ -56,10 +56,7 @@ const overlayImageStyle = { height: 100, };
 export function EyeQuestionOverlay(props: SpecificOverlayProps) {
     const { answeredCorrectly, answer } = props;
 
-    const answerImage = props.sessionService.getQuestionPool()
-        .filter(q => q.type === 'eye-question' && q.emotion === answer)
-        // $FlowFixMe
-        .map(q => q.image)[0];
+    const answerImage = answer.image;
 
     const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
     if (answeredCorrectly) {

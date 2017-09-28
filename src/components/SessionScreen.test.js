@@ -9,7 +9,9 @@ it('calls navition-actions.onSessionFinished when the session is done', () => {
     const navigation = {
         navigation: {
             state: {
-                params: { },
+                params: {
+                    questions: [],
+                },
             },
         },
     };

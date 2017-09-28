@@ -22,7 +22,7 @@ it('contains the answer', () => {
     const question = defaultQuestion;
     const component = render({ question: question });
 
-    expect(getAnswers(component)).toContain(question.emotion);
+    expect(getAnswers(component)).toContain(question.correctAnswer);
 });
 
 it('contains wrong answers', () => {
@@ -30,14 +30,14 @@ it('contains wrong answers', () => {
     const component = render({ question: question });
 
     const answers = getAnswers(component);
-    expect(answers).toContainElementsOtherThan(question.emotion);
+    expect(answers).toContainElementsOtherThan(question.correctAnswer);
 });
 
 function render(customProps) {
     const question = customProps.question || randomWordQuestion();
     const defaultProps = {
         question: question,
-        answers: answerService.getAnswersTo(question, 3),
+        answers: question.answers,
         onCorrectAnswer: () => {},
         onWrongAnswer: () => {},
     };

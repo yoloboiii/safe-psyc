@@ -1,7 +1,11 @@
 // @flow
 
 import { log } from './logger.js';
+import { answerService } from './answer-service.js';
+
+import type { Emotion } from '../models/emotion.js';
 import type { Question } from '../models/questions.js';
+import type { AnswerService } from './answer-service.js';
 
 type DataPoint = {
         question: Question,
@@ -10,10 +14,34 @@ type DataPoint = {
 }
 export class SessionService {
 
-    _questionPool = undefined;
+    _emotionPool = undefined;
+    _answerService: AnswerService;
+
+    constructor(answerService: AnswerService) {
+        this._answerService = answerService;
+    }
 
     getRandomQuestions(numQuestions: number): Array<Question> {
-        return getRandomElementsFromArray(numQuestions, this.getQuestionPool());
+        const emotionsToTest = getRandomElementsFromArray(numQuestions, this.getEmotionPool());
+
+        const questions = [];
+        for (const emotion of emotionsToTest) {
+            questions.push(this._generateQuestion(emotion));
+        }
+        return questions;
+    }
+
+    _generateQuestion(emotion: Emotion): Question {
+        if (!emotion.image) {
+            throw new Error('Tried to create an eye question from an emotion without an image');
+        }
+
+        return {
+            type: 'eye-question',
+            image: emotion.image,
+            correctAnswer: emotion,
+            answers: this._answerService.getAnswersTo(emotion, 3),
+        };
     }
 
     getRecommendedQuestions(numQuestions: number): Array<Question> {
@@ -56,12 +84,14 @@ export class SessionService {
         return score;
     }
 
-    getQuestionPool(): Array<Question> {
-        if (this._questionPool === undefined) {
-            this._questionPool = require('../../SECRETS/eye-questions/eye-questions.json');
+    getEmotionPool(): Array<Emotion> {
+        if (this._emotionPool === undefined) {
+            this._emotionPool = require('../../SECRETS/emotions.json');
+            this._answerService.setAnswerPool(this._emotionPool);
         }
 
-        return this._questionPool;
+        // $FlowFixMe
+        return this._emotionPool;
     }
 }
 
@@ -92,4 +122,4 @@ function sigmoid(t) {
     return 1/(1+Math.pow(Math.E, -t));
 }
 
-export const sessionService = new SessionService();
+export const sessionService = new SessionService(answerService);

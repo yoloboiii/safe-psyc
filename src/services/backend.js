@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { firebase } from './firebase.js';
-import { sessionService} from './session-service.js';
+import { sessionService } from './session-service.js';
 import { log } from './logger.js';
 import type { Question } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -43,8 +43,8 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering correct answer to', question.id);
-            const emotion = question.emotion;
+            log.debug('Registering correct answer to', question);
+            const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
                 emotion: emotion.id,
@@ -64,8 +64,8 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering incorrect answer', answer, 'to', question.id);
-            const emotion = question.emotion;
+            log.debug('Registering incorrect answer', answer, 'to', question);
+            const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
                 emotion: emotion.id,
@@ -154,6 +154,8 @@ export class BackendFacade {
                     return correctAnswers;
                 });
 
+            const emotionLookupTable = new Map();
+            sessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.id, e));
             // Get all incorrect answers
             const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
                 .then( (snap) => {
@@ -165,7 +167,7 @@ export class BackendFacade {
                                 // We only store the question id in the db,
                                 // so we need to join in the real question
                                 // objects.
-                                question: questionLookupTable.get(val.answer),
+                                emotion: emotionLookupTable.get(val.answer),
                                 when: moment(val.when, 'x'),
                             });
                         }

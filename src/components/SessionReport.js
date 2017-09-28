@@ -38,7 +38,7 @@ function renderRow(item, navigation) {
         return <EyeQuestionRow
             question={ (question: EyeQuestion) }
             wrongAnswers={ wrongAnswers }
-            onPress={ () => navigateToEmotionDetails(navigation, question.emotion) }
+            onPress={ () => navigateToEmotionDetails(navigation, question.correctAnswer) }
             />
     } else if (question.type === 'word-question') {
         return <WordQuestionRow

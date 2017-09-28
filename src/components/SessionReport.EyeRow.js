@@ -30,7 +30,7 @@ export function EyeQuestionRow(props: Props) {
 
     return <View style={ eyeContainerStyle }>
         <View>
-            <StandardText>{ props.question.emotion.name }</StandardText>
+            <StandardText>{ props.question.correctAnswer.name }</StandardText>
             <StandardText style={ constants.smallText }>{ subtext }</StandardText>
         </View>
         <View style={ imageContainerStyle }>

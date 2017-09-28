@@ -21,13 +21,11 @@ type Props = {
     backendFacade: BackendFacade,
     questions: Array<Question>,
     onSessionFinished: () => void,
-    answerService: AnswerService,
     navigation: Navigation<{}>,
 };
 type State = {
     isFinished: boolean,
     questions: QuestionCollection,
-    answers: Array<Emotion>,
     wrongAnswers: Map<Question, number>,
     report: Map<Question, Array<Emotion>>,
     currentQuestionIndex: number,
@@ -57,9 +55,6 @@ export class Session extends React.Component<Props, State> {
         return {
             isFinished: false,
             questions: questions,
-            answers: questions.size() === 0
-                ? []
-                : props.answerService.getAnswersTo(questions.peek(), 3),
             wrongAnswers: new Map(),
             report: new Map(),
             currentQuestionIndex: 1,
@@ -80,10 +75,10 @@ export class Session extends React.Component<Props, State> {
 
         this.props.backendFacade.registerCorrectAnswer(currentQ)
             .then( () => {
-                log.debug('Correct answer to ' + currentQ.id + ' saved');
+                log.debug('Correct answer to {0} saved', currentQ);
             })
             .catch( e => {
-                log.error('Failed saving answer to ' + currentQ.id, e);
+                log.error('Failed saving correct answer to {0}: {1}', currentQ, e);
             });
 
         const isLastQuestion = this.state.questions.size() === 1;
@@ -99,7 +94,6 @@ export class Session extends React.Component<Props, State> {
         const q = this.state.questions.peek();
         this.setState((prevState) => {
             return {
-                answers: this.props.answerService.getAnswersTo(q, 3),
                 currentQuestionIndex: prevState.currentQuestionIndex + 1,
             };
         });
@@ -118,10 +112,10 @@ export class Session extends React.Component<Props, State> {
 
         this.props.backendFacade.registerIncorrectAnswer(currentQ, answer)
             .then( () => {
-                log.debug('Incorrect answer to ' + currentQ.id + ' saved');
+                log.debug('Incorrect answer to {0} saved', currentQ);
             })
             .catch( e => {
-                log.error('Failed saving incorrect answer to ' + currentQ.id, e);
+                log.error('Failed saving incorrect answer to {0}: {1}', currentQ, e);
             });
 
         if (prevCount === 2) {
@@ -173,10 +167,10 @@ export class Session extends React.Component<Props, State> {
                 <VerticalSpace />
 
                 <QuestionComponent
-                question={ currentQuestion }
-                answers={ this.state.answers }
-                onCorrectAnswer={ this._answeredCorrectly.bind(this) }
-                onWrongAnswer={ this._wrongAnswer.bind(this) } />
+                    question={ currentQuestion }
+                    answers={ currentQuestion.answers }
+                    onCorrectAnswer={ this._answeredCorrectly.bind(this) }
+                    onWrongAnswer={ this._wrongAnswer.bind(this) } />
             </View>
         }
     }

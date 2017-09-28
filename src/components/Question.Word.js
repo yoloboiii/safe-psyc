@@ -24,7 +24,7 @@ export function EmotionWordQuestionComponent(props: Props) {
         <VerticalSpace multiplier={2} />
         <VerticalAnswerList
             answers={ props.answers }
-            correctAnswer={ question.emotion }
+            correctAnswer={ question.correctAnswer }
             onCorrectAnswer={ props.onCorrectAnswer }
             onWrongAnswer={ props.onWrongAnswer } />
     </View>

@@ -76,7 +76,9 @@ export class HomeScreen extends React.Component<Props, State> {
                 <View>
                     <HeroButton
                         title={ 'Emotion details'}
-                        onPress={ () => navigateToEmotionDetails(this.props.navigation, sessionService.getQuestionPool()[0].emotion) } />
+                        onPress={ () => navigateToEmotionDetails(
+                            this.props.navigation, sessionService.getEmotionPool()[0]
+                        ) } />
                     <VerticalSpace />
                     <HeroButton
                         title={ 'How are you feeling right now? '}

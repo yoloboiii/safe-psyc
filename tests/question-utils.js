@@ -4,6 +4,7 @@ import React from 'react';
 import { Button } from 'react-native';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
+import { randomEmotion, randomEmotionWithImage, randomEmotions } from './emotion-utils.js';
 import { Emotion } from '../src/models/emotion.js';
 import uuid from 'uuid';
 
@@ -19,12 +20,16 @@ export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQues
 
 export function randomEyeQuestion(c?: number): EyeQuestion {
     c = c === undefined ? uuid.v4() : c;
-    const uniqueString = 'IMAGE-'+c;
+    const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
+    const answer = randomEmotionWithImage(uuid.v4(), 'ans' + uniqueString);
+    const answers = randomEmotions(2);
+    answers.push(answer);
     return {
         id: c,
         type: 'eye-question',
-        image: uniqueString,
-        emotion: new Emotion(uuid.v4(), 'ans-' + uniqueString),
+        image: 'image' + c,
+        correctAnswer: answer,
+        answers: answers,
     };
 }
 
@@ -39,12 +44,15 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<Emotio
 export function randomWordQuestion(c?: number): EmotionWordQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
+    const answer = randomEmotion(uuid.v4(), 'ans' + uniqueString);
+    const answers = randomEmotions(2);
+    answers.push(answer);
     return {
         id: c,
         type: 'word-question',
         questionText: uniqueString,
-        answer: 'ans-' + uniqueString,
-        emotion: new Emotion(c, 'ans-' + uniqueString),
+        correctAnswer: answer,
+        answers: answers,
     };
 }
 

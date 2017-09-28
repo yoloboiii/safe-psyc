@@ -34,26 +34,6 @@ describe('startRandomSession', () => {
             }
         });
     });
-
-    it('contains an answer service with the answers to all questions in its pool', () => {
-        const navigateMock = jest.fn();
-
-        return startRandomSession({ navigate: navigateMock, dispatch: jest.fn() })
-            .then( () => {
-
-                const args = navigateMock.mock.calls[0][1];
-                if (!args || !args.questions || !args.answerService) {
-                    throw 'was not called with questions or an AnswerService';
-                } else {
-                    const pool = args.answerService._answerPool;
-
-                    expect(pool.length).toBe(sessionService.getQuestionPool().length);
-                    expect(
-                        args.questions.every( question => pool.indexOf(question.emotion) > -1 )
-                    ).toBe(true);
-                }
-            });
-    });
 });
 
 describe('onSessionFinished', () => {
