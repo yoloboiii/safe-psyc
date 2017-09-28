@@ -5,23 +5,31 @@ import { Logger } from './logger';
 it('logs to local logger if there isn\'t an error',  () => {
     const { log, localMock } = createLog();
 
-    log.info('foo', 'bar');
+    log.info('foo');
 
-    expect(localMock.log).toHaveBeenCalled();
+    expect(localMock.log).toHaveBeenCalledWith('foo');
+});
+
+it('logs to remote logger if there isn\'t an error',  () => {
+    const { log, remoteMock } = createLog();
+
+    log.info('foo');
+
+    expect(remoteMock.log).toHaveBeenCalledWith('foo');
 });
 
 it('logs to local logger if there\'s an error',  () => {
     const { log, localMock } = createLog();
 
-    log.info('foo', new Error());
+    log.info('foo %j', new Error());
 
     expect(localMock.log).toHaveBeenCalled();
 });
 
-it('doesn\'t log to remote logger if there isn\'t an error',  () => {
+it('doesn\'t report to remote logger if there isn\'t an error',  () => {
     const { log, remoteMock } = createLog();
 
-    log.info('foo', 'bar');
+    log.info('foo');
 
     expect(remoteMock.report).not.toHaveBeenCalled();
 });
@@ -29,9 +37,19 @@ it('doesn\'t log to remote logger if there isn\'t an error',  () => {
 it('logs to remote logger if there\'s an error', () => {
     const { log, remoteMock } = createLog();
 
-    log.info('foo', new Error());
+    const e = new Error();
+    log.info('foo %j', e);
 
-    expect(remoteMock.report).toHaveBeenCalled();
+    expect(remoteMock.report).toHaveBeenCalledWith(e);
+});
+
+it('replaces variables in the format string', () => {
+    const { log, localMock, remoteMock } = createLog();
+
+    log.info('foo %s bar', 'to');
+
+    expect(localMock.log).toHaveBeenCalledWith('foo to bar');
+    expect(remoteMock.log).toHaveBeenCalledWith('foo to bar');
 });
 
 function createLog() {
@@ -40,6 +58,7 @@ function createLog() {
         error: jest.fn(),
     };
     const remoteMock = {
+        log: jest.fn(),
         report: jest.fn(),
     };
     const log = new Logger(localMock, remoteMock);

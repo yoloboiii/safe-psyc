@@ -32,6 +32,7 @@
     "react-native-firebase": "^2.2.2",
     "react-native-hyperlink": "^0.0.11",
     "react-native-textinput-effects": "^0.4.0",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-navigation": "^1.0.0-beta.11",
+    "sprintf-js": "^1.1.1"
   }
 }

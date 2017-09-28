@@ -75,10 +75,10 @@ export class Session extends React.Component<Props, State> {
 
         this.props.backendFacade.registerCorrectAnswer(currentQ)
             .then( () => {
-                log.debug('Correct answer to {0} saved', currentQ);
+                log.debug('Correct answer to %j saved', currentQ);
             })
             .catch( e => {
-                log.error('Failed saving correct answer to {0}: {1}', currentQ, e);
+                log.error('Failed saving correct answer to %j: %j', currentQ, e);
             });
 
         const isLastQuestion = this.state.questions.size() === 1;
@@ -112,10 +112,10 @@ export class Session extends React.Component<Props, State> {
 
         this.props.backendFacade.registerIncorrectAnswer(currentQ, answer)
             .then( () => {
-                log.debug('Incorrect answer to {0} saved', currentQ);
+                log.debug('Incorrect answer to %j saved', currentQ);
             })
             .catch( e => {
-                log.error('Failed saving incorrect answer to {0}: {1}', currentQ, e);
+                log.error('Failed saving incorrect answer to %j: %j', currentQ, e);
             });
 
         if (prevCount === 2) {
