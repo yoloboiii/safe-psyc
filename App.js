@@ -2,6 +2,7 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { StatusBar, Platform } from 'react-native';
 
+import { RedirectScreen } from './src/components/RedirectScreen.js';
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SettingsScreen } from './src/components/SettingsScreen.js';
 import { ResetPasswordScreen } from './src/components/ResetPasswordScreen.js';
@@ -30,6 +31,7 @@ const defaultScreenProps = {
 };
 
 const App = StackNavigator({
+    Redirect: { screen: RedirectScreen },
     Login: { screen: LoginScreen },
     Home: { screen: HomeScreen },
     Welcome: { screen: WelcomeScreen },

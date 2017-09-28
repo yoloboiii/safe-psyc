@@ -8,10 +8,15 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { Credits } from './Credits.js';
 import { constants } from '../styles/constants.js';
 import { backendFacade } from '../services/backend.js';
+import { onUserLoggedOut } from '../navigation-actions.js';
 
 import type { BackendFacade } from '../services/backend.js';
+import type { Navigation } from '../navigation-actions.js';
 
-export class SettingsScreen extends React.Component<{}, {}> {
+type Props = {
+    navigation: Navigation<{}>,
+};
+export class SettingsScreen extends React.Component<Props, {}> {
     static navigationOptions = {
         title: 'SETTINGS',
     };
@@ -27,7 +32,8 @@ export class SettingsScreen extends React.Component<{}, {}> {
                 <StandardText>Hi { email }</StandardText>
                 <VerticalSpace />
                 <StandardButton
-                    onPress={ () => backendFacade.logOut() }
+                    onPress={ () => backendFacade.logOut()
+                            .then( () => onUserLoggedOut(this.props.navigation) )}
                     title={ 'Log out' } />
             </View>
             <Credits />

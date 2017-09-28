@@ -13,19 +13,22 @@ import type { Emotion } from '../models/emotion.js';
 let loggedInUser = null;
 const onLoggedInListeners = [];
 const onLoggedOutListeners = [];
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        log.debug('onAuthStateChange - user logged in');
-        loggedInUser = user;
 
-        onLoggedInListeners.forEach(l => l());
-    } else {
-        log.debug('onAuthStateChange - user logged out');
-        loggedInUser = null;
+function registerAuthListeners() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            log.debug('onAuthStateChange - user logged in');
+            loggedInUser = user;
 
-        onLoggedOutListeners.forEach(l => l());
-    }
-});
+            onLoggedInListeners.forEach(l => l());
+        } else {
+            log.debug('onAuthStateChange - user logged out');
+            loggedInUser = null;
+
+            onLoggedOutListeners.forEach(l => l());
+        }
+    });
+}
 
 const db = firebase.database();
 type LastEmotionAnswer = {
@@ -206,6 +209,7 @@ export class BackendFacade {
     }
 
     login(email: string, password: string): Promise<void> {
+        email = email.trim();
         return firebase.auth().signInWithEmailAndPassword(email, password)
             .then( function() {
                 log.debug('Login successful');
@@ -228,6 +232,7 @@ export class BackendFacade {
     }
 
     resetPassword(email: string): Promise<void> {
+        email = email.trim();
         return firebase.auth().sendPasswordResetEmail(email)
             .then( () => {
                 log.debug('Password reset sent');
@@ -240,6 +245,9 @@ export class BackendFacade {
 
     onUserLoggedIn(callback: ()=>void) {
         onLoggedInListeners.push(callback);
+        if (onLoggedInListeners.length === 1) {
+            registerAuthListeners();
+        }
     }
 
     onUserLoggedOut(callback: ()=>void) {

@@ -28,13 +28,10 @@ export class WelcomeScreen extends React.Component<Props, State> {
     };
 
     render() {
-        /*const props = this.props.navigation.state && this.props.navigation.state.params
+        const props = this.props.navigation.state && this.props.navigation.state.params
             ? this.props.navigation.state.params
             : undefined;
-            */
-        const props = {
-            username: 'Nils',
-        };
+
 
         if (props) {
             return this._render(props);
