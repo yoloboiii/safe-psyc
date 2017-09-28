@@ -63,7 +63,9 @@ export function onSessionFinished(navigation: Navigation<*>, backend: BackendFac
                     index: 1,
                     actions: [
                         NavigationActions.navigate({ routeName: 'Home' }),
-                        NavigationActions.navigate({ routeName: 'CurrentFeeling' }),
+                        NavigationActions.navigate({ routeName: 'CurrentFeeling', params: {
+                            skippable: true,
+                        }}),
                     ],
                 });
                 navigation.dispatch(resetAction);
@@ -94,14 +96,7 @@ export function openSettings(navigation: Navigation<*>) {
 }
 
 export function onUserLoggedIn(navigation: Navigation<*>) {
-    navigation.dispatch(
-        NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Home' })
-            ],
-        })
-    );
+    resetToHome(navigation);
 }
 
 export function onUserLoggedOut(navigation: Navigation<*>) {
@@ -110,6 +105,17 @@ export function onUserLoggedOut(navigation: Navigation<*>) {
             index: 0,
             actions: [
                 NavigationActions.navigate({ routeName: 'Login' })
+            ],
+        })
+    );
+}
+
+export function resetToHome(navigation: Navigation<*>) {
+    navigation.dispatch(
+        NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Home' }),
             ],
         })
     );

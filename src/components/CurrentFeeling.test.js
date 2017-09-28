@@ -6,6 +6,7 @@ import { Button } from 'react-native';
 import { CurrentFeeling } from './CurrentFeeling.js';
 
 const defaultProps = {
+    emotionWords: ['a', 'b', 'c'],
     onAnswered: () => {},
 };
 it('has a list of emotion words', () => {
@@ -40,4 +41,20 @@ it('submits the chosen emotion to the backend', () => {
     button.props.onPress();
     expect(registerCurrentEmotionMock).toHaveBeenCalledTimes(1);
     expect(registerCurrentEmotionMock).toHaveBeenCalledWith('a');
+});
+
+it('contains a skip button if the onSkip prop is given', () => {
+    const onSkipMock = jest.fn();
+    const component = render(CurrentFeeling, {
+        onSkip: onSkipMock,
+    }, defaultProps);
+
+    expect(component).toHaveChildWithProps(Button, { title: 'Skip' });
+
+    const skipButton = findChildren(component, Button)
+        .filter(b => b.props.title === 'Skip')[0];
+
+    skipButton.props.onPress();
+
+    expect(onSkipMock).toHaveBeenCalledTimes(1);
 });

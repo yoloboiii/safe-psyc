@@ -8,11 +8,14 @@ import { CurrentFeeling } from './CurrentFeeling.js';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { backendFacade } from '../services/backend.js';
+import { resetToHome } from '../navigation-actions.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
-    navigation: Navigation<{}>,
+    navigation: Navigation<{
+        skippable: boolean,
+    }>,
 }
 type State = {
     finishedLoading: boolean,
@@ -49,15 +52,18 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
             </View>
 
         } else {
+            const skippable = this.props.navigation.state && this.props.navigation.state.params
+                ? !!this.props.navigation.state.params.skippable
+                : false;
+
+            console.log('nav', skippable);
+            const onSkip = skippable
+                ? () => resetToHome(this.props.navigation)
+                : undefined;
+
             return <CurrentFeeling
-                onAnswered={ () => {
-                    this.props.navigation.dispatch(NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Home' }),
-                        ],
-                    }));
-                }}
+                onAnswered={ () => resetToHome(this.props.navigation) }
+                onSkip={ onSkip }
                 emotionWords={ this.state.emotionWords }
                 backendFacade={ backendFacade } />
         }

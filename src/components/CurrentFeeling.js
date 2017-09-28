@@ -10,10 +10,15 @@ import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';
 
+const buttonRowStyle = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+};
 type Props = {
     backendFacade: BackendFacade,
     emotionWords: Array<string>,
-   onAnswered: () => void,
+    onAnswered: () => void,
+    onSkip?: () => void,
 };
 type State = {
     selectedEmotion: string,
@@ -40,7 +45,8 @@ export class CurrentFeeling extends React.Component<Props, State> {
             return <Picker.Item key={word} label={word} value={word} />;
         });
 
-        const button = this._createButton();
+        const submitButton = this._createSubmitButton();
+        const skipButton = this._createSkipButton();
 
         return <View style={ constants.padflex } >
             <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
@@ -54,11 +60,14 @@ export class CurrentFeeling extends React.Component<Props, State> {
             </Picker>
 
             <VerticalSpace multiplier={2} />
-            { button }
+            <View style={ buttonRowStyle }>
+                { submitButton }
+                { skipButton }
+            </View>
         </View>
     }
 
-    _createButton() {
+    _createSubmitButton() {
         switch(this.state.submissionState) {
             case 'successful':
                 return <StandardButton
@@ -72,6 +81,16 @@ export class CurrentFeeling extends React.Component<Props, State> {
 
             case 'submitting':
                 return <ActivityIndicator />
+        }
+    }
+
+    _createSkipButton() {
+        if (this.props.onSkip) {
+            return <StandardButton
+                title={ 'Skip' }
+                onPress={ this.props.onSkip } />
+        } else {
+            return undefined;
         }
     }
 

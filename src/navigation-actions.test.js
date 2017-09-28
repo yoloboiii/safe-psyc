@@ -59,7 +59,7 @@ describe('onSessionFinished', () => {
         Date.now = jest.fn(() => new Date(Date.UTC(2017, 0, 1)).valueOf());
 
         const backendFacade = (({
-            getLastFeelingAnswer: jest.fn()
+            getLastEmotionAnswer: jest.fn()
                 .mockReturnValueOnce(new Promise(r => {
                     r({
                         when: moment().subtract(10, 'hours'),
@@ -94,6 +94,32 @@ describe('onSessionFinished', () => {
                     dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)
                 ).not.toContain('CurrentFeeling');
             });
+    });
+
+    it.skip('should navigate the howrufeeling with the skippable param', () => {
+        const backendFacade = (({
+            getLastEmotionAnswer: jest.fn()
+                .mockReturnValueOnce(new Promise(r => {
+                    r({
+                        when: moment().subtract(10, 'hours'),
+                    });
+                })),
+        }: any): BackendFacade);
+
+        const dispatchMock = jest.fn();
+        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
+
+        return onSessionFinished(navigation, backendFacade)
+            .then( () => {
+                expect(dispatchMock).toHaveBeenCalled();
+                const params = dispatchMock.mock.calls[0][0]
+                    .actions
+                    .filter(a => a.routeName === 'CurrentFeeling')
+                    .map(a => a.params)[0];
+
+                expect(params).toEqual(expect.objectContaining({ skippable: true}));
+            });
+
     });
 });
 
