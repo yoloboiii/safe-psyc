@@ -52,8 +52,10 @@ export class LoginScreen extends React.Component<Props, State> {
         super(props);
         this.state = {
             loading: 'no',
-            email: 'lol@lol.lol',
-            password: 'lollol',
+            email: '',
+            password: '',
+            //email: 'lol@lol.lol',
+            //password: 'lollol',
         };
     }
 

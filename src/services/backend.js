@@ -39,11 +39,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                log.error('Not logged in - registerCorrectAnswer', err);
+                log.error('Not logged in - registerCorrectAnswer, %j', err);
                 throw err;
             }
 
-            log.debug('Registering correct answer to', question);
+            log.debug('Registering correct answer to, %j', question.correctAnswer.id);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
@@ -60,11 +60,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                log.error('Not logged in - registerIncorrectAnswer', err);
+                log.error('Not logged in - registerIncorrectAnswer, %j', err);
                 throw err;
             }
 
-            log.debug('Registering incorrect answer', answer, 'to', question);
+            log.debug('Registering incorrect answer %d to %d', answer.id, question.correctAnswer.id);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
@@ -82,11 +82,11 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized write attempt');
-                log.error('Not logged in - registerCurrentEmotion', err);
+                log.error('Not logged in - registerCurrentEmotion, %j', err);
                 throw err;
             }
 
-            log.debug('Registering current emotion', emotion);
+            log.debug('Registering current emotion, %j', emotion);
             const path = 'user-data/' + user.uid + '/emotions';
             const toWrite = {
                 emotion: emotion,
@@ -111,7 +111,7 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
-                log.error('Not logged in - getLastFeelingAnswer', err);
+                log.error('Not logged in - getLastFeelingAnswer, %j', err);
                 throw err;
             }
 
@@ -135,7 +135,7 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
-                log.error('Not logged in - getAnswersTo', err);
+                log.error('Not logged in - getAnswersTo, %j', err);
                 throw err;
             }
 
@@ -187,18 +187,19 @@ export class BackendFacade {
                     };
                 })
                 .catch( e => {
-                    log.error('Failed getting answers to', emotion, e);
+                    log.error('Failed getting answers to %d, %j', emotion.id, e);
                     throw e;
                 });
     }
 
     createNewUser(email: string, password: string): Promise<void> {
+        email = email.trim();
         return firebase.auth().createUserWithEmailAndPassword(email, password)
             .then( () => {
                 log.debug('Created user');
             })
             .catch(function(error) {
-                log.error('Failed creating user', error);
+                log.error('Failed creating user, %j', error);
                 throw error;
             });
     }
@@ -209,7 +210,7 @@ export class BackendFacade {
                 log.debug('Login successful');
             })
             .catch(function(error) {
-                log.error('Failed logging in ', error);
+                log.error('Failed logging in, %j', error);
                 throw error;
             });
     }
@@ -220,7 +221,7 @@ export class BackendFacade {
                 log.debug('User logged out');
             })
             .catch( e => {
-                log.error('Failed logging out', e);
+                log.error('Failed logging out, %j', e);
                 throw e;
             });
     }
@@ -231,7 +232,7 @@ export class BackendFacade {
                 log.debug('Password reset sent');
             })
             .catch( e => {
-                log.error('Failed sending password reset, ', e);
+                log.error('Failed sending password reset, %j', e);
                 throw e;
             });
     }
