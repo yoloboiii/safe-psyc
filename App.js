@@ -8,9 +8,11 @@ import { SettingsScreen } from './src/components/SettingsScreen.js';
 import { ResetPasswordScreen } from './src/components/ResetPasswordScreen.js';
 import { WelcomeScreen } from './src/components/WelcomeScreen.js';
 import { SessionScreen } from './src/components/SessionScreen.js';
+import { SessionReportScreen } from './src/components/SessionReportScreen.js';
 import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
+
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
@@ -39,6 +41,7 @@ const App = StackNavigator({
     ResetPassword: { screen: ResetPasswordScreen, ...defaultScreenProps },
 
     Session: { screen: SessionScreen, ...defaultScreenProps },
+    SessionReport: { screen: SessionReportScreen, ...defaultScreenProps },
     EmotionDetails: { screen: EmotionDetailsScreen, ...defaultScreenProps },
     CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
 });

@@ -108,7 +108,7 @@ export class BackendFacade {
         });
     }
 
-    getLastEmotionAnswer(): Promise<LastEmotionAnswer> {
+    getLastEmotionAnswer(): Promise<?LastEmotionAnswer> {
         log.debug('Reading last recorded feeling');
         return new Promise((resolve) => {
             const user = loggedInUser;
@@ -123,13 +123,17 @@ export class BackendFacade {
                 .limitToLast(1)
                 .once('value', (snap) => {
                     const firebaseWeirdValue = snap.val();
-                    const firebaseWeirdKey = Object.keys(firebaseWeirdValue)[0];
-                    const value = firebaseWeirdValue[firebaseWeirdKey];
+                    if (firebaseWeirdValue === null) {
+                        resolve(null);
+                    } else {
+                        const firebaseWeirdKey = Object.keys(firebaseWeirdValue)[0];
+                        const value = firebaseWeirdValue[firebaseWeirdKey];
 
-                    resolve({
-                        emotion: value.emotion,
-                        when: moment(value.when, 'x'),
-                    });
+                        resolve({
+                            emotion: value.emotion,
+                            when: moment(value.when, 'x'),
+                        });
+                    }
                 });
         });
     }

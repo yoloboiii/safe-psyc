@@ -5,7 +5,6 @@ import { Session } from './Session.js';
 import { answerService } from '../services/answer-service.js';
 import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
-import { SessionReport } from './SessionReport.js';
 import { QuestionProgress } from './QuestionProgress.js'
 
 import { render, renderShallow } from '../../tests/render-utils.js';
@@ -127,21 +126,32 @@ it('repeats a question answered incorrectly thrice in a row at the end of the se
     expect(lastQuestion).toBe(theDifficultQuestion);
 });
 
-it('shows a report when the session is finished', () => {
+it('calls back with a report when the session is finished', () => {
     const onFinishedMock = jest.fn();
 
-    const questions = randomQuestions();
+    const questions = randomQuestions(3);
     const component = render(Session, {
         questions: questions,
         onSessionFinished: onFinishedMock,
     }, defaultProps);
 
+    const report = new Map();
     for (let i = 0; i < questions.length; i++) {
-        clickAnswerAndDismissOverlay(component);
+        const q = getQuestion(component);
+        if ( i % 2 === 0) {
+            report.set(q, []);
+            clickAnswerAndDismissOverlay(component);
+        } else {
+            const button = clickWrongAnswerAndDismissOverlay(component);
+            const emotion = q.answers.filter(a => a.name === button.props.title)[0];
+            report.set(q, [emotion]);
+            clickAnswerAndDismissOverlay(component);
+
+        }
     }
 
-    expect(onFinishedMock).not.toHaveBeenCalled();
-    expect(component).toHaveChild(SessionReport);
+    expect(onFinishedMock).toHaveBeenCalledWith(report);
+
 });
 
 it('shows how many questions are left', () => {

@@ -1,7 +1,7 @@
 // @flow
 
 import { InteractionManager } from 'react-native';
-import { startRandomSession, onSessionFinished } from './navigation-actions.js';
+import { startRandomSession, routeToCurrentFeelingOrHome } from './navigation-actions.js';
 import { sessionService } from './services/session-service.js';
 import moment from 'moment';
 
@@ -36,7 +36,7 @@ describe('startRandomSession', () => {
     });
 });
 
-describe('onSessionFinished', () => {
+describe('routeToCurrentFeelingOrHome', () => {
     // TODO: react-navigation is behaving weirdly after the eject. I keep getting
     // import type { NavigationAction } from './TypeDefinition';
     // ^^^^^^
@@ -75,7 +75,7 @@ describe('onSessionFinished', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return onSessionFinished(navigation, backendFacade)
+        return routeToCurrentFeelingOrHome(navigation, backendFacade)
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
 
@@ -86,7 +86,7 @@ describe('onSessionFinished', () => {
             })
             .then( () => {
                 dispatchMock.mockReset();
-                return onSessionFinished(navigation, backendFacade);
+                return routeToCurrentFeelingOrHome(navigation, backendFacade);
             })
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
@@ -109,7 +109,7 @@ describe('onSessionFinished', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return onSessionFinished(navigation, backendFacade)
+        return routeToCurrentFeelingOrHome(navigation, backendFacade)
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalled();
                 const params = dispatchMock.mock.calls[0][0]

@@ -15,21 +15,20 @@ import type { BackendFacade } from '../services/backend.js';
 import type { Question } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
-import type { Navigation } from '../navigation-actions.js';
+import type { Report } from './SessionReport.js';
 
 type Props = {
     backendFacade: BackendFacade,
     questions: Array<Question>,
-    onSessionFinished: () => void,
-    navigation: Navigation<{}>,
+    onSessionFinished: (Report) => void,
 };
 type State = {
-    isFinished: boolean,
     questions: QuestionCollection,
     wrongAnswers: Map<Question, number>,
     report: Map<Question, Array<Emotion>>,
     currentQuestionIndex: number,
     totalNumberOfQuestions: number,
+    isFinished: boolean,
 };
 
 const questionContainer = {
@@ -53,12 +52,12 @@ export class Session extends React.Component<Props, State> {
     _propsToState(props) {
         const questions = new QuestionCollection(props.questions);
         return {
-            isFinished: false,
             questions: questions,
             wrongAnswers: new Map(),
             report: new Map(),
             currentQuestionIndex: 1,
             totalNumberOfQuestions: questions.size(),
+            isFinished: false,
         };
     }
 
@@ -83,6 +82,7 @@ export class Session extends React.Component<Props, State> {
 
         const isLastQuestion = this.state.questions.size() === 1;
         if(isLastQuestion) {
+            this.props.onSessionFinished(this.state.report);
             this.setState({ isFinished: true });
         } else {
             this._nextQuestion();
@@ -127,10 +127,6 @@ export class Session extends React.Component<Props, State> {
         }
     }
 
-    _onSessionFinished() {
-        this.props.onSessionFinished();
-    }
-
     render() {
         return <View
             style={ backgroundStyle }>
@@ -143,26 +139,14 @@ export class Session extends React.Component<Props, State> {
             return <StandardText>No question in session</StandardText>
 
         } else if (this.state.isFinished) {
-            return <ScrollView
-                contentContainerStyle={ constants.padding }>
-
-                <StandardText>Great job! Congratulations on finishing the session, here's a summary of how it went!</StandardText>
-
-                <VerticalSpace multiplier={4}/>
-                <SessionReport
-                    report={ this.state.report }
-                    navigation={ this.props.navigation }/>
-                <VerticalSpace multiplier={2}/>
-
-                <StandardButton
-                    title={'Thanks!'}
-                    onPress={this._onSessionFinished.bind(this)} />
-            </ScrollView>
+            return <StandardText>Session finished!</StandardText>
         } else {
             const currentQuestion = this.state.questions.peek();
 
             return <View style={ questionContainer }>
-                <QuestionProgress current={ this.state.currentQuestionIndex } total={ this.state.totalNumberOfQuestions } />
+                <QuestionProgress
+                    current={ this.state.currentQuestionIndex }
+                    total={ this.state.totalNumberOfQuestions } />
 
                 <VerticalSpace />
 

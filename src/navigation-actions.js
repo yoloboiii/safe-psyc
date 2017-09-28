@@ -9,6 +9,7 @@ import { log } from './services/logger.js';
 
 import type { Emotion } from './models/emotion.js';
 import type { BackendFacade } from './services/backend.js';
+import type { Report } from './components/SessionReport.js';
 
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
@@ -16,6 +17,12 @@ export type Navigation<P> = {
     state?: {
         params: P,
     },
+}
+
+export function paramsOr<T,S>(navigation: Navigation<T>, or: S): T|S {
+    return navigation.state && navigation.state.params
+        ? navigation.state.params
+        : or;
 }
 
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void): Promise<{}> {
@@ -38,13 +45,34 @@ export function navigateToEmotionDetails(navigation: Navigation<*>, emotion: Emo
     });
 }
 
-export function onSessionFinished(navigation: Navigation<*>, backend: BackendFacade): Promise<*> {
+export function navigateToSessionReport(navigation: Navigation<*>, report: Report) {
+    navigation.dispatch(
+        NavigationActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Home' }),
+                NavigationActions.navigate({
+                    routeName: 'SessionReport',
+                    params: {
+                        report: report,
+                    },
+                })
+            ],
+        })
+    );
+}
+
+export function routeToCurrentFeelingOrHome(navigation: Navigation<*>, backend: BackendFacade): Promise<*> {
     return backend.getLastEmotionAnswer()
         .then( answer => {
-            const eightHoursAgo = moment().subtract(8, 'hours');
-            const haveAlreadyAnswered = eightHoursAgo.isBefore(answer.when);
+            if (answer) {
+                const eightHoursAgo = moment().subtract(8, 'hours');
+                const haveAlreadyAnswered = eightHoursAgo.isBefore(answer.when);
 
-            return haveAlreadyAnswered;
+                return haveAlreadyAnswered;
+            } else {
+                return false;
+            }
         })
         .then( haveAlreadyAnswered => {
             const neverWantsToBeAsked = false; // TODO: implement this

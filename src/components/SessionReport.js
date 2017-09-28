@@ -11,9 +11,10 @@ import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/quest
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
+export type Report = Map<Question, Array<Emotion>>;
 type Props = {
-    report: Map<Question, Array<Emotion>>,
-    navigation: Navigation<{}>,
+    report: Report,
+    navigation: Navigation<any>,
 };
 export function SessionReport(props: Props) {
 
