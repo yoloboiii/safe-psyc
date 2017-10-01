@@ -26,22 +26,39 @@ export class SessionService {
 
         const questions = [];
         for (const emotion of emotionsToTest) {
-            questions.push(this._generateQuestion(emotion));
+            questions.push(this._generateRandomQuestion(emotion));
         }
         return questions;
     }
 
-    _generateQuestion(emotion: Emotion): Question {
-        if (!emotion.image) {
-            throw new Error('Tried to create an eye question from an emotion without an image');
+    _generateRandomQuestion(emotion: Emotion): Question {
+        const type = this._randomizeValidQuestionType(emotion);
+
+        let question = {};
+        // $FlowFixMe
+        question.type = type;
+        question.correctAnswer = emotion;
+        question.answers = this._answerService.getAnswersTo(emotion, 3);
+
+        switch(question.type) {
+            case 'eye-question':
+                question.image =  emotion.image;
+        };
+
+        return question;
+    }
+
+    _randomizeValidQuestionType(emotion) {
+        const possibleQuestionTypes = [];
+        if (emotion.image) {
+            possibleQuestionTypes.push('eye-question');
+        }
+        if (emotion.intensity) {
+            possibleQuestionTypes.push('intensity');
         }
 
-        return {
-            type: 'eye-question',
-            image: emotion.image,
-            correctAnswer: emotion,
-            answers: this._answerService.getAnswersTo(emotion, 3),
-        };
+        const rnd = Math.floor(Math.random() * possibleQuestionTypes.length);
+        return possibleQuestionTypes[rnd];
     }
 
     getRecommendedQuestions(numQuestions: number): Array<Question> {

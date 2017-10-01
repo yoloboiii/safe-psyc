@@ -8,7 +8,7 @@ import { randomEmotion, randomEmotionWithImage, randomEmotions } from './emotion
 import { Emotion } from '../src/models/emotion.js';
 import uuid from 'uuid';
 
-import type { Question, EyeQuestion, EmotionWordQuestion } from '../src/models/questions.js';
+import type { Question, EyeQuestion, EmotionWordQuestion, IntensityQuestion } from '../src/models/questions.js';
 
 export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQuestion> {
     const qs = [];
@@ -21,11 +21,10 @@ export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQues
 export function randomEyeQuestion(c?: number): EyeQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
-    const answer = randomEmotionWithImage(uuid.v4(), 'ans' + uniqueString);
+    const answer = randomEmotionWithImage('ans' + uniqueString);
     const answers = randomEmotions(2);
     answers.push(answer);
     return {
-        id: c,
         type: 'eye-question',
         image: 'image' + c,
         correctAnswer: answer,
@@ -44,16 +43,27 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<Emotio
 export function randomWordQuestion(c?: number): EmotionWordQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
-    const answer = randomEmotion(uuid.v4(), 'ans' + uniqueString);
+    const answer = randomEmotion('ans' + uniqueString);
     const answers = randomEmotions(2);
     answers.push(answer);
     return {
-        id: c,
         type: 'word-question',
         questionText: uniqueString,
         correctAnswer: answer,
         answers: answers,
     };
+}
+
+export function randomIntensityQuestion(): IntensityQuestion {
+    const answer = randomEmotion('ans' + uuid.v4());
+    const answers = randomEmotions(2);
+    answers.push(answer);
+    return {
+        type: 'intensity',
+        correctAnswer: answer,
+        answers: answers,
+    };
+
 }
 
 export function randomQuestions(numberOfQuestions:number = 10) {

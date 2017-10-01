@@ -6,34 +6,29 @@ import { Emotion, EmotionBuilder } from '../src/models/emotion.js';
 export function randomEmotions(num: number): Array<Emotion> {
     const es = [];
     for (let i = 0; i < num; i++) {
-        es.push(randomEmotion(i));
+        es.push(randomEmotion());
     }
     return es;
 }
 
-export function randomEmotion(id: number = 0, name: string = uuid.v4()): Emotion {
-    return new Emotion(id, name);
+export function randomEmotion(name: string = uuid.v4()): Emotion {
+    return new Emotion(name);
 }
 
-export function randomEmotionWithImage(id?: number, name?: string) {
-    id = id === undefined
-        ? Math.random()
-        : id;
-
+export function randomEmotionWithImage(name?: string) {
     name = name === undefined
         ? uuid.v4()
         : name;
+
     return new EmotionBuilder()
-        .withId(id)
         .withName(name)
-        .withImage('image' + id)
+        .withImage('image' + name)
         .build();
 }
 
 export function randomEmotionWithoutImage() {
     const id = Math.random();
     return new EmotionBuilder()
-        .withId(id)
         .withName(uuid.v4())
         .build();
 }

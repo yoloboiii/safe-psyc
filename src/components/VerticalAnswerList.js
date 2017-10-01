@@ -30,7 +30,7 @@ function answersToButtonData(answers) {
     return answers.map(ans => {
         return {
             emotion: ans,
-            key: ans.id,
+            key: ans.name,
         };
     });
 }

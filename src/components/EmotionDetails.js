@@ -99,9 +99,9 @@ function ConfusionList(props) {
     }
 
     const data = new Map();
-    incorrect.forEach(i => data.set(i.emotion.id, {
+    incorrect.forEach(i => data.set(i.emotion.name, {
         emotion: i.emotion,
-        key: i.emotion.id,
+        key: i.emotion.name,
     }));
     return <View {...restProps} >
         <StandardText>You sometimes get this confused with...</StandardText>

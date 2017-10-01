@@ -46,11 +46,11 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering correct answer to, %j', question.correctAnswer.id);
+            log.debug('Registering correct answer to, %j', question.correctAnswer.name);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
-                emotion: emotion.id,
+                emotion: emotion.name,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -67,12 +67,12 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering incorrect answer %d to %d', answer.id, question.correctAnswer.id);
+            log.debug('Registering incorrect answer %d to %d', answer.name, question.correctAnswer.name);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
-                emotion: emotion.id,
-                answer: answer.id,
+                emotion: emotion.name,
+                answer: answer.name,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -152,7 +152,7 @@ export class BackendFacade {
                     const correctAnswers = [];
                     snap.forEach(correctAnswer => {
                         const val = correctAnswer.val();
-                        if (val.emotion === emotion.id) {
+                        if (val.emotion === emotion.name) {
                             correctAnswers.push(moment(val.when, 'x'));
                         }
 
@@ -162,14 +162,14 @@ export class BackendFacade {
                 });
 
             const emotionLookupTable = new Map();
-            sessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.id, e));
+            sessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
             // Get all incorrect answers
             const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
                 .then( (snap) => {
                     const incorrectAnswers = [];
                     snap.forEach(incorrectAnswer => {
                         const val = incorrectAnswer.val();
-                        if (val.emotion === emotion.id) {
+                        if (val.emotion === emotion.name) {
                             incorrectAnswers.push({
                                 // We only store the question id in the db,
                                 // so we need to join in the real question
@@ -194,7 +194,7 @@ export class BackendFacade {
                     };
                 })
                 .catch( e => {
-                    log.error('Failed getting answers to %d, %j', emotion.id, e);
+                    log.error('Failed getting answers to %d, %j', emotion.name, e);
                     throw e;
                 });
     }

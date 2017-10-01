@@ -5,6 +5,7 @@ import  { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
+import { IntensityQuestionComponent } from './Question.Intensity.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
@@ -106,6 +107,13 @@ export class QuestionComponent extends React.Component<Props,State> {
                             answers={ answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
+            case 'intensity':
+                return <IntensityQuestionComponent
+                            question={ question }
+                            answers={ answers }
+                            onCorrectAnswer={ onCorrectAnswer }
+                            onWrongAnswer={ onWrongAnswer } />
+
             default:
                 return <UnknownQuestionComponent question={ question } />;
         }

@@ -8,7 +8,7 @@ import { Image } from 'react-native';
 import moment from 'moment';
 
 const defaultProps = {
-    emotion: randomEmotion(0, 'EMOTION NAME'),
+    emotion: randomEmotion('EMOTION NAME'),
     dataPoints: {
         correct: [],
         incorrect: [],
@@ -46,8 +46,8 @@ it('is humble about the strength meter when there\'s not enough data', () => {
 });
 
 it('shows emotions that the user often confuse with the main emotion', () => {
-    const emotionA = randomEmotion(1, 'EMOTION A');
-    const emotionB = randomEmotion(2, 'EMOTION B');
+    const emotionA = randomEmotion('EMOTION A');
+    const emotionB = randomEmotion('EMOTION B');
 
     const component = render(EmotionDetails, {
         dataPoints: {

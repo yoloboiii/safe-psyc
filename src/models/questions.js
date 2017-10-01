@@ -1,21 +1,29 @@
 // @flow
 
 import type { Emotion } from './emotion.js';
-export type Question = EyeQuestion | EmotionWordQuestion;
+export type Question = EyeQuestion | EmotionWordQuestion | IntensityQuestion;
 
 export type EyeQuestion = {
     type: 'eye-question',
-    image: string,
     correctAnswer: Emotion,
     answers: Array<Emotion>,
+
+    image: string,
 };
 
 export type EmotionWordQuestion = {
     type: 'word-question',
-    questionText: string,
     correctAnswer: Emotion,
     answers: Array<Emotion>,
+
+    questionText: string,
 };
+
+export type IntensityQuestion = {
+    type: 'intensity',
+    correctAnswer: Emotion,
+    answers: Array<Emotion>,
+}
 
 // To be asked at the end of the first training session
 // Nice with the coordinates thing and then being asked
