@@ -20,15 +20,17 @@ import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
+// TODO: I'd like the number to be defined in Questions.Intensity.js
+export type AnswerType = Emotion | number;
 export type Props = {
     question: Question,
     answers: Array<Emotion>,
     onCorrectAnswer: () => void,
-    onWrongAnswer: (answer: Emotion) => void,
+    onWrongAnswer: (answer: AnswerType) => void,
 };
 type State = {
     currentAnswerState: CurrentAnswerState,
-    currentAnswer: ?Emotion,
+    currentAnswer: ?AnswerType,
 };
 
 // TODO: Duolingo's discuss feature on each question is quite cool
@@ -38,7 +40,7 @@ export class QuestionComponent extends React.Component<Props,State> {
         super(props);
         this.state = {
             currentAnswerState: 'NOT-ANSWERED',
-            currentAnswer: undefined,
+            currentAnswer: null,
         };
     }
 
@@ -167,13 +169,13 @@ const resultOverlayStyleSheet = StyleSheet.create({
 
 type ResultOverlayProps = {
     question: Question,
-    answer: Emotion,
+    answer: AnswerType,
     answeredCorrectly: boolean,
     onDismiss: () => void,
 }
-export type SpecificOverlayProps = {
+export type SpecificOverlayProps<T> = {
     answeredCorrectly: boolean,
-    answer: Emotion,
+    answer: T,
     question: Question,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
@@ -200,9 +202,11 @@ export function ResultOverlay(props: ResultOverlayProps) {
                 answer={props.answer} />
 
         } else {
+            const answer = props.answer.name || props.answer;
+
             const text = props.answeredCorrectly
-                ? props.answer.name + ' is correct!'
-                : props.answer.name + ' is sadly incorrect'
+                ? answer + ' is correct!'
+                : answer + ' is sadly incorrect'
             return <StandardText>{ text }</StandardText>;
         }
     }

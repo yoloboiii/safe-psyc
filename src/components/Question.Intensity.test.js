@@ -41,7 +41,7 @@ describe('IntensityQuestionComponent', () => {
 
 describe('IntensityScale', () => {
     const defaultProps = {
-        referencePoints: [],
+        referencePoints: new Map(),
     };
 
     it('renders the reference points', () => {
@@ -50,7 +50,8 @@ describe('IntensityScale', () => {
         referencePoints.set(2, uuid.v4());
         referencePoints.set(3, uuid.v4());
 
-        const referencePointsTitles = referencePoints.map(p => p.title);
+        const referencePointsTitles = [];
+        referencePoints.forEach(value => value.title);
 
         const component = render(IntensityScale, {
             referencePoints: referencePoints,
@@ -61,28 +62,5 @@ describe('IntensityScale', () => {
         ).toEqual(
             expect.arrayContaining(referencePointsTitles.sort())
         );
-    });
-
-    it('registers clicks on the scale correctly', () => {
-        const onPressMock = jest.fn();
-        const component = render(IntensityScale, {
-            onPress: onPressMock,
-        }, defaultProps);
-
-        const pressables = findChildren(component, TouchableOpacity);
-        if (pressables.length < 10) {
-            throw new Error('Not enough pressables!');
-        }
-
-        //console.log(pressables.map(p => p.props));
-        const intensity2 = pressables.filter(p => p.props.intensity === 2)[0];
-        const intensity5 = pressables.filter(p => p.props.intensity === 5)[0];
-
-        intensity2.props.onPress();
-        expect(onPressMock).toHaveBeenCalledWith(2);
-
-        onPressMock.mockClear();
-        intensity5.props.onPress();
-        expect(onPressMock).toHaveBeenCalledWith(5);
     });
 });

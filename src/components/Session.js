@@ -16,6 +16,7 @@ import type { Question } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Report } from './SessionReport.js';
+import type { AnswerType } from './Question.js';
 
 type Props = {
     backendFacade: BackendFacade,
@@ -25,7 +26,7 @@ type Props = {
 type State = {
     questions: QuestionCollection,
     wrongAnswers: Map<Question, number>,
-    report: Map<Question, Array<Emotion>>,
+    report: Map<Question, Array<AnswerType>>,
     currentQuestionIndex: number,
     totalNumberOfQuestions: number,
     isFinished: boolean,
@@ -100,7 +101,7 @@ export class Session extends React.Component<Props, State> {
         this.forceUpdate();
     }
 
-    _wrongAnswer(answer: Emotion) {
+    _wrongAnswer(answer: AnswerType) {
         const currentQ = this.state.questions.peek();
         const prevCount = this.state.wrongAnswers.get(currentQ) || 0;
         const reportArray = this.state.report.get(currentQ) || [];

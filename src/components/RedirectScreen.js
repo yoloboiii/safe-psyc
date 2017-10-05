@@ -22,7 +22,6 @@ export class RedirectScreen extends React.Component<Props, {}> {
     loggedIn = false;
 
     componentWillMount() {
-        console.log('WILL MOUNT');
         backendFacade.onUserLoggedIn(this._userLoggedIn.bind(this));
         this.timerId = setTimeout(() => {
             this._timeout();

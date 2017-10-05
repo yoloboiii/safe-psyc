@@ -6,59 +6,56 @@ import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 
+import { SnapSlider } from './SnapSlider.js';
+
 import type { IntensityQuestion } from '../models/questions.js';
 
 type Props = {
     question: IntensityQuestion,
+    onCorrectAnswer: () => void,
+    onWrongAnswer: (answer: number) => void,
 };
 export function IntensityQuestionComponent(props: Props) {
     const emotionName = props.question.correctAnswer.name;
     const referencePoints =  new Map();
-    referencePoints.set(1, 'sug');
-    referencePoints.set(2, 'sug');
-    referencePoints.set(3, 'sug');
+    referencePoints.set(1, 'calm');
+    referencePoints.set(3, 'irritated');
+    referencePoints.set(5, 'angry');
 
     return <View style={ constants.flex1 }>
-        <StandardText>How intense is { emotionName }</StandardText>
+        <StandardText>How intense is { emotionName }?</StandardText>
         <VerticalSpace />
         <IntensityScale
+            onIntensityChosen={ _onIntensityChosen }
             referencePoints={ referencePoints }
-            onPress={ (intensity) => console.log('Intensity', intensity) }/>
+            />
     </View>
+
+    function _onIntensityChosen(intensity: number) {
+        console.log('YATTAMAS', intensity);
+        if (props.question.correctAnswer.intensity === intensity) {
+            props.onCorrectAnswer();
+        } else {
+            props.onWrongAnswer(intensity);
+        }
+    }
 };
 
 type ScaleProps = {
-    onPress: (number) => void,
+    onIntensityChosen: (number) => void,
     referencePoints: Map<number, string>,
 };
 export function IntensityScale(props: ScaleProps) {
-    const cells = [];
+    const items = [];
     for (let i = 1; i <= 5; i++) {
-        cells.push( createScaleCell(i) );
+        items.push({
+            value: i,
+            label: props.referencePoints.get(i) || '',
+        });
     }
-    return <View style={{
-        backgroundColor: 'red',
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRightWidth: 0,
-        flexDirection: 'row',
-    }}>
-        { cells }
-    </View>
 
-    function createScaleCell(number) {
-        const colors = ['yellow', 'blue', 'green'];
-        return <TouchableOpacity
-            ref={ (ref) => console.log('some sort of ref', ref) }
-            style={{
-                backgroundColor: colors[number % colors.length],
-                height: 50,
-                width: '20%',
-                borderRightColor: 'black',
-                borderRightWidth: 1,
-            }}
-            intensity={ number }
-            key={ number }
-            onPress={ () => props.onPress(number) } />
-    }
+    return <SnapSlider
+        items={ items }
+        onSlidingComplete={ (item) => props.onIntensityChosen(item.value) }
+        />
 }

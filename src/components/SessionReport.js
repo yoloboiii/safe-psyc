@@ -10,8 +10,9 @@ import { navigateToEmotionDetails } from '../navigation-actions.js';
 import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
+import type { AnswerType } from './Question.js';
 
-export type Report = Map<Question, Array<Emotion>>;
+export type Report = Map<Question, Array<AnswerType>>;
 type Props = {
     report: Report,
     navigation: Navigation<any>,
@@ -46,6 +47,12 @@ function renderRow(item, navigation) {
             question={ (question: EmotionWordQuestion) }
             wrongAnswers={ wrongAnswers }
             />
+    } else if (question.type === 'intensity') {
+        return <IntensityQuestionRow
+            question={ (question: EmotionWordQuestion) }
+            wrongAnswers={ wrongAnswers }
+            />
+
     } else  {
         return <StandardText>Unknown question {question.type}</StandardText>
     }
