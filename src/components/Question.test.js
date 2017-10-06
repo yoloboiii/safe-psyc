@@ -94,10 +94,14 @@ it('has a button that triggers onCorrectAnswer in the overlay', () => {
 it('has a button that triggers onWrongAnswer in the overlay', () => {
     const onCorrectAnswer = jest.fn();
     const onWrongAnswer = jest.fn();
+
+    const question = randomQuestion();
     const answer = randomEmotion();
+    // $FlowFixMe
+    question.answers = [answer];
+
     const component = render(QuestionComponent, props({
-        question: randomQuestion(),
-        answers: [answer],
+        question: question,
         onCorrectAnswer: onCorrectAnswer,
         onWrongAnswer, onWrongAnswer,
     }));
@@ -151,7 +155,6 @@ function props(customProps: $Shape<QuestionProps>) {
     const question = customProps.question || randomQuestion();
     const defaultProps = {
         question: question,
-        answers: question.answers,
         onCorrectAnswer: () => {},
         onWrongAnswer: () => {},
     };

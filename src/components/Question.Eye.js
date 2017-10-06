@@ -53,7 +53,7 @@ export function EyeQuestionComponent(props: Props) {
 
 
 const overlayImageStyle = { height: 100, };
-export function EyeQuestionOverlay(props: SpecificOverlayProps) {
+export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const { answeredCorrectly, answer } = props;
 
     const answerImage = answer.image;

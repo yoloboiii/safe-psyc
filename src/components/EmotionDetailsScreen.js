@@ -47,6 +47,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
             backendFacade.getAnswersTo(emotion)
                 .then( (answers) => {
                     log.debug('Got answers to emotion', emotion, answers);
+
                     this.setState({
                         loadingState: 'successful',
                         dataPoints: answers,

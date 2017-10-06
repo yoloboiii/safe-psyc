@@ -7,6 +7,7 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
+import type { AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 import type moment from 'moment';
@@ -23,7 +24,7 @@ const detailsImageStyle = {
 export type DataPoints = {
     correct: Array<moment$Moment>,
     incorrect: Array<{
-        emotion: Emotion,
+        answer: AnswerType,
         when: moment$Moment,
     }>,
 };
@@ -90,19 +91,35 @@ export function StrengthMeter(props: StrengthMeterProps) {
     </View>
 }
 
-function ConfusionList(props) {
+type ConfusionListProps = {
+    navigation: Navigation<*>,
+    dataPoints: {
+        correct: Array<*>,
+        incorrect: Array<*>,
+    },
+};
+function ConfusionList(props: ConfusionListProps) {
     const { navigation, ...restProps } = props;
     const { correct, incorrect } = props.dataPoints;
 
-    if (incorrect.length < 4) {
+    // $FlowFixMe
+    const incorrectEmotions: Array<{
+        answer: Emotion,
+        when: moment$Moment,
+    }> = incorrect.filter(a => {
+        return typeof(a.answer) !== 'number';
+    });
+
+    if (incorrectEmotions.length < 4) {
         return null;
     }
 
     const data = new Map();
-    incorrect.forEach(i => data.set(i.emotion.name, {
-        emotion: i.emotion,
-        key: i.emotion.name,
+    incorrectEmotions.forEach(i => data.set(i.answer.name, {
+        emotion: i.answer,
+        key: i.answer.name,
     }));
+
     return <View {...restProps} >
         <StandardText>You sometimes get this confused with...</StandardText>
         <VerticalSpace />

@@ -5,7 +5,7 @@ import  { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
-import { IntensityQuestionComponent } from './Question.Intensity.js';
+import { IntensityQuestionComponent, IntensityQuestionOverlay } from './Question.Intensity.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
@@ -14,17 +14,14 @@ import { constants } from '../styles/constants.js';
 import { sessionService } from '../services/session-service.js';
 import { log } from '../services/logger.js';
 
-import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
-// TODO: I'd like the number to be defined in Questions.Intensity.js
-export type AnswerType = Emotion | number;
 export type Props = {
     question: Question,
-    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: AnswerType) => void,
 };
@@ -47,7 +44,7 @@ export class QuestionComponent extends React.Component<Props,State> {
     componentWillReceiveProps(newProps: Props) {
         this.setState({
             currentAnswerState: 'NOT-ANSWERED',
-            currentAnswer: undefined,
+            currentAnswer: null,
         });
     }
 
@@ -58,7 +55,7 @@ export class QuestionComponent extends React.Component<Props,State> {
         });
     }
 
-    _wrongAnswer(answer: Emotion) {
+    _wrongAnswer(answer: AnswerType) {
         this.setState({
             currentAnswerState: 'WRONG',
             currentAnswer: answer,
@@ -91,7 +88,7 @@ export class QuestionComponent extends React.Component<Props,State> {
     }
 
     _getQuestionComponent() {
-        const { question, answers } = this.props;
+        const { question } = this.props;
 
         const onCorrectAnswer = this._correctAnswer.bind(this);
         const onWrongAnswer = this._wrongAnswer.bind(this);
@@ -100,19 +97,18 @@ export class QuestionComponent extends React.Component<Props,State> {
             case 'eye-question':
                 return <EyeQuestionComponent
                             question={ question }
-                            answers={ answers }
+                            answers={ question.answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
             case 'word-question':
                 return <EmotionWordQuestionComponent
                             question={ question }
-                            answers={ answers }
+                            answers={ question.answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
             case 'intensity':
                 return <IntensityQuestionComponent
                             question={ question }
-                            answers={ answers }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />
 
@@ -196,17 +192,32 @@ export function ResultOverlay(props: ResultOverlayProps) {
     function getQuestionSpecificOverlay(props) {
 
         if (props.question.type === 'eye-question') {
+            if (typeof(props.answer) ===  'number') {
+                throw new Error('Attempted to render EyeQuestionOverlay with a number as answer');
+            }
+
             return <EyeQuestionOverlay
                 question={props.question}
                 answeredCorrectly={props.answeredCorrectly}
                 answer={props.answer} />
 
+        } else if (props.question.type === 'intensity') {
+            return <IntensityQuestionOverlay
+                question={props.question}
+                answeredCorrectly={props.answeredCorrectly}
+                answer={props.answer} />
+
         } else {
-            const answer = props.answer.name || props.answer;
+            let answer: string = '';
+            if (props.answer.name && typeof(props.answer.name) === 'string') {
+                answer = props.answer.name;
+            } else {
+                answer = props.answer.toString();
+            }
 
             const text = props.answeredCorrectly
                 ? answer + ' is correct!'
-                : answer + ' is sadly incorrect'
+                : answer + ' is sadly incorrect';
             return <StandardText>{ text }</StandardText>;
         }
     }

@@ -12,11 +12,10 @@ import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';
-import type { Question } from '../models/questions.js';
+import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Report } from './SessionReport.js';
-import type { AnswerType } from './Question.js';
 
 type Props = {
     backendFacade: BackendFacade,
@@ -92,7 +91,6 @@ export class Session extends React.Component<Props, State> {
 
     _nextQuestion() {
         this.state.questions.next();
-        const q = this.state.questions.peek();
         this.setState((prevState) => {
             return {
                 currentQuestionIndex: prevState.currentQuestionIndex + 1,
@@ -153,7 +151,6 @@ export class Session extends React.Component<Props, State> {
 
                 <QuestionComponent
                     question={ currentQuestion }
-                    answers={ currentQuestion.answers }
                     onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                     onWrongAnswer={ this._wrongAnswer.bind(this) } />
             </View>

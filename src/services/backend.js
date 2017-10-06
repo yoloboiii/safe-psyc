@@ -4,7 +4,7 @@ import moment from 'moment';
 import { firebase } from './firebase.js';
 import { sessionService } from './session-service.js';
 import { log } from './logger.js';
-import type { Question } from '../models/questions.js';
+import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 
 //////////////////////////////////////////////////////////
@@ -29,6 +29,8 @@ function registerAuthListeners() {
         }
     });
 }
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 
 const db = firebase.database();
 type LastEmotionAnswer = {
@@ -58,7 +60,7 @@ export class BackendFacade {
         });
     }
 
-    registerIncorrectAnswer(question: Question, answer: Emotion): Promise<void> {
+    registerIncorrectAnswer(question: Question, answer: AnswerType): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = loggedInUser;
             if (!user) {
@@ -67,12 +69,14 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering incorrect answer %d to %d', answer.name, question.correctAnswer.name);
+            const ansString = answer.name || answer.toString();
+
+            log.debug('Registering incorrect answer %s to %s', ansString, question.correctAnswer.name);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
                 emotion: emotion.name,
-                answer: answer.name,
+                answer: ansString,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -138,7 +142,7 @@ export class BackendFacade {
         });
     }
 
-    getAnswersTo(emotion: Emotion): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ emotion: Emotion, when: moment$Moment}>}> {
+    getAnswersTo(emotion: Emotion): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ answer: AnswerType, when: moment$Moment}>}> {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
@@ -170,11 +174,15 @@ export class BackendFacade {
                     snap.forEach(incorrectAnswer => {
                         const val = incorrectAnswer.val();
                         if (val.emotion === emotion.name) {
+                            let answer = null;
+                            if (typeof(val.emotion) === 'number') {
+                                answer = val.emotion;
+                            } else if (typeof(val.emotion) === 'string') {
+                                answer = emotionLookupTable.get(val.answer);
+                            }
+
                             incorrectAnswers.push({
-                                // We only store the question id in the db,
-                                // so we need to join in the real question
-                                // objects.
-                                emotion: emotionLookupTable.get(val.answer),
+                                answer: answer,
                                 when: moment(val.when, 'x'),
                             });
                         }

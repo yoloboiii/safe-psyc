@@ -27,8 +27,15 @@ export function randomEmotionWithImage(name?: string) {
 }
 
 export function randomEmotionWithoutImage() {
-    const id = Math.random();
     return new EmotionBuilder()
         .withName(uuid.v4())
+        .build();
+}
+
+export function randomEmotionWithIntensity() {
+    const intensity = Math.floor(Math.random() * 10);
+    return new EmotionBuilder()
+        .withName(uuid.v4())
+        .withIntensity(intensity)
         .build();
 }

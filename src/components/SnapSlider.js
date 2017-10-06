@@ -7,41 +7,30 @@ import { StyleSheet, Slider, Text, View } from 'react-native';
 type Props = {
     onSlidingComplete: (Object) => void,
     items: Array<Object>,
-    defaultItem: number,
+    value?: number,
 
     style: View.propTypes.style,
     containerStyle: View.propTypes.style,
     itemWrapperStyle: View.propTypes.style,
     itemStyle: Text.propTypes.style,
-
-    maximumValue?: number,
 }
 type State = {
-    value: number,
-
     sliderWidth: number,
     sliderLeft: number,
-    sliderRatio: number,
 
     itemWidths: Array<number>,
-    item: number,
-    adjustSign: number,
-
 };
 
 export class SnapSlider extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        const sliderRatio = (props.maximumValue || 1) / (props.items.length - 1);
-        const value = sliderRatio * props.defaultItem;
-        const item = props.defaultItem;
 
-        this.state = {
-            sliderRatio: sliderRatio,
-            value: value,
-            item: item,
-            adjustSign: 1,
+        this.state = this._defaultState(props);
+    }
+
+    _defaultState(props: Props) {
+        return {
             itemWidths: [],
             sliderWidth: 0,
             sliderLeft: 0,
@@ -53,33 +42,7 @@ export class SnapSlider extends React.Component<Props, State> {
     }
 
     _onSlidingCompleteCallback(v) {
-        //pad the value to the snap position
-        const halfRatio = this.state.sliderRatio / 2;
-        let i = 0;
-        for (;;) {
-            if ((v < this.state.sliderRatio) || (v <= 0)) {
-                if (v >= halfRatio) {
-                    i++;
-                }
-                break;
-            }
-            v = v - this.state.sliderRatio;
-            i++;
-        }
-        let value = this.state.sliderRatio * i;
-
-        //Move the slider
-        value = value + (this.state.adjustSign * 0.000001);//enforce UI update
-        if (this.state.adjustSign > 0) {
-            this.setState({adjustSign: -1});
-        } else {
-            this.setState({adjustSign: 1});
-        }
-        this.setState({value: value, item: i}, () => {
-            //callback
-            this.props.onSlidingComplete(this.props.items[this.state.item]);
-        });
-
+        this.props.onSlidingComplete(this.props.items[v]);
     }
 
     _getItemWidth(x) {
@@ -120,6 +83,7 @@ export class SnapSlider extends React.Component<Props, State> {
                 style={itemStyle}
                 onLayout={this._getItemWidth.bind(this)}>{i.label}</Text>
         );
+
         return <View
                 onLayout={ this._getAndSetSliderWidth.bind(this) }
                 style={[defaultStyles.container, this.props.containerStyle]}>
@@ -128,7 +92,11 @@ export class SnapSlider extends React.Component<Props, State> {
                     ref="slider"
                     style={this._sliderStyle()}
                     onSlidingComplete={(value) => this._onSlidingCompleteCallback(value)}
-                    value={this.state.value} />
+                    minimumValue={0}
+                    maximumValue={ this.props.items.length - 1 }
+                    step={1}
+                    value={ this.props.value }
+                    />
 
                 <View style={[defaultStyles.itemWrapper, this.props.itemWrapperStyle]}>
                     { labels }

@@ -3,14 +3,14 @@
 import React from 'react';
 import { FlatList, View,  Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
+import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
 import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
-import type { Question, EyeQuestion, EmotionWordQuestion } from '../models/questions.js';
+import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
-import type { AnswerType } from './Question.js';
 
 export type Report = Map<Question, Array<AnswerType>>;
 type Props = {
