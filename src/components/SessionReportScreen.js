@@ -45,7 +45,7 @@ export class SessionReportScreen extends React.Component<Props, {}> {
             <SessionReport
                 report={ report }
                 navigation={ this.props.navigation }/>
-            <VerticalSpace multiplier={2}/>
+            <VerticalSpace multiplier={4}/>
 
             <StandardButton
                 title={'Thanks!'}

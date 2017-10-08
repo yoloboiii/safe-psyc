@@ -1,11 +1,12 @@
 // @flow
 
 import React from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
+import { View, ActivityIndicator, Alert } from 'react-native';
 import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
 import { backendFacade } from '../services/backend.js';
 import { log } from '../services/logger.js';
+import { constants } from '../styles/constants.js';
 
 import type { Navigation } from '../navigation-actions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -67,7 +68,9 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
         const { state, navigate } = this.props.navigation;
         if (state) {
             const navParams = state.params;
-            return this._renderEmotion(navParams.emotion);
+            return <View style={ constants.padflex } >
+                { this._renderEmotion(navParams.emotion) }
+            </View>
 
         } else {
             return <StandardText>No navigation state! Don't know what to do</StandardText>

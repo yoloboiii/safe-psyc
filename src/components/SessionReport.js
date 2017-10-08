@@ -6,6 +6,7 @@ import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
 import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
+import { VerticalSpace } from './VerticalSpace.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion, IntensityQuestion, AnswerType } from '../models/questions.js';
@@ -30,17 +31,24 @@ export function SessionReport(props: Props) {
     });
     return <FlatList
         data={data}
-        renderItem={(data) => renderRow(data.item, props.navigation)} />
+        renderItem={(data) => renderRow(data.item, onPressItem)}
+        ItemSeparatorComponent={ () => <VerticalSpace multiplier={3} /> }
+        />
+
+
+    function onPressItem(question) {
+        navigateToEmotionDetails(props.navigation, question.correctAnswer);
+    }
 }
 
-function renderRow(item, navigation) {
+function renderRow(item, onPress) {
     const { question, wrongAnswers } = item;
 
     if (question.type === 'eye-question') {
         return <EyeQuestionRow
             question={ (question: EyeQuestion) }
             wrongAnswers={ wrongAnswers }
-            onPress={ () => navigateToEmotionDetails(navigation, question.correctAnswer) }
+            onPress={ () => onPress(question) }
             />
     } else if (question.type === 'word-question') {
         return <WordQuestionRow
@@ -51,6 +59,7 @@ function renderRow(item, navigation) {
         return <IntensityQuestionRow
             question={ (question: IntensityQuestion) }
             wrongAnswers={ wrongAnswers }
+            onPress={ () => onPress(question) }
             />
 
     } else  {

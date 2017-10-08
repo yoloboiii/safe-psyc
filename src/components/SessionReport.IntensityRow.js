@@ -1,11 +1,11 @@
 // @flow
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { StandardText } from './Texts.js';
 import { SnapSlider } from './SnapSlider.js';
-import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
+import { intensityToGroup } from './Question.Intensity.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
 
@@ -29,21 +29,19 @@ export function IntensityQuestionRow(props: Props) {
         });
     }
 
-    return <View>
+    return <TouchableOpacity onPress={ props.onPress }>
         <View>
             <StandardText>{ props.question.correctAnswer.name }</StandardText>
             <StandardText style={ constants.smallText }>{ subtext }</StandardText>
         </View>
 
-        {/* TODO: I need the grouping shit here */}
         <SnapSlider
             items={ items }
             itemStyle={ constants.smallText }
-            value={ props.question.correctAnswer.intensity }
+            value={ intensityToGroup(props.question.correctAnswer.intensity) - 1 }
             disabled={ true }
             />
-        <VerticalSpace />
-    </View>
+    </TouchableOpacity>
 
     // TODO: This is copied from SessionReport.EyeRow.js :(
     function getSubText() {

@@ -80,7 +80,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
     }
 };
 
-function intensityToGroup(intensity) {
+export function intensityToGroup(intensity) {
     const quotient = Math.floor(intensity / 2);
     const remainder = intensity % 2;
 

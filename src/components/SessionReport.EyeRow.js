@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, Image, TouchableHighlight } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { StandardText } from './Texts.js';
 import { constants } from '../styles/constants.js';
 import type { EyeQuestion } from '../models/questions.js';
@@ -28,20 +28,20 @@ type Props = {
 export function EyeQuestionRow(props: Props) {
     const subtext = getSubText();
 
-    return <View style={ eyeContainerStyle }>
-        <View>
-            <StandardText>{ props.question.correctAnswer.name }</StandardText>
-            <StandardText style={ constants.smallText }>{ subtext }</StandardText>
+    return <TouchableOpacity onPress={ props.onPress }>
+        <View style={ eyeContainerStyle }>
+            <View>
+                <StandardText>{ props.question.correctAnswer.name }</StandardText>
+                <StandardText style={ constants.smallText }>{ subtext }</StandardText>
+            </View>
+            <View style={ imageContainerStyle }>
+                    <Image
+                        source={{ uri: props.question.image }}
+                        resizeMode='cover'
+                        style={ imageStyle } />
+            </View>
         </View>
-        <View style={ imageContainerStyle }>
-            <TouchableHighlight onPress={ props.onPress }>
-                <Image
-                    source={{ uri: props.question.image }}
-                    resizeMode='cover'
-                    style={ imageStyle } />
-            </TouchableHighlight>
-        </View>
-    </View>
+    </TouchableOpacity>
 
     function getSubText() {
         if (props.wrongAnswers.length === 0) {

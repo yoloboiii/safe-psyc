@@ -14,8 +14,6 @@ import type moment from 'moment';
 
 const detailsContainerStyle = {
     flex: 1,
-    padding: constants.space,
-    backgroundColor: constants.notReallyWhite,
 };
 const detailsImageStyle = {
     height: 200,
