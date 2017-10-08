@@ -88,3 +88,24 @@ it('ignores intensity answers in the confusion list', () => {
         ])
     );
 });
+
+it('considers old mistakes forgotten in the confusion list', () => {
+    const newlyMistakenEmotion = randomEmotion('Newly mistaken emotion');
+    const longAgoEmotion = randomEmotion('Emotion mistaken long ago');
+
+    const component = render(EmotionDetails, {
+        dataPoints: {
+            correct: [],
+            incorrect: [
+                { answer: newlyMistakenEmotion, when: moment() } ,
+                { answer: newlyMistakenEmotion, when: moment() } ,
+                { answer: newlyMistakenEmotion, when: moment() } ,
+                { answer: newlyMistakenEmotion, when: moment() } ,
+                { answer: longAgoEmotion, when: moment().subtract(40, 'days') } ,
+            ],
+        },
+    }, defaultProps);
+
+    const strings = getAllRenderedStrings(component);
+    expect(strings).not.toContain(longAgoEmotion.name);
+});

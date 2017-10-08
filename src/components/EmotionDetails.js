@@ -6,11 +6,11 @@ import { StandardText } from './Texts';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
+import moment from 'moment';
 
 import type { AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
-import type moment from 'moment';
 
 const detailsContainerStyle = {
     flex: 1,
@@ -104,20 +104,13 @@ function ConfusionList(props: ConfusionListProps) {
     const incorrectEmotions: Array<{
         answer: Emotion,
         when: moment$Moment,
-    }> = incorrect.filter(a => {
-        return typeof(a.answer) !== 'number';
-    });
+    }> = filterOldAndNonIntensityAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
         return null;
     }
 
-    const data = new Map();
-    incorrectEmotions.forEach(i => data.set(i.answer.name, {
-        emotion: i.answer,
-        key: i.answer.name,
-    }));
-
+    const data = toFlatListData(incorrectEmotions);
     return <View {...restProps} >
         <StandardText>You sometimes get this confused with...</StandardText>
         <VerticalSpace />
@@ -126,9 +119,53 @@ function ConfusionList(props: ConfusionListProps) {
             renderItem={ renderRow } />
     </View>
 
+    function filterOldAndNonIntensityAnswers(answers) {
+        const now = moment();
+        const intensityAnswers = answers.filter(a => {
+            return typeof(a.answer) !== 'number';
+        });
+
+        const scores = {};
+        intensityAnswers.forEach(a => {
+            if (scores[a.answer.name] === undefined) {
+                scores[a.answer.name] = 0;
+            }
+
+            const daysSince = moment.duration(now.diff(a.when)).asDays();
+            const timeScaledScore = scaleForTime(1, daysSince);
+
+            scores[a.answer.name] += timeScaledScore;
+        });
+
+        return intensityAnswers.filter(a => {
+            const score = scores[a.answer.name];
+            return score >= 0.12;
+        });
+    }
+
+    function scaleForTime(num: number, timeSince: number): number {
+        const scale = sigmoid(-timeSince/20);
+        return num * scale;
+    }
+
+    function toFlatListData(answers) {
+        const data = new Map();
+
+        answers.forEach(i => data.set(i.answer.name, {
+            emotion: i.answer,
+            key: i.answer.name,
+        }));
+
+        return data;
+    }
+
     function renderRow(props: { item: { emotion: Emotion }}) {
         const { emotion } = props.item;
         const navigate = () => navigateToEmotionDetails(navigation, emotion);
         return <StandardText onPress={ navigate }>{ emotion.name }</StandardText>
     }
+}
+
+function sigmoid(t) {
+    return 1/(1+Math.pow(Math.E, -t));
 }

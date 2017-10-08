@@ -73,7 +73,7 @@ export class RecommendedSessionService {
 }
 
 function scaleForTime(num: number, timeSince: number): number {
-    return num * sigmoid(-num/20);
+    return num * sigmoid(-timeSince/20);
 }
 
 function timePenalty(timeSince: number): number {
