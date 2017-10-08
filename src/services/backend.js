@@ -53,6 +53,7 @@ export class BackendFacade {
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
                 emotion: emotion.name,
+                questionType: question.type,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
 
@@ -76,6 +77,7 @@ export class BackendFacade {
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
                 emotion: emotion.name,
+                questionType: question.type,
                 answer: ansString,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
