@@ -4,6 +4,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { StandardText } from './Texts.js';
 import { SnapSlider } from './SnapSlider.js';
+import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { intensityToGroup } from './Question.Intensity.js';
 
@@ -41,6 +42,8 @@ export function IntensityQuestionRow(props: Props) {
             value={ intensityToGroup(props.question.correctAnswer.intensity) - 1 }
             disabled={ true }
             />
+
+        <VerticalSpace />
     </TouchableOpacity>
 
     // TODO: This is copied from SessionReport.EyeRow.js :(

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { FlatList, View,  Modal } from 'react-native';
+import { SectionList, View,  Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
 import { EmotionDetails } from './EmotionDetails.js';
@@ -18,21 +18,33 @@ type Props = {
     report: Report,
     navigation: Navigation<any>,
 };
-export function SessionReport(props: Props) {
 
+export function SessionReport(props: Props) {
     let key = 0;
-    const data = [];
+    const sections = {};
     props.report.forEach((wrongAnswers, question) => {
-        data.push({
+        if (sections[question.type] === undefined) {
+            sections[question.type] = {
+                title: question.type,
+                data: [],
+            };
+        }
+
+        sections[question.type].data.push({
             key: key++,
             question: question,
             wrongAnswers: wrongAnswers,
         });
     });
-    return <FlatList
-        data={data}
+
+    return <SectionList
+        sections={Object.values(sections).sort((a, b) => {
+            // $FlowFixMe
+            return a.title > b.title;
+        })}
+
         renderItem={(data) => renderRow(data.item, onPressItem)}
-        ItemSeparatorComponent={ () => <VerticalSpace multiplier={3} /> }
+        ItemSeparatorComponent={ () => <VerticalSpace /> }
         />
 
 

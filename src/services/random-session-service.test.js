@@ -59,3 +59,21 @@ it('generates three reference points to intensity questions', () => {
         expect(question.referencePoints.size).toBe(3);
     }
 });
+
+it('contains more eye questions than intensity questions', () => {
+    const questions = randomSessionService.getRandomQuestions(10);
+
+    const eyeCount = questions
+        .filter(q => q.type === 'eye-question')
+        .reduce((acc) => acc + 1, 0);
+
+    const intensityCount = questions
+        .filter(q => q.type === 'intensity')
+        .reduce((acc) => acc + 1, 0);
+
+    console.log(eyeCount, intensityCount);
+    expect(eyeCount).toBeGreaterThan(0);
+    expect(intensityCount).toBeGreaterThan(0);
+
+    expect(eyeCount).toBeGreaterThan(intensityCount);
+});

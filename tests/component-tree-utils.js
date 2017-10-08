@@ -10,8 +10,22 @@ const {ReactElement, ReactTestComponent} = prettyFormat.plugins;
 export function findChildren(root: React.Component<*, *>, childType: Function|string): Array<React.Component<*,*>> {
     return getChildrenAndParent(root)
         .filter(c => {
-            // $FlowFixMe
-            const correctType = c && c.type === childType;
+            let correctType = false;
+            if (c && c.type) {
+                if (typeof(childType) === 'string') {
+
+                    if (c.type.name) {
+                        correctType = c.type.name === childType;
+                    } else if (c.type.displayName) {
+                        correctType = c.type.displayName === childType;
+                    } else {
+                        correctType = c.type === childType;
+                    }
+                } else {
+                    correctType = c.type === childType;
+                }
+            }
+
             return correctType;
         });
 }

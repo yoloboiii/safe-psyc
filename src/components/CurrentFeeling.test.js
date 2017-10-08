@@ -9,6 +9,7 @@ const defaultProps = {
     emotionWords: ['a', 'b', 'c'],
     onAnswered: () => {},
 };
+
 it('has a list of emotion words', () => {
     const expectedWords = ['a', 'b', 'c'];
     const component = render(CurrentFeeling, {

@@ -1,7 +1,7 @@
 // @flow
 
 import { SessionReport } from './SessionReport.js';
-import { Image, TouchableHighlight } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 
 import { render } from '../../tests/render-utils.js';
 import { randomEyeQuestion, randomEyeQuestions, randomWordQuestions } from '../../tests/question-utils.js';
@@ -26,7 +26,7 @@ it('contains all images of eye-questions', () => {
 it('contains the question text of word-questions', () => {
     const wordQuestions = randomWordQuestions(5);
     const report = createReportWithNoWrongAnswers(
-        wordQuestions.concat(randomEyeQuestions(5))
+        wordQuestions.concat(randomEyeQuestions(1))
     );
 
     const component = render(SessionReport, { report: report });
@@ -34,10 +34,10 @@ it('contains the question text of word-questions', () => {
     const questionTexts = wordQuestions.map(q => q.questionText);
     const renderedTexts = getAllRenderedStrings(component);
 
-    expect(renderedTexts).toEqual(expect.arrayContaining(questionTexts));
+    expect(renderedTexts.sort()).toEqual(expect.arrayContaining(questionTexts.sort()));
 });
 
-it('navigates to the question details when clicking the image', () => {
+it('navigates to the question details when clicking the row', () => {
     const navigateMock = jest.fn();
 
     const eyeQuestion = randomEyeQuestion();
@@ -47,7 +47,7 @@ it('navigates to the question details when clicking the image', () => {
         navigation: { navigate: navigateMock },
     });
 
-    const touchable = findChildren(component, TouchableHighlight)[0];
+    const touchable = findChildren(component, TouchableOpacity)[0];
     expect(touchable).toBeDefined();
 
     expect(navigateMock).not.toHaveBeenCalled();
