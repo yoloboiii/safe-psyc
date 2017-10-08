@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, Image, ActivityIndicator, TouchableHighlight, Text } from 'react-native';
+import { View, Image, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -66,12 +66,12 @@ export class HomeScreen extends React.Component<Props, State> {
         return <ImageBackground>
             <View style={ contentStyle }>
                 <View style={{ alignItems: 'flex-end' }}>
-                    <TouchableHighlight
+                    <TouchableOpacity
                         onPress={ this._openSettings.bind(this) } >
                         <Image
                             style={{ width: 40, height: 40 }}
                             source={ cogwheel } />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
                 <View>
                     <HeroButton
