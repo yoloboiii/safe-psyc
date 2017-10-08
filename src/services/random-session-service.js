@@ -1,21 +1,17 @@
 // @flow
 
-import { log } from './logger.js';
 import { answerService } from './answer-service.js';
+import { ReferencePointService } from './reference-point-service.js';
 
 import type { Emotion } from '../models/emotion.js';
 import type { Question } from '../models/questions.js';
 import type { AnswerService } from './answer-service.js';
 
-type DataPoint = {
-        question: Question,
-        wrongAnswers: number,
-        when: Date,
-}
-export class SessionService {
+export class RandomSessionService {
 
     _emotionPool = undefined;
     _answerService: AnswerService;
+    _referencePointService: ReferencePointService;
 
     constructor(answerService: AnswerService) {
         this._answerService = answerService;
@@ -43,6 +39,8 @@ export class SessionService {
         switch(question.type) {
             case 'eye-question':
                 question.image =  emotion.image;
+            case 'intensity':
+                question.referencePoints = this._referencePointService.getReferencePointsTo(question.correctAnswer);
         };
 
         return question;
@@ -61,54 +59,20 @@ export class SessionService {
         return possibleQuestionTypes[rnd];
     }
 
-    getRecommendedQuestions(numQuestions: number): Array<Question> {
-        // Get this data from somewhere
-        const data: Map<Question, Array<DataPoint>> = new Map();
-
-        const sortableData: Array<{q: Question, score: number}> = [];
-        data.forEach((dataPoints, question) => {
-            const score = this._calculateScore(dataPoints);
-
-            if (score) {
-                sortableData.push({q: question, score});
-            } else {
-                log.debug('Didn\'t have enough data to calculate a score for', question);
-            }
-        });
-
-
-        sortableData.sort((a, b) => {
-            return a[1] - b[1];
-        });
-        return sortableData.slice(0, numQuestions).map(obj => obj.q);
-    }
-
-    _calculateScore(dataPoints: Array<DataPoint>): ?number {
-        if (dataPoints.length === 0) {
-            // IMPORTANT for some reason I don't remember :)
-            return null;
-        }
-
-        const now = new Date();
-        let score = 0;
-        for (const dataPoint of dataPoints) {
-            const timeSince = now - dataPoint.when;
-
-            score += scaleForTime(dataPoint.wrongAnswers, timeSince);
-            score += timePenalty(timeSince);
-        }
-
-        return score;
-    }
-
     getEmotionPool(): Array<Emotion> {
         if (this._emotionPool === undefined) {
-            this._emotionPool = require('../../SECRETS/emotions.json');
-            this._answerService.setAnswerPool(this._emotionPool);
+            const emotions = require('../../SECRETS/emotions.json');
+            this._setEmotionPool(emotions);
         }
 
         // $FlowFixMe
         return this._emotionPool;
+    }
+
+    _setEmotionPool(emotionPool: Array<Emotion>) {
+        this._emotionPool = emotionPool;
+        this._answerService.setAnswerPool(emotionPool);
+        this._referencePointService = new ReferencePointService(emotionPool);
     }
 }
 
@@ -127,16 +91,4 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
     return elements;
 }
 
-function scaleForTime(num: number, timeSince: number): number {
-    return num * sigmoid(-num/20);
-}
-
-function timePenalty(timeSince: number): number {
-    return timeSince;
-}
-
-function sigmoid(t) {
-    return 1/(1+Math.pow(Math.E, -t));
-}
-
-export const sessionService = new SessionService(answerService);
+export const randomSessionService = new RandomSessionService(answerService);

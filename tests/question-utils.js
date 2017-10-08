@@ -56,9 +56,14 @@ export function randomWordQuestion(c?: number): EmotionWordQuestion {
 
 export function randomIntensityQuestion(): IntensityQuestion {
     const answer = randomEmotionWithIntensity();
+    const refPoints = new Map();
+    refPoints.set(1, randomEmotionWithIntensity());
+    refPoints.set(3, randomEmotionWithIntensity());
+    refPoints.set(5, randomEmotionWithIntensity());
     return {
         type: 'intensity',
         correctAnswer: answer,
+        referencePoints: refPoints,
     };
 }
 

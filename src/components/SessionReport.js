@@ -8,7 +8,7 @@ import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
-import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
+import type { Question, EyeQuestion, EmotionWordQuestion, IntensityQuestion, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -49,7 +49,7 @@ function renderRow(item, navigation) {
             />
     } else if (question.type === 'intensity') {
         return <IntensityQuestionRow
-            question={ (question: EmotionWordQuestion) }
+            question={ (question: IntensityQuestion) }
             wrongAnswers={ wrongAnswers }
             />
 

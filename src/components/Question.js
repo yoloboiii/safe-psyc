@@ -11,12 +11,10 @@ import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 
 import { constants } from '../styles/constants.js';
-import { sessionService } from '../services/session-service.js';
 import { log } from '../services/logger.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
-import type { SessionService } from '../services/session-service.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 

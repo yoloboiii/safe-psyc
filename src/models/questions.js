@@ -24,6 +24,7 @@ export type EmotionWordQuestion = {
 export type IntensityQuestion = {
     type: 'intensity',
     correctAnswer: Emotion,
+    referencePoints: Map<number, Emotion>,
 }
 
 // To be asked at the end of the first training session

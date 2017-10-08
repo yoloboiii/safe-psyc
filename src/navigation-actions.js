@@ -4,7 +4,7 @@ import { InteractionManager, Alert } from 'react-native';
 import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
-import { sessionService } from './services/session-service.js';
+import { randomSessionService } from './services/random-session-service.js';
 import { log } from './services/logger.js';
 
 import type { Emotion } from './models/emotion.js';
@@ -28,7 +28,7 @@ export function paramsOr<T,S>(navigation: Navigation<T>, or: S): T|S {
 export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void): Promise<{}> {
     return new Promise( resolve => {
         InteractionManager.runAfterInteractions(() => {
-            const questions = sessionService.getRandomQuestions(10);
+            const questions = randomSessionService.getRandomQuestions(10);
             onDataLoaded && onDataLoaded();
             navigation.navigate('Session', {
                 questions: questions,

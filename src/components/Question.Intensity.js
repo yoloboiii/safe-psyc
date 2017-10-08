@@ -43,10 +43,6 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
 
     render() {
         const emotionName = this.props.question.correctAnswer.name;
-        const referencePoints =  new Map();
-        referencePoints.set(1, 'calm');
-        referencePoints.set(3, 'irritated');
-        referencePoints.set(5, 'angry');
 
         return <View style={ containerStyle }>
             <View>
@@ -54,7 +50,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
                 <VerticalSpace multiplier={2} />
                 <IntensityScale
                     onIntensityChosen={ this._onIntensityChosen.bind(this) }
-                    referencePoints={ referencePoints }
+                    referencePoints={ this.props.question.referencePoints }
                     selectedGroup={ this.state.lastAnswer }
                     />
             </View>
@@ -93,15 +89,19 @@ function intensityToGroup(intensity) {
 
 type ScaleProps = {
     onIntensityChosen: (number) => void,
-    referencePoints: Map<number, string>,
+    referencePoints: Map<number, Emotion>,
     selectedGroup: number,
 };
 export function IntensityScale(props: ScaleProps) {
     const items = [];
     for (let i = 1; i <= 5; i++) {
+        let label = '';
+        if (props.referencePoints.has(i)) {
+            label = props.referencePoints.get(i).name + '';
+        }
         items.push({
             value: i,
-            label: props.referencePoints.get(i) || '',
+            label: label,
         });
     }
 

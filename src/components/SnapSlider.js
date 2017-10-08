@@ -5,14 +5,16 @@ import React from 'react';
 import { StyleSheet, Slider, Text, View } from 'react-native';
 
 type Props = {
-    onSlidingComplete: (Object) => void,
+    onSlidingComplete?: (Object) => void,
     items: Array<Object>,
-    value?: number,
+    value?: ?number,
 
-    style: View.propTypes.style,
-    containerStyle: View.propTypes.style,
-    itemWrapperStyle: View.propTypes.style,
-    itemStyle: Text.propTypes.style,
+    style?: View.propTypes.style,
+    containerStyle?: View.propTypes.style,
+    itemWrapperStyle?: View.propTypes.style,
+    itemStyle?: Text.propTypes.style,
+
+    disabled?: boolean,
 }
 type State = {
     sliderWidth: number,
@@ -42,7 +44,9 @@ export class SnapSlider extends React.Component<Props, State> {
     }
 
     _onSlidingCompleteCallback(v) {
-        this.props.onSlidingComplete(this.props.items[v]);
+        if (this.props.onSlidingComplete) {
+            this.props.onSlidingComplete(this.props.items[v]);
+        }
     }
 
     _getItemWidth(x) {
@@ -78,11 +82,14 @@ export class SnapSlider extends React.Component<Props, State> {
 
     render() {
         const itemStyle = [defaultStyles.item, this.props.itemStyle];
-        const labels = this.props.items.map(i => <Text
+        const alignments = ['left', undefined, 'center', undefined, 'right'];
+        const labels = this.props.items.map(i => {
+            const alignment = { textAlign: alignments[i.value -1] };
+            return <Text
                 key={i.value}
-                style={itemStyle}
+                style={[itemStyle, alignment]}
                 onLayout={this._getItemWidth.bind(this)}>{i.label}</Text>
-        );
+        });
 
         return <View
                 onLayout={ this._getAndSetSliderWidth.bind(this) }
@@ -96,7 +103,8 @@ export class SnapSlider extends React.Component<Props, State> {
                     maximumValue={ this.props.items.length - 1 }
                     step={1}
                     value={ this.props.value }
-                    />
+                    disabled={ this.props.disabled || false }
+                />
 
                 <View style={[defaultStyles.itemWrapper, this.props.itemWrapperStyle]}>
                     { labels }
@@ -112,12 +120,12 @@ const defaultStyles = StyleSheet.create({
     slider: {
     },
     itemWrapper: {
-        justifyContent: 'space-between',
         alignSelf: 'stretch',
         flexDirection: 'row',
     },
     item: {
+        flex: -1,
+        width: '20%',
     },
 });
-
 

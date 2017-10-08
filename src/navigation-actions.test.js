@@ -2,7 +2,6 @@
 
 import { InteractionManager } from 'react-native';
 import { startRandomSession, routeToCurrentFeelingOrHome } from './navigation-actions.js';
-import { sessionService } from './services/session-service.js';
 import moment from 'moment';
 
 import type { BackendFacade } from './services/backend.js';

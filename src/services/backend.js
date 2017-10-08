@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import { firebase } from './firebase.js';
-import { sessionService } from './session-service.js';
+import { randomSessionService } from './random-session-service.js';
 import { log } from './logger.js';
 import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -166,7 +166,7 @@ export class BackendFacade {
                 });
 
             const emotionLookupTable = new Map();
-            sessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
+            randomSessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
             // Get all incorrect answers
             const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
                 .then( (snap) => {
