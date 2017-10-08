@@ -61,19 +61,20 @@ it('generates three reference points to intensity questions', () => {
 });
 
 it('contains more eye questions than intensity questions', () => {
-    const questions = randomSessionService.getRandomQuestions(10);
+    for (let i = 0; i < 100; i++) {
+        const questions = randomSessionService.getRandomQuestions(10);
 
-    const eyeCount = questions
-        .filter(q => q.type === 'eye-question')
-        .reduce((acc) => acc + 1, 0);
+        const eyeCount = questions
+            .filter(q => q.type === 'eye-question')
+            .reduce((acc) => acc + 1, 0);
 
-    const intensityCount = questions
-        .filter(q => q.type === 'intensity')
-        .reduce((acc) => acc + 1, 0);
+        const intensityCount = questions
+            .filter(q => q.type === 'intensity')
+            .reduce((acc) => acc + 1, 0);
 
-    console.log(eyeCount, intensityCount);
-    expect(eyeCount).toBeGreaterThan(0);
-    expect(intensityCount).toBeGreaterThan(0);
+        expect(eyeCount).toBeGreaterThan(0);
+        expect(intensityCount).toBeGreaterThan(0);
 
-    expect(eyeCount).toBeGreaterThan(intensityCount);
+        expect(eyeCount).toBeGreaterThan(intensityCount);
+    }
 });

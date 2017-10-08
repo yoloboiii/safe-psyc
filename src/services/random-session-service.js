@@ -4,7 +4,7 @@ import { answerService } from './answer-service.js';
 import { ReferencePointService } from './reference-point-service.js';
 
 import type { Emotion } from '../models/emotion.js';
-import type { Question } from '../models/questions.js';
+import type { Question, EyeQuestion, IntensityQuestion } from '../models/questions.js';
 import type { AnswerService } from './answer-service.js';
 
 export class RandomSessionService {
@@ -18,45 +18,56 @@ export class RandomSessionService {
     }
 
     getRandomQuestions(numQuestions: number): Array<Question> {
-        const emotionsToTest = getRandomElementsFromArray(numQuestions, this.getEmotionPool());
+        const minNumEye = Math.min(numQuestions / 2 + 1, numQuestions);
+        const minNumIntensity = Math.floor(numQuestions * 0.3);
+        const numEyeQuestions = Math.max(
+            0,
+            Math.floor(Math.random() * (numQuestions / 2 - minNumIntensity)) + minNumEye
+        );
+        const numIntensityQuestions = numQuestions - numEyeQuestions;
+
+        const emotionsWithImage = getRandomElementsFromArray(
+            numEyeQuestions,
+            this.getEmotionPool().filter(e => !!e.image)
+        );
+        const emotionsWithIntensity = getRandomElementsFromArray(
+            numIntensityQuestions,
+            this.getEmotionPool().filter(e => !!e.intensity)
+        );
+
 
         const questions = [];
-        for (const emotion of emotionsToTest) {
-            questions.push(this._generateRandomQuestion(emotion));
+        for (const emotion of emotionsWithImage) {
+            questions.push(this._generateEyeQuestion(emotion));
         }
+
+        for (const emotion of emotionsWithIntensity) {
+            questions.push(this._generateIntensityQuestion(emotion));
+        }
+
         return questions;
     }
 
-    _generateRandomQuestion(emotion: Emotion): Question {
-        const type = this._randomizeValidQuestionType(emotion);
+    _generateEyeQuestion(emotion: Emotion): EyeQuestion {
+        const image = emotion.image;
+        if (!image) {
+            throw Error('Attempted to create eye question from emotion without image. ' + emotion.name);
+        }
 
-        let question = {};
-        // $FlowFixMe
-        question.type = type;
-        question.correctAnswer = emotion;
-        question.answers = this._answerService.getAnswersTo(emotion, 3);
-
-        switch(question.type) {
-            case 'eye-question':
-                question.image =  emotion.image;
-            case 'intensity':
-                question.referencePoints = this._referencePointService.getReferencePointsTo(question.correctAnswer);
+        return {
+            type: 'eye-question',
+            correctAnswer: emotion,
+            answers: this._answerService.getAnswersTo(emotion, 3),
+            image: image,
         };
-
-        return question;
     }
 
-    _randomizeValidQuestionType(emotion) {
-        const possibleQuestionTypes = [];
-        if (emotion.image) {
-            possibleQuestionTypes.push('eye-question');
-        }
-        if (emotion.intensity) {
-            possibleQuestionTypes.push('intensity');
-        }
-
-        const rnd = Math.floor(Math.random() * possibleQuestionTypes.length);
-        return possibleQuestionTypes[rnd];
+    _generateIntensityQuestion(emotion: Emotion): IntensityQuestion {
+        return {
+            type: 'intensity',
+            correctAnswer: emotion,
+            referencePoints: this._referencePointService.getReferencePointsTo(emotion),
+        };
     }
 
     getEmotionPool(): Array<Emotion> {
