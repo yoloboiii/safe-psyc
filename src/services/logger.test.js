@@ -52,6 +52,16 @@ it('replaces variables in the format string', () => {
     expect(remoteMock.log).toHaveBeenCalledWith('foo to bar');
 });
 
+it('logs the error message locally and the error remotely', () => {
+    const { log, localMock, remoteMock } = createLog();
+    const e = new Error('bar');
+
+    log.debug('foo %s', e);
+
+    expect(localMock.log).toHaveBeenCalledWith('foo Error: bar');
+    expect(remoteMock.report).toHaveBeenCalledWith(e);
+});
+
 function createLog() {
     const localMock = {
         log: jest.fn(),

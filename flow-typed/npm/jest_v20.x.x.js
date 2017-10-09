@@ -124,6 +124,7 @@ type EnzymeMatchersType = {
   toContainElementsOtherThan(mixed): void,
   toContainString(string: string): void,
   toContainStrings(...strings: Array<string>): void,
+  toHaveResetTo(string): void,
 
   toBeChecked(): void,
   toBeDisabled(): void,

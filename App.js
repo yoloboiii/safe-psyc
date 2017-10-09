@@ -35,7 +35,7 @@ const defaultScreenProps = {
 
 const App = StackNavigator({
     Redirect: { screen: RedirectScreen },
-    Ptich: { screen: PitchScreen },
+    Pitch: { screen: PitchScreen },
     Login: { screen: LoginScreen },
     Home: { screen: HomeScreen },
     Welcome: { screen: WelcomeScreen },

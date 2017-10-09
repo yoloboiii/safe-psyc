@@ -112,7 +112,7 @@ describe('onUserLoggedOut', () => {
     it('resets to pitch if file system marker not set', () => {
         return doNav({
             expectedRoute: 'Pitch',
-            hasSeenThePitch: Promise.resolve(false),
+            hasSeenThePitch: Promise.resolve('false'),
         });
     });
 
@@ -126,13 +126,13 @@ describe('onUserLoggedOut', () => {
     it('resets to login if file system marker is set', () => {
         return doNav({
             expectedRoute: 'Login',
-            hasSeenThePitch: Promise.resolve(true),
+            hasSeenThePitch: Promise.resolve('true'),
         });
     });
 
     type Conf = {
         expectedRoute: string,
-        hasSeenThePitch: Promise<boolean>,
+        hasSeenThePitch: Promise<string>,
     };
 
     function doNav(conf: Conf) {

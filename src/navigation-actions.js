@@ -98,13 +98,7 @@ export function routeToCurrentFeelingOrHome(navigation: Navigation<*>, backend: 
                 });
                 navigation.dispatch(resetAction);
             } else {
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Home' }),
-                    ],
-                });
-                navigation.dispatch(resetAction);
+                resetToHome(navigation);
             }
         })
         .catch(e => {
@@ -137,35 +131,37 @@ export function onUserLoggedOut(navigation: Navigation<*>, storage:* = AsyncStor
 
     return storage.getItem('hasSeenThePitch')
         .then( hasSeenThePitch => {
-            if (hasSeenThePitch) {
+            if (hasSeenThePitch === 'true') {
                 return 'Login';
             } else {
                 return 'Pitch';
             }
         })
         .catch( e => {
-            log.warn('Failed reading async storage: %s', e.message);
+            log.warn('Failed reading async storage: %s', e);
             return 'Pitch';
         })
         .then( route => {
-            navigation.dispatch(
-                NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: route })
-                    ],
-                })
-            );
+            resetTo(navigation, route);
         });
 }
 
-export function resetToHome(navigation: Navigation<*>) {
+function resetTo(navigation, routeName: string) {
     navigation.dispatch(
         NavigationActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({ routeName: 'Home' }),
+                NavigationActions.navigate({ routeName: routeName }),
             ],
         })
     );
+
+}
+
+export function resetToHome(navigation: Navigation<*>) {
+    resetTo(navigation, 'Home');
+}
+
+export function resetToLogin(navigation: Navigation<*>) {
+    resetTo(navigation, 'Login');
 }

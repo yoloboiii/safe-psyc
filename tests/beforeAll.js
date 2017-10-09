@@ -24,6 +24,7 @@ require("./toHaveMatcher.js");
 require("./duplicateMatcher.js");
 require("./elementsOtherThanMatcher.js");
 require("./containsStringMatcher.js");
+require("./navigationMatcher.js");
 
 import { randomEmotions } from './emotion-utils.js';
 import { answerService } from '../src/services/answer-service.js';
