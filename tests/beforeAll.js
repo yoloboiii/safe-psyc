@@ -13,6 +13,13 @@ jest.mock('react-native-firebase', () => ({
     }),
 }));
 
+jest.mock('react-navigation', () => ({
+    NavigationActions: {
+        reset: (obj) => obj,
+        navigate: (obj) => obj,
+    },
+}));
+
 require("./toHaveMatcher.js");
 require("./duplicateMatcher.js");
 require("./elementsOtherThanMatcher.js");

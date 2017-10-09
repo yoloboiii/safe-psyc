@@ -1,7 +1,7 @@
 // @flow
 
 import { InteractionManager } from 'react-native';
-import { startRandomSession, routeToCurrentFeelingOrHome } from './navigation-actions.js';
+import * as navActions from './navigation-actions.js';
 import moment from 'moment';
 
 import type { BackendFacade } from './services/backend.js';
@@ -11,7 +11,7 @@ describe('startRandomSession', () => {
     it('navigates to "Session"', (done) => {
         const navigateMock = jest.fn();
 
-        startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
+        navActions.startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
 
         checkNextTick(done, () => {
             expect(navigateMock).toHaveBeenCalledTimes(1);
@@ -22,7 +22,7 @@ describe('startRandomSession', () => {
     it('contains 10 questions', (done) => {
         const navigateMock = jest.fn();
 
-        startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
+        navActions.startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
 
         checkNextTick(done, () => {
             const args = navigateMock.mock.calls[0][1];
@@ -35,24 +35,9 @@ describe('startRandomSession', () => {
     });
 });
 
-describe('routeToCurrentFeelingOrHome', () => {
-    // TODO: react-navigation is behaving weirdly after the eject. I keep getting
-    // import type { NavigationAction } from './TypeDefinition';
-    // ^^^^^^
-    //
-    // SyntaxError: Unexpected token import
-    // at ScriptTransformer._transformAndBuildScript (/home/erik/Code/safe-psyc/node_modules/jest-runtime/build/script_transformer.js:306:17)
-    // at ScriptTransformer.transform (/home/erik/Code/safe-psyc/node_modules/jest-runtime/build/script_transformer.js:333:21)
-    // at Runtime._execModule (/home/erik/Code/safe-psyc/node_modules/jest-runtime/build/index.js:502:53)
-    // at Runtime.requireModule (/home/erik/Code/safe-psyc/node_modules/jest-runtime/build/index.js:333:14)
-    // at Runtime.requireModuleOrMock (/home/erik/Code/safe-psyc/node_modules/jest-runtime/build/index.js:409:19)
-    // at Object.get NavigationActions [as NavigationActions] (/home/erik/Code/safe-psyc/node_modules/react-navigation/src/react-navigation.js:19:12)
-    // at /home/erik/Code/safe-psyc/src/navigation-actions.js:113:1723
-    // at tryCallOne (/home/erik/Code/safe-psyc/node_modules/promise/lib/core.js:37:12)
-    // at /home/erik/Code/safe-psyc/node_modules/promise/lib/core.js:123:15
-    // at flush (/home/erik/Code/safe-psyc/node_modules/asap/raw.js:50:29)
+describe.skip('routeToCurrentFeelingOrHome', () => {
 
-    it.skip('should redirect to howrufeelin once per day', () => {
+    it('should redirect to howrufeelin once per day', () => {
 
         // $FlowFixMe
         Date.now = jest.fn(() => new Date(Date.UTC(2017, 0, 1)).valueOf());
@@ -74,7 +59,7 @@ describe('routeToCurrentFeelingOrHome', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return routeToCurrentFeelingOrHome(navigation, backendFacade)
+        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade)
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
 
@@ -85,7 +70,7 @@ describe('routeToCurrentFeelingOrHome', () => {
             })
             .then( () => {
                 dispatchMock.mockReset();
-                return routeToCurrentFeelingOrHome(navigation, backendFacade);
+                return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade);
             })
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
@@ -95,7 +80,7 @@ describe('routeToCurrentFeelingOrHome', () => {
             });
     });
 
-    it.skip('should navigate the howrufeeling with the skippable param', () => {
+    it('should navigate the howrufeeling with the skippable param', () => {
         const backendFacade = (({
             getLastEmotionAnswer: jest.fn()
                 .mockReturnValueOnce(new Promise(r => {
@@ -108,7 +93,7 @@ describe('routeToCurrentFeelingOrHome', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return routeToCurrentFeelingOrHome(navigation, backendFacade)
+        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade)
             .then( () => {
                 expect(dispatchMock).toHaveBeenCalled();
                 const params = dispatchMock.mock.calls[0][0]
@@ -120,6 +105,52 @@ describe('routeToCurrentFeelingOrHome', () => {
             });
 
     });
+});
+
+describe('onUserLoggedOut', () => {
+
+    it('resets to pitch if file system marker not set', () => {
+        return doNav({
+            expectedRoute: 'Pitch',
+            hasSeenThePitch: Promise.resolve(false),
+        });
+    });
+
+    it('resets to pitch if there\'s an error reading the file system', () => {
+        return doNav({
+            expectedRoute: 'Pitch',
+            hasSeenThePitch: Promise.reject(new Error('foo')),
+        });
+    });
+
+    it('resets to login if file system marker is set', () => {
+        return doNav({
+            expectedRoute: 'Login',
+            hasSeenThePitch: Promise.resolve(true),
+        });
+    });
+
+    type Conf = {
+        expectedRoute: string,
+        hasSeenThePitch: Promise<boolean>,
+    };
+
+    function doNav(conf: Conf) {
+        const storage = {
+            getItem: () => conf.hasSeenThePitch,
+        };
+        const dispatchMock = jest.fn();
+        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
+
+        return navActions.onUserLoggedOut(navigation, storage)
+            .then( () => {
+                expect(dispatchMock).toHaveBeenCalledTimes(1);
+
+                const arg = dispatchMock.mock.calls[0][0];
+                expect(arg.index).toBe(0);
+                expect(arg.actions).toEqual([{ routeName: conf.expectedRoute }]);
+            });
+    }
 });
 
 function checkNextTick(done, check) {

@@ -37,6 +37,14 @@ export class Logger {
             args);
     }
 
+    warn(msg: string, ...args: Array<mixed>) {
+        this._log(
+            this.local.log,
+            this.remote.log,
+            '[WARNING] ' + msg,
+            args);
+    }
+
     error(msg: string, ...args: Array<mixed>) {
         this._log(
             this.local.error,

@@ -1,6 +1,6 @@
 // @flow
 
-import { InteractionManager, Alert } from 'react-native';
+import { InteractionManager, Alert, AsyncStorage } from 'react-native';
 import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
@@ -133,15 +133,30 @@ export function onUserLoggedIn(navigation: Navigation<*>) {
     resetToHome(navigation);
 }
 
-export function onUserLoggedOut(navigation: Navigation<*>) {
-    navigation.dispatch(
-        NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Login' })
-            ],
+export function onUserLoggedOut(navigation: Navigation<*>, storage:* = AsyncStorage): Promise<void> {
+
+    return storage.getItem('hasSeenThePitch')
+        .then( hasSeenThePitch => {
+            if (hasSeenThePitch) {
+                return 'Login';
+            } else {
+                return 'Pitch';
+            }
         })
-    );
+        .catch( e => {
+            log.warn('Failed reading async storage: %s', e.message);
+            return 'Pitch';
+        })
+        .then( route => {
+            navigation.dispatch(
+                NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: route })
+                    ],
+                })
+            );
+        });
 }
 
 export function resetToHome(navigation: Navigation<*>) {
