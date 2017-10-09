@@ -2,6 +2,7 @@
 
 import { answerService } from './answer-service.js';
 import { ReferencePointService } from './reference-point-service.js';
+import { knuthShuffle } from 'knuth-shuffle';
 
 import type { Emotion } from '../models/emotion.js';
 import type { Question, EyeQuestion, IntensityQuestion } from '../models/questions.js';
@@ -45,7 +46,7 @@ export class RandomSessionService {
             questions.push(this._generateIntensityQuestion(emotion));
         }
 
-        return questions;
+        return knuthShuffle(questions);
     }
 
     _generateEyeQuestion(emotion: Emotion): EyeQuestion {
