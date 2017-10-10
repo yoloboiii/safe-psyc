@@ -7,26 +7,10 @@ const flex1 = {
 const padding = {
     padding: space,
 };
+const defaultTextColor = '#666';
 export const constants = {
     space,
-
-    smallText: {
-        fontSize: 12,
-    },
-    normalText: {
-        fontSize: 16,
-    },
-    largeText: {
-        fontSize: 22,
-    },
-
-    flex1,
-    padding,
-    padflex: {
-        ...flex1,
-        ...padding,
-    },
-
+    //
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151
     primaryColor: '#ffc145',
     positiveColor: '#698e30',
@@ -35,4 +19,25 @@ export const constants = {
     hilightColor2: '#86bbd8',
 
     notReallyWhite: '#FAFAFF',
+    defaultTextColor,
+
+    smallText: {
+        fontSize: 12,
+        color: defaultTextColor,
+    },
+    normalText: {
+        fontSize: 16,
+        color: defaultTextColor,
+    },
+    largeText: {
+        fontSize: 22,
+        color: defaultTextColor,
+    },
+
+    flex1,
+    padding,
+    padflex: {
+        ...flex1,
+        ...padding,
+    },
 };

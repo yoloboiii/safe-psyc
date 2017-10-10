@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { View, AsyncStorage } from 'react-native';
+import Swiper from 'react-native-swiper';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 import { resetToLogin } from '../navigation-actions.js';
@@ -44,8 +45,19 @@ export class PitchScreen extends React.Component<Props, State> {
             padding: constants.space,
             backgroundColor: constants.primaryColor,
         }}>
+            <Swiper
+                style={ constants.flex1 }
+                dotColor={ constants.defaultTextColor }
+                activeDotColor={ constants.hilightColor2 }
+                showsButtons={true}
+                nextButton={ <StandardText>{'>'}</StandardText> }
+                prevButton={ <StandardText>{'<'}</StandardText> }
+                >
+                <StandardText>hellu</StandardText>
+                <StandardText>helluy</StandardText>
+                <StandardText>helluuuu</StandardText>
+            </Swiper>
 
-            <StandardText>hellu</StandardText>
             <StandardButton
                 customColor={ constants.hilightColor2 }
                 title={ 'Skip' }
