@@ -21,11 +21,8 @@ export function StandardText(props: Props) {
 }
 
 export function LargeText(props: Props) {
-    const { customStyle, ...restProps } = props;
+    const { style, ...restProps } = props;
 
-    const style = customStyle
-        ? Object.assign({}, largeDefaultStyle, customStyle)
-        : largeDefaultStyle;
-
-    return <Text style={ style } { ...restProps } />
+    const actualStyle = Object.assign({}, largeDefaultStyle, style);
+    return <Text style={ actualStyle } { ...restProps } />
 }

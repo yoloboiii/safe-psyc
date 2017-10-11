@@ -25,7 +25,7 @@ it('contains a skip button that navigates to the login screen', () => {
 
 function clickSkipButton(component) {
     const skipButton = findChildren(component, StandardButton)
-        .filter(b => b.props.title.toLowerCase() === 'skip')[0];
+        .filter(b => b.props.title.toLowerCase() === 'let\'s get started!')[0];
     expect(skipButton).toBeDefined();
 
     skipButton.props.onPress();
