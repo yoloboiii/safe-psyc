@@ -1,10 +1,11 @@
 // @flow
 
-import { IntensityQuestionComponent, IntensityScale } from './Question.Intensity.js';
+import { IntensityQuestionComponent, IntensityScale, IntensityQuestionOverlay } from './Question.Intensity.js';
 import { StandardButton } from './Buttons.js'
 import { render } from '../../tests/render-utils.js';
 import { randomIntensityQuestion } from '../../tests/question-utils.js';
 import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
+import { randomEmotionWithIntensity } from '../../tests/emotion-utils.js';
 import uuid from 'uuid';
 import { TouchableOpacity } from 'react-native';
 import { sprintf } from 'sprintf-js';
@@ -116,6 +117,37 @@ describe('IntensityQuestionComponent', () => {
         testIntensityGroup({ intensity: 9,  group: 5, });
         testIntensityGroup({ intensity: 10, group: 5, });
         testIntensityGroup({ intensity: 11, group: 5, });
+    });
+
+    it('Pressing the emotion name navigates to the emotion details', () => {
+        const question = randomIntensityQuestion();
+        const navigationMock = jest.fn();
+        const component = render(IntensityQuestionComponent, { question }, defaultProps);
+
+        const emotionNameComponent = findChildren(component, TouchableOpacity)
+            .filter(c => getAllRenderedStrings(c) === [question.correctAnswer.name])[0];
+        expect(emotionNameComponent).toBeDefined();
+
+        emotionNameComponent.props.onPress();
+        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', question.correctAnswer);
+    });
+
+    it('has a link to a textual description of the emotion in the overlay', () => {
+        const askedQuestion = randomIntensityQuestion();
+        const answer = randomEmotionWithIntensity();
+        const navigationMock = jest.fn();
+
+        const component = render(IntensityQuestionOverlay, {
+            answeredCorrectly: false,
+            question: askedQuestion,
+            answer: answer,
+        });
+
+        const helpComponent = undefined;
+        expect(helpComponent).toBeDefined();
+
+        helpComponent.props.onPress();
+        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', question.correctAnswer);
     });
 
     function testIntensityGroup(conf) {

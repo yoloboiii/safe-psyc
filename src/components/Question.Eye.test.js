@@ -71,3 +71,11 @@ it('shows the image of the answer in the overlay - image doesn\'t exists', () =>
     expect(component).not.toHaveChild(Image);
 });
 
+it('Pressing the emotion name navigates to the emotion details', () => {
+    expect(true).toBe(false);
+});
+
+it('has a link to a textual description of the emotion in the overlay', () => {
+    expect(true).toBe(false);
+});
+
