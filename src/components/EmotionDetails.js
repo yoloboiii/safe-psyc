@@ -45,7 +45,7 @@ export function EmotionDetails(props: Props) {
         ? <StandardText>You haven't encountered this emotion enough to give any stats</StandardText>
         : <View style={{ flexDirection: 'row' }}>
             <ConfusionList
-                style={{ flex: 2 }}
+                style={{ flex: 2, paddingRight: constants.space }}
                 dataPoints={ props.dataPoints }
                 navigation={ props.navigation } />
 
@@ -107,12 +107,12 @@ function ConfusionList(props: ConfusionListProps) {
     }> = filterOldAndNonIntensityAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
-        return null;
+        return <View {...restProps} />;
     }
 
     const data = toFlatListData(incorrectEmotions);
     return <View {...restProps} >
-        <StandardText>You sometimes get this confused with...</StandardText>
+        <StandardText>You sometimes get this confused with</StandardText>
         <VerticalSpace />
         <FlatList
             data={ Array.from(data.values()) }
