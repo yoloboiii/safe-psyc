@@ -8,16 +8,14 @@ const standardDefaultStyle = constants.normalText;
 const largeDefaultStyle = constants.largeText;
 
 type Props = {
-    customStyle?: Object,
+    style?: Object,
 };
 export function StandardText(props: Props) {
-    const { customStyle, ...restProps } = props;
+    const { style, ...restProps } = props;
 
-    const style = customStyle
-        ? Object.assign({}, standardDefaultStyle, customStyle)
-        : standardDefaultStyle;
+    const actualStyle = Object.assign({}, largeDefaultStyle, style);
 
-    return <Text style={ style } { ...restProps } />
+    return <Text style={ actualStyle } { ...restProps } />
 }
 
 export function LargeText(props: Props) {

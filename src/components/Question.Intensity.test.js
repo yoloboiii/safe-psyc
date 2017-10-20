@@ -144,10 +144,12 @@ describe('IntensityQuestionComponent', () => {
         });
 
         const helpComponent = undefined;
-        expect(helpComponent).toBeDefined();
+        if (!helpComponent) {
+            throw new Error('Unable to find help component');
+        }
 
         helpComponent.props.onPress();
-        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', question.correctAnswer);
+        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', askedQuestion.correctAnswer);
     });
 
     function testIntensityGroup(conf) {
@@ -187,12 +189,12 @@ describe('IntensityScale', () => {
 
     it('renders the reference points', () => {
         const referencePoints = new Map();
-        referencePoints.set(1, uuid.v4());
-        referencePoints.set(2, uuid.v4());
-        referencePoints.set(3, uuid.v4());
+        referencePoints.set(1, { name: uuid.v4() });
+        referencePoints.set(2, { name: uuid.v4() });
+        referencePoints.set(3, { name: uuid.v4() });
 
         const referencePointsTitles = [];
-        referencePoints.forEach(value => value.title);
+        referencePoints.forEach(value => value.name);
 
         const component = render(IntensityScale, {
             referencePoints: referencePoints,

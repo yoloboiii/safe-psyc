@@ -1,6 +1,5 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { StatusBar, Platform } from 'react-native';
 
 import { RedirectScreen } from './src/components/RedirectScreen.js';
 import { PitchScreen } from './src/components/PitchScreen.js';
@@ -14,14 +13,13 @@ import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 
+import { statusBarHeight } from './src/styles/status-bar-height.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
 import { log } from './src/services/logger.js';
 
-export const statusBarHeight = Platform.OS === 'ios'
-    ? 20
-    : 0; //StatusBar.currentHeight;
+console.log('STATBARHEIGHT', statusBarHeight);
 
 const defaultScreenProps = {
     navigationOptions: {

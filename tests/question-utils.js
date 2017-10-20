@@ -13,12 +13,12 @@ import type { Question, EyeQuestion, EmotionWordQuestion, IntensityQuestion } fr
 export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQuestion> {
     const qs = [];
     for (let i = 0; i < numberOfQuestions; i++) {
-        qs.push(randomEyeQuestion(i));
+        qs.push(randomEyeQuestion(i.toString()));
     }
     return qs;
 }
 
-export function randomEyeQuestion(c?: number): EyeQuestion {
+export function randomEyeQuestion(c?: string): EyeQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     const answer = randomEmotionWithImage('ans' + uniqueString);
@@ -35,12 +35,12 @@ export function randomEyeQuestion(c?: number): EyeQuestion {
 export function randomWordQuestions(numberOfQuestions:number = 10): Array<EmotionWordQuestion> {
     const qs = [];
     for (let i = 0; i < numberOfQuestions; i++) {
-        qs.push(randomWordQuestion(i));
+        qs.push(randomWordQuestion(i.toString()));
     }
     return qs;
 }
 
-export function randomWordQuestion(c?: number): EmotionWordQuestion {
+export function randomWordQuestion(c?: string): EmotionWordQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     const answer = randomEmotion('ans' + uniqueString);

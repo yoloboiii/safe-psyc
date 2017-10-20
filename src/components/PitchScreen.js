@@ -92,7 +92,7 @@ export class PitchScreen extends React.Component<Props, State> {
     }
 }
 
-function Paragraph(props) {
+function Paragraph(props: { style?: Object }) {
     const { style, ...restProps } = props;
 
     const defaultStyle = { paddingTop: constants.space };
