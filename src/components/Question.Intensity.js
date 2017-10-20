@@ -6,15 +6,18 @@ import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
+import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 import { SnapSlider } from './SnapSlider.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
+import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
     question: IntensityQuestion,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: number) => void,
+    navigation: Navigation<{}>,
 };
 type State = {
     lastAnswer: number,
@@ -42,11 +45,23 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const emotionName = this.props.question.correctAnswer.name;
+        const emotion = this.props.question.correctAnswer;
+        const emotionName = emotion.name;
+
+        const navigation =  this.props.navigation;
+        const onEmotionPress = () => navigateToEmotionDetails(navigation, emotion);
 
         return <View style={ containerStyle }>
             <View>
-                <StandardText>How intense is { emotionName }?</StandardText>
+                <View style={{ flexDirection: 'row' }}>
+                    <StandardText>How intense is </StandardText>
+                    <TouchableOpacity onPress={ onEmotionPress }>
+                        <StandardText style={{ textDecorationLine: 'underline' }}>
+                            { emotionName }
+                        </StandardText>
+                    </TouchableOpacity>
+                    <StandardText>?</StandardText>
+                </View>
                 <VerticalSpace multiplier={2} />
                 <IntensityScale
                     onIntensityChosen={ this._onIntensityChosen.bind(this) }

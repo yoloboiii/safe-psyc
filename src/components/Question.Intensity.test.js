@@ -122,34 +122,25 @@ describe('IntensityQuestionComponent', () => {
     it('Pressing the emotion name navigates to the emotion details', () => {
         const question = randomIntensityQuestion();
         const navigationMock = jest.fn();
-        const component = render(IntensityQuestionComponent, { question }, defaultProps);
+        const component = render(IntensityQuestionComponent, {
+            question,
+            navigation: {
+                navigate: navigationMock,
+            },
+        }, defaultProps);
 
         const emotionNameComponent = findChildren(component, TouchableOpacity)
-            .filter(c => getAllRenderedStrings(c) === [question.correctAnswer.name])[0];
+            .filter(c => {
+                const strings = getAllRenderedStrings(c);
+                const isEmotionName = strings[0] === question.correctAnswer.name;
+                return isEmotionName;
+            })[0];
         expect(emotionNameComponent).toBeDefined();
 
         emotionNameComponent.props.onPress();
-        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', question.correctAnswer);
-    });
-
-    it('has a link to a textual description of the emotion in the overlay', () => {
-        const askedQuestion = randomIntensityQuestion();
-        const answer = randomEmotionWithIntensity();
-        const navigationMock = jest.fn();
-
-        const component = render(IntensityQuestionOverlay, {
-            answeredCorrectly: false,
-            question: askedQuestion,
-            answer: answer,
+        expect(navigationMock).toHaveBeenCalledWith('EmotionDetails', {
+            emotion: question.correctAnswer,
         });
-
-        const helpComponent = undefined;
-        if (!helpComponent) {
-            throw new Error('Unable to find help component');
-        }
-
-        helpComponent.props.onPress();
-        expect(navigationMock).tohaveBeenCalledWith('EmotionDetails', askedQuestion.correctAnswer);
     });
 
     function testIntensityGroup(conf) {

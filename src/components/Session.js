@@ -16,11 +16,13 @@ import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Report } from './SessionReport.js';
+import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
     backendFacade: BackendFacade,
     questions: Array<Question>,
     onSessionFinished: (Report) => void,
+    navigation: Navigation<{}>,
 };
 type State = {
     questions: QuestionCollection,
@@ -150,6 +152,7 @@ export class Session extends React.Component<Props, State> {
                 <VerticalSpace />
 
                 <QuestionComponent
+                    navigation={ this.props.navigation }
                     question={ currentQuestion }
                     onCorrectAnswer={ this._answeredCorrectly.bind(this) }
                     onWrongAnswer={ this._wrongAnswer.bind(this) } />

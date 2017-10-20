@@ -15,6 +15,7 @@ import { log } from '../services/logger.js';
 
 import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
+import type { Navigation } from '../navigation-actions.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
@@ -22,6 +23,7 @@ export type Props = {
     question: Question,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: AnswerType) => void,
+    navigation: Navigation<{}>,
 };
 type State = {
     currentAnswerState: CurrentAnswerState,
@@ -106,6 +108,7 @@ export class QuestionComponent extends React.Component<Props,State> {
                             onWrongAnswer={ onWrongAnswer } />
             case 'intensity':
                 return <IntensityQuestionComponent
+                            navigation={ this.props.navigation }
                             question={ question }
                             onCorrectAnswer={ onCorrectAnswer }
                             onWrongAnswer={ onWrongAnswer } />

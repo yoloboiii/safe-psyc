@@ -13,18 +13,14 @@ import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 
-import { statusBarHeight } from './src/styles/status-bar-height.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
 import { log } from './src/services/logger.js';
 
-console.log('STATBARHEIGHT', statusBarHeight);
-
 const defaultScreenProps = {
     navigationOptions: {
         headerStyle: {
-            marginTop: statusBarHeight, // Fixes the header height
             backgroundColor: constants.primaryColor,
         },
         headerTintColor: constants.notReallyWhite,
