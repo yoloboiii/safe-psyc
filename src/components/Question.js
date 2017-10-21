@@ -133,6 +133,7 @@ export class QuestionComponent extends React.Component<Props,State> {
                     answer={answer}
                     question={this.props.question}
                     onDismiss={this._questionFinished.bind(this)}
+                    navigation={ this.props.navigation }
                     />
 
             case 'NOT-ANSWERED':
@@ -169,11 +170,13 @@ type ResultOverlayProps = {
     answer: AnswerType,
     answeredCorrectly: boolean,
     onDismiss: () => void,
+    navigation: Navigation<{}>,
 }
 export type SpecificOverlayProps<T> = {
     answeredCorrectly: boolean,
     answer: T,
     question: Question,
+    navigation: Navigation<{}>,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
     const style = props.answeredCorrectly
@@ -200,13 +203,15 @@ export function ResultOverlay(props: ResultOverlayProps) {
             return <EyeQuestionOverlay
                 question={props.question}
                 answeredCorrectly={props.answeredCorrectly}
-                answer={props.answer} />
+                answer={props.answer}
+                navigation={props.navigation} />
 
         } else if (props.question.type === 'intensity') {
             return <IntensityQuestionOverlay
                 question={props.question}
                 answeredCorrectly={props.answeredCorrectly}
-                answer={props.answer} />
+                answer={props.answer}
+                navigation={props.navigation} />
 
         } else {
             let answer: string = '';

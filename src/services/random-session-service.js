@@ -39,7 +39,7 @@ export class RandomSessionService {
 
         const questions = [];
         for (const emotion of emotionsWithImage) {
-            //questions.push(this._generateEyeQuestion(emotion));
+            questions.push(this._generateEyeQuestion(emotion));
         }
 
         for (const emotion of emotionsWithIntensity) {

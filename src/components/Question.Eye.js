@@ -1,12 +1,14 @@
 // @flow
 
 import React from 'react';
-import { View, Image} from 'react-native';
+import { View, Image } from 'react-native';
 
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
+import { Link } from './Link.js';
 import { constants } from '../styles/constants.js';
+import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 import type { EyeQuestion } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -54,19 +56,27 @@ export function EyeQuestionComponent(props: Props) {
 
 const overlayImageStyle = { height: 100, };
 export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
-    const { answeredCorrectly, answer } = props;
-
+    const { answeredCorrectly, answer, navigation } = props;
     const answerImage = answer.image;
 
-    const shouldShowOtherEmotion = !answeredCorrectly && answerImage;
-    if (answeredCorrectly) {
-        return <StandardText>{answer.name} is correct!</StandardText>
-    } else if (!answerImage) {
+    const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
 
-        return <StandardText>{answer.name} is sadly incorrect</StandardText>
+    if (answeredCorrectly) {
+        return <Link linkText={ startOfSentence(answer.name) }
+            onLinkPress={ toEmotionDetails }
+            postfix={' is correct!'} />
+
+    } else if (!answerImage) {
+        return <Link linkText={ startOfSentence(answer.name) }
+            onLinkPress={ toEmotionDetails }
+            postfix={' is sadly incorrect'} />
+
     } else {
         return <View>
-            <StandardText>That's sadly incorrect. {startOfSentence(answer.name)} looks like this</StandardText>
+            <Link prefix={"That's sadly incorrect. "}
+                linkText={ startOfSentence(answer.name) }
+                onLinkPress={ toEmotionDetails }
+                postfix={' looks like this'} />
             <VerticalSpace />
             <Image
                 style={ overlayImageStyle }

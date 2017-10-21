@@ -1,12 +1,15 @@
 // @flow
 
 import React from 'react';
+import { Image } from 'react-native';
+import { Link } from './Link.js';
+
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { randomQuestion, randomEyeQuestion, randomEyeQuestions } from '../../tests/question-utils.js';
 import { randomEmotionWithImage, randomEmotionWithoutImage } from '../../tests/emotion-utils.js';
 import { render, renderShallow } from '../../tests/render-utils.js';
-import { findChildren } from '../../tests/component-tree-utils.js';
-import { Image } from 'react-native';
+import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
+
 import { answerService } from '../services/answer-service.js';
 import { MockSessionService } from '../../tests/MockSessionService.js';
 
@@ -71,3 +74,28 @@ it('shows the image of the answer in the overlay - image doesn\'t exists', () =>
     expect(component).not.toHaveChild(Image);
 });
 
+it('has a link to the emotion details in the overlay', () => {
+    const question = randomEyeQuestion();
+    const answer = randomEmotionWithImage();
+    const navigationMock = {
+        navigate: jest.fn(),
+    };
+
+    const component = render(EyeQuestionOverlay, {
+        answeredCorrectly: false,
+        question: question,
+        answer: answer,
+        navigation: navigationMock,
+    });
+
+    const helpLink = findChildren(component, Link)
+        .filter(c => {
+            return c.props.linkText.indexOf(answer.name) >= -1;
+        })[0];
+    expect(helpLink).toBeDefined();
+
+    helpLink.props.onLinkPress();
+    expect(navigationMock.navigate).toHaveBeenCalledWith('EmotionDetails', {
+        emotion: answer,
+    });
+});

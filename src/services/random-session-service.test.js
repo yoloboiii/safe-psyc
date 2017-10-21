@@ -80,6 +80,8 @@ it('contains more eye questions than intensity questions', () => {
 });
 
 it('shuffles the questions', () => {
+    const numberOfQuestionTypes = 2;
+
     const questions = randomSessionService.getRandomQuestions(10);
 
     let lastType = questions[0].type;
@@ -91,5 +93,5 @@ it('shuffles the questions', () => {
         lastType = q.type;
     }
 
-    expect(changes).toBeGreaterThan(1);
+    expect(changes).toBeGreaterThan(numberOfQuestionTypes - 1);
 });

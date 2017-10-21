@@ -1,8 +1,9 @@
 // flow
 
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { StandardText } from './Texts.js';
+import { Link } from './Link.js';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
@@ -53,15 +54,10 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
 
         return <View style={ containerStyle }>
             <View>
-                <View style={{ flexDirection: 'row' }}>
-                    <StandardText>How intense is </StandardText>
-                    <TouchableOpacity onPress={ onEmotionPress }>
-                        <StandardText style={{ textDecorationLine: 'underline' }}>
-                            { emotionName }
-                        </StandardText>
-                    </TouchableOpacity>
-                    <StandardText>?</StandardText>
-                </View>
+                <Link prefix={"How intense is "}
+                    linkText={ emotionName }
+                    onLinkPress={ onEmotionPress }
+                    postfix={"?"} />
                 <VerticalSpace multiplier={2} />
                 <IntensityScale
                     onIntensityChosen={ this._onIntensityChosen.bind(this) }
