@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Image, FlatList } from 'react-native';
 import { StandardText } from './Texts';
 import { VerticalSpace } from './VerticalSpace.js';
+import { Link } from './Link.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 import moment from 'moment';
@@ -162,7 +163,7 @@ function ConfusionList(props: ConfusionListProps) {
     function renderRow(props: { item: { emotion: Emotion }}) {
         const { emotion } = props.item;
         const navigate = () => navigateToEmotionDetails(navigation, emotion);
-        return <StandardText onPress={ navigate }>{ emotion.name }</StandardText>
+        return <Link linkText={ emotion.name } onLinkPress={ navigate } />
     }
 }
 
