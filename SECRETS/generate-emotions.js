@@ -7,26 +7,46 @@ var imageDir = './eye-images';
 ////////////////////////////////////////
 var intensities = require('./emotion-intensities.json');
 var images = fs.readdirSync(imageDir);
+var descriptions = require('./emotion-descriptions.json');
 
 var emotions = {};
-for (var emotion in intensities) {
-    console.log('Found intensity', intensities[emotion], 'for', emotion);
+for (var emotion in descriptions) {
+    console.log('Found description for', emotion);
 
-    getOrInsertEmotion(emotion).intensity = intensities[emotion];
+    getOrInsertEmotion(emotion).description = descriptions[emotion];
 }
+console.log('---------------------------------------------');
+
+for (var emotion in intensities) {
+    if (!emotions[emotion]) {
+        console.log('Ignored intensity for', emotion);
+        continue;
+    }
+
+    console.log('Found intensity', intensities[emotion], 'for', emotion);
+    emotions[emotion].intensity = intensities[emotion];
+}
+console.log('---------------------------------------------');
 
 for (var i in images) {
     var file = images[i];
-    var emotionName = file.substring(0, file.length - 4);
+    var emotion = file.substring(0, file.length - 4);
+
+    if (!emotions[emotion]) {
+        console.log('Ignored image for', emotion);
+        continue;
+    }
+
     var base64EncodedImage = getImage(file);
 
     if (base64EncodedImage) {
-        console.log('Found image for', emotionName);
-        getOrInsertEmotion(emotionName).image = base64EncodedImage;
+        console.log('Found image for', emotion);
+        emotions[emotion].image = base64EncodedImage;
     } else {
-        console.log('Skipped image for', emotionName);
+        console.log('Skipped image for', emotion);
     }
 }
+console.log('---------------------------------------------');
 
 writeEmotions();
 ////////////////////////////////////////
@@ -59,7 +79,7 @@ function base64_encode(file) {
 
 function writeEmotions() {
     var fileName = 'emotions.json';
-    var data = JSON.stringify(Object.values(emotions, null, 4));
+    var data = JSON.stringify(Object.values(emotions), null, 4);
 
     fs.writeFile('emotions.json', data, 'utf8', (err) => {
         if (err) throw err;
