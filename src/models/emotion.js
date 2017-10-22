@@ -2,11 +2,13 @@
 
 export class Emotion {
     name: string;
+    description: string;
     image: ?string;
     intensity: ?number;
 
-    constructor(name: string, image: ?string, intensity: ?number) {
+    constructor(name: string, description: string, image: ?string, intensity: ?number) {
         this.name = name;
+        this.description = description;
         this.image = image;
         this.intensity = intensity;
     }
@@ -14,11 +16,17 @@ export class Emotion {
 
 export class EmotionBuilder {
     name: string;
+    description: string;
     image: ?string;
     intensity: ?number;
 
     withName(name: string): EmotionBuilder {
         this.name = name;
+        return this;
+    }
+
+    withDescription(description: string): EmotionBuilder {
+        this.description = description;
         return this;
     }
 
@@ -33,6 +41,6 @@ export class EmotionBuilder {
     }
 
     build(): Emotion {
-        return new Emotion(this.name, this.image, this.intensity);
+        return new Emotion(this.name, this.description, this.image, this.intensity);
     }
 }

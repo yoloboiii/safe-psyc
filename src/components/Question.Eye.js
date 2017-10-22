@@ -9,6 +9,7 @@ import { StandardText } from './Texts.js';
 import { Link } from './Link.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
+import { capitalize } from '../utils/text-utils.js';
 
 import type { EyeQuestion } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -62,19 +63,19 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
 
     if (answeredCorrectly) {
-        return <Link linkText={ startOfSentence(answer.name) }
+        return <Link linkText={ capitalize(answer.name) }
             onLinkPress={ toEmotionDetails }
             postfix={' is correct!'} />
 
     } else if (!answerImage) {
-        return <Link linkText={ startOfSentence(answer.name) }
+        return <Link linkText={ capitalize(answer.name) }
             onLinkPress={ toEmotionDetails }
             postfix={' is sadly incorrect'} />
 
     } else {
         return <View>
             <Link prefix={"That's sadly incorrect. "}
-                linkText={ startOfSentence(answer.name) }
+                linkText={ capitalize(answer.name) }
                 onLinkPress={ toEmotionDetails }
                 postfix={' looks like this'} />
             <VerticalSpace />
@@ -86,6 +87,3 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     }
 }
 
-function startOfSentence(s) {
-    return s.charAt(0).toUpperCase() + s.substr(1);
-}

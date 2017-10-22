@@ -5,6 +5,7 @@ import { render } from '../../tests/render-utils.js';
 import { randomEmotion, randomEmotionWithImage } from '../../tests/emotion-utils.js';
 import { getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Image } from 'react-native';
+import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
 
 const defaultProps = {
@@ -20,7 +21,7 @@ it('contains the image and name of an emotion with an image', () => {
     const component = render(EmotionDetails, { emotion }, defaultProps);
 
     expect(component).toHaveChildWithProps(Image, { source: {uri: emotion.image }});
-    expect(getAllRenderedStrings(component)).toEqual(expect.arrayContaining([emotion.name]));
+    expect(getAllRenderedStrings(component)).toEqual(expect.arrayContaining([capitalize(emotion.name)]));
 });
 
 it('contains a strength meter', () => {
@@ -108,4 +109,17 @@ it('considers old mistakes forgotten in the confusion list', () => {
 
     const strings = getAllRenderedStrings(component);
     expect(strings).not.toContain(longAgoEmotion.name);
+});
+
+it('shows the emotion description', () => {
+    const emotion = randomEmotion();
+    emotion.description = 'foooo';
+
+    const component = render(EmotionDetails, { emotion }, defaultProps);
+
+    expect(getAllRenderedStrings(component)).toEqual(
+        expect.arrayContaining([
+            formatParagraph(emotion.description),
+        ])
+    );
 });

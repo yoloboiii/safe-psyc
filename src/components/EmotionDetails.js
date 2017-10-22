@@ -7,6 +7,7 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { Link } from './Link.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
+import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
 
 import type { AnswerType } from '../models/questions.js';
@@ -42,7 +43,7 @@ export function EmotionDetails(props: Props) {
           </View>
         : undefined;
 
-    const details = props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4
+    const stats = props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4
         ? <StandardText>You haven't encountered this emotion enough to give any stats</StandardText>
         : <View style={{ flexDirection: 'row' }}>
             <ConfusionList
@@ -56,12 +57,15 @@ export function EmotionDetails(props: Props) {
         </View>
 
     return <View style={ detailsContainerStyle }>
-        <StandardText style={ constants.largeText }>{ props.emotion.name }</StandardText>
+        <StandardText style={ constants.largeText }>{ capitalize(props.emotion.name) }</StandardText>
         <VerticalSpace />
 
         { image }
 
-        { details }
+        <StandardText>{ formatParagraph(props.emotion.description) }</StandardText>
+        <VerticalSpace />
+
+        { stats }
     </View>
 }
 
