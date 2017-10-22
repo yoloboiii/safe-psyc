@@ -124,8 +124,9 @@ export class LoginScreen extends React.Component<Props, State> {
                 <View style={ containerStyle }>
                     <Kaede
                         labelStyle={ kaedeLabelStyle }
-                        label={'EMAIL'}
+                        label={'Email'}
                         value={ this.state.email }
+                        keyboardType={'email-address'}
                         onChangeText={ (text) => this.setState({ email: text }) }/>
 
                     <VerticalSpace />
