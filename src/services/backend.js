@@ -106,14 +106,6 @@ export class BackendFacade {
         });
     }
 
-    getEmotionWords(): Promise<Array<string>> {
-        return new Promise((resolve) => {
-            const emotions = ["Fear", "Anger", "Sadness", "Joy", "Disgust", "Surprise", "Trust", "Anticipation"];
-
-            resolve(emotions);
-        });
-    }
-
     getLastEmotionAnswer(): Promise<?LastEmotionAnswer> {
         log.debug('Reading last recorded feeling');
         return new Promise((resolve) => {

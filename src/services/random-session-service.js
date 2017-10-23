@@ -1,21 +1,28 @@
 // @flow
 
 import { answerService } from './answer-service.js';
+import { emotionService } from './emotion-service.js';
 import { ReferencePointService } from './reference-point-service.js';
 import { knuthShuffle } from 'knuth-shuffle';
 
 import type { Emotion } from '../models/emotion.js';
 import type { Question, EyeQuestion, IntensityQuestion } from '../models/questions.js';
 import type { AnswerService } from './answer-service.js';
+import type { EmotionService } from './emotion-service.js';
 
 export class RandomSessionService {
 
-    _emotionPool = undefined;
     _answerService: AnswerService;
+    _emotionService: EmotionService;
     _referencePointService: ReferencePointService;
 
-    constructor(answerService: AnswerService) {
+    constructor(answerService: AnswerService, emotionService: EmotionService) {
         this._answerService = answerService;
+
+        this._emotionService = emotionService;
+        this._referencePointService = new ReferencePointService(this.getEmotionPool());
+
+        this._answerService.setAnswerPool(this.getEmotionPool());
     }
 
     getRandomQuestions(numQuestions: number): Array<Question> {
@@ -72,31 +79,9 @@ export class RandomSessionService {
     }
 
     getEmotionPool(): Array<Emotion> {
-        if (this._emotionPool === undefined) {
-            const emotions = require('../../SECRETS/emotions.json')
-                .filter(e => {
-                    // I found that a lot of the emotions are unknown to many people
-                    // so I added a link to the emotion details somewhere in the
-                    // question view. This link will only help the user if the details
-                    // contains a textual description of the emotion, thus I disregard
-                    // all emotions without a description.
-                    //
-                    // I do it here instead of in generate-emotions.js to make it more
-                    // explicit.
-                    return !!e.description;
-                });
-            this._setEmotionPool(emotions);
-        }
-
-        // $FlowFixMe
-        return this._emotionPool;
+        return this._emotionService.getEmotionPool();
     }
 
-    _setEmotionPool(emotionPool: Array<Emotion>) {
-        this._emotionPool = emotionPool;
-        this._answerService.setAnswerPool(emotionPool);
-        this._referencePointService = new ReferencePointService(emotionPool);
-    }
 }
 
 function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Array<T> {
@@ -114,4 +99,4 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
     return elements;
 }
 
-export const randomSessionService = new RandomSessionService(answerService);
+export const randomSessionService = new RandomSessionService(answerService, emotionService);

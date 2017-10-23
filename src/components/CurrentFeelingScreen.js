@@ -5,8 +5,7 @@ import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { CurrentFeeling } from './CurrentFeeling.js';
-// $FlowFixMe
-import { NavigationActions } from 'react-navigation';
+import { emotionService } from '../services/emotion-service.js';
 import { backendFacade } from '../services/backend.js';
 import { resetToHome } from '../navigation-actions.js';
 
@@ -17,54 +16,25 @@ type Props = {
         skippable: boolean,
     }>,
 }
-type State = {
-    finishedLoading: boolean,
-    emotionWords: Array<string>,
-};
+type State = { };
 export class CurrentFeelingScreen extends React.Component<Props, State> {
     static navigationOptions = {
         title: 'How are you feeling right now?',
     };
 
-    constructor() {
-        super();
-        this.state = {
-            finishedLoading: false,
-            emotionWords: [],
-        };
-    }
-
-    componentDidMount() {
-        backendFacade.getEmotionWords()
-            .then( words => {
-                this.setState({
-                    finishedLoading: true,
-                    emotionWords: words,
-                });
-            });
-    }
-
     render() {
-       if (!this.state.finishedLoading) {
-            return <View>
-                <StandardText>Loading emotion words</StandardText>
-                <ActivityIndicator />
-            </View>
+        const skippable = this.props.navigation.state && this.props.navigation.state.params
+            ? !!this.props.navigation.state.params.skippable
+            : false;
 
-        } else {
-            const skippable = this.props.navigation.state && this.props.navigation.state.params
-                ? !!this.props.navigation.state.params.skippable
-                : false;
+        const onSkip = skippable
+            ? () => resetToHome(this.props.navigation)
+            : undefined;
 
-            const onSkip = skippable
-                ? () => resetToHome(this.props.navigation)
-                : undefined;
-
-            return <CurrentFeeling
-                onAnswered={ () => resetToHome(this.props.navigation) }
-                onSkip={ onSkip }
-                emotionWords={ this.state.emotionWords }
-                backendFacade={ backendFacade } />
-        }
+        return <CurrentFeeling
+            onAnswered={ () => resetToHome(this.props.navigation) }
+            onSkip={ onSkip }
+            emotionWords={ emotionService.getEmotionPool().map(e => e.name).sort() }
+            backendFacade={ backendFacade } />
     }
 }

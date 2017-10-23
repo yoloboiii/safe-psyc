@@ -4,8 +4,8 @@ import React from 'react';
 import { View, Alert, Picker, ActivityIndicator } from 'react-native';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
-import { constants } from '../styles/constants.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
 import type { BackendFacade } from '../services/backend.js';

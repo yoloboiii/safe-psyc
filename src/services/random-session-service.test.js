@@ -30,13 +30,6 @@ it('converts image paths to something that can be shown in the app', () => {
 });
 
 it('generates three reference points to intensity questions', () => {
-    const answerService = {
-        setAnswerPool: jest.fn(),
-        getAnswersTo: jest.fn(),
-    };
-    // $FlowFixMe
-    const service = new RandomSessionService(answerService);
-
     // These intensities have to match the intensities selected by
     // the service. TODO: write test for that
     const intensities = [1, 5, 10];
@@ -49,8 +42,16 @@ it('generates three reference points to intensity questions', () => {
         pool.push(e);
     }
 
-    service._setEmotionPool(pool);
+    const answerService = {
+        setAnswerPool: jest.fn(),
+        getAnswersTo: jest.fn(),
+    };
+    const emotionService = {
+        getEmotionPool: () => pool,
+    };
 
+    // $FlowFixMe
+    const service = new RandomSessionService(answerService, emotionService);
 
     const questions = service.getRandomQuestions(10);
     expect(questions.length).toBeGreaterThan(0);
