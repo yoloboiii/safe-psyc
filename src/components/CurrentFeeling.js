@@ -61,8 +61,8 @@ export class CurrentFeeling extends React.Component<Props, State> {
 
             <VerticalSpace multiplier={2} />
             <View style={ buttonRowStyle }>
-                { submitButton }
                 { skipButton }
+                { submitButton }
             </View>
         </View>
     }
@@ -90,7 +90,7 @@ export class CurrentFeeling extends React.Component<Props, State> {
                 title={ 'Skip' }
                 onPress={ this.props.onSkip } />
         } else {
-            return undefined;
+            return <View/>;
         }
     }
 
