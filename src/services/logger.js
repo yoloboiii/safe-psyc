@@ -56,7 +56,7 @@ export class Logger {
     _log(localF, remoteF, formatString: string, args: Array<mixed>) {
         const msg = vsprintf(formatString, args);
         localF(msg);
-        remoteF(msg);
+        //remoteF(msg);
 
         args.forEach(a => {
             if (a instanceof Error) {
