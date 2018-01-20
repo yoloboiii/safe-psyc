@@ -9,6 +9,7 @@ import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
+import { log } from '../services/logger.js';
 
 import type { AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
@@ -101,6 +102,11 @@ type ConfusionListProps = {
         incorrect: Array<*>,
     },
 };
+// Render a list of emotions that the user often confuse with
+// the emotion we're showing the details of. I.e. if we're
+// showing the details of Angry and the user often answer
+// Bitter and Despondent when shown the Angry image, this
+// component will show a list with Bitter and Despondent.
 function ConfusionList(props: ConfusionListProps) {
     const { navigation, ...restProps } = props;
     const { correct, incorrect } = props.dataPoints;
@@ -109,7 +115,7 @@ function ConfusionList(props: ConfusionListProps) {
     const incorrectEmotions: Array<{
         answer: Emotion,
         when: moment$Moment,
-    }> = filterOldAndNonIntensityAnswers(incorrect);
+    }> = filterOldAndIntensityAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
         return <View {...restProps} />;
@@ -124,14 +130,14 @@ function ConfusionList(props: ConfusionListProps) {
             renderItem={ renderRow } />
     </View>
 
-    function filterOldAndNonIntensityAnswers(answers) {
+    function filterOldAndIntensityAnswers(answers) {
         const now = moment();
-        const intensityAnswers = answers.filter(a => {
+        const nonIntensityAnswers = answers.filter(a => {
             return typeof(a.answer) !== 'number';
         });
 
         const scores = {};
-        intensityAnswers.forEach(a => {
+        nonIntensityAnswers.forEach(a => {
             if (scores[a.answer.name] === undefined) {
                 scores[a.answer.name] = 0;
             }
@@ -142,7 +148,7 @@ function ConfusionList(props: ConfusionListProps) {
             scores[a.answer.name] += timeScaledScore;
         });
 
-        return intensityAnswers.filter(a => {
+        return nonIntensityAnswers.filter(a => {
             const score = scores[a.answer.name];
             return score >= 0.12;
         });

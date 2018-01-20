@@ -14,7 +14,6 @@ import { randomSessionService } from '../services/random-session-service.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
-console.log('YATTA', statusBarHeight);
 const contentStyle = {
     paddingTop: statusBarHeight,
     padding: constants.space,
@@ -78,7 +77,8 @@ export class HomeScreen extends React.Component<Props, State> {
                     <HeroButton
                         title={ 'Emotion details'}
                         onPress={ () => navigateToEmotionDetails(
-                            this.props.navigation, randomSessionService.getEmotionPool()[0]
+                            this.props.navigation,
+                            randomSessionService.getEmotionPool().filter(e => e.name === "bitter")[0]
                         ) } />
                     <VerticalSpace />
                     <HeroButton

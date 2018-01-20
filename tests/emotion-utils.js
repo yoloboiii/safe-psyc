@@ -3,6 +3,8 @@
 import uuid from 'uuid';
 import { Emotion, EmotionBuilder } from '../src/models/emotion.js';
 
+import type { Coordinates } from '../src/models/emotion.js';
+
 export function randomEmotions(num: number): Array<Emotion> {
     const es = [];
     for (let i = 0; i < num; i++) {
@@ -37,9 +39,11 @@ export function randomEmotionWithoutImage() {
         .build();
 }
 
-export function randomEmotionWithIntensity() {
-    const intensity = Math.floor(Math.random() * 10);
+export function randomEmotionWithCoordinates(coordinates: ?Coordinates) {
     return baseBuilder()
-        .withIntensity(intensity)
+        .withCoordinates(coordinates || {
+            intensity: Math.floor(Math.random() * 10),
+            polar: Math.floor(Math.random() * 10),
+        })
         .build();
 }

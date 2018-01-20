@@ -99,3 +99,13 @@ it('has a link to the emotion details in the overlay', () => {
         emotion: answer,
     });
 });
+
+it('doesn\'t have a link to the emotion details if answered correctly', () => {
+    const component = render(EyeQuestionOverlay, {
+        question: randomEyeQuestion(),
+        answer: randomEmotionWithImage(),
+        answeredCorrectly: true,
+    });
+
+    expect(component).not.toHaveChild(Link);
+});

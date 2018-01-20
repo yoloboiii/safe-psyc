@@ -1,16 +1,26 @@
 // @flow
 
+export type Coordinates = {
+    intensity: number,
+    polar: number,
+};
 export class Emotion {
     name: string;
     description: string;
     image: ?string;
-    intensity: ?number;
+    coordinates: ?Coordinates;
 
-    constructor(name: string, description: string, image: ?string, intensity: ?number) {
+    constructor(name: string, description: string, image: ?string, coordinates: ?Coordinates) {
         this.name = name;
         this.description = description;
         this.image = image;
-        this.intensity = intensity;
+        this.coordinates = coordinates;
+    }
+
+    intensity(): ?number {
+        return this.coordinates
+            ? this.coordinates.intensity
+            : null;
     }
 }
 
@@ -18,7 +28,7 @@ export class EmotionBuilder {
     name: string;
     description: string;
     image: ?string;
-    intensity: ?number;
+    coordinates: ?Coordinates;
 
     withName(name: string): EmotionBuilder {
         this.name = name;
@@ -35,12 +45,12 @@ export class EmotionBuilder {
         return this;
     }
 
-    withIntensity(intensity: number): EmotionBuilder {
-        this.intensity = intensity;
+    withCoordinates(coordinates: Coordinates): EmotionBuilder {
+        this.coordinates = coordinates;
         return this;
     }
 
     build(): Emotion {
-        return new Emotion(this.name, this.description, this.image, this.intensity);
+        return new Emotion(this.name, this.description, this.image, this.coordinates);
     }
 }

@@ -8,9 +8,10 @@ const padding = {
     padding: space,
 };
 const defaultTextColor = '#666';
+const lightTextColor = '#CCC';
 export const constants = {
     space,
-    //
+
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151
     primaryColor: '#ffc145',
     positiveColor: '#698e30',
@@ -20,6 +21,7 @@ export const constants = {
 
     notReallyWhite: '#FAFAFF',
     defaultTextColor,
+    lightTextColor,
 
     smallText: {
         fontSize: 12,

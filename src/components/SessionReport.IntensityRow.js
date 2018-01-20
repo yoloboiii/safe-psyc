@@ -39,7 +39,7 @@ export function IntensityQuestionRow(props: Props) {
         <SnapSlider
             items={ items }
             itemStyle={ constants.smallText }
-            value={ intensityToGroup(props.question.correctAnswer.intensity) - 1 }
+            value={ intensityToGroup(props.question.correctAnswer.intensity()) - 1 }
             disabled={ true }
             />
 

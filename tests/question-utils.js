@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from 'react-native';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
-import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWithIntensity } from './emotion-utils.js';
+import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWithCoordinates } from './emotion-utils.js';
 import { Emotion } from '../src/models/emotion.js';
 import uuid from 'uuid';
 
@@ -55,11 +55,11 @@ export function randomWordQuestion(c?: string): EmotionWordQuestion {
 }
 
 export function randomIntensityQuestion(): IntensityQuestion {
-    const answer = randomEmotionWithIntensity();
+    const answer = randomEmotionWithCoordinates();
     const refPoints = new Map();
-    refPoints.set(1, randomEmotionWithIntensity());
-    refPoints.set(3, randomEmotionWithIntensity());
-    refPoints.set(5, randomEmotionWithIntensity());
+    refPoints.set(1, randomEmotionWithCoordinates());
+    refPoints.set(3, randomEmotionWithCoordinates());
+    refPoints.set(5, randomEmotionWithCoordinates());
     return {
         type: 'intensity',
         correctAnswer: answer,

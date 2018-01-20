@@ -5,7 +5,7 @@ var imageDir = './eye-images';
 
 ////////////////////////////////////////
 ////////////////////////////////////////
-var intensities = require('./emotion-intensities.json');
+var coordinates = require('./emotion-coordinates.json');
 var images = fs.readdirSync(imageDir);
 var descriptions = require('./emotion-descriptions.json');
 
@@ -17,14 +17,14 @@ for (var emotion in descriptions) {
 }
 console.log('---------------------------------------------');
 
-for (var emotion in intensities) {
+for (var emotion in coordinates) {
     if (!emotions[emotion]) {
         console.log('Ignored intensity for', emotion);
         continue;
     }
 
-    console.log('Found intensity', intensities[emotion], 'for', emotion);
-    emotions[emotion].intensity = intensities[emotion];
+    console.log('Found coordinates', coordinates[emotion], 'for', emotion);
+    emotions[emotion].coordinates = coordinates[emotion];
 }
 console.log('---------------------------------------------');
 

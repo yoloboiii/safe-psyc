@@ -38,9 +38,9 @@ export class RandomSessionService {
             numEyeQuestions,
             this.getEmotionPool().filter(e => !!e.image)
         );
-        const emotionsWithIntensity = getRandomElementsFromArray(
+        const emotionsWithCoordinates = getRandomElementsFromArray(
             numIntensityQuestions,
-            this.getEmotionPool().filter(e => !!e.intensity)
+            this.getEmotionPool().filter(e => !!e.coordinates)
         );
 
 
@@ -49,7 +49,7 @@ export class RandomSessionService {
             questions.push(this._generateEyeQuestion(emotion));
         }
 
-        for (const emotion of emotionsWithIntensity) {
+        for (const emotion of emotionsWithCoordinates) {
             questions.push(this._generateIntensityQuestion(emotion));
         }
 

@@ -5,7 +5,7 @@ import { StandardButton } from './Buttons.js'
 import { render } from '../../tests/render-utils.js';
 import { randomIntensityQuestion } from '../../tests/question-utils.js';
 import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
-import { randomEmotionWithIntensity } from '../../tests/emotion-utils.js';
+import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 import uuid from 'uuid';
 import { TouchableOpacity } from 'react-native';
 import { sprintf } from 'sprintf-js';
@@ -46,7 +46,10 @@ describe('IntensityQuestionComponent', () => {
     it('calls onCorrectAnswer when correct', () => {
         const answerMock = jest.fn();
         const question = randomIntensityQuestion();
-        question.correctAnswer.intensity = 1;
+        question.correctAnswer.coordinates = {
+            intensity: 1,
+            polar: 1,
+        };
 
         const component = render(IntensityQuestionComponent, {
             onCorrectAnswer: answerMock,
@@ -54,7 +57,7 @@ describe('IntensityQuestionComponent', () => {
         }, defaultProps);
 
         const submitButton = findChildren(component, StandardButton)[0];
-        selectIntensity(component, question.correctAnswer.intensity);
+        selectIntensity(component, question.correctAnswer.intensity());
 
         submitButton.props.onPress();
         expect(answerMock).toHaveBeenCalledTimes(1);
@@ -71,7 +74,7 @@ describe('IntensityQuestionComponent', () => {
 
         const submitButton = findChildren(component, StandardButton)[0];
 
-        const intensity = question.correctAnswer.intensity + 1;
+        const intensity = question.correctAnswer.intensity() + 1;
         selectIntensity(component, intensity);
 
         submitButton.props.onPress();
@@ -82,7 +85,10 @@ describe('IntensityQuestionComponent', () => {
     it('submits answers only when the button is pressed', () => {
         const answerMock = jest.fn();
         const question = randomIntensityQuestion();
-        question.correctAnswer.intensity = 1;
+        question.correctAnswer.coordinates = {
+            intensity: 1,
+            polar: 1,
+        };
 
         const component = render(IntensityQuestionComponent, {
             onCorrectAnswer: answerMock,
@@ -91,7 +97,7 @@ describe('IntensityQuestionComponent', () => {
 
         const submitButton = findChildren(component, StandardButton)[0];
 
-        selectIntensity(component, question.correctAnswer.intensity);
+        selectIntensity(component, question.correctAnswer.intensity());
         expect(answerMock).not.toHaveBeenCalled();
 
         submitButton.props.onPress();
@@ -145,7 +151,10 @@ describe('IntensityQuestionComponent', () => {
 
     function testIntensityGroup(conf) {
         const question = randomIntensityQuestion();
-        question.correctAnswer.intensity = conf.intensity;
+        question.correctAnswer.coordinates = {
+            intensity: conf.intensity,
+            polar: 1,
+        };
 
         const correctMock = jest.fn();
         const component = render(IntensityQuestionComponent, {

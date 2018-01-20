@@ -48,7 +48,7 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering correct answer to, %j', question.correctAnswer.name);
+            log.debug('Registering correct answer to %j', question.correctAnswer.name);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
@@ -140,7 +140,7 @@ export class BackendFacade {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
-                log.error('Not logged in - getAnswersTo, %j', err);
+                log.error('Not logged in - getAnswersTo, %s', err);
                 throw err;
             }
 
@@ -169,9 +169,9 @@ export class BackendFacade {
                         const val = incorrectAnswer.val();
                         if (val.emotion === emotion.name) {
                             let answer = null;
-                            if (typeof(val.emotion) === 'number') {
-                                answer = val.emotion;
-                            } else if (typeof(val.emotion) === 'string') {
+                            if (isNumber(val.answer)) {
+                                answer = parseFloat(val.answer);
+                            } else {
                                 answer = emotionLookupTable.get(val.answer);
                             }
 
@@ -275,4 +275,8 @@ function thenableToPromise(resolve, reject): (?Object)=>void {
             resolve();
         }
     };
+}
+
+function isNumber(candidate) {
+    return !isNaN(parseFloat(candidate)) && isFinite(candidate);
 }

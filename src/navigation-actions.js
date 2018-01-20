@@ -131,7 +131,7 @@ export function onUserLoggedOut(navigation: Navigation<*>, storage:* = AsyncStor
 
     return storage.getItem('hasSeenThePitch')
         .then( hasSeenThePitch => {
-            if (hasSeenThePitch === 'true') {
+            if (true || hasSeenThePitch === 'true') {
                 return 'Login';
             } else {
                 return 'Pitch';

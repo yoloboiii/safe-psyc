@@ -47,7 +47,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
 
             backendFacade.getAnswersTo(emotion)
                 .then( (answers) => {
-                    log.debug('Got answers to emotion', emotion, answers);
+                    log.debug('Got %j answer(s) to emotion %j', answers.correct.length + answers.incorrect.length, emotion);
 
                     this.setState({
                         loadingState: 'successful',
@@ -55,7 +55,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     });
                 })
                 .catch( e => {
-                    log.error('Failed getting answers to emotion', emotion, e);
+                    log.error('Failed getting answers to emotion %j: %s', emotion.name, e);
                     this.setState({
                         loadingState: 'failed',
                     });

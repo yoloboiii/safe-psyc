@@ -30,7 +30,7 @@ export class ReferencePointService {
     }
 
     _findPointWithIntensity(intensity: number, ignore: Emotion): ?Emotion {
-        return this._emotionPool.find(e => e.intensity === intensity && e !== ignore);
+        return this._emotionPool.find(e => e.intensity() === intensity && e !== ignore);
     }
 }
 

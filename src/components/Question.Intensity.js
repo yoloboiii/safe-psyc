@@ -80,7 +80,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
 
     _submit() {
         const answer = this.state.lastAnswer;
-        const correctIntensity = this.props.question.correctAnswer.intensity;
+        const correctIntensity = this.props.question.correctAnswer.intensity();
         const correctGroup = intensityToGroup(correctIntensity);
 
         if (correctGroup === answer) {

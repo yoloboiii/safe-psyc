@@ -1,7 +1,7 @@
 // @flow
 
 import { randomQuestion } from '../../tests/question-utils.js';
-import { randomEmotionWithIntensity } from '../../tests/emotion-utils.js';
+import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 import { randomSessionService, RandomSessionService } from './random-session-service.js';
 
 it('returns the correct number of random questions', () => {
@@ -35,9 +35,12 @@ it('generates three reference points to intensity questions', () => {
     const intensities = [1, 5, 10];
     const pool = [];
     for (let i = 0; i < 50; i++) {
-        const e = randomEmotionWithIntensity();
+        const e = randomEmotionWithCoordinates();
         const intensityIndex = i % intensities.length;
-        e.intensity = intensities[intensityIndex];
+        e.coordinates = {
+            intensity: intensities[intensityIndex],
+            polar: 1,
+        };
 
         pool.push(e);
     }
