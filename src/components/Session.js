@@ -55,8 +55,8 @@ export class Session extends React.Component<Props, State> {
         const questions = new QuestionCollection(props.questions);
         return {
             questions: questions,
-            wrongAnswers: new Map(),
-            report: new Map(),
+            wrongAnswers: (new Map(): Map<Question, number>),
+            report: (new Map(): Map<Question, Array<AnswerType>>),
             currentQuestionIndex: 1,
             totalNumberOfQuestions: questions.size(),
             isFinished: false,

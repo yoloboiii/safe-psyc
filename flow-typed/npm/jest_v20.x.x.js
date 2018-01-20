@@ -125,6 +125,7 @@ type EnzymeMatchersType = {
   toContainString(string: string): void,
   toContainStrings(...strings: Array<string>): void,
   toHaveResetTo(string): void,
+  toContainDuplicates(): void,
 
   toBeChecked(): void,
   toBeDisabled(): void,
@@ -522,7 +523,6 @@ declare var expect: {
   /** Matches any received string that contains the exact expected string. */
   stringContaining(value: string): void,
   stringMatching(value: string | RegExp): void,
-  toContainDuplicates(): void,
 };
 
 // TODO handle return type

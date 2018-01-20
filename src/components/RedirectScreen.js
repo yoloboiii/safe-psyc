@@ -29,12 +29,16 @@ export class RedirectScreen extends React.Component<Props, {}> {
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timerId);
+        if (this.timerId) {
+            clearTimeout(this.timerId);
+        }
     }
 
     _userLoggedIn() {
         this.loggedIn = true;
-        clearTimeout(this.timerId);
+        if (this.timerId) {
+            clearTimeout(this.timerId);
+        }
 
         log.debug('Got logged in event, redirecting to home');
         resetToHome(this.props.navigation);

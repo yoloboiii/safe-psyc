@@ -5,8 +5,7 @@
   "devDependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
-    "exp": "^44.0.0",
-    "flow-bin": "^0.53.1",
+    "flow-bin": "^0.63.1",
     "flow-typed": "^2.1.5",
     "jest": "^21.1.0",
     "react-devtools": "^2.5.2",
