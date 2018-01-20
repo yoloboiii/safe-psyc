@@ -16,7 +16,6 @@ import { LoginScreen } from './src/components/LoginScreen.js';
 import { constants } from './src/styles/constants.js';
 import { backendFacade } from './src/services/backend.js';
 import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
-import { log } from './src/services/logger.js';
 
 const defaultScreenProps = {
     navigationOptions: {
