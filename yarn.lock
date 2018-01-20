@@ -4361,29 +4361,22 @@ react-deep-force-update@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
 
-react-devtools-core@3.0.0:
+react-devtools-core@3.0.0, react-devtools-core@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.0.0.tgz#f683e19f0311108f97dbb5b29d948323a1bf7c03"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-devtools-core@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.5.2.tgz#f97bec5afae5d9318d16778065e0c214c4d5714c"
-  dependencies:
-    shell-quote "^1.6.1"
-    ws "^2.0.3"
-
-react-devtools@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-2.5.2.tgz#b6319590b287f60dab767006e882770113fa2cae"
+react-devtools@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.0.0.tgz#8459804a456f7caeca8d3d2a6f20c853574555cd"
   dependencies:
     cross-spawn "^5.0.1"
     electron "^1.4.15"
     ip "^1.1.4"
     minimist "^1.2.0"
-    react-devtools-core "^2.5.2"
+    react-devtools-core "^3.0.0"
     update-notifier "^2.1.0"
 
 react-element-to-jsx-string@^12.0.0:
