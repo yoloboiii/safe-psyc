@@ -33,7 +33,7 @@ it('gives the correct number of answers', () => {
 
 it('includes each answer only once', () => {
     answerService.setAnswerPool(randomEmotions(5));
-    for (let i=0; i<10000; i++) {
+    for (let i = 0; i < 10000; i++) {
         const answers = answerService.getAnswersTo(emotion, 3);
         expect(answers).not.toContainDuplicates();
     }

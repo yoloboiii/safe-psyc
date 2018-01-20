@@ -6,12 +6,15 @@ import { ReferencePointService } from './reference-point-service.js';
 import { knuthShuffle } from 'knuth-shuffle';
 
 import type { Emotion } from '../models/emotion.js';
-import type { Question, EyeQuestion, IntensityQuestion } from '../models/questions.js';
+import type {
+    Question,
+    EyeQuestion,
+    IntensityQuestion,
+} from '../models/questions.js';
 import type { AnswerService } from './answer-service.js';
 import type { EmotionService } from './emotion-service.js';
 
 export class RandomSessionService {
-
     _answerService: AnswerService;
     _emotionService: EmotionService;
     _referencePointService: ReferencePointService;
@@ -20,7 +23,9 @@ export class RandomSessionService {
         this._answerService = answerService;
 
         this._emotionService = emotionService;
-        this._referencePointService = new ReferencePointService(this.getEmotionPool());
+        this._referencePointService = new ReferencePointService(
+            this.getEmotionPool()
+        );
 
         this._answerService.setAnswerPool(this.getEmotionPool());
     }
@@ -30,7 +35,8 @@ export class RandomSessionService {
         const minNumIntensity = Math.floor(numQuestions * 0.3);
         const numEyeQuestions = Math.max(
             0,
-            Math.floor(Math.random() * (numQuestions / 2 - minNumIntensity)) + minNumEye
+            Math.floor(Math.random() * (numQuestions / 2 - minNumIntensity)) +
+                minNumEye
         );
         const numIntensityQuestions = numQuestions - numEyeQuestions;
 
@@ -42,7 +48,6 @@ export class RandomSessionService {
             numIntensityQuestions,
             this.getEmotionPool().filter(e => !!e.coordinates)
         );
-
 
         const questions = [];
         for (const emotion of emotionsWithImage) {
@@ -59,7 +64,10 @@ export class RandomSessionService {
     _generateEyeQuestion(emotion: Emotion): EyeQuestion {
         const image = emotion.image;
         if (!image) {
-            throw Error('Attempted to create eye question from emotion without image. ' + emotion.name);
+            throw Error(
+                'Attempted to create eye question from emotion without image. ' +
+                    emotion.name
+            );
         }
 
         return {
@@ -74,17 +82,21 @@ export class RandomSessionService {
         return {
             type: 'intensity',
             correctAnswer: emotion,
-            referencePoints: this._referencePointService.getReferencePointsTo(emotion),
+            referencePoints: this._referencePointService.getReferencePointsTo(
+                emotion
+            ),
         };
     }
 
     getEmotionPool(): Array<Emotion> {
         return this._emotionService.getEmotionPool();
     }
-
 }
 
-function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Array<T> {
+function getRandomElementsFromArray<T>(
+    numElements: number,
+    array: Array<T>
+): Array<T> {
     const poolCopy = array.slice();
 
     const elements = [];
@@ -99,4 +111,7 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
     return elements;
 }
 
-export const randomSessionService = new RandomSessionService(answerService, emotionService);
+export const randomSessionService = new RandomSessionService(
+    answerService,
+    emotionService
+);

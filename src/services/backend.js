@@ -38,7 +38,6 @@ type LastEmotionAnswer = {
     when: moment$Moment,
 };
 export class BackendFacade {
-
     registerCorrectAnswer(question: Question): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = loggedInUser;
@@ -48,7 +47,10 @@ export class BackendFacade {
                 throw err;
             }
 
-            log.debug('Registering correct answer to %j', question.correctAnswer.name);
+            log.debug(
+                'Registering correct answer to %j',
+                question.correctAnswer.name
+            );
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
@@ -61,7 +63,10 @@ export class BackendFacade {
         });
     }
 
-    registerIncorrectAnswer(question: Question, answer: AnswerType): Promise<void> {
+    registerIncorrectAnswer(
+        question: Question,
+        answer: AnswerType
+    ): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = loggedInUser;
             if (!user) {
@@ -72,7 +77,11 @@ export class BackendFacade {
 
             const ansString = answer.name || answer.toString();
 
-            log.debug('Registering incorrect answer %s to %s', ansString, question.correctAnswer.name);
+            log.debug(
+                'Registering incorrect answer %s to %s',
+                ansString,
+                question.correctAnswer.name
+            );
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/incorrect-answers';
             const toWrite = {
@@ -108,7 +117,7 @@ export class BackendFacade {
 
     getLastEmotionAnswer(): Promise<?LastEmotionAnswer> {
         log.debug('Reading last recorded feeling');
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             const user = loggedInUser;
             if (!user) {
                 const err = new Error('Unauthorized read attempt');
@@ -116,15 +125,19 @@ export class BackendFacade {
                 throw err;
             }
 
-            firebase.database().ref('user-data/' + user.uid + '/emotions')
+            firebase
+                .database()
+                .ref('user-data/' + user.uid + '/emotions')
                 .orderByChild('when')
                 .limitToLast(1)
-                .once('value', (snap) => {
+                .once('value', snap => {
                     const firebaseWeirdValue = snap.val();
                     if (firebaseWeirdValue === null) {
                         resolve(null);
                     } else {
-                        const firebaseWeirdKey = Object.keys(firebaseWeirdValue)[0];
+                        const firebaseWeirdKey = Object.keys(
+                            firebaseWeirdValue
+                        )[0];
                         const value = firebaseWeirdValue[firebaseWeirdKey];
 
                         resolve({
@@ -136,75 +149,90 @@ export class BackendFacade {
         });
     }
 
-    getAnswersTo(emotion: Emotion): Promise<{ correct: Array<moment$Moment>, incorrect: Array<{ answer: AnswerType, when: moment$Moment}>}> {
-            const user = loggedInUser;
-            if (!user) {
-                const err = new Error('Unauthorized read attempt');
-                log.error('Not logged in - getAnswersTo, %s', err);
-                throw err;
-            }
+    getAnswersTo(
+        emotion: Emotion
+    ): Promise<{
+        correct: Array<moment$Moment>,
+        incorrect: Array<{ answer: AnswerType, when: moment$Moment }>,
+    }> {
+        const user = loggedInUser;
+        if (!user) {
+            const err = new Error('Unauthorized read attempt');
+            log.error('Not logged in - getAnswersTo, %s', err);
+            throw err;
+        }
 
-            // Get all correct answers
-            const correctPromise = firebase.database().ref('user-data/' + user.uid + '/correct-answers').once('value')
-                .then( (snap) => {
-                    const correctAnswers = [];
-                    snap.forEach(correctAnswer => {
-                        const val = correctAnswer.val();
-                        if (val.emotion === emotion.name) {
-                            correctAnswers.push(moment(val.when, 'x'));
+        // Get all correct answers
+        const correctPromise = firebase
+            .database()
+            .ref('user-data/' + user.uid + '/correct-answers')
+            .once('value')
+            .then(snap => {
+                const correctAnswers = [];
+                snap.forEach(correctAnswer => {
+                    const val = correctAnswer.val();
+                    if (val.emotion === emotion.name) {
+                        correctAnswers.push(moment(val.when, 'x'));
+                    }
+
+                    return false;
+                });
+                return correctAnswers;
+            });
+
+        const emotionLookupTable = new Map();
+        randomSessionService
+            .getEmotionPool()
+            .forEach(e => emotionLookupTable.set(e.name, e));
+        // Get all incorrect answers
+        const incorrectPromise = firebase
+            .database()
+            .ref('user-data/' + user.uid + '/incorrect-answers')
+            .once('value')
+            .then(snap => {
+                const incorrectAnswers = [];
+                snap.forEach(incorrectAnswer => {
+                    const val = incorrectAnswer.val();
+                    if (val.emotion === emotion.name) {
+                        let answer = null;
+                        if (isNumber(val.answer)) {
+                            answer = parseFloat(val.answer);
+                        } else {
+                            answer = emotionLookupTable.get(val.answer);
                         }
 
-                        return false;
-                    });
-                    return correctAnswers;
+                        incorrectAnswers.push({
+                            answer: answer,
+                            when: moment(val.when, 'x'),
+                        });
+                    }
+
+                    return false;
                 });
+                return incorrectAnswers;
+            });
 
-            const emotionLookupTable = new Map();
-            randomSessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
-            // Get all incorrect answers
-            const incorrectPromise = firebase.database().ref('user-data/' + user.uid + '/incorrect-answers').once('value')
-                .then( (snap) => {
-                    const incorrectAnswers = [];
-                    snap.forEach(incorrectAnswer => {
-                        const val = incorrectAnswer.val();
-                        if (val.emotion === emotion.name) {
-                            let answer = null;
-                            if (isNumber(val.answer)) {
-                                answer = parseFloat(val.answer);
-                            } else {
-                                answer = emotionLookupTable.get(val.answer);
-                            }
-
-                            incorrectAnswers.push({
-                                answer: answer,
-                                when: moment(val.when, 'x'),
-                            });
-                        }
-
-                        return false;
-                    });
-                    return incorrectAnswers;
-                });
-
-            return Promise.all([correctPromise, incorrectPromise])
-                .then( (results) => {
-                    const correct = results[0];
-                    const incorrect = results[1];
-                    return {
-                        correct,
-                        incorrect,
-                    };
-                })
-                .catch( e => {
-                    log.error('Failed getting answers to %d, %j', emotion.name, e);
-                    throw e;
-                });
+        return Promise.all([correctPromise, incorrectPromise])
+            .then(results => {
+                const correct = results[0];
+                const incorrect = results[1];
+                return {
+                    correct,
+                    incorrect,
+                };
+            })
+            .catch(e => {
+                log.error('Failed getting answers to %d, %j', emotion.name, e);
+                throw e;
+            });
     }
 
-    createNewUser(email: string, password: string): Promise<{email: string}> {
+    createNewUser(email: string, password: string): Promise<{ email: string }> {
         email = email.trim();
-        return firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then( (user) => {
+        return firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(user => {
                 log.debug('Created user');
                 return user;
             })
@@ -216,8 +244,10 @@ export class BackendFacade {
 
     login(email: string, password: string): Promise<void> {
         email = email.trim();
-        return firebase.auth().signInWithEmailAndPassword(email, password)
-            .then( function() {
+        return firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(function() {
                 log.debug('Login successful');
             })
             .catch(function(error) {
@@ -227,11 +257,13 @@ export class BackendFacade {
     }
 
     logOut(): Promise<void> {
-        return firebase.auth().signOut()
-            .then( () => {
+        return firebase
+            .auth()
+            .signOut()
+            .then(() => {
                 log.debug('User logged out');
             })
-            .catch( e => {
+            .catch(e => {
                 log.error('Failed logging out, %j', e);
                 throw e;
             });
@@ -239,24 +271,26 @@ export class BackendFacade {
 
     resetPassword(email: string): Promise<void> {
         email = email.trim();
-        return firebase.auth().sendPasswordResetEmail(email)
-            .then( () => {
+        return firebase
+            .auth()
+            .sendPasswordResetEmail(email)
+            .then(() => {
                 log.debug('Password reset sent');
             })
-            .catch( e => {
+            .catch(e => {
                 log.error('Failed sending password reset, %j', e);
                 throw e;
             });
     }
 
-    onUserLoggedIn(callback: ()=>void) {
+    onUserLoggedIn(callback: () => void) {
         onLoggedInListeners.push(callback);
         if (onLoggedInListeners.length === 1) {
             registerAuthListeners();
         }
     }
 
-    onUserLoggedOut(callback: ()=>void) {
+    onUserLoggedOut(callback: () => void) {
         onLoggedOutListeners.push(callback);
     }
 
@@ -267,8 +301,8 @@ export class BackendFacade {
 
 export const backendFacade = new BackendFacade();
 
-function thenableToPromise(resolve, reject): (?Object)=>void {
-    return (err) => {
+function thenableToPromise(resolve, reject): (?Object) => void {
+    return err => {
         if (err) {
             reject(err);
         } else {

@@ -1,11 +1,14 @@
 // @flow
 
 import React from 'react';
-import  { Button, View, StyleSheet } from 'react-native';
+import { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
-import { IntensityQuestionComponent, IntensityQuestionOverlay } from './Question.Intensity.js';
+import {
+    IntensityQuestionComponent,
+    IntensityQuestionOverlay,
+} from './Question.Intensity.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
@@ -13,7 +16,12 @@ import { StandardButton } from './Buttons.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
-import type { Question, EyeQuestion, EmotionWordQuestion, AnswerType } from '../models/questions.js';
+import type {
+    Question,
+    EyeQuestion,
+    EmotionWordQuestion,
+    AnswerType,
+} from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -31,8 +39,7 @@ type State = {
 };
 
 // TODO: Duolingo's discuss feature on each question is quite cool
-export class QuestionComponent extends React.Component<Props,State> {
-
+export class QuestionComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -70,7 +77,7 @@ export class QuestionComponent extends React.Component<Props,State> {
             return;
         }
 
-        const answeredCorrectly= this.state.currentAnswerState === 'CORRECT';
+        const answeredCorrectly = this.state.currentAnswerState === 'CORRECT';
         answeredCorrectly
             ? this.props.onCorrectAnswer()
             : this.props.onWrongAnswer(answer);
@@ -79,12 +86,12 @@ export class QuestionComponent extends React.Component<Props,State> {
     render() {
         const questionView = this._getQuestionComponent();
         const resultOverlay = this._createResultOverLay();
-        return <View style={ constants.flex1 }>
-            <View style={ constants.padflex }>
-                { questionView }
+        return (
+            <View style={constants.flex1}>
+                <View style={constants.padflex}>{questionView}</View>
+                {resultOverlay}
             </View>
-            { resultOverlay }
-        </View>
+        );
     }
 
     _getQuestionComponent() {
@@ -93,48 +100,63 @@ export class QuestionComponent extends React.Component<Props,State> {
         const onCorrectAnswer = this._correctAnswer.bind(this);
         const onWrongAnswer = this._wrongAnswer.bind(this);
 
-        switch(question.type) {
+        switch (question.type) {
             case 'eye-question':
-                return <EyeQuestionComponent
-                            question={ question }
-                            answers={ question.answers }
-                            onCorrectAnswer={ onCorrectAnswer }
-                            onWrongAnswer={ onWrongAnswer } />
+                return (
+                    <EyeQuestionComponent
+                        question={question}
+                        answers={question.answers}
+                        onCorrectAnswer={onCorrectAnswer}
+                        onWrongAnswer={onWrongAnswer}
+                    />
+                );
             case 'word-question':
-                return <EmotionWordQuestionComponent
-                            question={ question }
-                            answers={ question.answers }
-                            onCorrectAnswer={ onCorrectAnswer }
-                            onWrongAnswer={ onWrongAnswer } />
+                return (
+                    <EmotionWordQuestionComponent
+                        question={question}
+                        answers={question.answers}
+                        onCorrectAnswer={onCorrectAnswer}
+                        onWrongAnswer={onWrongAnswer}
+                    />
+                );
             case 'intensity':
-                return <IntensityQuestionComponent
-                            navigation={ this.props.navigation }
-                            question={ question }
-                            onCorrectAnswer={ onCorrectAnswer }
-                            onWrongAnswer={ onWrongAnswer } />
+                return (
+                    <IntensityQuestionComponent
+                        navigation={this.props.navigation}
+                        question={question}
+                        onCorrectAnswer={onCorrectAnswer}
+                        onWrongAnswer={onWrongAnswer}
+                    />
+                );
 
             default:
-                return <UnknownQuestionComponent question={ question } />;
+                return <UnknownQuestionComponent question={question} />;
         }
     }
 
     _createResultOverLay() {
-        switch(this.state.currentAnswerState) {
+        switch (this.state.currentAnswerState) {
             case 'CORRECT':
             case 'WRONG':
                 const answer = this.state.currentAnswer;
                 if (!answer) {
-                    log.error('Tried to render the resultoverlay with a null answer. Bat country!');
+                    log.error(
+                        'Tried to render the resultoverlay with a null answer. Bat country!'
+                    );
                     return;
                 }
 
-                return <ResultOverlay
-                    answeredCorrectly={this.state.currentAnswerState === 'CORRECT'}
-                    answer={answer}
-                    question={this.props.question}
-                    onDismiss={this._questionFinished.bind(this)}
-                    navigation={ this.props.navigation }
+                return (
+                    <ResultOverlay
+                        answeredCorrectly={
+                            this.state.currentAnswerState === 'CORRECT'
+                        }
+                        answer={answer}
+                        question={this.props.question}
+                        onDismiss={this._questionFinished.bind(this)}
+                        navigation={this.props.navigation}
                     />
+                );
 
             case 'NOT-ANSWERED':
             default:
@@ -145,7 +167,7 @@ export class QuestionComponent extends React.Component<Props,State> {
 
 function UnknownQuestionComponent(props) {
     const { question } = props;
-    return <div>Unknown question type { question.type } </div>;
+    return <div>Unknown question type {question.type} </div>;
 }
 
 const resultOverlayStyleSheet = StyleSheet.create({
@@ -171,7 +193,7 @@ type ResultOverlayProps = {
     answeredCorrectly: boolean,
     onDismiss: () => void,
     navigation: Navigation<{}>,
-}
+};
 export type SpecificOverlayProps<T> = {
     answeredCorrectly: boolean,
     answer: T,
@@ -185,37 +207,42 @@ export function ResultOverlay(props: ResultOverlayProps) {
 
     const specificOverlay = getQuestionSpecificOverlay(props);
 
-    return <View style={[resultOverlayStyleSheet.root, style]}>
-        { specificOverlay }
-        <VerticalSpace multiplier={2} />
-        <StandardButton
-            title={'Ok'}
-            onPress={props.onDismiss} />
-    </View>
+    return (
+        <View style={[resultOverlayStyleSheet.root, style]}>
+            {specificOverlay}
+            <VerticalSpace multiplier={2} />
+            <StandardButton title={'Ok'} onPress={props.onDismiss} />
+        </View>
+    );
 
     function getQuestionSpecificOverlay(props) {
-
         if (props.question.type === 'eye-question') {
-            if (typeof(props.answer) ===  'number') {
-                throw new Error('Attempted to render EyeQuestionOverlay with a number as answer');
+            if (typeof props.answer === 'number') {
+                throw new Error(
+                    'Attempted to render EyeQuestionOverlay with a number as answer'
+                );
             }
 
-            return <EyeQuestionOverlay
-                question={props.question}
-                answeredCorrectly={props.answeredCorrectly}
-                answer={props.answer}
-                navigation={props.navigation} />
-
+            return (
+                <EyeQuestionOverlay
+                    question={props.question}
+                    answeredCorrectly={props.answeredCorrectly}
+                    answer={props.answer}
+                    navigation={props.navigation}
+                />
+            );
         } else if (props.question.type === 'intensity') {
-            return <IntensityQuestionOverlay
-                question={props.question}
-                answeredCorrectly={props.answeredCorrectly}
-                answer={props.answer}
-                navigation={props.navigation} />
-
+            return (
+                <IntensityQuestionOverlay
+                    question={props.question}
+                    answeredCorrectly={props.answeredCorrectly}
+                    answer={props.answer}
+                    navigation={props.navigation}
+                />
+            );
         } else {
             let answer: string = '';
-            if (props.answer.name && typeof(props.answer.name) === 'string') {
+            if (props.answer.name && typeof props.answer.name === 'string') {
                 answer = props.answer.name;
             } else {
                 answer = props.answer.toString();
@@ -224,7 +251,7 @@ export function ResultOverlay(props: ResultOverlayProps) {
             const text = props.answeredCorrectly
                 ? answer + ' is correct!'
                 : answer + ' is sadly incorrect';
-            return <StandardText>{ text }</StandardText>;
+            return <StandardText>{text}</StandardText>;
         }
     }
 }

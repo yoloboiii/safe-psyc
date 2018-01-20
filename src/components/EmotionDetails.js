@@ -35,39 +35,57 @@ type Props = {
     navigation: Navigation<*>,
 };
 export function EmotionDetails(props: Props) {
-    const image = props.emotion.image
-        ? <View>
-            <Image source={{ uri: props.emotion.image }}
-                resizeMode='cover'
-                style={ detailsImageStyle }/>
+    const image = props.emotion.image ? (
+        <View>
+            <Image
+                source={{ uri: props.emotion.image }}
+                resizeMode="cover"
+                style={detailsImageStyle}
+            />
             <VerticalSpace multiplier={2} />
-          </View>
-        : undefined;
-
-    const stats = props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4
-        ? <StandardText>You haven't encountered this emotion enough to give any stats</StandardText>
-        : <View style={{ flexDirection: 'row' }}>
-            <ConfusionList
-                style={{ flex: 2, paddingRight: constants.space }}
-                dataPoints={ props.dataPoints }
-                navigation={ props.navigation } />
-
-            <StrengthMeter
-                style={ constants.flex1 }
-                dataPoints={ props.dataPoints } />
         </View>
+    ) : (
+        undefined
+    );
 
-    return <View style={ detailsContainerStyle }>
-        <StandardText style={ constants.largeText }>{ capitalize(props.emotion.name) }</StandardText>
-        <VerticalSpace />
+    const stats =
+        props.dataPoints.correct.length + props.dataPoints.incorrect.length <
+        4 ? (
+            <StandardText>
+                You haven't encountered this emotion enough to give any stats
+            </StandardText>
+        ) : (
+            <View style={{ flexDirection: 'row' }}>
+                <ConfusionList
+                    style={{ flex: 2, paddingRight: constants.space }}
+                    dataPoints={props.dataPoints}
+                    navigation={props.navigation}
+                />
 
-        { image }
+                <StrengthMeter
+                    style={constants.flex1}
+                    dataPoints={props.dataPoints}
+                />
+            </View>
+        );
 
-        <StandardText>{ formatParagraph(props.emotion.description) }</StandardText>
-        <VerticalSpace />
+    return (
+        <View style={detailsContainerStyle}>
+            <StandardText style={constants.largeText}>
+                {capitalize(props.emotion.name)}
+            </StandardText>
+            <VerticalSpace />
 
-        { stats }
-    </View>
+            {image}
+
+            <StandardText>
+                {formatParagraph(props.emotion.description)}
+            </StandardText>
+            <VerticalSpace />
+
+            {stats}
+        </View>
+    );
 }
 
 const filledMeterStyle = {
@@ -90,9 +108,16 @@ export function StrengthMeter(props: StrengthMeterProps) {
 
     const factor = correct.length / (correct.length + incorrect.length);
     const percent = Math.floor(factor * 100);
-    return <View style={ filledMeterStyle }>
-        <View style={ {...unfilledMeterStyle, ...{ height: (100 - percent)+'%'}} } />
-    </View>
+    return (
+        <View style={filledMeterStyle}>
+            <View
+                style={{
+                    ...unfilledMeterStyle,
+                    ...{ height: 100 - percent + '%' },
+                }}
+            />
+        </View>
+    );
 }
 
 type ConfusionListProps = {
@@ -122,18 +147,18 @@ function ConfusionList(props: ConfusionListProps) {
     }
 
     const data = toFlatListData(incorrectEmotions);
-    return <View {...restProps} >
-        <StandardText>You sometimes get this confused with</StandardText>
-        <VerticalSpace />
-        <FlatList
-            data={ Array.from(data.values()) }
-            renderItem={ renderRow } />
-    </View>
+    return (
+        <View {...restProps}>
+            <StandardText>You sometimes get this confused with</StandardText>
+            <VerticalSpace />
+            <FlatList data={Array.from(data.values())} renderItem={renderRow} />
+        </View>
+    );
 
     function filterOldAndIntensityAnswers(answers) {
         const now = moment();
         const nonIntensityAnswers = answers.filter(a => {
-            return typeof(a.answer) !== 'number';
+            return typeof a.answer !== 'number';
         });
 
         const scores = {};
@@ -155,28 +180,30 @@ function ConfusionList(props: ConfusionListProps) {
     }
 
     function scaleForTime(num: number, timeSince: number): number {
-        const scale = sigmoid(-timeSince/20);
+        const scale = sigmoid(-timeSince / 20);
         return num * scale;
     }
 
     function toFlatListData(answers) {
         const data = new Map();
 
-        answers.forEach(i => data.set(i.answer.name, {
-            emotion: i.answer,
-            key: i.answer.name,
-        }));
+        answers.forEach(i =>
+            data.set(i.answer.name, {
+                emotion: i.answer,
+                key: i.answer.name,
+            })
+        );
 
         return data;
     }
 
-    function renderRow(props: { item: { emotion: Emotion }}) {
+    function renderRow(props: { item: { emotion: Emotion } }) {
         const { emotion } = props.item;
         const navigate = () => navigateToEmotionDetails(navigation, emotion);
-        return <Link linkText={ emotion.name } onLinkPress={ navigate } />
+        return <Link linkText={emotion.name} onLinkPress={navigate} />;
     }
 }
 
 function sigmoid(t) {
-    return 1/(1+Math.pow(Math.E, -t));
+    return 1 / (1 + Math.pow(Math.E, -t));
 }

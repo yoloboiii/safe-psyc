@@ -3,7 +3,7 @@
 import { ReferencePointService } from './reference-point-service.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 
-it('doesn\'t include the correct answer in the reference points', () => {
+it("doesn't include the correct answer in the reference points", () => {
     const e1 = randomEmotionWithCoordinates();
     const e2 = randomEmotionWithCoordinates();
     // These intensities have to match the intensities selected by
@@ -49,6 +49,4 @@ function emotionCloseTo(emotion) {
     return e;
 }
 
-function emotionFarFrom(emotion) {
-
-}
+function emotionFarFrom(emotion) {}

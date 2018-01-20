@@ -16,7 +16,8 @@ it('defaults to multiplier 1', () => {
 it.skip('returns the EXACT SAME style object', () => {
     // TODO: This test passes even if I always create new styles in the VerticalSpace component. I need help understanding this.
 
-    const getStyle = (component) => renderer.create(component).toJSON().props.style;
+    const getStyle = component =>
+        renderer.create(component).toJSON().props.style;
     const firstStyle = getStyle(<VerticalSpace />);
     const secondStyle = getStyle(<VerticalSpace />);
 

@@ -8,6 +8,7 @@
     "flow-bin": "^0.63.1",
     "flow-typed": "^2.2.3",
     "jest": "^22.1.4",
+    "prettier": "^1.10.2",
     "react-devtools": "^3.0.0",
     "react-element-to-jsx-string": "^13.1.0",
     "react-test-renderer": "^16.2.0",
@@ -17,7 +18,9 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "NODE_ENV=development node node_modules/jest/bin/jest.js --watch"
+    "test": "NODE_ENV=development node node_modules/jest/bin/jest.js --watch",
+    "prettier": "prettier --config .prettierrc --write ./*.js src/*.js src/**/*.js",
+    "prettier-ci": "prettier --config .prettierrc --list-different ./*.js src/*.js src/**/*.js"
   },
   "jest": {
     "preset": "react-native",

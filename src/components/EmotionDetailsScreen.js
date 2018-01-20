@@ -16,10 +16,10 @@ type Props = {
     navigation: Navigation<{
         emotion: Emotion,
     }>,
-}
+};
 type State = {
     dataPoints: DataPoints,
-    loadingState: 'not-started' | 'started' | 'failed' | 'successful';
+    loadingState: 'not-started' | 'started' | 'failed' | 'successful',
 };
 export class EmotionDetailsScreen extends React.Component<Props, State> {
     static navigationOptions = {
@@ -45,17 +45,26 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                 loadingState: 'started',
             });
 
-            backendFacade.getAnswersTo(emotion)
-                .then( (answers) => {
-                    log.debug('Got %j answer(s) to emotion %j', answers.correct.length + answers.incorrect.length, emotion);
+            backendFacade
+                .getAnswersTo(emotion)
+                .then(answers => {
+                    log.debug(
+                        'Got %j answer(s) to emotion %j',
+                        answers.correct.length + answers.incorrect.length,
+                        emotion
+                    );
 
                     this.setState({
                         loadingState: 'successful',
                         dataPoints: answers,
                     });
                 })
-                .catch( e => {
-                    log.error('Failed getting answers to emotion %j: %s', emotion.name, e);
+                .catch(e => {
+                    log.error(
+                        'Failed getting answers to emotion %j: %s',
+                        emotion.name,
+                        e
+                    );
                     this.setState({
                         loadingState: 'failed',
                     });
@@ -68,30 +77,40 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
         const { state, navigate } = this.props.navigation;
         if (state) {
             const navParams = state.params;
-            return <View style={ constants.padflex } >
-                { this._renderEmotion(navParams.emotion) }
-            </View>
-
+            return (
+                <View style={constants.padflex}>
+                    {this._renderEmotion(navParams.emotion)}
+                </View>
+            );
         } else {
-            return <StandardText>No navigation state! Don't know what to do</StandardText>
-
+            return (
+                <StandardText>
+                    No navigation state! Don't know what to do
+                </StandardText>
+            );
         }
     }
 
     _renderEmotion(emotion) {
-        switch(this.state.loadingState) {
+        switch (this.state.loadingState) {
             case 'started':
-                return <ActivityIndicator />
+                return <ActivityIndicator />;
             case 'not-started':
-                return <StandardText>About to start loading data I hope</StandardText>
+                return (
+                    <StandardText>
+                        About to start loading data I hope
+                    </StandardText>
+                );
             case 'failed':
-                return <StandardText>Unable to load data!</StandardText>
+                return <StandardText>Unable to load data!</StandardText>;
             case 'successful':
-                return <EmotionDetails
-                    emotion={ emotion }
-                    dataPoints={ this.state.dataPoints }
-                    navigation={ this.props.navigation }
+                return (
+                    <EmotionDetails
+                        emotion={emotion}
+                        dataPoints={this.state.dataPoints}
+                        navigation={this.props.navigation}
                     />
+                );
         }
     }
 }

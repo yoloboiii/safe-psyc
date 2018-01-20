@@ -3,7 +3,6 @@
 import { Emotion } from '../models/emotion.js';
 
 export class EmotionService {
-
     _emotionPool: ?Array<Emotion>;
 
     constructor() {
@@ -24,12 +23,15 @@ export class EmotionService {
                     // explicit.
                     return !!e.description;
                 })
-                .map(e => new Emotion(
-                    e.name,
-                    e.description,
-                    e.image,
-                    e.coordinates
-                ));
+                .map(
+                    e =>
+                        new Emotion(
+                            e.name,
+                            e.description,
+                            e.image,
+                            e.coordinates
+                        )
+                );
             this._setEmotionPool(emotions);
         }
 

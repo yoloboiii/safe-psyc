@@ -23,12 +23,9 @@ export function ImageBackground(props: Props) {
     // $FlowFixMe
     const img = image || require('../../images/home-bg.jpg');
 
-    return <ImgBg source={ img }
-        resizeMode='cover'
-        style={ bgImageStyle }>
-
-        <View style={ contentStyle }>
-            { children }
-        </View>
-    </ImgBg>
+    return (
+        <ImgBg source={img} resizeMode="cover" style={bgImageStyle}>
+            <View style={contentStyle}>{children}</View>
+        </ImgBg>
+    );
 }

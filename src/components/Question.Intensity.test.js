@@ -1,10 +1,17 @@
 // @flow
 
-import { IntensityQuestionComponent, IntensityScale, IntensityQuestionOverlay } from './Question.Intensity.js';
-import { StandardButton } from './Buttons.js'
+import {
+    IntensityQuestionComponent,
+    IntensityScale,
+    IntensityQuestionOverlay,
+} from './Question.Intensity.js';
+import { StandardButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { randomIntensityQuestion } from '../../tests/question-utils.js';
-import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
+import {
+    getAllRenderedStrings,
+    findChildren,
+} from '../../tests/component-tree-utils.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 import uuid from 'uuid';
 import { TouchableOpacity } from 'react-native';
@@ -18,10 +25,13 @@ describe('IntensityQuestionComponent', () => {
     };
 
     it('contains a description of the question', () => {
-
         const question = randomIntensityQuestion();
 
-        const component = render(IntensityQuestionComponent, { question }, defaultProps);
+        const component = render(
+            IntensityQuestionComponent,
+            { question },
+            defaultProps
+        );
         expect(getAllRenderedStrings(component)).toEqual(
             expect.arrayContaining([
                 expect.stringMatching(/how intense/i),
@@ -37,9 +47,11 @@ describe('IntensityQuestionComponent', () => {
 
     it('the scale contains three reference points', () => {
         const component = render(IntensityQuestionComponent, {}, defaultProps);
-        expect(component).toHaveChildMatching( child => {
-            return child.type === IntensityScale
-                && child.props.referencePoints.size === 3;
+        expect(component).toHaveChildMatching(child => {
+            return (
+                child.type === IntensityScale &&
+                child.props.referencePoints.size === 3
+            );
         });
     });
 
@@ -51,10 +63,14 @@ describe('IntensityQuestionComponent', () => {
             polar: 1,
         };
 
-        const component = render(IntensityQuestionComponent, {
-            onCorrectAnswer: answerMock,
-            question: question,
-        }, defaultProps);
+        const component = render(
+            IntensityQuestionComponent,
+            {
+                onCorrectAnswer: answerMock,
+                question: question,
+            },
+            defaultProps
+        );
 
         const submitButton = findChildren(component, StandardButton)[0];
         selectIntensity(component, question.correctAnswer.intensity());
@@ -67,10 +83,14 @@ describe('IntensityQuestionComponent', () => {
         const answerMock = jest.fn();
         const question = randomIntensityQuestion();
 
-        const component = render(IntensityQuestionComponent, {
-            onWrongAnswer: answerMock,
-            question: question,
-        }, defaultProps);
+        const component = render(
+            IntensityQuestionComponent,
+            {
+                onWrongAnswer: answerMock,
+                question: question,
+            },
+            defaultProps
+        );
 
         const submitButton = findChildren(component, StandardButton)[0];
 
@@ -90,10 +110,14 @@ describe('IntensityQuestionComponent', () => {
             polar: 1,
         };
 
-        const component = render(IntensityQuestionComponent, {
-            onCorrectAnswer: answerMock,
-            question: question,
-        }, defaultProps);
+        const component = render(
+            IntensityQuestionComponent,
+            {
+                onCorrectAnswer: answerMock,
+                question: question,
+            },
+            defaultProps
+        );
 
         const submitButton = findChildren(component, StandardButton)[0];
 
@@ -112,35 +136,41 @@ describe('IntensityQuestionComponent', () => {
         // and test if the user selects the correct
         // bucket rather than the correct intensity
 
-        testIntensityGroup({ intensity: 1,  group: 1, });
-        testIntensityGroup({ intensity: 2,  group: 1, });
-        testIntensityGroup({ intensity: 3,  group: 2, });
-        testIntensityGroup({ intensity: 4,  group: 2, });
-        testIntensityGroup({ intensity: 5,  group: 3, });
-        testIntensityGroup({ intensity: 6,  group: 3, });
-        testIntensityGroup({ intensity: 7,  group: 4, });
-        testIntensityGroup({ intensity: 8,  group: 4, });
-        testIntensityGroup({ intensity: 9,  group: 5, });
-        testIntensityGroup({ intensity: 10, group: 5, });
-        testIntensityGroup({ intensity: 11, group: 5, });
+        testIntensityGroup({ intensity: 1, group: 1 });
+        testIntensityGroup({ intensity: 2, group: 1 });
+        testIntensityGroup({ intensity: 3, group: 2 });
+        testIntensityGroup({ intensity: 4, group: 2 });
+        testIntensityGroup({ intensity: 5, group: 3 });
+        testIntensityGroup({ intensity: 6, group: 3 });
+        testIntensityGroup({ intensity: 7, group: 4 });
+        testIntensityGroup({ intensity: 8, group: 4 });
+        testIntensityGroup({ intensity: 9, group: 5 });
+        testIntensityGroup({ intensity: 10, group: 5 });
+        testIntensityGroup({ intensity: 11, group: 5 });
     });
 
     it('Pressing the emotion name navigates to the emotion details', () => {
         const question = randomIntensityQuestion();
         const navigationMock = jest.fn();
-        const component = render(IntensityQuestionComponent, {
-            question,
-            navigation: {
-                navigate: navigationMock,
+        const component = render(
+            IntensityQuestionComponent,
+            {
+                question,
+                navigation: {
+                    navigate: navigationMock,
+                },
             },
-        }, defaultProps);
+            defaultProps
+        );
 
-        const emotionNameComponent = findChildren(component, TouchableOpacity)
-            .filter(c => {
-                const strings = getAllRenderedStrings(c);
-                const isEmotionName = strings[0] === question.correctAnswer.name;
-                return isEmotionName;
-            })[0];
+        const emotionNameComponent = findChildren(
+            component,
+            TouchableOpacity
+        ).filter(c => {
+            const strings = getAllRenderedStrings(c);
+            const isEmotionName = strings[0] === question.correctAnswer.name;
+            return isEmotionName;
+        })[0];
         expect(emotionNameComponent).toBeDefined();
 
         emotionNameComponent.props.onPress();
@@ -157,10 +187,14 @@ describe('IntensityQuestionComponent', () => {
         };
 
         const correctMock = jest.fn();
-        const component = render(IntensityQuestionComponent, {
-            onCorrectAnswer: correctMock,
-            question: question,
-        }, defaultProps);
+        const component = render(
+            IntensityQuestionComponent,
+            {
+                onCorrectAnswer: correctMock,
+                question: question,
+            },
+            defaultProps
+        );
 
         selectIntensity(component, conf.group);
 
@@ -170,7 +204,11 @@ describe('IntensityQuestionComponent', () => {
         try {
             expect(correctMock).toHaveBeenCalled();
         } catch (e) {
-            throw sprintf("expected intensity %d to be in group %d", conf.intensity, conf.group);
+            throw sprintf(
+                'expected intensity %d to be in group %d',
+                conf.intensity,
+                conf.group
+            );
         }
     }
 
@@ -196,13 +234,15 @@ describe('IntensityScale', () => {
         const referencePointsTitles = [];
         referencePoints.forEach(value => value.name);
 
-        const component = render(IntensityScale, {
-            referencePoints: referencePoints,
-        }, defaultProps);
+        const component = render(
+            IntensityScale,
+            {
+                referencePoints: referencePoints,
+            },
+            defaultProps
+        );
 
-        expect(
-            getAllRenderedStrings(component).sort()
-        ).toEqual(
+        expect(getAllRenderedStrings(component).sort()).toEqual(
             expect.arrayContaining(referencePointsTitles.sort())
         );
     });

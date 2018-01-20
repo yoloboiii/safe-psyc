@@ -3,7 +3,6 @@
 import { capitalize, formatParagraph } from './text-utils.js';
 
 describe('capitalize', () => {
-
     it('uppercases the first char if it is lowercase', () => {
         expect(capitalize('hello world')).toEqual('Hello world');
     });
@@ -14,16 +13,13 @@ describe('capitalize', () => {
 });
 
 describe('formatParagraph', () => {
-
     it('capitalizes only first word in a list if sentences', () => {
-        expect(formatParagraph(
-            'hello world. and the other thing. also this'
-        )).toEqual(
-            'Hello world. And the other thing. Also this.'
-        );
+        expect(
+            formatParagraph('hello world. and the other thing. also this')
+        ).toEqual('Hello world. And the other thing. Also this.');
     });
 
-    it('Adds a dot if one isn\'t there - one sentence', () => {
+    it("Adds a dot if one isn't there - one sentence", () => {
         expect(formatParagraph('Hello')).toEqual('Hello.');
     });
 

@@ -15,15 +15,19 @@ type Props = {
 };
 
 export function VerticalAnswerList(props: Props) {
-
-    return <View>
-        <FlatList
-        data={ answersToButtonData(props.answers) }
-        renderItem={ dataForItem => AnswerButton({
-            onPress: (answer) => onAnswerPress(answer, props),
-            ...dataForItem.item,
-        }) } />
-    </View>
+    return (
+        <View>
+            <FlatList
+                data={answersToButtonData(props.answers)}
+                renderItem={dataForItem =>
+                    AnswerButton({
+                        onPress: answer => onAnswerPress(answer, props),
+                        ...dataForItem.item,
+                    })
+                }
+            />
+        </View>
+    );
 }
 
 function answersToButtonData(answers) {
@@ -36,12 +40,15 @@ function answersToButtonData(answers) {
 }
 
 function AnswerButton(props) {
-    return <View>
-        <StandardButton
-        title={ props.emotion.name }
-        onPress={ () => props.onPress(props.emotion) }/>
-        <VerticalSpace />
-    </View>
+    return (
+        <View>
+            <StandardButton
+                title={props.emotion.name}
+                onPress={() => props.onPress(props.emotion)}
+            />
+            <VerticalSpace />
+        </View>
+    );
 }
 
 function onAnswerPress(answer, props) {

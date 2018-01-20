@@ -4,7 +4,6 @@ import { knuthShuffle } from 'knuth-shuffle';
 import type { Emotion } from '../models/emotion.js';
 
 export class AnswerService {
-
     _answerPool: Array<Emotion>;
 
     constructor(pool?: Array<Emotion>) {
@@ -17,7 +16,10 @@ export class AnswerService {
         return answers;
     }
 
-    _getRandomAnswersFromPool(numAnswers: number, alwaysInclude: Emotion): Array<Emotion> {
+    _getRandomAnswersFromPool(
+        numAnswers: number,
+        alwaysInclude: Emotion
+    ): Array<Emotion> {
         const poolCopy = this._answerPool.slice();
 
         // Remove the answer to always include if it's in the pool.

@@ -28,36 +28,44 @@ export class WelcomeScreen extends React.Component<Props, State> {
     };
 
     render() {
-        const props = this.props.navigation.state && this.props.navigation.state.params
-            ? this.props.navigation.state.params
-            : undefined;
-
+        const props =
+            this.props.navigation.state && this.props.navigation.state.params
+                ? this.props.navigation.state.params
+                : undefined;
 
         if (props) {
             return this._render(props);
         } else {
             log.error('Invalid welcome screen props', new Error());
-            return <View>
-                <StandardText>Invalid welcome screen props</StandardText>
-            </View>
+            return (
+                <View>
+                    <StandardText>Invalid welcome screen props</StandardText>
+                </View>
+            );
         }
     }
 
     _render(props) {
         const { username } = props;
 
-        return <ImageBackground>
-            <View style={ containerStyle }>
-                <View>
-                    <LargeText customStyle={{ alignSelf: 'center', }}>Welcome!</LargeText>
-                    <VerticalSpace />
-                    <StandardText>Successfully registered { username }</StandardText>
-                </View>
-                <HeroButton
-                    title={ 'Let\'s get started!' }
-                    onPress={ () => resetToHome(this.props.navigation) }
+        return (
+            <ImageBackground>
+                <View style={containerStyle}>
+                    <View>
+                        <LargeText customStyle={{ alignSelf: 'center' }}>
+                            Welcome!
+                        </LargeText>
+                        <VerticalSpace />
+                        <StandardText>
+                            Successfully registered {username}
+                        </StandardText>
+                    </View>
+                    <HeroButton
+                        title={"Let's get started!"}
+                        onPress={() => resetToHome(this.props.navigation)}
                     />
-            </View>
-        </ImageBackground>
+                </View>
+            </ImageBackground>
+        );
     }
 }

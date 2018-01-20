@@ -11,16 +11,20 @@ const linkStyle = {
     textDecorationLine: 'underline',
 };
 export function Credits() {
-    return <View>
-        <Hyperlink
-            linkDefault={ true }
-            linkStyle={ linkStyle }
-            linkText={ urlToText }>
-            <StandardText>
-                Settings icon made by https://smashicons.com from www.flaticon.com
-            </StandardText>
-        </Hyperlink>
-    </View>
+    return (
+        <View>
+            <Hyperlink
+                linkDefault={true}
+                linkStyle={linkStyle}
+                linkText={urlToText}
+            >
+                <StandardText>
+                    Settings icon made by https://smashicons.com from
+                    www.flaticon.com
+                </StandardText>
+            </Hyperlink>
+        </View>
+    );
 }
 
 function urlToText(url) {

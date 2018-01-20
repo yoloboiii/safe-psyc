@@ -23,7 +23,7 @@ const defaultScreenProps = {
             backgroundColor: constants.primaryColor,
         },
         headerTintColor: constants.notReallyWhite,
-    }
+    },
 };
 
 const App = StackNavigator({
@@ -40,7 +40,6 @@ const App = StackNavigator({
     EmotionDetails: { screen: EmotionDetailsScreen, ...defaultScreenProps },
     CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
 });
-
 
 // The props available in navigationOptions is a little hard to find, so
 // the link is here https://reactnavigation.org/docs/navigators/stack#StackNavigatorConfig

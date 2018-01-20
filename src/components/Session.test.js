@@ -5,11 +5,20 @@ import { Session } from './Session.js';
 import { answerService } from '../services/answer-service.js';
 import { Button } from 'react-native';
 import { QuestionComponent } from './Question.js';
-import { QuestionProgress } from './QuestionProgress.js'
+import { QuestionProgress } from './QuestionProgress.js';
 
 import { render, renderShallow } from '../../tests/render-utils.js';
-import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
-import { randomQuestions, randomQuestion, getQuestion, clickAnswerAndDismissOverlay, clickWrongAnswerAndDismissOverlay } from '../../tests/question-utils.js';
+import {
+    findChildren,
+    getAllRenderedStrings,
+} from '../../tests/component-tree-utils.js';
+import {
+    randomQuestions,
+    randomQuestion,
+    getQuestion,
+    clickAnswerAndDismissOverlay,
+    clickWrongAnswerAndDismissOverlay,
+} from '../../tests/question-utils.js';
 
 const defaultProps = {
     backendFacade: {
@@ -22,7 +31,11 @@ const defaultProps = {
 
 it('shows an error screen if no questions are given', () => {
     const questions = [];
-    const component = renderShallow(Session, { questions: questions }, defaultProps);
+    const component = renderShallow(
+        Session,
+        { questions: questions },
+        defaultProps
+    );
 
     expect(component).toContainStrings('no', 'question');
     expect(component).not.toHaveChild(QuestionComponent);
@@ -30,7 +43,11 @@ it('shows an error screen if no questions are given', () => {
 
 it('starts by showing a question', () => {
     const questions = randomQuestions();
-    const component = renderShallow(Session, { questions: questions }, defaultProps);
+    const component = renderShallow(
+        Session,
+        { questions: questions },
+        defaultProps
+    );
 
     expect(component).toHaveChild(QuestionComponent);
 });
@@ -50,15 +67,21 @@ it('finishes the session if the last question was answered correctly', () => {
     const questions = [randomQuestion()];
     const sessionFinishedSpy = jest.fn();
 
-    const component = render(Session, {
-        questions: questions,
-        onSessionFinished: sessionFinishedSpy,
-    }, defaultProps);
+    const component = render(
+        Session,
+        {
+            questions: questions,
+            onSessionFinished: sessionFinishedSpy,
+        },
+        defaultProps
+    );
 
     clickAnswerAndDismissOverlay(component);
 
     // Click all buttons to dismiss the finishing congrats
-    findChildren(component, Button).forEach( button => button.props.onPress && button.props.onPress());
+    findChildren(component, Button).forEach(
+        button => button.props.onPress && button.props.onPress()
+    );
 
     expect(sessionFinishedSpy).toHaveBeenCalledTimes(1);
 });
@@ -78,7 +101,7 @@ it('shows all questions eventually', () => {
     expect(seen.size).toBe(questions.length);
 });
 
-it('doesn\'t repeat correctly answered questions', () => {
+it("doesn't repeat correctly answered questions", () => {
     const questions = randomQuestions();
     const component = render(Session, { questions: questions }, defaultProps);
 
@@ -130,28 +153,32 @@ it('calls back with a report when the session is finished', () => {
     const onFinishedMock = jest.fn();
 
     const questions = randomQuestions(3);
-    const component = render(Session, {
-        questions: questions,
-        onSessionFinished: onFinishedMock,
-    }, defaultProps);
+    const component = render(
+        Session,
+        {
+            questions: questions,
+            onSessionFinished: onFinishedMock,
+        },
+        defaultProps
+    );
 
     const report = new Map();
     for (let i = 0; i < questions.length; i++) {
         const q = getQuestion(component);
-        if ( i % 2 === 0) {
+        if (i % 2 === 0) {
             report.set(q, []);
             clickAnswerAndDismissOverlay(component);
         } else {
             const button = clickWrongAnswerAndDismissOverlay(component);
-            const emotion = q.answers.filter(a => a.name === button.props.title)[0];
+            const emotion = q.answers.filter(
+                a => a.name === button.props.title
+            )[0];
             report.set(q, [emotion]);
             clickAnswerAndDismissOverlay(component);
-
         }
     }
 
     expect(onFinishedMock).toHaveBeenCalledWith(report);
-
 });
 
 it('shows how many questions are left', () => {
@@ -160,12 +187,18 @@ it('shows how many questions are left', () => {
 
     let questionProgress = findChildren(component, QuestionProgress)[0];
 
-    expect(questionProgress.props).toMatchObject({ current: 1, total: questions.length });
+    expect(questionProgress.props).toMatchObject({
+        current: 1,
+        total: questions.length,
+    });
     for (let i = 0; i < questions.length - 1; i++) {
         clickAnswerAndDismissOverlay(component);
 
         questionProgress = findChildren(component, QuestionProgress)[0];
-        expect(questionProgress.props).toMatchObject({ current: i + 2, total: questions.length });
+        expect(questionProgress.props).toMatchObject({
+            current: i + 2,
+            total: questions.length,
+        });
     }
 });
 
@@ -179,7 +212,8 @@ it('increases the number of questions left after three wrong answers', () => {
     clickWrongAnswerAndDismissOverlay(component);
     clickWrongAnswerAndDismissOverlay(component);
 
-    const currentTotal = findChildren(component, QuestionProgress)[0].props.total;
+    const currentTotal = findChildren(component, QuestionProgress)[0].props
+        .total;
     expect(currentTotal).toBe(prevTotal + 1);
 });
 
@@ -188,14 +222,20 @@ it('invokes the backend facade on correct answers', () => {
         registerCorrectAnswer: promiseMock(),
     };
     const questions = randomQuestions(1);
-    const component = render(Session, {
-        questions,
-        backendFacade,
-    }, defaultProps);
+    const component = render(
+        Session,
+        {
+            questions,
+            backendFacade,
+        },
+        defaultProps
+    );
 
     clickAnswerAndDismissOverlay(component);
     expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledTimes(1);
-    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledWith(questions[0]);
+    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledWith(
+        questions[0]
+    );
 });
 
 it('invokes the backend facade on wrong answers', () => {
@@ -203,14 +243,21 @@ it('invokes the backend facade on wrong answers', () => {
         registerIncorrectAnswer: promiseMock(),
     };
     const questions = randomQuestions(1);
-    const component = render(Session, {
-        questions,
-        backendFacade,
-    }, defaultProps);
+    const component = render(
+        Session,
+        {
+            questions,
+            backendFacade,
+        },
+        defaultProps
+    );
 
     const b = clickWrongAnswerAndDismissOverlay(component);
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledTimes(1);
-    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(questions[0], expect.objectContaining({name: b.props.title}));
+    expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(
+        questions[0],
+        expect.objectContaining({ name: b.props.title })
+    );
 });
 
 function promiseMock() {

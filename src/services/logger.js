@@ -4,15 +4,14 @@ import { firebase } from './firebase.js';
 import { vsprintf } from 'sprintf-js';
 
 interface LocalLogger {
-    log(any): void,
-    error(any): void,
-};
+    log(any): void;
+    error(any): void;
+}
 interface RemoteLogger {
-    log(any): void,
-    report(Error): void,
-};
+    log(any): void;
+    report(Error): void;
+}
 export class Logger {
-
     local: LocalLogger;
     remote: RemoteLogger;
 
@@ -22,35 +21,19 @@ export class Logger {
     }
 
     debug(msg: string, ...args: Array<mixed>) {
-        this._log(
-            this.local.log,
-            this.remote.log,
-            msg,
-            args);
+        this._log(this.local.log, this.remote.log, msg, args);
     }
 
     info(msg: string, ...args: Array<mixed>) {
-        this._log(
-            this.local.log,
-            this.remote.log,
-            msg,
-            args);
+        this._log(this.local.log, this.remote.log, msg, args);
     }
 
     warn(msg: string, ...args: Array<mixed>) {
-        this._log(
-            this.local.log,
-            this.remote.log,
-            '[WARNING] ' + msg,
-            args);
+        this._log(this.local.log, this.remote.log, '[WARNING] ' + msg, args);
     }
 
     error(msg: string, ...args: Array<mixed>) {
-        this._log(
-            this.local.error,
-            this.remote.log,
-            msg,
-            args);
+        this._log(this.local.error, this.remote.log, msg, args);
     }
 
     _log(localF, remoteF, formatString: string, args: Array<mixed>) {
@@ -63,8 +46,6 @@ export class Logger {
                 this.remote.report(a);
             }
         });
-
     }
 }
 export const log = new Logger(console, firebase.crash());
-

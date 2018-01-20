@@ -5,7 +5,7 @@ export function capitalize(s: string): string {
 }
 
 export function formatParagraph(s: string): string {
-    const sentences = s.split(".");
+    const sentences = s.split('.');
 
     return sentences
         .filter(sentence => sentence.trim().length > 0)

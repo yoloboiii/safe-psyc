@@ -29,7 +29,6 @@ const containerStyle = {
     justifyContent: 'space-between',
 };
 export class IntensityQuestionComponent extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -49,27 +48,33 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
         const emotion = this.props.question.correctAnswer;
         const emotionName = emotion.name;
 
-        const navigation =  this.props.navigation;
-        const onEmotionPress = () => navigateToEmotionDetails(navigation, emotion);
+        const navigation = this.props.navigation;
+        const onEmotionPress = () =>
+            navigateToEmotionDetails(navigation, emotion);
 
-        return <View style={ containerStyle }>
-            <View>
-                <Link prefix={"How intense is "}
-                    linkText={ emotionName }
-                    onLinkPress={ onEmotionPress }
-                    postfix={"?"} />
-                <VerticalSpace multiplier={2} />
-                <IntensityScale
-                    onIntensityChosen={ this._onIntensityChosen.bind(this) }
-                    referencePoints={ this.props.question.referencePoints }
-                    selectedGroup={ this.state.lastAnswer }
+        return (
+            <View style={containerStyle}>
+                <View>
+                    <Link
+                        prefix={'How intense is '}
+                        linkText={emotionName}
+                        onLinkPress={onEmotionPress}
+                        postfix={'?'}
                     />
-            </View>
+                    <VerticalSpace multiplier={2} />
+                    <IntensityScale
+                        onIntensityChosen={this._onIntensityChosen.bind(this)}
+                        referencePoints={this.props.question.referencePoints}
+                        selectedGroup={this.state.lastAnswer}
+                    />
+                </View>
 
-            <StandardButton
-                onPress={ this._submit.bind(this) }
-                title={ 'Submit' } />
-        </View>
+                <StandardButton
+                    onPress={this._submit.bind(this)}
+                    title={'Submit'}
+                />
+            </View>
+        );
     }
 
     _onIntensityChosen(intensity: number) {
@@ -89,7 +94,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
             this.props.onWrongAnswer(answer);
         }
     }
-};
+}
 
 export function intensityToGroup(intensity) {
     const quotient = Math.floor(intensity / 2);
@@ -99,7 +104,7 @@ export function intensityToGroup(intensity) {
 }
 
 type ScaleProps = {
-    onIntensityChosen: (number) => void,
+    onIntensityChosen: number => void,
     referencePoints: Map<number, Emotion>,
     selectedGroup: number,
 };
@@ -116,17 +121,19 @@ export function IntensityScale(props: ScaleProps) {
         });
     }
 
-    return <SnapSlider
-        items={ items }
-        value={ props.selectedGroup - 1 }
-        onSlidingComplete={ (item) => props.onIntensityChosen(item.value) }
+    return (
+        <SnapSlider
+            items={items}
+            value={props.selectedGroup - 1}
+            onSlidingComplete={item => props.onIntensityChosen(item.value)}
         />
+    );
 }
 
 export function IntensityQuestionOverlay(props: SpecificOverlayProps<number>) {
     const text = props.answeredCorrectly
-        ? 'That\'s correct!'
-        : 'That\'s sadly incorrect';
+        ? "That's correct!"
+        : "That's sadly incorrect";
 
-    return <StandardText>{ text }</StandardText>;
+    return <StandardText>{text}</StandardText>;
 }

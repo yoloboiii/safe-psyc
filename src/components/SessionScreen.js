@@ -16,7 +16,7 @@ type Props = {
     navigation: Navigation<{
         questions: Array<*>,
     }>,
-}
+};
 export class SessionScreen extends React.Component<Props, {}> {
     static navigationOptions = {
         title: 'SESSION',
@@ -27,15 +27,18 @@ export class SessionScreen extends React.Component<Props, {}> {
         if (state) {
             const navParams = state.params;
 
-            return <Session
-                backendFacade={ backendFacade }
-                questions={ navParams.questions }
-                onSessionFinished={ (report) => navigateToSessionReport(this.props.navigation, report) }
-                navigation={ ((this.props.navigation: any): Navigation<{}>) } />
-
+            return (
+                <Session
+                    backendFacade={backendFacade}
+                    questions={navParams.questions}
+                    onSessionFinished={report =>
+                        navigateToSessionReport(this.props.navigation, report)
+                    }
+                    navigation={((this.props.navigation: any): Navigation<{}>)}
+                />
+            );
         } else {
-            return <Text>No navigation state! Don't know what to do</Text>
-
+            return <Text>No navigation state! Don't know what to do</Text>;
         }
     }
 }

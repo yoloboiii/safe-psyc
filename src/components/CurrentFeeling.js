@@ -22,7 +22,7 @@ type Props = {
 };
 type State = {
     selectedEmotion: string,
-    submissionState: 'not-started' | 'submitting' | 'successful' | 'failed';
+    submissionState: 'not-started' | 'submitting' | 'successful' | 'failed',
 };
 export class CurrentFeeling extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -48,71 +48,89 @@ export class CurrentFeeling extends React.Component<Props, State> {
         const submitButton = this._createSubmitButton();
         const skipButton = this._createSkipButton();
 
-        return <View style={ constants.padflex } >
-            <StandardText>Please choose the word that best describes how you are feeling right now</StandardText>
-            <VerticalSpace />
+        return (
+            <View style={constants.padflex}>
+                <StandardText>
+                    Please choose the word that best describes how you are
+                    feeling right now
+                </StandardText>
+                <VerticalSpace />
 
-            <Picker
-                selectedValue={ this.state.selectedEmotion }
-                onValueChange={ itemValue => this.setState({ selectedEmotion: itemValue})}>
+                <Picker
+                    selectedValue={this.state.selectedEmotion}
+                    onValueChange={itemValue =>
+                        this.setState({ selectedEmotion: itemValue })
+                    }
+                >
+                    {words}
+                </Picker>
 
-                { words }
-            </Picker>
-
-            <VerticalSpace multiplier={2} />
-            <View style={ buttonRowStyle }>
-                { skipButton }
-                { submitButton }
+                <VerticalSpace multiplier={2} />
+                <View style={buttonRowStyle}>
+                    {skipButton}
+                    {submitButton}
+                </View>
             </View>
-        </View>
+        );
     }
 
     _createSubmitButton() {
-        switch(this.state.submissionState) {
+        switch (this.state.submissionState) {
             case 'successful':
-                return <StandardButton
-                    title={ 'Success!' }
-                    onPress={ this.props.onAnswered } />
+                return (
+                    <StandardButton
+                        title={'Success!'}
+                        onPress={this.props.onAnswered}
+                    />
+                );
             case 'failed':
             case 'not-started':
-                return <StandardButton
-                    title={ 'Submit' }
-                    onPress={ () => this._chooseEmotionWord(this.state.selectedEmotion) } />
+                return (
+                    <StandardButton
+                        title={'Submit'}
+                        onPress={() =>
+                            this._chooseEmotionWord(this.state.selectedEmotion)
+                        }
+                    />
+                );
 
             case 'submitting':
-                return <ActivityIndicator />
+                return <ActivityIndicator />;
         }
     }
 
     _createSkipButton() {
         if (this.props.onSkip) {
-            return <StandardButton
-                title={ 'Skip' }
-                onPress={ this.props.onSkip } />
+            return (
+                <StandardButton title={'Skip'} onPress={this.props.onSkip} />
+            );
         } else {
-            return <View/>;
+            return <View />;
         }
     }
 
     _chooseEmotionWord(emotion) {
-        this.setState({
-            submissionState: 'submitting',
-        }, () => {
-            this.props.backendFacade.registerCurrentEmotion(emotion)
-                .then( () => {
-                    log.debug('Current emotion saved');
-                    this.setState({
-                        submissionState: 'successful',
+        this.setState(
+            {
+                submissionState: 'submitting',
+            },
+            () => {
+                this.props.backendFacade
+                    .registerCurrentEmotion(emotion)
+                    .then(() => {
+                        log.debug('Current emotion saved');
+                        this.setState({
+                            submissionState: 'successful',
+                        });
+                    })
+                    .catch(e => {
+                        log.error('Failed saving current emotion', e);
+                        this.setState({
+                            submissionState: 'failed',
+                        });
+                        Alert.alert('Save failure', e.message);
                     });
-                })
-                .catch( e => {
-                    log.error('Failed saving current emotion', e);
-                    this.setState({
-                        submissionState: 'failed',
-                    });
-                    Alert.alert('Save failure', e.message);
-                });
-        });
+            }
+        );
     }
 }
-

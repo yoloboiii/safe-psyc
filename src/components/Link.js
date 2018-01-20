@@ -25,29 +25,31 @@ const defaultTouchableStyle = {
 export function Link(props: Props) {
     const { prefix, linkText, onLinkPress, postfix, underlineColor } = props;
 
-
-    const prefixComponent = prefix
-        ? <StandardText>{ prefix }</StandardText>
-        : null;
+    const prefixComponent = prefix ? (
+        <StandardText>{prefix}</StandardText>
+    ) : null;
 
     const touchableStyle = underlineColor
-        ? Object.assign({}, defaultTouchableStyle, { borderBottomColor: underlineColor })
+        ? Object.assign({}, defaultTouchableStyle, {
+              borderBottomColor: underlineColor,
+          })
         : defaultTouchableStyle;
 
-    const touchable = <TouchableOpacity onPress={ onLinkPress } style={ touchableStyle }>
-        <StandardText>
-            { linkText }
-        </StandardText>
-    </TouchableOpacity>
+    const touchable = (
+        <TouchableOpacity onPress={onLinkPress} style={touchableStyle}>
+            <StandardText>{linkText}</StandardText>
+        </TouchableOpacity>
+    );
 
-    const postfixComponent = postfix
-        ? <StandardText>{ postfix }</StandardText>
-        : null;
+    const postfixComponent = postfix ? (
+        <StandardText>{postfix}</StandardText>
+    ) : null;
 
-
-    return <View style={ containerStyle }>
-        { prefixComponent }
-        { touchable }
-        { postfixComponent }
-    </View>
+    return (
+        <View style={containerStyle}>
+            {prefixComponent}
+            {touchable}
+            {postfixComponent}
+        </View>
+    );
 }

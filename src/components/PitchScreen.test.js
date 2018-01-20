@@ -16,7 +16,11 @@ it('contains a skip button that navigates to the login screen', () => {
     const navigation = {
         dispatch: dispatchMock,
     };
-    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
+    const component = render(
+        PitchScreen,
+        { navigation: navigation },
+        defaultProps
+    );
 
     clickSkipButton(component);
 
@@ -24,8 +28,9 @@ it('contains a skip button that navigates to the login screen', () => {
 });
 
 function clickSkipButton(component) {
-    const skipButton = findChildren(component, StandardButton)
-        .filter(b => b.props.title.toLowerCase() === 'let\'s get started!')[0];
+    const skipButton = findChildren(component, StandardButton).filter(
+        b => b.props.title.toLowerCase() === "let's get started!"
+    )[0];
     expect(skipButton).toBeDefined();
 
     skipButton.props.onPress();
@@ -33,12 +38,15 @@ function clickSkipButton(component) {
 
 it('persists the fact that the pitch was skipped', () => {
     const storageMock = {
-        setItem: jest.fn()
-            .mockReturnValue(Promise.resolve()),
+        setItem: jest.fn().mockReturnValue(Promise.resolve()),
     };
 
     const navigation = setupMockStorage(storageMock);
-    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
+    const component = render(
+        PitchScreen,
+        { navigation: navigation },
+        defaultProps
+    );
 
     clickSkipButton(component);
 
@@ -47,13 +55,16 @@ it('persists the fact that the pitch was skipped', () => {
 
 it('redirects even if the storing fails', () => {
     const storageMock = {
-        setItem: jest.fn()
-            .mockReturnValue(Promise.reject(new Error('foo'))),
+        setItem: jest.fn().mockReturnValue(Promise.reject(new Error('foo'))),
     };
 
     const navigation = setupMockStorage(storageMock);
     navigation.dispatch = jest.fn();
-    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
+    const component = render(
+        PitchScreen,
+        { navigation: navigation },
+        defaultProps
+    );
 
     clickSkipButton(component);
 

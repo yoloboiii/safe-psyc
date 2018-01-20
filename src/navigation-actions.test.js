@@ -7,22 +7,30 @@ import moment from 'moment';
 import type { BackendFacade } from './services/backend.js';
 
 describe('startRandomSession', () => {
-
-    it('navigates to "Session"', (done) => {
+    it('navigates to "Session"', done => {
         const navigateMock = jest.fn();
 
-        navActions.startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
+        navActions.startRandomSession({
+            navigate: navigateMock,
+            dispatch: jest.fn(),
+        });
 
         checkNextTick(done, () => {
             expect(navigateMock).toHaveBeenCalledTimes(1);
-            expect(navigateMock).toHaveBeenCalledWith('Session', expect.anything());
+            expect(navigateMock).toHaveBeenCalledWith(
+                'Session',
+                expect.anything()
+            );
         });
     });
 
-    it('contains 10 questions', (done) => {
+    it('contains 10 questions', done => {
         const navigateMock = jest.fn();
 
-        navActions.startRandomSession({ navigate: navigateMock, dispatch: jest.fn() });
+        navActions.startRandomSession({
+            navigate: navigateMock,
+            dispatch: jest.fn(),
+        });
 
         checkNextTick(done, () => {
             const args = navigateMock.mock.calls[0][1];
@@ -36,43 +44,53 @@ describe('startRandomSession', () => {
 });
 
 describe.skip('routeToCurrentFeelingOrHome', () => {
-
     it('should redirect to howrufeelin once per day', () => {
-
         // $FlowFixMe
         Date.now = jest.fn(() => new Date(Date.UTC(2017, 0, 1)).valueOf());
 
         const backendFacade = (({
-            getLastEmotionAnswer: jest.fn()
-                .mockReturnValueOnce(new Promise(r => {
-                    r({
-                        when: moment().subtract(10, 'hours'),
-                    });
-                }))
-                .mockReturnValueOnce(new Promise(r => {
-                    r({
-                        when: moment(),
-                    });
-                })),
+            getLastEmotionAnswer: jest
+                .fn()
+                .mockReturnValueOnce(
+                    new Promise(r => {
+                        r({
+                            when: moment().subtract(10, 'hours'),
+                        });
+                    })
+                )
+                .mockReturnValueOnce(
+                    new Promise(r => {
+                        r({
+                            when: moment(),
+                        });
+                    })
+                ),
         }: any): BackendFacade);
 
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade)
-            .then( () => {
+        return navActions
+            .routeToCurrentFeelingOrHome(navigation, backendFacade)
+            .then(() => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
 
                 const action = dispatchMock.mock.calls[0][0];
                 expect(action.type).toContain('RESET');
 
-                expect(action.actions.map(a => a.routeName)).toEqual(['Home', 'CurrentFeeling']);
+                expect(action.actions.map(a => a.routeName)).toEqual([
+                    'Home',
+                    'CurrentFeeling',
+                ]);
             })
-            .then( () => {
+            .then(() => {
                 dispatchMock.mockReset();
-                return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade);
+                return navActions.routeToCurrentFeelingOrHome(
+                    navigation,
+                    backendFacade
+                );
             })
-            .then( () => {
+            .then(() => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
                 expect(
                     dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)
@@ -82,33 +100,34 @@ describe.skip('routeToCurrentFeelingOrHome', () => {
 
     it('should navigate the howrufeeling with the skippable param', () => {
         const backendFacade = (({
-            getLastEmotionAnswer: jest.fn()
-                .mockReturnValueOnce(new Promise(r => {
+            getLastEmotionAnswer: jest.fn().mockReturnValueOnce(
+                new Promise(r => {
                     r({
                         when: moment().subtract(10, 'hours'),
                     });
-                })),
+                })
+            ),
         }: any): BackendFacade);
 
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade)
-            .then( () => {
+        return navActions
+            .routeToCurrentFeelingOrHome(navigation, backendFacade)
+            .then(() => {
                 expect(dispatchMock).toHaveBeenCalled();
-                const params = dispatchMock.mock.calls[0][0]
-                    .actions
+                const params = dispatchMock.mock.calls[0][0].actions
                     .filter(a => a.routeName === 'CurrentFeeling')
                     .map(a => a.params)[0];
 
-                expect(params).toEqual(expect.objectContaining({ skippable: true}));
+                expect(params).toEqual(
+                    expect.objectContaining({ skippable: true })
+                );
             });
-
     });
 });
 
 describe('onUserLoggedOut', () => {
-
     it.skip('resets to pitch if file system marker not set', () => {
         return doNav({
             expectedRoute: 'Pitch',
@@ -116,7 +135,7 @@ describe('onUserLoggedOut', () => {
         });
     });
 
-    it('resets to pitch if there\'s an error reading the file system', () => {
+    it("resets to pitch if there's an error reading the file system", () => {
         return doNav({
             expectedRoute: 'Pitch',
             hasSeenThePitch: Promise.reject(new Error('foo')),
@@ -142,19 +161,18 @@ describe('onUserLoggedOut', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return navActions.onUserLoggedOut(navigation, storage)
-            .then( () => {
-                expect(dispatchMock).toHaveBeenCalledTimes(1);
+        return navActions.onUserLoggedOut(navigation, storage).then(() => {
+            expect(dispatchMock).toHaveBeenCalledTimes(1);
 
-                const arg = dispatchMock.mock.calls[0][0];
-                expect(arg.index).toBe(0);
-                expect(arg.actions).toEqual([{ routeName: conf.expectedRoute }]);
-            });
+            const arg = dispatchMock.mock.calls[0][0];
+            expect(arg.index).toBe(0);
+            expect(arg.actions).toEqual([{ routeName: conf.expectedRoute }]);
+        });
     }
 });
 
 function checkNextTick(done, check) {
-    InteractionManager.runAfterInteractions( () => {
+    InteractionManager.runAfterInteractions(() => {
         try {
             check();
             done();

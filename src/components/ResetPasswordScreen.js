@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { Kaede } from'react-native-textinput-effects';
+import { Kaede } from 'react-native-textinput-effects';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { LargeButton, StandardButton } from './Buttons.js';
@@ -41,46 +41,58 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
     }
 
     _sendResetEmail() {
-        backendFacade.resetPassword(this.state.email)
-            .then( () => {
+        backendFacade
+            .resetPassword(this.state.email)
+            .then(() => {
                 this.setState({
                     emailSent: true,
                 });
             })
-            .catch( e => {
+            .catch(e => {
                 Alert.alert('Unable to send reset email', e.message);
             });
     }
 
     render() {
         if (this.state.emailSent) {
-            return <View style={ constants.flex1 }>
-                <StandardText>Password reset email sent!</StandardText>
-                <VerticalSpace />
-                <StandardButton
-                    title={ 'Back to login' }
-                    onPress={ () => this.props.navigation.dispatch(
-                        NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({ routeName: 'Login' }),
-                            ],
-                        })
-                    ) } />
-            </View>
+            return (
+                <View style={constants.flex1}>
+                    <StandardText>Password reset email sent!</StandardText>
+                    <VerticalSpace />
+                    <StandardButton
+                        title={'Back to login'}
+                        onPress={() =>
+                            this.props.navigation.dispatch(
+                                NavigationActions.reset({
+                                    index: 0,
+                                    actions: [
+                                        NavigationActions.navigate({
+                                            routeName: 'Login',
+                                        }),
+                                    ],
+                                })
+                            )
+                        }
+                    />
+                </View>
+            );
         }
 
-        return <View style={ constants.flex1 }>
-            <Kaede
-                labelStyle={ kaedeLabelStyle }
-                label={'EMAIL'}
-                value={ this.state.email }
-                onChangeText={ (text) => this.setState({ email: text }) }/>
+        return (
+            <View style={constants.flex1}>
+                <Kaede
+                    labelStyle={kaedeLabelStyle}
+                    label={'EMAIL'}
+                    value={this.state.email}
+                    onChangeText={text => this.setState({ email: text })}
+                />
 
-            <VerticalSpace />
-            <LargeButton
-                onPress={ this._sendResetEmail.bind(this) }
-                title={ 'Send reset email' } />
-        </View>
+                <VerticalSpace />
+                <LargeButton
+                    onPress={this._sendResetEmail.bind(this)}
+                    title={'Send reset email'}
+                />
+            </View>
+        );
     }
 }

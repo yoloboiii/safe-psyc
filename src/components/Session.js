@@ -21,7 +21,7 @@ import type { Navigation } from '../navigation-actions.js';
 type Props = {
     backendFacade: BackendFacade,
     questions: Array<Question>,
-    onSessionFinished: (Report) => void,
+    onSessionFinished: Report => void,
     navigation: Navigation<{}>,
 };
 type State = {
@@ -41,7 +41,6 @@ const backgroundStyle = {
     flex: 1,
 };
 export class Session extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
         this.state = this._propsToState(props);
@@ -65,25 +64,30 @@ export class Session extends React.Component<Props, State> {
 
     _answeredCorrectly() {
         const currentQ = this.state.questions.peek();
-        this.state.wrongAnswers.set(
-            currentQ,
-            0
-        );
+        this.state.wrongAnswers.set(currentQ, 0);
 
         if (!this.state.report.has(currentQ)) {
             this.state.report.set(currentQ, []);
         }
 
-        this.props.backendFacade.registerCorrectAnswer(currentQ)
-            .then( () => {
-                log.debug('Correct answer to %j saved', currentQ.correctAnswer.name);
+        this.props.backendFacade
+            .registerCorrectAnswer(currentQ)
+            .then(() => {
+                log.debug(
+                    'Correct answer to %j saved',
+                    currentQ.correctAnswer.name
+                );
             })
-            .catch( e => {
-                log.error('Failed saving correct answer to %j: %j', currentQ.correctAnswer.name, e);
+            .catch(e => {
+                log.error(
+                    'Failed saving correct answer to %j: %j',
+                    currentQ.correctAnswer.name,
+                    e
+                );
             });
 
         const isLastQuestion = this.state.questions.size() === 1;
-        if(isLastQuestion) {
+        if (isLastQuestion) {
             this.props.onSessionFinished(this.state.report);
             this.setState({ isFinished: true });
         } else {
@@ -93,7 +97,7 @@ export class Session extends React.Component<Props, State> {
 
     _nextQuestion() {
         this.state.questions.next();
-        this.setState((prevState) => {
+        this.setState(prevState => {
             return {
                 currentQuestionIndex: prevState.currentQuestionIndex + 1,
             };
@@ -111,12 +115,20 @@ export class Session extends React.Component<Props, State> {
         reportArray.push(answer);
         this.state.report.set(currentQ, reportArray);
 
-        this.props.backendFacade.registerIncorrectAnswer(currentQ, answer)
-            .then( () => {
-                log.debug('Incorrect answer to %j saved', currentQ.correctAnswer.name);
+        this.props.backendFacade
+            .registerIncorrectAnswer(currentQ, answer)
+            .then(() => {
+                log.debug(
+                    'Incorrect answer to %j saved',
+                    currentQ.correctAnswer.name
+                );
             })
-            .catch( e => {
-                log.error('Failed saving incorrect answer to %j: %j', currentQ.correctAnswer.name, e);
+            .catch(e => {
+                log.error(
+                    'Failed saving incorrect answer to %j: %j',
+                    currentQ.correctAnswer.name,
+                    e
+                );
             });
 
         if (prevCount === 2) {
@@ -129,34 +141,34 @@ export class Session extends React.Component<Props, State> {
     }
 
     render() {
-        return <View
-            style={ backgroundStyle }>
-            { this._renderContents() }
-        </View>
+        return <View style={backgroundStyle}>{this._renderContents()}</View>;
     }
 
     _renderContents() {
         if (this.state.questions.isEmpty()) {
-            return <StandardText>No question in session</StandardText>
-
+            return <StandardText>No question in session</StandardText>;
         } else if (this.state.isFinished) {
-            return <StandardText>Session finished!</StandardText>
+            return <StandardText>Session finished!</StandardText>;
         } else {
             const currentQuestion = this.state.questions.peek();
 
-            return <View style={ questionContainer }>
-                <QuestionProgress
-                    current={ this.state.currentQuestionIndex }
-                    total={ this.state.totalNumberOfQuestions } />
+            return (
+                <View style={questionContainer}>
+                    <QuestionProgress
+                        current={this.state.currentQuestionIndex}
+                        total={this.state.totalNumberOfQuestions}
+                    />
 
-                <VerticalSpace />
+                    <VerticalSpace />
 
-                <QuestionComponent
-                    navigation={ this.props.navigation }
-                    question={ currentQuestion }
-                    onCorrectAnswer={ this._answeredCorrectly.bind(this) }
-                    onWrongAnswer={ this._wrongAnswer.bind(this) } />
-            </View>
+                    <QuestionComponent
+                        navigation={this.props.navigation}
+                        question={currentQuestion}
+                        onCorrectAnswer={this._answeredCorrectly.bind(this)}
+                        onWrongAnswer={this._wrongAnswer.bind(this)}
+                    />
+                </View>
+            );
         }
     }
 }
@@ -197,6 +209,6 @@ class QuestionCollection {
     }
 
     isEmpty(): boolean {
-        return this.size() === 0
+        return this.size() === 0;
     }
 }

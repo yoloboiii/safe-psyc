@@ -30,21 +30,28 @@ export function IntensityQuestionRow(props: Props) {
         });
     }
 
-    return <TouchableOpacity onPress={ props.onPress }>
-        <View>
-            <StandardText>{ props.question.correctAnswer.name }</StandardText>
-            <StandardText style={ constants.smallText }>{ subtext }</StandardText>
-        </View>
+    return (
+        <TouchableOpacity onPress={props.onPress}>
+            <View>
+                <StandardText>{props.question.correctAnswer.name}</StandardText>
+                <StandardText style={constants.smallText}>
+                    {subtext}
+                </StandardText>
+            </View>
 
-        <SnapSlider
-            items={ items }
-            itemStyle={ constants.smallText }
-            value={ intensityToGroup(props.question.correctAnswer.intensity()) - 1 }
-            disabled={ true }
+            <SnapSlider
+                items={items}
+                itemStyle={constants.smallText}
+                value={
+                    intensityToGroup(props.question.correctAnswer.intensity()) -
+                    1
+                }
+                disabled={true}
             />
 
-        <VerticalSpace />
-    </TouchableOpacity>
+            <VerticalSpace />
+        </TouchableOpacity>
+    );
 
     // TODO: This is copied from SessionReport.EyeRow.js :(
     function getSubText() {

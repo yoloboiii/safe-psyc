@@ -13,10 +13,9 @@ type Props = {
     navigation: Navigation<{}>,
 };
 export class RedirectScreen extends React.Component<Props, {}> {
-
     static navigationOptions = {
         header: null,
-    }
+    };
 
     timerId = null;
     loggedIn = false;
@@ -46,16 +45,20 @@ export class RedirectScreen extends React.Component<Props, {}> {
 
     _timeout() {
         if (!this.loggedIn) {
-            log.debug('Timed out waiting for autologin, redirecting to login screen');
+            log.debug(
+                'Timed out waiting for autologin, redirecting to login screen'
+            );
             onUserLoggedOut(this.props.navigation);
         }
     }
 
     render() {
-        return <ImageBackground>
-            <View style={{ flex:1, justifyContent: 'center' }}>
-                <ActivityIndicator />
-            </View>
-        </ImageBackground>
+        return (
+            <ImageBackground>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator />
+                </View>
+            </ImageBackground>
+        );
     }
 }

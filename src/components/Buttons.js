@@ -20,9 +20,7 @@ export function StandardButton(props: StandardButtonProps) {
 
     const color = customColor || constants.primaryColor;
 
-    return <Button
-                color={ color }
-                {...restProps} />
+    return <Button color={color} {...restProps} />;
 }
 
 ///////////////////////////////////////////////////////
@@ -40,11 +38,11 @@ export function LargeButton(props: LargeButtonProps) {
         ? Object.assign({}, defaultStyle, style)
         : defaultStyle;
 
-    return <TouchableHighlight
-        style={ concreteStyle }
-        { ...restProps } >
-        <Text style={ largeTextButtonStyle }>{ title }</Text>
-    </TouchableHighlight>
+    return (
+        <TouchableHighlight style={concreteStyle} {...restProps}>
+            <Text style={largeTextButtonStyle}>{title}</Text>
+        </TouchableHighlight>
+    );
 }
 
 ///////////////////////////////////////////////////////
@@ -60,13 +58,16 @@ type HeroButtonProps = {
 };
 export function HeroButton(props: HeroButtonProps) {
     const { title, ...restProps } = props;
-    const content = typeof title === 'string'
-        ? <Text style={ largeTextButtonStyle }>{title.toUpperCase()}</Text>
-        : title
+    const content =
+        typeof title === 'string' ? (
+            <Text style={largeTextButtonStyle}>{title.toUpperCase()}</Text>
+        ) : (
+            title
+        );
 
-    return <TouchableHighlight
-        style={ heroContainerStyle }
-        {...restProps} >
-        { content }
-    </TouchableHighlight>
+    return (
+        <TouchableHighlight style={heroContainerStyle} {...restProps}>
+            {content}
+        </TouchableHighlight>
+    );
 }

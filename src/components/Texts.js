@@ -15,12 +15,12 @@ export function StandardText(props: Props) {
 
     const actualStyle = Object.assign({}, largeDefaultStyle, style);
 
-    return <Text style={ actualStyle } { ...restProps } />
+    return <Text style={actualStyle} {...restProps} />;
 }
 
 export function LargeText(props: Props) {
     const { style, ...restProps } = props;
 
     const actualStyle = Object.assign({}, largeDefaultStyle, style);
-    return <Text style={ actualStyle } { ...restProps } />
+    return <Text style={actualStyle} {...restProps} />;
 }

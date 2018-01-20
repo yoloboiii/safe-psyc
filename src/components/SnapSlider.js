@@ -5,7 +5,7 @@ import React from 'react';
 import { StyleSheet, Slider, Text, View } from 'react-native';
 
 type Props = {
-    onSlidingComplete?: (Object) => void,
+    onSlidingComplete?: Object => void,
     items: Array<Object>,
     value?: ?number,
 
@@ -15,7 +15,7 @@ type Props = {
     itemStyle?: Text.propTypes.style,
 
     disabled?: boolean,
-}
+};
 type State = {
     sliderWidth: number,
     sliderLeft: number,
@@ -24,7 +24,6 @@ type State = {
 };
 
 export class SnapSlider extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
@@ -40,7 +39,11 @@ export class SnapSlider extends React.Component<Props, State> {
     }
 
     _sliderStyle() {
-        return [defaultStyles.slider, {width: this.state.sliderWidth, left: this.state.sliderLeft}, this.props.style];
+        return [
+            defaultStyles.slider,
+            { width: this.state.sliderWidth, left: this.state.sliderLeft },
+            this.props.style,
+        ];
     }
 
     _onSlidingCompleteCallback(v) {
@@ -53,14 +56,14 @@ export class SnapSlider extends React.Component<Props, State> {
         const width = x.nativeEvent.layout.width;
         const itemWidths = this.state.itemWidths;
         itemWidths.push(width);
-        this.setState({itemWidths: itemWidths});
+        this.setState({ itemWidths: itemWidths });
 
         //we have all itemWidths determined, let's update the silder width
         if (this.state.itemWidths.length === this.props.items.length) {
             const max = Math.max.apply(null, this.state.itemWidths);
 
             if (this.refs.slider && this.state.sliderWidth > 0) {
-                const buffer = 30;//add buffer for the slider 'ball' control
+                const buffer = 30; //add buffer for the slider 'ball' control
                 let w = this.state.sliderWidth - max;
                 w = w + buffer;
 
@@ -76,40 +79,54 @@ export class SnapSlider extends React.Component<Props, State> {
     }
 
     _getAndSetSliderWidth(e) {
-        const {x, y, width, height} = e.nativeEvent.layout;
-        this.setState({sliderWidth: width});
+        const { x, y, width, height } = e.nativeEvent.layout;
+        this.setState({ sliderWidth: width });
     }
 
     render() {
         const itemStyle = [defaultStyles.item, this.props.itemStyle];
         const alignments = ['left', undefined, 'center', undefined, 'right'];
         const labels = this.props.items.map(i => {
-            const alignment = { textAlign: alignments[i.value -1] };
-            return <Text
-                key={i.value}
-                style={[itemStyle, alignment]}
-                onLayout={this._getItemWidth.bind(this)}>{i.label}</Text>
+            const alignment = { textAlign: alignments[i.value - 1] };
+            return (
+                <Text
+                    key={i.value}
+                    style={[itemStyle, alignment]}
+                    onLayout={this._getItemWidth.bind(this)}
+                >
+                    {i.label}
+                </Text>
+            );
         });
 
-        return <View
-                onLayout={ this._getAndSetSliderWidth.bind(this) }
-                style={[defaultStyles.container, this.props.containerStyle]}>
-
+        return (
+            <View
+                onLayout={this._getAndSetSliderWidth.bind(this)}
+                style={[defaultStyles.container, this.props.containerStyle]}
+            >
                 <Slider
                     ref="slider"
                     style={this._sliderStyle()}
-                    onSlidingComplete={(value) => this._onSlidingCompleteCallback(value)}
+                    onSlidingComplete={value =>
+                        this._onSlidingCompleteCallback(value)
+                    }
                     minimumValue={0}
-                    maximumValue={ this.props.items.length - 1 }
+                    maximumValue={this.props.items.length - 1}
                     step={1}
-                    value={ this.props.value }
-                    disabled={ this.props.disabled || false }
+                    value={this.props.value}
+                    disabled={this.props.disabled || false}
                 />
 
-                <View style={[defaultStyles.itemWrapper, this.props.itemWrapperStyle]}>
-                    { labels }
+                <View
+                    style={[
+                        defaultStyles.itemWrapper,
+                        this.props.itemWrapperStyle,
+                    ]}
+                >
+                    {labels}
                 </View>
-        </View>
+            </View>
+        );
     }
 }
 
@@ -117,8 +134,7 @@ const defaultStyles = StyleSheet.create({
     container: {
         alignSelf: 'stretch',
     },
-    slider: {
-    },
+    slider: {},
     itemWrapper: {
         alignSelf: 'stretch',
         flexDirection: 'row',
@@ -128,4 +144,3 @@ const defaultStyles = StyleSheet.create({
         width: '20%',
     },
 });
-

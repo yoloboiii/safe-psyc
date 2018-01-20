@@ -13,20 +13,23 @@ import type { Report } from './components/SessionReport.js';
 
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
-    dispatch: (Object) => void,
+    dispatch: Object => void,
     state?: {
         params: P,
     },
-}
+};
 
-export function paramsOr<T,S>(navigation: Navigation<T>, or: S): T|S {
+export function paramsOr<T, S>(navigation: Navigation<T>, or: S): T | S {
     return navigation.state && navigation.state.params
         ? navigation.state.params
         : or;
 }
 
-export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=>void): Promise<{}> {
-    return new Promise( resolve => {
+export function startRandomSession(
+    navigation: Navigation<*>,
+    onDataLoaded?: () => void
+): Promise<{}> {
+    return new Promise(resolve => {
         InteractionManager.runAfterInteractions(() => {
             const questions = randomSessionService.getRandomQuestions(10);
             onDataLoaded && onDataLoaded();
@@ -39,13 +42,19 @@ export function startRandomSession(navigation: Navigation<*>, onDataLoaded?: ()=
     });
 }
 
-export function navigateToEmotionDetails(navigation: Navigation<*>, emotion: Emotion) {
+export function navigateToEmotionDetails(
+    navigation: Navigation<*>,
+    emotion: Emotion
+) {
     navigation.navigate('EmotionDetails', {
         emotion: emotion,
     });
 }
 
-export function navigateToSessionReport(navigation: Navigation<*>, report: Report) {
+export function navigateToSessionReport(
+    navigation: Navigation<*>,
+    report: Report
+) {
     navigation.dispatch(
         NavigationActions.reset({
             index: 1,
@@ -56,15 +65,19 @@ export function navigateToSessionReport(navigation: Navigation<*>, report: Repor
                     params: {
                         report: report,
                     },
-                })
+                }),
             ],
         })
     );
 }
 
-export function routeToCurrentFeelingOrHome(navigation: Navigation<*>, backend: BackendFacade): Promise<*> {
-    return backend.getLastEmotionAnswer()
-        .then( answer => {
+export function routeToCurrentFeelingOrHome(
+    navigation: Navigation<*>,
+    backend: BackendFacade
+): Promise<*> {
+    return backend
+        .getLastEmotionAnswer()
+        .then(answer => {
             if (answer) {
                 const eightHoursAgo = moment().subtract(8, 'hours');
                 const haveAlreadyAnswered = eightHoursAgo.isBefore(answer.when);
@@ -74,26 +87,29 @@ export function routeToCurrentFeelingOrHome(navigation: Navigation<*>, backend: 
                 return false;
             }
         })
-        .then( haveAlreadyAnswered => {
+        .then(haveAlreadyAnswered => {
             const neverWantsToBeAsked = false; // TODO: implement this
             return {
                 haveAlreadyAnswered,
                 neverWantsToBeAsked,
             };
         })
-        .then( context => {
-
+        .then(context => {
             const { haveAlreadyAnswered, neverWantsToBeAsked } = context;
-            const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
+            const shouldAskHowTheUserIsFeeling =
+                !haveAlreadyAnswered && !neverWantsToBeAsked;
 
             if (shouldAskHowTheUserIsFeeling) {
                 const resetAction = NavigationActions.reset({
                     index: 1,
                     actions: [
                         NavigationActions.navigate({ routeName: 'Home' }),
-                        NavigationActions.navigate({ routeName: 'CurrentFeeling', params: {
-                            skippable: true,
-                        }}),
+                        NavigationActions.navigate({
+                            routeName: 'CurrentFeeling',
+                            params: {
+                                skippable: true,
+                            },
+                        }),
                     ],
                 });
                 navigation.dispatch(resetAction);
@@ -103,7 +119,7 @@ export function routeToCurrentFeelingOrHome(navigation: Navigation<*>, backend: 
         })
         .catch(e => {
             log.error('Unable to navigate onSessionFinished', e);
-            Alert.alert( 'ERROR', 'Unable to navigate onSessionFinished.\n' + e);
+            Alert.alert('ERROR', 'Unable to navigate onSessionFinished.\n' + e);
         });
 }
 
@@ -127,21 +143,24 @@ export function onUserLoggedIn(navigation: Navigation<*>) {
     resetToHome(navigation);
 }
 
-export function onUserLoggedOut(navigation: Navigation<*>, storage:* = AsyncStorage): Promise<void> {
-
-    return storage.getItem('hasSeenThePitch')
-        .then( hasSeenThePitch => {
+export function onUserLoggedOut(
+    navigation: Navigation<*>,
+    storage: * = AsyncStorage
+): Promise<void> {
+    return storage
+        .getItem('hasSeenThePitch')
+        .then(hasSeenThePitch => {
             if (true || hasSeenThePitch === 'true') {
                 return 'Login';
             } else {
                 return 'Pitch';
             }
         })
-        .catch( e => {
+        .catch(e => {
             log.warn('Failed reading async storage: %s', e);
             return 'Pitch';
         })
-        .then( route => {
+        .then(route => {
             resetTo(navigation, route);
         });
 }
@@ -150,12 +169,9 @@ function resetTo(navigation, routeName: string) {
     navigation.dispatch(
         NavigationActions.reset({
             index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: routeName }),
-            ],
+            actions: [NavigationActions.navigate({ routeName: routeName })],
         })
     );
-
 }
 
 export function resetToHome(navigation: Navigation<*>) {

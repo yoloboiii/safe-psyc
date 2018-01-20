@@ -17,7 +17,7 @@ import type { SpecificOverlayProps } from './Question.js';
 
 const containerStyle = {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
 };
 const imageStyle = { height: 200 };
 
@@ -35,27 +35,30 @@ export function EyeQuestionComponent(props: Props) {
      * the highest image. This information is only available in the
      * session though, so I need some way to push that data down here */
 
-    return <View style={ containerStyle }>
-        <View>
-            <StandardText>Which of the following emotions best describe what the person in the image is feeling?</StandardText>
-            <VerticalSpace multiplier={2} />
+    return (
+        <View style={containerStyle}>
+            <View>
+                <StandardText>
+                    Which of the following emotions best describe what the
+                    person in the image is feeling?
+                </StandardText>
+                <VerticalSpace multiplier={2} />
 
-            <Image
-                style={ imageStyle }
-                source={{ uri: question.image }} />
-            <VerticalSpace multiplier={2} />
+                <Image style={imageStyle} source={{ uri: question.image }} />
+                <VerticalSpace multiplier={2} />
+            </View>
+
+            <VerticalAnswerList
+                answers={props.answers}
+                correctAnswer={question.correctAnswer}
+                onCorrectAnswer={props.onCorrectAnswer}
+                onWrongAnswer={props.onWrongAnswer}
+            />
         </View>
-
-        <VerticalAnswerList
-            answers={ props.answers }
-            correctAnswer={ question.correctAnswer }
-            onCorrectAnswer={ props.onCorrectAnswer }
-            onWrongAnswer={ props.onWrongAnswer } />
-    </View>
+    );
 }
 
-
-const overlayImageStyle = { height: 100, };
+const overlayImageStyle = { height: 100 };
 export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const { answeredCorrectly, answer, navigation } = props;
     const answerImage = answer.image;
@@ -63,25 +66,35 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
 
     if (answeredCorrectly) {
-        return <StandardText>{ capitalize(answer.name) + ' is correct!'}</StandardText>
-
+        return (
+            <StandardText>
+                {capitalize(answer.name) + ' is correct!'}
+            </StandardText>
+        );
     } else if (!answerImage) {
-        return <Link linkText={ capitalize(answer.name) }
-            onLinkPress={ toEmotionDetails }
-            postfix={' is sadly incorrect'} />
-
+        return (
+            <Link
+                linkText={capitalize(answer.name)}
+                onLinkPress={toEmotionDetails}
+                postfix={' is sadly incorrect'}
+            />
+        );
     } else {
-        return <View>
-            <Link prefix={"That's sadly incorrect. "}
-                linkText={ capitalize(answer.name) }
-                onLinkPress={ toEmotionDetails }
-                postfix={' looks like this'} />
-            <VerticalSpace />
-            <Image
-                style={ overlayImageStyle }
-                resizeMode='contain'
-                source={{ uri: answerImage }} />
-        </View>
+        return (
+            <View>
+                <Link
+                    prefix={"That's sadly incorrect. "}
+                    linkText={capitalize(answer.name)}
+                    onLinkPress={toEmotionDetails}
+                    postfix={' looks like this'}
+                />
+                <VerticalSpace />
+                <Image
+                    style={overlayImageStyle}
+                    resizeMode="contain"
+                    source={{ uri: answerImage }}
+                />
+            </View>
+        );
     }
 }
-

@@ -1,7 +1,13 @@
 // @flow
 
 import React from 'react';
-import { View, Image, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import {
+    View,
+    Image,
+    ActivityIndicator,
+    TouchableOpacity,
+    Text,
+} from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -53,44 +59,58 @@ export class HomeScreen extends React.Component<Props, State> {
             startRandomSession(this.props.navigation, onNavDataLoaded);
         };
 
-        this.setState({ loading: true, }, onStateUpdated);
+        this.setState({ loading: true }, onStateUpdated);
     }
 
     render() {
-        const buttonContent = this.state.loading
-            ? <ActivityIndicator />
-            : 'Start random session';
+        const buttonContent = this.state.loading ? (
+            <ActivityIndicator />
+        ) : (
+            'Start random session'
+        );
 
         // $FlowFixMe
         const cogwheel = require('../../images/settings.png');
-        return <ImageBackground>
-            <View style={ contentStyle }>
-                <View style={{ alignItems: 'flex-end' }}>
-                    <TouchableOpacity
-                        onPress={ this._openSettings.bind(this) } >
-                        <Image
-                            style={{ width: 40, height: 40 }}
-                            source={ cogwheel } />
-                    </TouchableOpacity>
+        return (
+            <ImageBackground>
+                <View style={contentStyle}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                        <TouchableOpacity
+                            onPress={this._openSettings.bind(this)}
+                        >
+                            <Image
+                                style={{ width: 40, height: 40 }}
+                                source={cogwheel}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <HeroButton
+                            title={'Emotion details'}
+                            onPress={() =>
+                                navigateToEmotionDetails(
+                                    this.props.navigation,
+                                    randomSessionService
+                                        .getEmotionPool()
+                                        .filter(e => e.name === 'bitter')[0]
+                                )
+                            }
+                        />
+                        <VerticalSpace />
+                        <HeroButton
+                            title={'How are you feeling right now? '}
+                            onPress={() =>
+                                this.props.navigation.navigate('CurrentFeeling')
+                            }
+                        />
+                        <VerticalSpace />
+                        <HeroButton
+                            title={buttonContent}
+                            onPress={this._startRandomSession.bind(this)}
+                        />
+                    </View>
                 </View>
-                <View>
-                    <HeroButton
-                        title={ 'Emotion details'}
-                        onPress={ () => navigateToEmotionDetails(
-                            this.props.navigation,
-                            randomSessionService.getEmotionPool().filter(e => e.name === "bitter")[0]
-                        ) } />
-                    <VerticalSpace />
-                    <HeroButton
-                        title={ 'How are you feeling right now? '}
-                        onPress={ () => this.props.navigation.navigate('CurrentFeeling') } />
-                    <VerticalSpace />
-                    <HeroButton
-                        title={ buttonContent }
-                        onPress={ this._startRandomSession.bind(this) }
-                    />
-                </View>
-            </View>
-        </ImageBackground>
+            </ImageBackground>
+        );
     }
 }

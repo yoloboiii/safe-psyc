@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import  { Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -19,14 +19,16 @@ type Props = {
 export function EmotionWordQuestionComponent(props: Props) {
     const { question } = props;
 
-    return <View>
-        <Text>{ question.questionText }</Text>
-        <VerticalSpace multiplier={2} />
-        <VerticalAnswerList
-            answers={ props.answers }
-            correctAnswer={ question.correctAnswer }
-            onCorrectAnswer={ props.onCorrectAnswer }
-            onWrongAnswer={ props.onWrongAnswer } />
-    </View>
+    return (
+        <View>
+            <Text>{question.questionText}</Text>
+            <VerticalSpace multiplier={2} />
+            <VerticalAnswerList
+                answers={props.answers}
+                correctAnswer={question.correctAnswer}
+                onCorrectAnswer={props.onCorrectAnswer}
+                onWrongAnswer={props.onWrongAnswer}
+            />
+        </View>
+    );
 }
-

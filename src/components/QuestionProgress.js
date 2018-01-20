@@ -9,6 +9,9 @@ type Props = {
 };
 export function QuestionProgress(props: Props) {
     const { current, total } = props;
-    return <Text>Question { current } of { total }</Text>
-};
-
+    return (
+        <Text>
+            Question {current} of {total}
+        </Text>
+    );
+}

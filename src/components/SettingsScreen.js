@@ -23,20 +23,31 @@ export class SettingsScreen extends React.Component<Props, {}> {
 
     render() {
         const user = backendFacade.getLoggedInUser();
-        const email = user
-            ? user.email
-            : undefined;
+        const email = user ? user.email : undefined;
 
-        return <View style={ {...constants.padflex, ...{justifyContent: 'space-between'}} }>
-            <View>
-                <StandardText>Hi { email }</StandardText>
-                <VerticalSpace />
-                <StandardButton
-                    onPress={ () => backendFacade.logOut()
-                            .then( () => onUserLoggedOut(this.props.navigation) )}
-                    title={ 'Log out' } />
+        return (
+            <View
+                style={{
+                    ...constants.padflex,
+                    ...{ justifyContent: 'space-between' },
+                }}
+            >
+                <View>
+                    <StandardText>Hi {email}</StandardText>
+                    <VerticalSpace />
+                    <StandardButton
+                        onPress={() =>
+                            backendFacade
+                                .logOut()
+                                .then(() =>
+                                    onUserLoggedOut(this.props.navigation)
+                                )
+                        }
+                        title={'Log out'}
+                    />
+                </View>
+                <Credits />
             </View>
-            <Credits />
-        </View>
+        );
     }
 }

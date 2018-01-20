@@ -25,11 +25,17 @@ const filledTriangleStyle = {
 };
 export function TriangularMeter(props: { percent: number }) {
     const { percent, ...restProps } = props;
-    return <View {...restProps}>
-        <View style={ unfilledTriangleStyle }>
-            <View style={ {...filledTriangleStyle, ...{ width: percent+'%' }} } />
-            <View style={ triangleBorderStyle } />
+    return (
+        <View {...restProps}>
+            <View style={unfilledTriangleStyle}>
+                <View
+                    style={{
+                        ...filledTriangleStyle,
+                        ...{ width: percent + '%' },
+                    }}
+                />
+                <View style={triangleBorderStyle} />
+            </View>
         </View>
-    </View>
+    );
 }
-

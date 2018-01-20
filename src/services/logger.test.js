@@ -2,7 +2,7 @@
 
 import { Logger } from './logger';
 
-it('logs to local logger if there isn\'t an error',  () => {
+it("logs to local logger if there isn't an error", () => {
     const { log, localMock } = createLog();
 
     log.info('foo');
@@ -10,7 +10,7 @@ it('logs to local logger if there isn\'t an error',  () => {
     expect(localMock.log).toHaveBeenCalledWith('foo');
 });
 
-it('logs to remote logger if there isn\'t an error',  () => {
+it("logs to remote logger if there isn't an error", () => {
     const { log, remoteMock } = createLog();
 
     log.info('foo');
@@ -18,7 +18,7 @@ it('logs to remote logger if there isn\'t an error',  () => {
     expect(remoteMock.log).toHaveBeenCalledWith('foo');
 });
 
-it('logs to local logger if there\'s an error',  () => {
+it("logs to local logger if there's an error", () => {
     const { log, localMock } = createLog();
 
     log.info('foo %j', new Error());
@@ -26,7 +26,7 @@ it('logs to local logger if there\'s an error',  () => {
     expect(localMock.log).toHaveBeenCalled();
 });
 
-it('doesn\'t report to remote logger if there isn\'t an error',  () => {
+it("doesn't report to remote logger if there isn't an error", () => {
     const { log, remoteMock } = createLog();
 
     log.info('foo');
@@ -34,7 +34,7 @@ it('doesn\'t report to remote logger if there isn\'t an error',  () => {
     expect(remoteMock.report).not.toHaveBeenCalled();
 });
 
-it('logs to remote logger if there\'s an error', () => {
+it("logs to remote logger if there's an error", () => {
     const { log, remoteMock } = createLog();
 
     const e = new Error();

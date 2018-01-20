@@ -8,12 +8,11 @@ import type { Question } from '../models/questions.js';
 import type { AnswerService } from './answer-service.js';
 
 type DataPoint = {
-        question: Question,
-        wrongAnswers: number,
-        when: Date,
-}
+    question: Question,
+    wrongAnswers: number,
+    when: Date,
+};
 export class RecommendedSessionService {
-
     _emotionPool = undefined;
     _answerService: AnswerService;
 
@@ -25,17 +24,19 @@ export class RecommendedSessionService {
         // Get this data from somewhere
         const data: Map<Question, Array<DataPoint>> = new Map();
 
-        const sortableData: Array<{q: Question, score: number}> = [];
+        const sortableData: Array<{ q: Question, score: number }> = [];
         data.forEach((dataPoints, question) => {
             const score = this._calculateScore(dataPoints);
 
             if (score) {
-                sortableData.push({q: question, score});
+                sortableData.push({ q: question, score });
             } else {
-                log.debug('Didn\'t have enough data to calculate a score for', question);
+                log.debug(
+                    "Didn't have enough data to calculate a score for",
+                    question
+                );
             }
         });
-
 
         sortableData.sort((a, b) => {
             return a[1] - b[1];
@@ -73,7 +74,7 @@ export class RecommendedSessionService {
 }
 
 function scaleForTime(num: number, timeSince: number): number {
-    return num * sigmoid(-timeSince/20);
+    return num * sigmoid(-timeSince / 20);
 }
 
 function timePenalty(timeSince: number): number {
@@ -81,7 +82,9 @@ function timePenalty(timeSince: number): number {
 }
 
 function sigmoid(t) {
-    return 1/(1+Math.pow(Math.E, -t));
+    return 1 / (1 + Math.pow(Math.E, -t));
 }
 
-export const recommendedSessionService = new RecommendedSessionService(answerService);
+export const recommendedSessionService = new RecommendedSessionService(
+    answerService
+);
