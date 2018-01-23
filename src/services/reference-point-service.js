@@ -6,7 +6,8 @@ export class ReferencePointService {
     _emotionPool: Array<Emotion>;
 
     constructor(emotionPool: Array<Emotion>) {
-        this._emotionPool = emotionPool;
+        this._emotionPool = emotionPool
+            .filter(e => !!e.coordinates);
     }
 
     getReferencePointsTo(emotion: Emotion): Map<number, Emotion> {
@@ -14,8 +15,9 @@ export class ReferencePointService {
 
         const emotions = this._emotionPool
             .sort((a, b) => {
-                return polarDistance(emotion.coordinates, a.coordinates) - polarDistance(emotion.coordinates, b.coordinates);
+                return distance(emotion.coordinates, a.coordinates) - distance(emotion.coordinates, b.coordinates);
             });
+
         const f = this._findPointWithIntensity(1, emotions, emotion);
         const s = this._findPointWithIntensity(5, emotions, emotion);
         const t = this._findPointWithIntensity(10, emotions, emotion);
@@ -36,20 +38,7 @@ export class ReferencePointService {
     }
 }
 
-function polarDistance(c1: any, c2: any) {
-    if (c1 === null || c2 === null) {
-        return 10000;
-    }
-
-    const r1 = c1.intensity;
-    const a1 = c1.polar;
-
-    const r2 = c2.intensity;
-    const a2 = c2.polar;
-
-    const powd = Math.pow(r1, 2) + Math.pow(r2, 2);
-    const cosd = 2 * r1 * r2 * Math.cos(a1 - a2);
-
-    return Math.sqrt(powd - cosd);
+function distance(c1: any, c2: any) {
+    return Math.abs(c1.polar - c2.polar);
 }
 

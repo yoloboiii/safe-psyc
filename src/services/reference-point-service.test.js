@@ -23,12 +23,12 @@ it("doesn't include the correct answer in the reference points", () => {
     expect(refPoints).not.toContain(e1);
 });
 
-fit('chooses reference points closest to the answer emotion', () => {
+it('chooses reference points closest to the answer emotion', () => {
     const src = randomEmotionWithCoordinates();
     // $FlowFixMe
     src.coordinates.polar = 0;
 
-    const refCandidates = [...emotionsCloseTo(src, 8), ...emotionsFarFrom(src, 8)]
+    const close = emotionsCloseTo(src, 3)
         .map( (e, i) => {
             const bucket = i % 3;
             const offset = bucket === 0 ? 1 : 0;
@@ -36,21 +36,22 @@ fit('chooses reference points closest to the answer emotion', () => {
 
             return e;
         })
-        .sort((a, b) => {
-            return polarDistance(src.coordinates, a.coordinates) - polarDistance(src.coordinates, b.coordinates);
-        })
-        .map( e => {
-            //console.log(e.name, polarDistance(src.coordinates, e.coordinates));
+
+    const far = emotionsFarFrom(src, 8)
+        .map( (e, i) => {
+            const bucket = i % 3;
+            const offset = bucket === 0 ? 1 : 0;
+            e.coordinates.intensity = bucket * 5 + offset;
+
             return e;
-        });
-    console.log(refCandidates);
+        })
 
 
-    const service = new ReferencePointService([...refCandidates, src]);
+    const service = new ReferencePointService([...close, ...far, src]);
     const refPoints = Array.from(service.getReferencePointsTo(src).values());
-    console.log(refPoints);
 
-    expect(refPoints).toEqual(refCandidates.slice(0,3));
+    expect(refPoints).toEqual(expect.arrayContaining(close));
+    expect(refPoints).not.toEqual(expect.arrayContaining(far));
 });
 
 function emotionsCloseTo(src, n) {
@@ -77,22 +78,8 @@ function emotionsFarFrom(src, n) {
         emotions.push(e);
 
         // $FlowFixMe
-        e.coordinates.polar = src.coordinates.polar + (i * 5);
+        e.coordinates.polar = src.coordinates.polar + (i * 5 + 100);
     }
 
     return emotions;
 }
-
-function polarDistance(c1: any, c2: any) {
-    const r1 = c1.intensity;
-    const a1 = c1.polar;
-
-    const r2 = c2.intensity;
-    const a2 = c2.polar;
-
-    const powd = Math.pow(r1, 2) + Math.pow(r2, 2);
-    const cosd = 2 * r1 * r2 * Math.cos(a1 - a2);
-
-    return Math.sqrt(powd - cosd);
-}
-
