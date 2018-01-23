@@ -1,5 +1,6 @@
 // @flow
 
+jest.unmock('./logger');
 import { Logger } from './logger';
 
 it("logs to local logger if there isn't an error", () => {

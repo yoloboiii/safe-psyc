@@ -20,6 +20,18 @@ jest.mock('react-navigation', () => ({
     },
 }));
 
+jest.mock('../src/services/logger', () => {
+
+    const log = {
+        debug: jest.fn(),
+        warn: jest.fn(),
+    };
+    return {
+        log: log,
+        Logger: () => log,
+    };
+});
+
 require("./toHaveMatcher.js");
 require("./duplicateMatcher.js");
 require("./elementsOtherThanMatcher.js");
