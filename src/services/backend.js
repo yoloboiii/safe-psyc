@@ -4,7 +4,11 @@ import moment from 'moment';
 import { firebase } from './firebase.js';
 import { randomSessionService } from './random-session-service.js';
 import { log } from './logger.js';
-import type { Question, AnswerType } from '../models/questions.js';
+import type {
+    Question,
+    AnswerType,
+    IncorrectAnswer,
+} from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 
 //////////////////////////////////////////////////////////
@@ -153,7 +157,7 @@ export class BackendFacade {
         emotion: Emotion
     ): Promise<{
         correct: Array<moment$Moment>,
-        incorrect: Array<{ answer: AnswerType, when: moment$Moment }>,
+        incorrect: Array<IncorrectAnswer>,
     }> {
         const user = loggedInUser;
         if (!user) {
@@ -204,6 +208,7 @@ export class BackendFacade {
                         incorrectAnswers.push({
                             answer: answer,
                             when: moment(val.when, 'x'),
+                            questionType: val.questionType,
                         });
                     }
 

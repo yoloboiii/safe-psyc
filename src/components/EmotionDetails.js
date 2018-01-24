@@ -11,7 +11,7 @@ import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
 import { log } from '../services/logger.js';
 
-import type { AnswerType } from '../models/questions.js';
+import type { AnswerType, IncorrectAnswer } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -24,10 +24,7 @@ const detailsImageStyle = {
 
 export type DataPoints = {
     correct: Array<moment$Moment>,
-    incorrect: Array<{
-        answer: AnswerType,
-        when: moment$Moment,
-    }>,
+    incorrect: Array<IncorrectAnswer>,
 };
 type Props = {
     emotion: Emotion,
@@ -140,7 +137,7 @@ function ConfusionList(props: ConfusionListProps) {
     const incorrectEmotions: Array<{
         answer: Emotion,
         when: moment$Moment,
-    }> = filterOldAndIntensityAnswers(incorrect);
+    }> = filterOldAndEyeAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
         return <View {...restProps} />;
@@ -155,14 +152,18 @@ function ConfusionList(props: ConfusionListProps) {
         </View>
     );
 
-    function filterOldAndIntensityAnswers(answers) {
+    function filterOldAndEyeAnswers(answers: Array<IncorrectAnswer>) {
         const now = moment();
-        const nonIntensityAnswers = answers.filter(a => {
-            return typeof a.answer !== 'number';
+        const eyeAnswers = answers.filter(a => {
+            return a.questionType === 'eye-question';
         });
 
         const scores = {};
-        nonIntensityAnswers.forEach(a => {
+        eyeAnswers.forEach(a => {
+            if (a.questionType !== 'eye-question') {
+                return;
+            }
+
             if (scores[a.answer.name] === undefined) {
                 scores[a.answer.name] = 0;
             }
@@ -173,7 +174,11 @@ function ConfusionList(props: ConfusionListProps) {
             scores[a.answer.name] += timeScaledScore;
         });
 
-        return nonIntensityAnswers.filter(a => {
+        return eyeAnswers.filter(a => {
+            if (a.questionType !== 'eye-question') {
+                return;
+            }
+
             const score = scores[a.answer.name];
             return score >= 0.12;
         });

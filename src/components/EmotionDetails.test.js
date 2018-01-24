@@ -71,10 +71,10 @@ it('shows emotions that the user often confuse with the main emotion', () => {
             dataPoints: {
                 correct: [],
                 incorrect: [
-                    { answer: emotionA, when: moment() },
-                    { answer: emotionA, when: moment() },
-                    { answer: emotionA, when: moment() },
-                    { answer: emotionB, when: moment() },
+                    { answer: emotionA, questionType: 'eye-question', when: moment() },
+                    { answer: emotionA, questionType: 'eye-question', when: moment() },
+                    { answer: emotionA, questionType: 'eye-question', when: moment() },
+                    { answer: emotionB, questionType: 'eye-question', when: moment() },
                 ],
             },
         },
