@@ -32,6 +32,8 @@ it('chooses reference points closest to the answer emotion', () => {
         .map( (e, i) => {
             const bucket = i % 3;
             const offset = bucket === 0 ? 1 : 0;
+
+            // $FlowFixMe
             e.coordinates.intensity = bucket * 5 + offset;
 
             return e;
@@ -41,12 +43,15 @@ it('chooses reference points closest to the answer emotion', () => {
         .map( (e, i) => {
             const bucket = i % 3;
             const offset = bucket === 0 ? 1 : 0;
+
+            // $FlowFixMe
             e.coordinates.intensity = bucket * 5 + offset;
 
             return e;
         })
 
 
+    // $FlowFixMe
     const service = new ReferencePointService([...close, ...far, src]);
     const refPoints = Array.from(service.getReferencePointsTo(src).values());
 

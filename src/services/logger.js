@@ -8,8 +8,8 @@ interface LocalLogger {
     error(any): void;
 }
 interface RemoteLogger {
-    log(any): void;
-    report(Error): void;
+    log(string): void;
+    recordError(number, Error): void;
 }
 export class Logger {
     local: LocalLogger;
@@ -21,36 +21,33 @@ export class Logger {
     }
 
     debug(msg: string, ...args: Array<mixed>) {
-        this._log(this.local.log, this.remote.log, msg, args);
+        this._log(this.local.log, msg, args);
     }
 
     info(msg: string, ...args: Array<mixed>) {
-        this._log(this.local.log, this.remote.log, msg, args);
+        this._log(this.local.log, msg, args);
     }
 
     warn(msg: string, ...args: Array<mixed>) {
-        this._log(this.local.log, this.remote.log, '[WARNING] ' + msg, args);
+        this._log(this.local.log, '[WARNING] ' + msg, args);
     }
 
     error(msg: string, ...args: Array<mixed>) {
-        this._log(this.local.error, this.remote.log, msg, args);
+        this._log(this.local.error, msg, args);
     }
 
-    _log(localF, remoteF, formatString: string, args: Array<mixed>) {
+    _log(localF, formatString: string, args: Array<mixed>) {
         const msg = vsprintf(formatString, args);
         localF(msg);
-        remoteF(msg);
+        this.remote.log(msg);
 
         args.forEach(a => {
             if (a instanceof Error) {
-                this.remote.report(a);
+                this.remote.recordError(1, a);
             }
         });
     }
 }
 
 // TODO: Figure out some way to log to a remote service
-export const log = new Logger(console, {
-    log: () => {},
-    report: () => {},
-});
+export const log = new Logger(console, firebase.fabric.crashlytics());
