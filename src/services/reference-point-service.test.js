@@ -65,7 +65,7 @@ function emotionsCloseTo(src, n) {
         emotions.push(e);
 
         // $FlowFixMe
-        e.coordinates.polar = src.coordinates.polar + i;
+        e.coordinates.polar = wrap(src.coordinates.polar + i, 360);
     }
 
     return emotions;
@@ -80,8 +80,12 @@ function emotionsFarFrom(src, n) {
         emotions.push(e);
 
         // $FlowFixMe
-        e.coordinates.polar = src.coordinates.polar + (i * 5 + 100);
+        e.coordinates.polar = wrap(src.coordinates.polar + (i * 5 + 100), 360);
     }
 
     return emotions;
 }
+
+function wrap(n, maxValue) {
+    return ((n%maxValue)+maxValue)%maxValue;
+};
