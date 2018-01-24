@@ -43,7 +43,7 @@ describe('startRandomSession', () => {
     });
 });
 
-describe.skip('routeToCurrentFeelingOrHome', () => {
+describe('routeToCurrentFeelingOrHome', () => {
     it('should redirect to howrufeelin once per day', () => {
         // $FlowFixMe
         Date.now = jest.fn(() => new Date(Date.UTC(2017, 0, 1)).valueOf());
@@ -76,8 +76,8 @@ describe.skip('routeToCurrentFeelingOrHome', () => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
 
                 const action = dispatchMock.mock.calls[0][0];
-                expect(action.type).toContain('RESET');
 
+                expect(action.index).toEqual(1);
                 expect(action.actions.map(a => a.routeName)).toEqual([
                     'Home',
                     'CurrentFeeling',

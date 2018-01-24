@@ -87,5 +87,5 @@ function emotionsFarFrom(src, n) {
 }
 
 function wrap(n, maxValue) {
-    return ((n%maxValue)+maxValue)%maxValue;
-};
+    return (n % maxValue + maxValue) % maxValue;
+}

@@ -1,6 +1,7 @@
 // @flow
 
 jest.mock('./src/services/backend.js');
+jest.unmock('react-navigation');
 
 import React from 'react';
 
