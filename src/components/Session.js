@@ -63,13 +63,31 @@ export class Session extends React.Component<Props, State> {
     }
 
     _answeredCorrectly() {
+        this._registerCorrectAnswerInReport();
+        this._registerCorrectAnswerInBackend();
+
+
         const currentQ = this.state.questions.peek();
         this.state.wrongAnswers.set(currentQ, 0);
 
+        const isLastQuestion = this.state.questions.size() === 1;
+        if (isLastQuestion) {
+            this.props.onSessionFinished(this.state.report);
+            this.setState({ isFinished: true });
+        } else {
+            this._nextQuestion();
+        }
+    }
+
+    _registerCorrectAnswerInReport() {
+        const currentQ = this.state.questions.peek();
         if (!this.state.report.has(currentQ)) {
             this.state.report.set(currentQ, []);
         }
+    }
 
+    _registerCorrectAnswerInBackend() {
+        const currentQ = this.state.questions.peek();
         this.props.backendFacade
             .registerCorrectAnswer(currentQ)
             .then(() => {
@@ -86,13 +104,6 @@ export class Session extends React.Component<Props, State> {
                 );
             });
 
-        const isLastQuestion = this.state.questions.size() === 1;
-        if (isLastQuestion) {
-            this.props.onSessionFinished(this.state.report);
-            this.setState({ isFinished: true });
-        } else {
-            this._nextQuestion();
-        }
     }
 
     _nextQuestion() {
@@ -106,15 +117,32 @@ export class Session extends React.Component<Props, State> {
     }
 
     _wrongAnswer(answer: AnswerType) {
+
+        this._registerWrongAnswerInReport(answer);
+        this._registerWrongAnswerInBackend(answer);
+
         const currentQ = this.state.questions.peek();
         const prevCount = this.state.wrongAnswers.get(currentQ) || 0;
-        const reportArray = this.state.report.get(currentQ) || [];
-
         this.state.wrongAnswers.set(currentQ, prevCount + 1);
 
+        if (prevCount === 2) {
+            this.state.questions.push(currentQ);
+            this.state.totalNumberOfQuestions++;
+            this._nextQuestion();
+        } else {
+            this.forceUpdate();
+        }
+    }
+
+    _registerWrongAnswerInReport(answer) {
+        const currentQ = this.state.questions.peek();
+        const reportArray = this.state.report.get(currentQ) || [];
         reportArray.push(answer);
         this.state.report.set(currentQ, reportArray);
+    }
 
+    _registerWrongAnswerInBackend(answer) {
+        const currentQ = this.state.questions.peek();
         this.props.backendFacade
             .registerIncorrectAnswer(currentQ, answer)
             .then(() => {
@@ -131,13 +159,6 @@ export class Session extends React.Component<Props, State> {
                 );
             });
 
-        if (prevCount === 2) {
-            this.state.questions.push(currentQ);
-            this.state.totalNumberOfQuestions++;
-            this._nextQuestion();
-        } else {
-            this.forceUpdate();
-        }
     }
 
     render() {
