@@ -48,4 +48,9 @@ export class Logger {
         });
     }
 }
-export const log = new Logger(console, firebase.crash());
+
+// TODO: Figure out some way to log to a remote service
+export const log = new Logger(console, {
+    log: () => {},
+    report: () => {},
+});

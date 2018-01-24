@@ -6,10 +6,6 @@ jest.mock('react-native-firebase', () => ({
             onAuthStateChanged: () => {},
         }),
         database: () => {},
-        crash: () => ({
-            log: () => {},
-            report: () => {},
-        }),
     }),
 }));
 

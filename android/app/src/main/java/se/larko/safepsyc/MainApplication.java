@@ -12,13 +12,15 @@ import java.util.Arrays;
 import java.util.List;
 
 // React native firebase
-// Required package
-import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
-// Optional packages - add as appropriate
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
-import io.invertase.firebase.crash.RNFirebaseCrashPackage; // Firebase Crash Reporting
+
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,11 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new RNFirebasePackage(),
+          new RNFirebaseAnalyticsPackage(),
 
-          new RNFirebasePackage(),  // <-- Add this line
-          // Add these packages as appropriate
           new RNFirebaseAuthPackage(),
-          new RNFirebaseCrashPackage(),
           new RNFirebaseDatabasePackage(),
           new RNFirebasePerformancePackage()
       );
@@ -51,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    Fabric.with(this, new Crashlytics());
     SoLoader.init(this, /* native exopackage */ false);
   }
 }
