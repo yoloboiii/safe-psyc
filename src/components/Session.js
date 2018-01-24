@@ -66,7 +66,6 @@ export class Session extends React.Component<Props, State> {
         this._registerCorrectAnswerInReport();
         this._registerCorrectAnswerInBackend();
 
-
         const currentQ = this.state.questions.peek();
         this.state.wrongAnswers.set(currentQ, 0);
 
@@ -103,7 +102,6 @@ export class Session extends React.Component<Props, State> {
                     e
                 );
             });
-
     }
 
     _nextQuestion() {
@@ -117,7 +115,6 @@ export class Session extends React.Component<Props, State> {
     }
 
     _wrongAnswer(answer: AnswerType) {
-
         this._registerWrongAnswerInReport(answer);
         this._registerWrongAnswerInBackend(answer);
 
@@ -158,7 +155,6 @@ export class Session extends React.Component<Props, State> {
                     e
                 );
             });
-
     }
 
     render() {

@@ -28,28 +28,25 @@ it('chooses reference points closest to the answer emotion', () => {
     // $FlowFixMe
     src.coordinates.polar = 0;
 
-    const close = emotionsCloseTo(src, 3)
-        .map( (e, i) => {
-            const bucket = i % 3;
-            const offset = bucket === 0 ? 1 : 0;
+    const close = emotionsCloseTo(src, 3).map((e, i) => {
+        const bucket = i % 3;
+        const offset = bucket === 0 ? 1 : 0;
 
-            // $FlowFixMe
-            e.coordinates.intensity = bucket * 5 + offset;
+        // $FlowFixMe
+        e.coordinates.intensity = bucket * 5 + offset;
 
-            return e;
-        })
+        return e;
+    });
 
-    const far = emotionsFarFrom(src, 8)
-        .map( (e, i) => {
-            const bucket = i % 3;
-            const offset = bucket === 0 ? 1 : 0;
+    const far = emotionsFarFrom(src, 8).map((e, i) => {
+        const bucket = i % 3;
+        const offset = bucket === 0 ? 1 : 0;
 
-            // $FlowFixMe
-            e.coordinates.intensity = bucket * 5 + offset;
+        // $FlowFixMe
+        e.coordinates.intensity = bucket * 5 + offset;
 
-            return e;
-        })
-
+        return e;
+    });
 
     // $FlowFixMe
     const service = new ReferencePointService([...close, ...far, src]);
@@ -61,7 +58,7 @@ it('chooses reference points closest to the answer emotion', () => {
 
 function emotionsCloseTo(src, n) {
     const emotions = [];
-    for (let i = -n/2; i < n/2; i++) {
+    for (let i = -n / 2; i < n / 2; i++) {
         if (i === 0) continue;
 
         const e = randomEmotionWithCoordinates();
@@ -76,7 +73,7 @@ function emotionsCloseTo(src, n) {
 
 function emotionsFarFrom(src, n) {
     const emotions = [];
-    for (let i = -n/2; i < n/2; i++) {
+    for (let i = -n / 2; i < n / 2; i++) {
         if (i === 0) continue;
 
         const e = randomEmotionWithCoordinates();
