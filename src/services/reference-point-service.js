@@ -39,6 +39,23 @@ export class ReferencePointService {
 }
 
 function distance(c1: any, c2: any) {
-    return Math.abs(c1.polar - c2.polar);
+    return cartesianDistance(
+        angleToCartesianCoordinate(c1.polar, 1),
+        angleToCartesianCoordinate(c2.polar, 1),
+    );
+}
+
+function angleToCartesianCoordinate(angle, radius) {
+    return {
+        x: radius * Math.cos(angle),
+        y: radius * Math.sin(angle),
+    };
+}
+
+function cartesianDistance(p1, p2) {
+    return Math.sqrt(
+        Math.pow(p2.x - p1.x, 2) +
+        Math.pow(p2.y - p1.y, 2)
+    );
 }
 
