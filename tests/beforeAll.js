@@ -1,7 +1,7 @@
 // @flow
 
 jest.mock('react-native-firebase', () => ({
-    initializeApp: () => ({
+    app: () => ({
         auth: () => ({
             onAuthStateChanged: () => {},
         }),
