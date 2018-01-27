@@ -9,6 +9,10 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
+// TODO: REMOVE
+import { emotionService } from '../services/emotion-service';
+import { ScatterChart } from './scatter-plot';
+
 import { SnapSlider } from './SnapSlider.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
@@ -45,7 +49,8 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const emotion = this.props.question.correctAnswer;
+        const { question } = this.props;
+        const emotion = question.correctAnswer;
         const emotionName = emotion.name;
 
         const navigation = this.props.navigation;
@@ -64,9 +69,11 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
                     <VerticalSpace multiplier={2} />
                     <IntensityScale
                         onIntensityChosen={this._onIntensityChosen.bind(this)}
-                        referencePoints={this.props.question.referencePoints}
+                        referencePoints={question.referencePoints}
                         selectedGroup={this.state.lastAnswer}
                     />
+
+                    <DebugPlot question={question} />
                 </View>
 
                 <StandardButton
@@ -136,4 +143,54 @@ export function IntensityQuestionOverlay(props: SpecificOverlayProps<number>) {
         : "That's sadly incorrect";
 
     return <StandardText>{text}</StandardText>;
+}
+
+function DebugPlot(props) {
+    const { question } = props;
+    const activeDots = [
+                            question.correctAnswer,
+                            ...Array.from(question.referencePoints.values()),
+                        ];
+    const inactiveDots = emotionService
+                            .getEmotionPool()
+                            .filter(e => !!e.coordinates)
+                            .filter(e => !activeDots.includes(e));
+
+
+    return (
+        <View>
+            <VerticalSpace multiplier={2} />
+            <ScatterChart
+                horizontalLinesAt={[0]}
+                verticalLinesAt={[0]}
+                data={[
+                    {
+                        color: 'white',
+                        values: [{ x: 20, y: 20 }, { x: -20, y: -20 }],
+                    },
+                    {
+                        color: 'rgba(255, 0, 0, 1)',
+                        values: activeDots.map(emotionToDot),
+                    },
+                    {
+                        color: 'rgba(0, 255, 0, 0.2)',
+                        values: inactiveDots.map(emotionToDot),
+                    },
+                ]}
+                chartHeight={350}
+            />
+        </View>
+    );
+
+    function emotionToDot(e) {
+        const { intensity, polar } = e.coordinates;
+        const x = intensity * Math.cos(polar);
+        const y = intensity * Math.sin(polar);
+        return {
+            x,
+            y,
+            label: e.name,
+        };
+
+    }
 }
