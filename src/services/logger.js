@@ -49,5 +49,4 @@ export class Logger {
     }
 }
 
-// TODO: Figure out some way to log to a remote service
 export const log = new Logger(console, firebase.fabric.crashlytics());

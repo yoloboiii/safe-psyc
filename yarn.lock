@@ -822,7 +822,7 @@ babel-polyfill@6.23.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
-babel-polyfill@^6.23.0:
+babel-polyfill@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
   dependencies:
@@ -2098,25 +2098,24 @@ flow-bin@^0.64.0:
   version "0.64.0"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.64.0.tgz#ddd3fb3b183ab1ab35a5d5dec9caf5ebbcded167"
 
-flow-typed@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/flow-typed/-/flow-typed-2.2.3.tgz#e7a35915a0f4cfcf8068c1ce291b5c99e6b89efa"
+flow-typed@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/flow-typed/-/flow-typed-2.3.0.tgz#0f8604faab60691b885024e16ec0e3256e3b680e"
   dependencies:
-    babel-polyfill "^6.23.0"
+    babel-polyfill "^6.26.0"
     colors "^1.1.2"
-    fs-extra "^4.0.0"
+    fs-extra "^5.0.0"
     github "0.2.4"
     glob "^7.1.2"
     got "^7.1.0"
     md5 "^2.1.0"
     mkdirp "^0.5.1"
-    request "^2.81.0"
-    rimraf "^2.6.1"
-    semver "^5.1.0"
-    table "^4.0.1"
+    rimraf "^2.6.2"
+    semver "^5.5.0"
+    table "^4.0.2"
     through "^2.3.8"
     unzip "^0.1.11"
-    which "^1.2.14"
+    which "^1.3.0"
     yargs "^4.2.0"
 
 for-in@^1.0.1:
@@ -2175,9 +2174,9 @@ fs-extra@^1.0.0:
     jsonfile "^2.1.0"
     klaw "^1.0.0"
 
-fs-extra@^4.0.0:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.2.tgz#f91704c53d1b461f893452b0c307d9997647ab6b"
+fs-extra@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-5.0.0.tgz#414d0110cdd06705734d055652c5411260c31abd"
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
@@ -3469,6 +3468,10 @@ lodash.templatesettings@^3.0.0:
     lodash._reinterpolate "^3.0.0"
     lodash.escape "^3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash@4.17.4, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.16.6, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
@@ -3588,21 +3591,21 @@ methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-metro-core@0.24.6, metro-core@^0.24.1:
-  version "0.24.6"
-  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.24.6.tgz#fe75f06bbb21d594f8eed75880fb5cc9e0ccddf7"
+metro-core@0.24.7, metro-core@^0.24.3:
+  version "0.24.7"
+  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.24.7.tgz#89e4fbea5bad574eb971459ebfa74c028f52d278"
   dependencies:
-    lodash "^4.16.6"
+    lodash.throttle "^4.1.1"
 
-metro-source-map@0.24.6:
-  version "0.24.6"
-  resolved "https://registry.yarnpkg.com/metro-source-map/-/metro-source-map-0.24.6.tgz#6c64b958b47696e365aacf508e726ae5820959a4"
+metro-source-map@0.24.7:
+  version "0.24.7"
+  resolved "https://registry.yarnpkg.com/metro-source-map/-/metro-source-map-0.24.7.tgz#b13d0ae6417c2a2cd3d521ae6cd898196748ec0b"
   dependencies:
     source-map "^0.5.6"
 
-metro@^0.24.1:
-  version "0.24.6"
-  resolved "https://registry.yarnpkg.com/metro/-/metro-0.24.6.tgz#a7b01c3c7d1d1868f232d2d92a8bc4ecc251e909"
+metro@^0.24.3:
+  version "0.24.7"
+  resolved "https://registry.yarnpkg.com/metro/-/metro-0.24.7.tgz#42cecdb236b702d16243812294f7d3b97c43378d"
   dependencies:
     absolute-path "^0.0.0"
     async "^2.4.0"
@@ -3631,10 +3634,10 @@ metro@^0.24.1:
     json-stable-stringify "^1.0.1"
     json5 "^0.4.0"
     left-pad "^1.1.3"
-    lodash "^4.16.6"
+    lodash.throttle "^4.1.1"
     merge-stream "^1.0.1"
-    metro-core "0.24.6"
-    metro-source-map "0.24.6"
+    metro-core "0.24.7"
+    metro-source-map "0.24.7"
     mime-types "2.1.11"
     mkdirp "^0.5.1"
     request "^2.79.0"
@@ -4357,22 +4360,29 @@ react-deep-force-update@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
 
-react-devtools-core@3.0.0, react-devtools-core@^3.0.0:
+react-devtools-core@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.0.0.tgz#f683e19f0311108f97dbb5b29d948323a1bf7c03"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-devtools@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.0.0.tgz#8459804a456f7caeca8d3d2a6f20c853574555cd"
+react-devtools-core@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.1.0.tgz#eec2e9e0e6edb77772e2bfc7d286a296f55a261a"
+  dependencies:
+    shell-quote "^1.6.1"
+    ws "^2.0.3"
+
+react-devtools@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.1.0.tgz#fc59dbe9f5a6d4b7905f64e940ca0e0b618f8b79"
   dependencies:
     cross-spawn "^5.0.1"
     electron "^1.4.15"
     ip "^1.1.4"
     minimist "^1.2.0"
-    react-devtools-core "^3.0.0"
+    react-devtools-core "^3.1.0"
     update-notifier "^2.1.0"
 
 react-element-to-jsx-string@^13.1.0:
@@ -4398,9 +4408,9 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
-react-native-firebase@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.2.2.tgz#768d0384de489ffcee106f53c9fbb41cee7eebb0"
+react-native-firebase@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.2.5.tgz#95ea8c89fa29a6bf0b7b94d5b9959362fdd90a44"
   dependencies:
     bows "^1.6.0"
     opencollective "^1.0.3"
@@ -4429,9 +4439,9 @@ react-native-textinput-effects@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-textinput-effects/-/react-native-textinput-effects-0.4.2.tgz#05336a8ed9e4992397fc5de714692d774eb91b07"
 
-react-native@^0.52.2:
-  version "0.52.2"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.52.2.tgz#1ae9a4c4441bd6e54a8ffc8aae4ac2b5c7cccd68"
+react-native@^0.53.3:
+  version "0.53.3"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.53.3.tgz#930d1de5d68866f32a4b55112fc0228e29784e8f"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -4460,8 +4470,8 @@ react-native@^0.52.2:
     graceful-fs "^4.1.3"
     inquirer "^3.0.6"
     lodash "^4.16.6"
-    metro "^0.24.1"
-    metro-core "^0.24.1"
+    metro "^0.24.3"
+    metro-core "^0.24.3"
     mime "^1.3.4"
     minimist "^1.2.0"
     mkdirp "^0.5.1"
@@ -4728,7 +4738,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@^2.45.0, request@^2.79.0, request@^2.81.0, request@^2.83.0:
+request@^2.45.0, request@^2.79.0, request@^2.83.0:
   version "2.83.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.83.0.tgz#ca0b65da02ed62935887808e6f510381034e3356"
   dependencies:
@@ -4797,7 +4807,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6.1:
+rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
@@ -4871,7 +4881,7 @@ semver-diff@^2.0.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
-semver@^5.0.1, semver@^5.4.1:
+semver@^5.0.1, semver@^5.4.1, semver@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
@@ -5213,7 +5223,7 @@ symbol-tree@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
 
-table@^4.0.1:
+table@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"
   dependencies:
