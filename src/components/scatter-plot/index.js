@@ -96,15 +96,9 @@ export class ScatterChart extends React.PureComponent {
 
         return (
             <View style={{ height: chartHeight, backgroundColor: backgroundColor }}>
-                <View>
-                    {points}
-                </View>
-                <View>
-                    {horizontalLines}
-                </View>
-                <View>
-                    {verticalLines}
-                </View>
+                {points}
+                {horizontalLines}
+                {verticalLines}
             </View>
         );
     }
