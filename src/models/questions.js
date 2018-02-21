@@ -6,16 +6,17 @@ export type Question = EyeQuestion | EmotionWordQuestion | IntensityQuestion;
 export type AnswerType = Emotion | number;
 
 export type IncorrectAnswer =
-    | {
-          questionType: 'eye-question',
-          answer: Emotion,
-          when: moment$Moment,
-      }
+    | IncorrectEyeAnswer
     | {
           questionType: 'intensity',
           answer: number,
           when: moment$Moment,
       };
+export type IncorrectEyeAnswer = {
+    questionType: 'eye-question',
+    answer: Emotion,
+    when: moment$Moment,
+};
 
 export type EyeQuestion = {
     type: 'eye-question',

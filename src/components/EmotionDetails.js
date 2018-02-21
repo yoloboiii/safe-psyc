@@ -11,7 +11,11 @@ import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
 import { log } from '../services/logger.js';
 
-import type { AnswerType, IncorrectAnswer } from '../models/questions.js';
+import type {
+    AnswerType,
+    IncorrectAnswer,
+    IncorrectEyeAnswer,
+} from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -154,16 +158,12 @@ function ConfusionList(props: ConfusionListProps) {
 
     function filterOldAndEyeAnswers(answers: Array<IncorrectAnswer>) {
         const now = moment();
-        const eyeAnswers = answers.filter(a => {
+        const eyeAnswers = ((answers.filter(a => {
             return a.questionType === 'eye-question';
-        });
+        }): Array<any>): Array<IncorrectEyeAnswer>);
 
         const scores = {};
         eyeAnswers.forEach(a => {
-            if (a.questionType !== 'eye-question') {
-                return;
-            }
-
             if (scores[a.answer.name] === undefined) {
                 scores[a.answer.name] = 0;
             }
@@ -175,10 +175,6 @@ function ConfusionList(props: ConfusionListProps) {
         });
 
         return eyeAnswers.filter(a => {
-            if (a.questionType !== 'eye-question') {
-                return;
-            }
-
             const score = scores[a.answer.name];
             return score >= 0.12;
         });

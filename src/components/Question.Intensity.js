@@ -148,14 +148,13 @@ export function IntensityQuestionOverlay(props: SpecificOverlayProps<number>) {
 function DebugPlot(props) {
     const { question } = props;
     const activeDots = [
-                            question.correctAnswer,
-                            ...Array.from(question.referencePoints.values()),
-                        ];
+        question.correctAnswer,
+        ...Array.from(question.referencePoints.values()),
+    ];
     const inactiveDots = emotionService
-                            .getEmotionPool()
-                            .filter(e => !!e.coordinates)
-                            .filter(e => !activeDots.includes(e));
-
+        .getEmotionPool()
+        .filter(e => !!e.coordinates)
+        .filter(e => !activeDots.includes(e));
 
     return (
         <View>
@@ -191,6 +190,5 @@ function DebugPlot(props) {
             y,
             label: e.name,
         };
-
     }
 }
