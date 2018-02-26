@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Button } from 'react-native';
+import { StandardButton } from '../src/components/Buttons.js';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
 import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
 import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWithCoordinates } from './emotion-utils.js';
@@ -108,7 +108,7 @@ function findAnswerButtons(component: React.Component<*,*>): Array<React.Compone
     const buttons = getChildrenAndParent(qComponent)
         .filter(c => {
             // $FlowFixMe
-            return c.type === Button;
+            return c.type === StandardButton;
         });
 
     if (buttons.length === 0) {
@@ -138,7 +138,7 @@ export function clickAnswerAndDismissOverlay(component: React.Component<*,*>) {
 
 function dismissOverlay(component) {
     const overlay = findChildren(component, ResultOverlay)[0];
-    const buttons = findChildren(overlay, Button);
+    const buttons = findChildren(overlay, StandardButton);
     buttons.forEach( button => {
         button.props.onPress && button.props.onPress();
     });

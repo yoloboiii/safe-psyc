@@ -5,7 +5,7 @@
 /// component
 
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, StatusBar } from 'react-native';
 import { Session } from './Session.js';
 import { navigateToSessionReport } from '../navigation-actions.js';
 import { backendFacade } from '../services/backend.js';
@@ -19,8 +19,16 @@ type Props = {
 };
 export class SessionScreen extends React.Component<Props, {}> {
     static navigationOptions = {
-        title: 'SESSION',
+        header: null,
     };
+
+    componentWillMount() {
+        StatusBar.setHidden(true, 'slide');
+    }
+
+    componentWillUnmount() {
+        StatusBar.setHidden(false, 'slide');
+    }
 
     render() {
         const { state, navigate } = this.props.navigation;

@@ -5,7 +5,7 @@ import {
     findChildren,
     stringifyComponent,
 } from '../../tests/component-tree-utils.js';
-import { Button } from 'react-native';
+import { StandardButton } from './Buttons.js';
 import { CurrentFeeling } from './CurrentFeeling.js';
 
 const defaultProps = {
@@ -46,7 +46,7 @@ it('submits the chosen emotion to the backend', () => {
         defaultProps
     );
 
-    const button = findChildren(component, Button).filter(
+    const button = findChildren(component, StandardButton).filter(
         b => b.props.title === 'Submit'
     )[0];
 
@@ -65,9 +65,9 @@ it('contains a skip button if the onSkip prop is given', () => {
         defaultProps
     );
 
-    expect(component).toHaveChildWithProps(Button, { title: 'Skip' });
+    expect(component).toHaveChildWithProps(StandardButton, { title: 'Skip' });
 
-    const skipButton = findChildren(component, Button).filter(
+    const skipButton = findChildren(component, StandardButton).filter(
         b => b.props.title === 'Skip'
     )[0];
 

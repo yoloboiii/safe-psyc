@@ -14,10 +14,10 @@ export const constants = {
 
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151
     primaryColor: '#ffc145',
-    positiveColor: '#698e30',
-    negativeColor: '#ff5151',
-    hilightColor1: '#33658a',
-    hilightColor2: '#86bbd8',
+    positiveColor: '#2dde98',
+    negativeColor: '#ff4f81',
+    hilightColor1: '#1cc7d0',
+    hilightColor2: '#00aeff',
 
     notReallyWhite: '#FAFAFF',
     defaultTextColor,
@@ -42,4 +42,6 @@ export const constants = {
         ...flex1,
         ...padding,
     },
+
+    mediumRadius: 2 * space,
 };

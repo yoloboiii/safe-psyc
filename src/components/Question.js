@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
@@ -201,57 +202,116 @@ export type SpecificOverlayProps<T> = {
     navigation: Navigation<{}>,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
-    const style = props.answeredCorrectly
-        ? resultOverlayStyleSheet.correct
-        : resultOverlayStyleSheet.wrong;
-
-    const specificOverlay = getQuestionSpecificOverlay(props);
+    const Overlay = props.answeredCorrectly
+        ? CorrectOverlay
+        : WrongOverlay
 
     return (
-        <View style={[resultOverlayStyleSheet.root, style]}>
-            {specificOverlay}
+        <Overlay>
+            <QuestionSpecificOverlay {...props} />
             <VerticalSpace multiplier={2} />
             <StandardButton title={'Ok'} onPress={props.onDismiss} />
-        </View>
+        </Overlay>
     );
+}
 
-    function getQuestionSpecificOverlay(props) {
-        if (props.question.type === 'eye-question') {
-            if (typeof props.answer === 'number') {
-                throw new Error(
-                    'Attempted to render EyeQuestionOverlay with a number as answer'
-                );
-            }
+class CorrectOverlay extends React.Component<*, {}> {
 
-            return (
-                <EyeQuestionOverlay
-                    question={props.question}
-                    answeredCorrectly={props.answeredCorrectly}
-                    answer={props.answer}
-                    navigation={props.navigation}
-                />
+    getChildContext() {
+        return {
+            textStyle: {
+                ...constants.largeText,
+                color: constants.notReallyWhite,
+            },
+            buttonContainerStyle: {
+                backgroundColor: constants.notReallyWhite,
+            },
+            buttonTextStyle: {
+                color: constants.positiveColor,
+            },
+        };
+    }
+
+    render() {
+        const style = resultOverlayStyleSheet.correct;
+        return (
+            <View style={[resultOverlayStyleSheet.root, style]}>
+                {this.props.children}
+            </View>
+        );
+    }
+}
+CorrectOverlay.childContextTypes = {
+    textStyle: PropTypes.object,
+    buttonContainerStyle: PropTypes.object,
+    buttonTextStyle: PropTypes.object,
+};
+
+class WrongOverlay extends React.Component<*, {}> {
+
+    getChildContext() {
+        return {
+            textStyle: {
+                ...constants.largeText,
+                color: constants.notReallyWhite,
+            },
+            buttonContainerStyle: {
+                backgroundColor: constants.notReallyWhite,
+            },
+            buttonTextStyle: {
+                color: constants.negativeColor,
+            },
+        };
+    }
+
+    render() {
+        const style = resultOverlayStyleSheet.wrong;
+
+        return (
+            <View style={[resultOverlayStyleSheet.root, style]}>
+                {this.props.children}
+            </View>
+        );
+    }
+}
+WrongOverlay.childContextTypes = CorrectOverlay.childContextTypes;
+
+function QuestionSpecificOverlay(props: ResultOverlayProps) {
+    if (props.question.type === 'eye-question') {
+        if (typeof props.answer === 'number') {
+            throw new Error(
+                'Attempted to render EyeQuestionOverlay with a number as answer'
             );
-        } else if (props.question.type === 'intensity') {
-            return (
-                <IntensityQuestionOverlay
-                    question={props.question}
-                    answeredCorrectly={props.answeredCorrectly}
-                    answer={props.answer}
-                    navigation={props.navigation}
-                />
-            );
-        } else {
-            let answer: string = '';
-            if (props.answer.name && typeof props.answer.name === 'string') {
-                answer = props.answer.name;
-            } else {
-                answer = props.answer.toString();
-            }
-
-            const text = props.answeredCorrectly
-                ? answer + ' is correct!'
-                : answer + ' is sadly incorrect';
-            return <StandardText>{text}</StandardText>;
         }
+
+        return (
+            <EyeQuestionOverlay
+                question={props.question}
+                answeredCorrectly={props.answeredCorrectly}
+                answer={props.answer}
+                navigation={props.navigation}
+            />
+        );
+    } else if (props.question.type === 'intensity') {
+        return (
+            <IntensityQuestionOverlay
+                question={props.question}
+                answeredCorrectly={props.answeredCorrectly}
+                answer={props.answer}
+                navigation={props.navigation}
+            />
+        );
+    } else {
+        let answer: string = '';
+        if (props.answer.name && typeof props.answer.name === 'string') {
+            answer = props.answer.name;
+        } else {
+            answer = props.answer.toString();
+        }
+
+        const text = props.answeredCorrectly
+            ? answer + ' is correct!'
+            : answer + ' is sadly incorrect';
+        return <StandardText>{text}</StandardText>;
     }
 }

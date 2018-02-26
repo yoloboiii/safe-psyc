@@ -63,7 +63,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
                         prefix={'How intense is '}
                         linkText={emotionName}
                         onLinkPress={onEmotionPress}
-                        postfix={'?'}
+                        postfix={' ?'}
                     />
                     <VerticalSpace multiplier={2} />
                     <IntensityScale

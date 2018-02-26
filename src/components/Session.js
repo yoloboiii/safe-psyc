@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -10,6 +10,7 @@ import { StandardText } from './Texts.js';
 import { QuestionProgress } from './QuestionProgress.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
+import { resetToHome } from '../navigation-actions.js';
 
 import type { BackendFacade } from '../services/backend.js';
 import type { Question, AnswerType } from '../models/questions.js';
@@ -171,6 +172,10 @@ export class Session extends React.Component<Props, State> {
 
             return (
                 <View style={questionContainer}>
+                    <AbortSessionButton
+                        navigation={this.props.navigation}
+                    />
+
                     <QuestionProgress
                         current={this.state.currentQuestionIndex}
                         total={this.state.totalNumberOfQuestions}
@@ -188,6 +193,13 @@ export class Session extends React.Component<Props, State> {
             );
         }
     }
+}
+
+function AbortSessionButton(props) {
+    const { navigation } = props;
+    return <TouchableOpacity onPress={() => resetToHome(navigation)}>
+        <StandardText>x</StandardText>
+    </TouchableOpacity>
 }
 
 class QuestionCollection {

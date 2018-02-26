@@ -16,7 +16,8 @@ import {
     stringifyComponent,
     getAllRenderedStrings,
 } from '../../tests/component-tree-utils.js';
-import { Text, Button } from 'react-native';
+import { Text } from 'react-native';
+import { StandardButton } from './Buttons.js';
 
 import { QuestionComponent, ResultOverlay } from './Question.js';
 import { EyeQuestionComponent } from './Question.Eye.js';
@@ -118,7 +119,7 @@ it('has a button that triggers onCorrectAnswer in the overlay', () => {
     expect(onCorrectAnswer).not.toHaveBeenCalled();
 
     const overlay = findChildren(component, ResultOverlay)[0];
-    const buttons = findChildren(overlay, Button);
+    const buttons = findChildren(overlay, StandardButton);
     buttons.forEach(button => {
         button.props.onPress && button.props.onPress();
     });
@@ -151,7 +152,7 @@ it('has a button that triggers onWrongAnswer in the overlay', () => {
     expect(onWrongAnswer).not.toHaveBeenCalled();
 
     const overlay = findChildren(component, ResultOverlay)[0];
-    const buttons = findChildren(overlay, Button);
+    const buttons = findChildren(overlay, StandardButton);
     buttons.forEach(button => {
         button.props.onPress && button.props.onPress();
     });

@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { TouchableHighlight, Text, Button } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, TouchableHighlight, TouchableOpacity, Text, Button } from 'react-native';
 import { constants } from '../styles/constants.js';
 
 const largeTextButtonStyle = {
@@ -12,15 +13,51 @@ const largeTextButtonStyle = {
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
+const standardButtonDefaultStyles = {
+    container: {
+        borderRadius: constants.mediumRadius,
+        backgroundColor: constants.primaryColor,
+    },
+    text: {
+        ...constants.normalText,
+        color: constants.notReallyWhite,
+        textAlign: 'center',
+        padding: constants.space,
+    },
+}
 type StandardButtonProps = {
-    customColor?: string,
+    onPress: () => *,
+    title: string,
+    containerStyle?: Object,
+    textStyle?: Object,
 };
-export function StandardButton(props: StandardButtonProps) {
-    const { customColor, ...restProps } = props;
+type StandardButtonContext = {
+    buttonContainerStyle?: Object,
+    buttonTextStyle?: Object,
+}
+export function StandardButton(props: StandardButtonProps, context: StandardButtonContext) {
+    const { title, containerStyle, textStyle, ...restProps } = props;
 
-    const color = customColor || constants.primaryColor;
+    return <TouchableOpacity
+        style={[
+                standardButtonDefaultStyles.container,
+                context.buttonContainerStyle,
+                containerStyle,
+            ]}
+            {...restProps}>
 
-    return <Button color={color} {...restProps} />;
+            <Text style={[
+                standardButtonDefaultStyles.text,
+                context.buttonTextStyle,
+                textStyle,
+            ]}>
+                {title}
+            </Text>
+    </TouchableOpacity>
+}
+StandardButton.contextTypes = {
+    buttonContainerStyle: PropTypes.object,
+    buttonTextStyle: PropTypes.object,
 }
 
 ///////////////////////////////////////////////////////

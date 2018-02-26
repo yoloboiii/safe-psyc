@@ -19,14 +19,20 @@ const containerStyle = {
     alignItems: 'flex-start',
 };
 const defaultTouchableStyle = {
-    borderBottomWidth: 1,
-    borderBottomColor: constants.lightTextColor,
+    backgroundColor: constants.primaryColor,
+    borderRadius: constants.mediumRadius,
+    paddingVertical: constants.space / 2,
+    paddingHorizontal: constants.space,
+};
+const defaultTextStyle = {
+    textAlignVertical: 'center',
+    paddingVertical: defaultTouchableStyle.paddingVertical,
 };
 export function Link(props: Props) {
     const { prefix, linkText, onLinkPress, postfix, underlineColor } = props;
 
     const prefixComponent = prefix ? (
-        <StandardText>{prefix}</StandardText>
+        <StandardText style={defaultTextStyle}>{prefix}</StandardText>
     ) : null;
 
     const touchableStyle = underlineColor
@@ -37,12 +43,15 @@ export function Link(props: Props) {
 
     const touchable = (
         <TouchableOpacity onPress={onLinkPress} style={touchableStyle}>
-            <StandardText>{linkText}</StandardText>
+            <StandardText style={{
+
+                color: constants.notReallyWhite,
+            }}>{linkText}</StandardText>
         </TouchableOpacity>
     );
 
     const postfixComponent = postfix ? (
-        <StandardText>{postfix}</StandardText>
+        <StandardText style={defaultTextStyle}>{postfix}</StandardText>
     ) : null;
 
     return (
