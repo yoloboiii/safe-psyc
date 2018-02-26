@@ -9,6 +9,7 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { SnapSlider } from './SnapSlider.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
+import { intensityToGroup } from '../utils/intensity-utils.js';
 
 // TODO: REMOVE
 import { emotionService } from '../services/emotion-service';
@@ -100,13 +101,6 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
             this.props.onWrongAnswer(answer);
         }
     }
-}
-
-export function intensityToGroup(intensity) {
-    const quotient = Math.floor(intensity / 2);
-    const remainder = intensity % 2;
-
-    return Math.min(5, quotient + remainder);
 }
 
 type ScaleProps = {

@@ -28,25 +28,17 @@ it('chooses reference points closest to the answer emotion', () => {
     // $FlowFixMe
     src.coordinates.polar = 0;
 
-    const close = emotionsCloseTo(src, 3).map((e, i) => {
-        const bucket = i % 3;
-        const offset = bucket === 0 ? 1 : 0;
+    const close = [
+        randomEmotionWithCoordinates({ intensity: 1, polar: src.coordinates.polar + 15}),
+        randomEmotionWithCoordinates({ intensity: 5, polar: src.coordinates.polar}),
+        randomEmotionWithCoordinates({ intensity: 10, polar: src.coordinates.polar - 15}),
+    ];
 
-        // $FlowFixMe
-        e.coordinates.intensity = bucket * 5 + offset;
-
-        return e;
-    });
-
-    const far = emotionsFarFrom(src, 8).map((e, i) => {
-        const bucket = i % 3;
-        const offset = bucket === 0 ? 1 : 0;
-
-        // $FlowFixMe
-        e.coordinates.intensity = bucket * 5 + offset;
-
-        return e;
-    });
+    const far = [
+        randomEmotionWithCoordinates({ intensity: 1, polar: src.coordinates.polar + 30}),
+        randomEmotionWithCoordinates({ intensity: 5, polar: src.coordinates.polar - 30}),
+        randomEmotionWithCoordinates({ intensity: 10, polar: src.coordinates.polar - 45}),
+    ];
 
     // $FlowFixMe
     const service = new ReferencePointService([...close, ...far, src]);
@@ -56,36 +48,3 @@ it('chooses reference points closest to the answer emotion', () => {
     expect(refPoints).not.toEqual(expect.arrayContaining(far));
 });
 
-function emotionsCloseTo(src, n) {
-    const emotions = [];
-    for (let i = -n / 2; i < n / 2; i++) {
-        if (i === 0) continue;
-
-        const e = randomEmotionWithCoordinates();
-        emotions.push(e);
-
-        // $FlowFixMe
-        e.coordinates.polar = wrap(src.coordinates.polar + i, 360);
-    }
-
-    return emotions;
-}
-
-function emotionsFarFrom(src, n) {
-    const emotions = [];
-    for (let i = -n / 2; i < n / 2; i++) {
-        if (i === 0) continue;
-
-        const e = randomEmotionWithCoordinates();
-        emotions.push(e);
-
-        // $FlowFixMe
-        e.coordinates.polar = wrap(src.coordinates.polar + (i * 5 + 100), 360);
-    }
-
-    return emotions;
-}
-
-function wrap(n, maxValue) {
-    return (n % maxValue + maxValue) % maxValue;
-}

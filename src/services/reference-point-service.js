@@ -1,7 +1,7 @@
 // @flow
 
 import { log } from '../services/logger.js';
-import { intensityToGroup } from '../components/Question.Intensity.js';
+import { intensityToGroup } from '../utils/intensity-utils.js';
 
 import type { Emotion } from '../models/emotion.js';
 
