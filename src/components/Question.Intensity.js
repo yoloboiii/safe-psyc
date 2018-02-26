@@ -6,14 +6,13 @@ import { StandardText } from './Texts.js';
 import { Link } from './Link.js';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { SnapSlider } from './SnapSlider.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 
 // TODO: REMOVE
 import { emotionService } from '../services/emotion-service';
 import { ScatterChart } from './scatter-plot';
-
-import { SnapSlider } from './SnapSlider.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
 import type { Navigation } from '../navigation-actions.js';
@@ -182,7 +181,9 @@ function DebugPlot(props) {
     );
 
     function emotionToDot(e) {
-        const { intensity, polar } = e.coordinates;
+        const { intensity } = e.coordinates;
+        const polar = degreesToRadians(e.coordinates.polar);
+
         const x = intensity * Math.cos(polar);
         const y = intensity * Math.sin(polar);
         return {
@@ -190,5 +191,9 @@ function DebugPlot(props) {
             y,
             label: e.name,
         };
+    }
+
+    function degreesToRadians(degrees) {
+        return degrees * (Math.PI / 180);
     }
 }

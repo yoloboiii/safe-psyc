@@ -25,6 +25,10 @@ export class Emotion {
     intensity(): ?number {
         return this.coordinates ? this.coordinates.intensity : null;
     }
+
+    polarity(): ?number {
+        return this.coordinates ? this.coordinates.polar : null;
+    }
 }
 
 export class EmotionBuilder {
