@@ -20,6 +20,8 @@ import {
     clickWrongAnswerAndDismissOverlay,
 } from '../../tests/question-utils.js';
 
+jest.useFakeTimers();
+
 const defaultProps = {
     backendFacade: {
         registerCorrectAnswer: promiseMock(),
@@ -83,6 +85,7 @@ it('finishes the session if the last question was answered correctly', () => {
         button => button.props.onPress && button.props.onPress()
     );
 
+    jest.runAllTimers();
     expect(sessionFinishedSpy).toHaveBeenCalledTimes(1);
 });
 
@@ -178,6 +181,7 @@ it('calls back with a report when the session is finished', () => {
         }
     }
 
+    jest.runAllTimers();
     expect(onFinishedMock).toHaveBeenCalledWith(report);
 });
 

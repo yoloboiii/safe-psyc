@@ -31,7 +31,7 @@ type State = {
     report: Map<Question, Array<AnswerType>>,
     currentQuestionIndex: number,
     totalNumberOfQuestions: number,
-    isFinished: boolean,
+    finished: 'no' | 'soon' | 'yes',
 };
 
 const questionContainer = {
@@ -40,6 +40,14 @@ const questionContainer = {
 const backgroundStyle = {
     backgroundColor: constants.notReallyWhite,
     flex: 1,
+};
+const topRow = {
+    flexDirection: 'row',
+    paddingHorizontal: constants.space,
+    paddingTop: constants.space,
+};
+const abortContainer = {
+    paddingRight: constants.space,
 };
 export class Session extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -51,6 +59,12 @@ export class Session extends React.Component<Props, State> {
         this.setState(this._propsToState(newProps));
     }
 
+    componentWillUnmount() {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+    }
+
     _propsToState(props) {
         const questions = new QuestionCollection(props.questions);
         return {
@@ -59,7 +73,7 @@ export class Session extends React.Component<Props, State> {
             report: (new Map(): Map<Question, Array<AnswerType>>),
             currentQuestionIndex: 1,
             totalNumberOfQuestions: questions.size(),
-            isFinished: false,
+            finished: 'no',
         };
     }
 
@@ -72,8 +86,17 @@ export class Session extends React.Component<Props, State> {
 
         const isLastQuestion = this.state.questions.size() === 1;
         if (isLastQuestion) {
-            this.props.onSessionFinished(this.state.report);
-            this.setState({ isFinished: true });
+            this.setState({
+                finished: 'soon',
+            }, () => {
+                this.timeout = setTimeout(() => {
+                    this.setState({ finished: 'yes' }, () => {
+                        this.props.onSessionFinished(this.state.report);
+                    });
+                }, 750);
+            });
+
+
         } else {
             this._nextQuestion();
         }
@@ -163,23 +186,29 @@ export class Session extends React.Component<Props, State> {
     }
 
     _renderContents() {
-        if (this.state.questions.isEmpty()) {
+        if (this.state.questions.isEmpty() && this.state.finished !== 'soon') {
             return <StandardText>No question in session</StandardText>;
-        } else if (this.state.isFinished) {
+        } else if (this.state.finished === 'yes') {
             return <StandardText>Session finished!</StandardText>;
         } else {
+            const questionIndex = this.state.finished === 'soon'
+                ? this.state.currentQuestionIndex + 1
+                : this.state.currentQuestionIndex;
+
             const currentQuestion = this.state.questions.peek();
 
             return (
                 <View style={questionContainer}>
-                    <AbortSessionButton
-                        navigation={this.props.navigation}
-                    />
+                    <View style={topRow}>
+                        <AbortSessionButton
+                            navigation={this.props.navigation}
+                        />
 
-                    <QuestionProgress
-                        current={this.state.currentQuestionIndex}
-                        total={this.state.totalNumberOfQuestions}
-                    />
+                        <QuestionProgress
+                            current={questionIndex}
+                            total={this.state.totalNumberOfQuestions}
+                        />
+                    </View>
 
                     <VerticalSpace />
 
@@ -197,8 +226,21 @@ export class Session extends React.Component<Props, State> {
 
 function AbortSessionButton(props) {
     const { navigation } = props;
-    return <TouchableOpacity onPress={() => resetToHome(navigation)}>
-        <StandardText>x</StandardText>
+
+    // $FlowFixMe
+    const closeImage = require('../../images/close.png');
+
+    return <TouchableOpacity
+        style={abortContainer}
+        onPress={() => resetToHome(navigation)} >
+
+        <Image
+            source={closeImage}
+            style={{ tintColor: constants.primaryColor }}
+            width={3 * constants.space}
+            height={3 * constants.space}
+
+        />
     </TouchableOpacity>
 }
 
