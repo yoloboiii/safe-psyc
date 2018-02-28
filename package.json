@@ -32,12 +32,12 @@
     "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-native": "^0.53.3",
-    "react-native-firebase": "^3.2.5",
+    "react-native-firebase": "^3.2.7",
     "react-native-hyperlink": "^0.0.12",
     "react-native-progress": "^3.4.0",
     "react-native-swiper": "^1.5.13",
     "react-native-textinput-effects": "^0.4.2",
-    "react-navigation": "^1.1.2",
+    "react-navigation": "^1.2.1",
     "sprintf-js": "^1.1.1"
   }
 }
