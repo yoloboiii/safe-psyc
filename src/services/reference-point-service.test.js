@@ -25,19 +25,20 @@ it("doesn't include the correct answer in the reference points", () => {
 
 it('chooses reference points closest to the answer emotion', () => {
     const src = randomEmotionWithCoordinates();
+    const polar = 0;
     // $FlowFixMe
-    src.coordinates.polar = 0;
+    src.coordinates.polar = polar;
 
     const close = [
-        randomEmotionWithCoordinates({ intensity: 1, polar: src.coordinates.polar + 15}),
-        randomEmotionWithCoordinates({ intensity: 5, polar: src.coordinates.polar}),
-        randomEmotionWithCoordinates({ intensity: 10, polar: src.coordinates.polar - 15}),
+        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 15}),
+        randomEmotionWithCoordinates({ intensity: 5, polar: polar}),
+        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 15}),
     ];
 
     const far = [
-        randomEmotionWithCoordinates({ intensity: 1, polar: src.coordinates.polar + 30}),
-        randomEmotionWithCoordinates({ intensity: 5, polar: src.coordinates.polar - 30}),
-        randomEmotionWithCoordinates({ intensity: 10, polar: src.coordinates.polar - 45}),
+        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 30}),
+        randomEmotionWithCoordinates({ intensity: 5, polar: polar - 30}),
+        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 45}),
     ];
 
     // $FlowFixMe

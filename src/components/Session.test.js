@@ -299,7 +299,8 @@ it('aborts the session when the abort confirm is tapped', () => {
     let touchable = findChildren(abortButton, TouchableOpacity)[0];
     touchable.props.onPress();
 
-    abortYes.onPress();
+    expect(abortYes).not.toBeNull();
+    abortYes && abortYes.onPress();
 
     expect(props.navigation.dispatch).toHaveResetTo('Home');
 });

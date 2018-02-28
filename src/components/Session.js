@@ -50,6 +50,8 @@ const abortContainer = {
     paddingRight: constants.space,
 };
 export class Session extends React.Component<Props, State> {
+    timeout: ?TimeoutID;
+
     constructor(props: Props) {
         super(props);
         this.state = this._propsToState(props);
@@ -224,7 +226,7 @@ export class Session extends React.Component<Props, State> {
     }
 }
 
-export function AbortSessionButton(props) {
+export function AbortSessionButton(props: { navigation: Navigation<*> }) {
     const { navigation } = props;
 
     // $FlowFixMe

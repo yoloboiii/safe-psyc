@@ -1,6 +1,6 @@
 // @flow
 
-export function intensityToGroup(intensity) {
+export function intensityToGroup(intensity: number) {
     const quotient = Math.floor(intensity / 2);
     const remainder = intensity % 2;
 
