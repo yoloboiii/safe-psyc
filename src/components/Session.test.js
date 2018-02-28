@@ -1,9 +1,15 @@
 // @flow
 
+jest.useFakeTimers();
+jest.mock('BackHandler', () => {
+    return require('react-native/Libraries/Utilities/__mocks__/BackHandler');
+});
+
 import React from 'react';
+import { Button, TouchableOpacity, Alert, BackHandler } from 'react-native';
+
 import { Session, AbortSessionButton } from './Session.js';
 import { answerService } from '../services/answer-service.js';
-import { Button, TouchableOpacity, Alert } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { QuestionProgress } from './QuestionProgress.js';
 
@@ -19,8 +25,6 @@ import {
     clickAnswerAndDismissOverlay,
     clickWrongAnswerAndDismissOverlay,
 } from '../../tests/question-utils.js';
-
-jest.useFakeTimers();
 
 const defaultProps = {
     questions: randomQuestions(5),
@@ -275,6 +279,21 @@ it('has an abort button that asks to abort the session when tapped', () => {
     const touchable = findChildren(abortButton, TouchableOpacity)[0];
 
     touchable.props.onPress();
+    expect(Alert.alert).toHaveBeenCalledWith(
+        'Abort session?',
+        expect.anything(),
+        expect.anything(),
+        { cancelable: true }
+    );
+});
+
+it('ask to abort when the back button is pressed', () => {
+    Alert.alert = jest.fn();
+
+    const component = render(Session, {}, defaultProps);
+
+    BackHandler.mockPressBack();
+
     expect(Alert.alert).toHaveBeenCalledWith(
         'Abort session?',
         expect.anything(),

@@ -1,7 +1,14 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import {
+    View,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    Alert,
+    BackHandler,
+} from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -61,10 +68,37 @@ export class Session extends React.Component<Props, State> {
         this.setState(this._propsToState(newProps));
     }
 
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this._askAbort);
+    }
+
+    // Needs to be an anonymous function for removeEventListener to
+    // find the correct reference
+    _askAbort = () => {
+        Alert.alert(
+            'Abort session?',
+            'Answers are saved, but the progress is lost',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => resetToHome(this.props.navigation),
+                },
+                { text: 'No', style: 'cancel' },
+            ],
+            {
+                cancelable: true,
+            }
+        );
+
+        return true;
+    };
+
     componentWillUnmount() {
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
+
+        BackHandler.removeEventListener('hardwareBackPress', this._askAbort);
     }
 
     _propsToState(props) {
@@ -204,9 +238,7 @@ export class Session extends React.Component<Props, State> {
             return (
                 <View style={questionContainer}>
                     <View style={topRow}>
-                        <AbortSessionButton
-                            navigation={this.props.navigation}
-                        />
+                        <AbortSessionButton onPress={this._askAbort} />
 
                         <QuestionProgress
                             current={questionIndex}
@@ -228,14 +260,12 @@ export class Session extends React.Component<Props, State> {
     }
 }
 
-export function AbortSessionButton(props: { navigation: Navigation<*> }) {
-    const { navigation } = props;
-
+export function AbortSessionButton(props: { onPress: () => * }) {
     // $FlowFixMe
     const closeImage = require('../../images/close.png');
 
     return (
-        <TouchableOpacity style={abortContainer} onPress={showAbortAlert}>
+        <TouchableOpacity style={abortContainer} onPress={props.onPress}>
             <Image
                 source={closeImage}
                 style={{ tintColor: constants.primaryColor }}
@@ -244,20 +274,6 @@ export function AbortSessionButton(props: { navigation: Navigation<*> }) {
             />
         </TouchableOpacity>
     );
-
-    function showAbortAlert() {
-        Alert.alert(
-            'Abort session?',
-            'Answers are saved, but the progress is lost',
-            [
-                { text: 'Yes', onPress: () => resetToHome(navigation) },
-                { text: 'No', style: 'cancel' },
-            ],
-            {
-                cancelable: true,
-            }
-        );
-    }
 }
 
 class QuestionCollection {
