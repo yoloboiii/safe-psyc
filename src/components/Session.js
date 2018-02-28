@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -232,7 +232,7 @@ export function AbortSessionButton(props) {
 
     return <TouchableOpacity
         style={abortContainer}
-        onPress={() => resetToHome(navigation)} >
+        onPress={showAbortAlert} >
 
         <Image
             source={closeImage}
@@ -242,6 +242,20 @@ export function AbortSessionButton(props) {
 
         />
     </TouchableOpacity>
+
+    function showAbortAlert() {
+        Alert.alert(
+            'Abort session?',
+            'Answers are saved, but the progress is lost',
+            [
+                { text: 'Yes', onPress: () => resetToHome(navigation) },
+                { text: 'No', style: 'cancel' },
+            ],
+            {
+                cancelable: true,
+            },
+        );
+    }
 }
 
 class QuestionCollection {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Session, AbortSessionButton } from './Session.js';
 import { answerService } from '../services/answer-service.js';
-import { Button, TouchableOpacity } from 'react-native';
+import { Button, TouchableOpacity, Alert } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { QuestionProgress } from './QuestionProgress.js';
 
@@ -23,6 +23,7 @@ import {
 jest.useFakeTimers();
 
 const defaultProps = {
+    questions: randomQuestions(5),
     backendFacade: {
         registerCorrectAnswer: promiseMock(),
         registerIncorrectAnswer: promiseMock(),
@@ -264,21 +265,42 @@ it('invokes the backend facade on wrong answers', () => {
     );
 });
 
-it('has an abort button that aborts the session when tapped', () => {
-    const props = {
-        questions: randomQuestions(5),
-        navigation: {
-            dispatch: jest.fn(),
-        },
-    };
-    const component = render(Session, props, defaultProps);
+it('has an abort button that asks to abort the session when tapped', () => {
+    Alert.alert = jest.fn();
 
+    const component = render(Session, {}, defaultProps);
     expect(component).toHaveChild(AbortSessionButton);
 
     const abortButton = findChildren(component, AbortSessionButton)[0];
     const touchable = findChildren(abortButton, TouchableOpacity)[0];
 
     touchable.props.onPress();
+    expect(Alert.alert).toHaveBeenCalledWith(
+        'Abort session?',
+        expect.anything(),
+        expect.anything(),
+        { cancelable: true },
+    );
+});
+
+it('aborts the session when the abort confirm is tapped', () => {
+    let abortYes = null;
+    Alert.alert = (_1, _2, buttons) => {
+        abortYes = buttons.find(b => b.text === 'Yes');
+    };
+
+    const props = {
+        navigation: {
+            dispatch: jest.fn(),
+        },
+    };
+    const component = render(Session, props, defaultProps);
+    const abortButton = findChildren(component, AbortSessionButton)[0];
+    let touchable = findChildren(abortButton, TouchableOpacity)[0];
+    touchable.props.onPress();
+
+    abortYes.onPress();
+
     expect(props.navigation.dispatch).toHaveResetTo('Home');
 });
 
