@@ -36,10 +36,11 @@ it('shows 100% progress after the last question is answered', () => {
 function getProgress(component): number {
     const progressBars = findChildren(component, Progress.Bar);
     if (progressBars.length != 1) {
-        throw new Error('Expected exactly one progress bar, found ' + progressBars.length);
+        throw new Error(
+            'Expected exactly one progress bar, found ' + progressBars.length
+        );
     }
 
     const progressBar = progressBars[0];
     return progressBar.props.progress;
 }
-

@@ -30,15 +30,15 @@ it('chooses reference points closest to the answer emotion', () => {
     src.coordinates.polar = polar;
 
     const close = [
-        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 15}),
-        randomEmotionWithCoordinates({ intensity: 5, polar: polar}),
-        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 15}),
+        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 15 }),
+        randomEmotionWithCoordinates({ intensity: 5, polar: polar }),
+        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 15 }),
     ];
 
     const far = [
-        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 30}),
-        randomEmotionWithCoordinates({ intensity: 5, polar: polar - 30}),
-        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 45}),
+        randomEmotionWithCoordinates({ intensity: 1, polar: polar + 30 }),
+        randomEmotionWithCoordinates({ intensity: 5, polar: polar - 30 }),
+        randomEmotionWithCoordinates({ intensity: 10, polar: polar - 45 }),
     ];
 
     // $FlowFixMe
@@ -48,4 +48,3 @@ it('chooses reference points closest to the answer emotion', () => {
     expect(refPoints).toEqual(expect.arrayContaining(close));
     expect(refPoints).not.toEqual(expect.arrayContaining(far));
 });
-

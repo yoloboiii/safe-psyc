@@ -6,4 +6,3 @@ export function intensityToGroup(intensity: number) {
 
     return Math.min(5, quotient + remainder);
 }
-

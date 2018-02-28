@@ -17,7 +17,10 @@ export class ReferencePointService {
 
         const { coordinates: refEmotionCoords } = emotion;
         if (!refEmotionCoords) {
-            log.warn('Tried to get reference points to an emotion without coordinates, ', emotion.name);
+            log.warn(
+                'Tried to get reference points to an emotion without coordinates, ',
+                emotion.name
+            );
             return refPoints;
         }
 
@@ -27,7 +30,9 @@ export class ReferencePointService {
             const { coordinates: otherCoords } = e;
             if (!otherCoords) continue;
 
-            const distance = Math.abs(refEmotionCoords.polar - otherCoords.polar);
+            const distance = Math.abs(
+                refEmotionCoords.polar - otherCoords.polar
+            );
             const isCloseEnough = distance <= 15;
 
             if (isCloseEnough) {

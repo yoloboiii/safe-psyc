@@ -22,7 +22,6 @@ export function QuestionProgress(props: Props) {
                 width={null}
                 height={constants.space}
                 borderRadius={constants.mediumRadius}
-
                 animated={true}
                 useNativeDriver={true}
             />

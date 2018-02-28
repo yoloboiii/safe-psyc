@@ -43,10 +43,13 @@ export function Link(props: Props) {
 
     const touchable = (
         <TouchableOpacity onPress={onLinkPress} style={touchableStyle}>
-            <StandardText style={{
-
-                color: constants.notReallyWhite,
-            }}>{linkText}</StandardText>
+            <StandardText
+                style={{
+                    color: constants.notReallyWhite,
+                }}
+            >
+                {linkText}
+            </StandardText>
         </TouchableOpacity>
     );
 

@@ -279,7 +279,7 @@ it('has an abort button that asks to abort the session when tapped', () => {
         'Abort session?',
         expect.anything(),
         expect.anything(),
-        { cancelable: true },
+        { cancelable: true }
     );
 });
 

@@ -88,17 +88,18 @@ export class Session extends React.Component<Props, State> {
 
         const isLastQuestion = this.state.questions.size() === 1;
         if (isLastQuestion) {
-            this.setState({
-                finished: 'soon',
-            }, () => {
-                this.timeout = setTimeout(() => {
-                    this.setState({ finished: 'yes' }, () => {
-                        this.props.onSessionFinished(this.state.report);
-                    });
-                }, 750);
-            });
-
-
+            this.setState(
+                {
+                    finished: 'soon',
+                },
+                () => {
+                    this.timeout = setTimeout(() => {
+                        this.setState({ finished: 'yes' }, () => {
+                            this.props.onSessionFinished(this.state.report);
+                        });
+                    }, 750);
+                }
+            );
         } else {
             this._nextQuestion();
         }
@@ -193,9 +194,10 @@ export class Session extends React.Component<Props, State> {
         } else if (this.state.finished === 'yes') {
             return <StandardText>Session finished!</StandardText>;
         } else {
-            const questionIndex = this.state.finished === 'soon'
-                ? this.state.currentQuestionIndex + 1
-                : this.state.currentQuestionIndex;
+            const questionIndex =
+                this.state.finished === 'soon'
+                    ? this.state.currentQuestionIndex + 1
+                    : this.state.currentQuestionIndex;
 
             const currentQuestion = this.state.questions.peek();
 
@@ -232,18 +234,16 @@ export function AbortSessionButton(props: { navigation: Navigation<*> }) {
     // $FlowFixMe
     const closeImage = require('../../images/close.png');
 
-    return <TouchableOpacity
-        style={abortContainer}
-        onPress={showAbortAlert} >
-
-        <Image
-            source={closeImage}
-            style={{ tintColor: constants.primaryColor }}
-            width={3 * constants.space}
-            height={3 * constants.space}
-
-        />
-    </TouchableOpacity>
+    return (
+        <TouchableOpacity style={abortContainer} onPress={showAbortAlert}>
+            <Image
+                source={closeImage}
+                style={{ tintColor: constants.primaryColor }}
+                width={3 * constants.space}
+                height={3 * constants.space}
+            />
+        </TouchableOpacity>
+    );
 
     function showAbortAlert() {
         Alert.alert(
@@ -255,7 +255,7 @@ export function AbortSessionButton(props: { navigation: Navigation<*> }) {
             ],
             {
                 cancelable: true,
-            },
+            }
         );
     }
 }

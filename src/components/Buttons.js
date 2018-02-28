@@ -2,7 +2,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, TouchableOpacity, Text, Button } from 'react-native';
+import {
+    View,
+    TouchableHighlight,
+    TouchableOpacity,
+    Text,
+    Button,
+} from 'react-native';
 import { constants } from '../styles/constants.js';
 
 const largeTextButtonStyle = {
@@ -24,7 +30,7 @@ const standardButtonDefaultStyles = {
         textAlign: 'center',
         padding: constants.space,
     },
-}
+};
 type StandardButtonProps = {
     onPress: () => *,
     title: string,
@@ -34,31 +40,38 @@ type StandardButtonProps = {
 type StandardButtonContext = {
     buttonContainerStyle?: Object,
     buttonTextStyle?: Object,
-}
-export function StandardButton(props: StandardButtonProps, context: StandardButtonContext) {
+};
+export function StandardButton(
+    props: StandardButtonProps,
+    context: StandardButtonContext
+) {
     const { title, containerStyle, textStyle, ...restProps } = props;
 
-    return <TouchableOpacity
-        style={[
+    return (
+        <TouchableOpacity
+            style={[
                 standardButtonDefaultStyles.container,
                 context.buttonContainerStyle,
                 containerStyle,
             ]}
-            {...restProps}>
-
-            <Text style={[
-                standardButtonDefaultStyles.text,
-                context.buttonTextStyle,
-                textStyle,
-            ]}>
+            {...restProps}
+        >
+            <Text
+                style={[
+                    standardButtonDefaultStyles.text,
+                    context.buttonTextStyle,
+                    textStyle,
+                ]}
+            >
                 {title}
             </Text>
-    </TouchableOpacity>
+        </TouchableOpacity>
+    );
 }
 StandardButton.contextTypes = {
     buttonContainerStyle: PropTypes.object,
     buttonTextStyle: PropTypes.object,
-}
+};
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////

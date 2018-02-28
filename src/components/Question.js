@@ -202,9 +202,7 @@ export type SpecificOverlayProps<T> = {
     navigation: Navigation<{}>,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
-    const Overlay = props.answeredCorrectly
-        ? CorrectOverlay
-        : WrongOverlay
+    const Overlay = props.answeredCorrectly ? CorrectOverlay : WrongOverlay;
 
     return (
         <Overlay>
@@ -216,7 +214,6 @@ export function ResultOverlay(props: ResultOverlayProps) {
 }
 
 class CorrectOverlay extends React.Component<*, {}> {
-
     getChildContext() {
         return {
             textStyle: {
@@ -248,7 +245,6 @@ CorrectOverlay.childContextTypes = {
 };
 
 class WrongOverlay extends React.Component<*, {}> {
-
     getChildContext() {
         return {
             textStyle: {

@@ -17,7 +17,12 @@ type Context = {
 export function StandardText(props: Props, context: Context) {
     const { style, ...restProps } = props;
 
-    const actualStyle = Object.assign({}, standardDefaultStyle, context.textStyle, style);
+    const actualStyle = Object.assign(
+        {},
+        standardDefaultStyle,
+        context.textStyle,
+        style
+    );
 
     return <Text style={actualStyle} {...restProps} />;
 }
