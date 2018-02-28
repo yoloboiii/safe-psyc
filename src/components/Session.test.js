@@ -1,9 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Session } from './Session.js';
+import { Session, AbortSessionButton } from './Session.js';
 import { answerService } from '../services/answer-service.js';
-import { Button } from 'react-native';
+import { Button, TouchableOpacity } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { QuestionProgress } from './QuestionProgress.js';
 
@@ -262,6 +262,24 @@ it('invokes the backend facade on wrong answers', () => {
         questions[0],
         expect.objectContaining({ name: b.props.title })
     );
+});
+
+it('has an abort button that aborts the session when tapped', () => {
+    const props = {
+        questions: randomQuestions(5),
+        navigation: {
+            dispatch: jest.fn(),
+        },
+    };
+    const component = render(Session, props, defaultProps);
+
+    expect(component).toHaveChild(AbortSessionButton);
+
+    const abortButton = findChildren(component, AbortSessionButton)[0];
+    const touchable = findChildren(abortButton, TouchableOpacity)[0];
+
+    touchable.props.onPress();
+    expect(props.navigation.dispatch).toHaveResetTo('Home');
 });
 
 function promiseMock() {

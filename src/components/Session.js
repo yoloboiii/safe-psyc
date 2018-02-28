@@ -224,7 +224,7 @@ export class Session extends React.Component<Props, State> {
     }
 }
 
-function AbortSessionButton(props) {
+export function AbortSessionButton(props) {
     const { navigation } = props;
 
     // $FlowFixMe
