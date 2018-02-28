@@ -21,7 +21,7 @@ import { randomSessionService } from '../services/random-session-service.js';
 import type { Navigation } from '../navigation-actions.js';
 
 const contentStyle = {
-    paddingTop: statusBarHeight,
+    paddingTop: statusBarHeight + constants.space,
     padding: constants.space,
     flex: 1,
     flexDirection: 'column',
