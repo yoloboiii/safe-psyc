@@ -16,7 +16,7 @@ import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { constants } from '../styles/constants.js';
-import { backendFacade } from '../services/backend.js';
+import { userBackendFacade } from '../services/user-backend.js';
 import {
     onUserLoggedIn,
     onUserRegistered,
@@ -81,7 +81,7 @@ export class LoginScreen extends React.Component<Props, State> {
             loading: 'login',
         });
 
-        backendFacade
+        userBackendFacade
             .login(email, password)
             .then(() => {
                 Keyboard.dismiss();
@@ -102,7 +102,7 @@ export class LoginScreen extends React.Component<Props, State> {
             loading: 'register',
         });
 
-        backendFacade
+        userBackendFacade
             .createNewUser(email, password)
             .then(user => {
                 Keyboard.dismiss();

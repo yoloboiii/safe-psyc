@@ -4,7 +4,7 @@ import { InteractionManager } from 'react-native';
 import * as navActions from './navigation-actions.js';
 import moment from 'moment';
 
-import type { BackendFacade } from './services/backend.js';
+import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
 
 describe('startRandomSession', () => {
     it('navigates to "Session"', done => {
@@ -65,7 +65,7 @@ describe('routeToCurrentFeelingOrHome', () => {
                         });
                     })
                 ),
-        }: any): BackendFacade);
+        }: any): CurrentEmotionBackendFacade);
 
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
@@ -107,7 +107,7 @@ describe('routeToCurrentFeelingOrHome', () => {
                     });
                 })
             ),
-        }: any): BackendFacade);
+        }: any): CurrentEmotionBackendFacade);
 
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };

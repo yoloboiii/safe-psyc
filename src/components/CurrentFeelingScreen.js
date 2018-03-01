@@ -6,7 +6,7 @@ import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { CurrentFeeling } from './CurrentFeeling.js';
 import { emotionService } from '../services/emotion-service.js';
-import { backendFacade } from '../services/backend.js';
+import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 import { resetToHome } from '../navigation-actions.js';
 
 import type { Navigation } from '../navigation-actions.js';
@@ -40,7 +40,7 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
                     .getEmotionPool()
                     .map(e => e.name)
                     .sort()}
-                backendFacade={backendFacade}
+                backendFacade={currentEmotionBackendFacade}
             />
         );
     }

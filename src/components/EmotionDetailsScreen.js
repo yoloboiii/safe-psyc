@@ -4,7 +4,7 @@ import React from 'react';
 import { View, ActivityIndicator, Alert } from 'react-native';
 import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
-import { backendFacade } from '../services/backend.js';
+import { answerBackendFacade } from '../services/answer-backend.js';
 import { log } from '../services/logger.js';
 import { constants } from '../styles/constants.js';
 
@@ -45,7 +45,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                 loadingState: 'started',
             });
 
-            backendFacade
+            answerBackendFacade
                 .getAnswersTo(emotion)
                 .then(answers => {
                     log.debug(

@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
-import { backendFacade } from '../services/backend.js';
+import { userBackendFacade } from '../services/user-backend.js';
 import { log } from '../services/logger.js';
 import { resetToHome, onUserLoggedOut } from '../navigation-actions.js';
 
@@ -27,9 +27,9 @@ export class LoadingScreen extends React.Component<Props, {}> {
     }
 
     async _startLoading() {
-        const isLoggedIn = await checkIfLoggedIn(backendFacade, this);
+        const isLoggedIn = await checkIfLoggedIn(userBackendFacade, this);
 
-        registerLoginRedirecter(backendFacade, this.props.navigation);
+        registerLoginRedirecter(userBackendFacade, this.props.navigation);
 
         loadConfig();
 

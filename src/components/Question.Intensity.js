@@ -72,8 +72,6 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
                         referencePoints={question.referencePoints}
                         selectedGroup={this.state.lastAnswer}
                     />
-
-                    <DebugPlot question={question} />
                 </View>
 
                 <StandardButton

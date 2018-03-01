@@ -7,10 +7,9 @@ import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { Credits } from './Credits.js';
 import { constants } from '../styles/constants.js';
-import { backendFacade } from '../services/backend.js';
+import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedOut } from '../navigation-actions.js';
 
-import type { BackendFacade } from '../services/backend.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
@@ -22,7 +21,7 @@ export class SettingsScreen extends React.Component<Props, {}> {
     };
 
     render() {
-        const user = backendFacade.getLoggedInUser();
+        const user = userBackendFacade.getLoggedInUser();
         const email = user ? user.email : undefined;
 
         return (
@@ -37,7 +36,7 @@ export class SettingsScreen extends React.Component<Props, {}> {
                     <VerticalSpace />
                     <StandardButton
                         onPress={() =>
-                            backendFacade
+                            userBackendFacade
                                 .logOut()
                                 .then(() =>
                                     onUserLoggedOut(this.props.navigation)

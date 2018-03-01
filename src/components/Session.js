@@ -19,7 +19,7 @@ import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 import { resetToHome } from '../navigation-actions.js';
 
-import type { BackendFacade } from '../services/backend.js';
+import type { AnswerBackendFacade } from '../services/answer-backend.js';
 import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
@@ -27,7 +27,7 @@ import type { Report } from './SessionReport.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
-    backendFacade: BackendFacade,
+    backendFacade: AnswerBackendFacade,
     questions: Array<Question>,
     onSessionFinished: Report => void,
     navigation: Navigation<{}>,

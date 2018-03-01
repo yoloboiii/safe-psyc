@@ -8,7 +8,7 @@ import { randomSessionService } from './services/random-session-service.js';
 import { log } from './services/logger.js';
 
 import type { Emotion } from './models/emotion.js';
-import type { BackendFacade } from './services/backend.js';
+import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
 import type { Report } from './components/SessionReport.js';
 
 export type Navigation<P> = {
@@ -73,7 +73,7 @@ export function navigateToSessionReport(
 
 export function routeToCurrentFeelingOrHome(
     navigation: Navigation<*>,
-    backend: BackendFacade
+    backend: CurrentEmotionBackendFacade
 ): Promise<*> {
     return backend
         .getLastEmotionAnswer()

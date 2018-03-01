@@ -8,14 +8,14 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
-import type { BackendFacade } from '../services/backend.js';
+import type { CurrentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 
 const buttonRowStyle = {
     flexDirection: 'row',
     justifyContent: 'space-between',
 };
 type Props = {
-    backendFacade: BackendFacade,
+    backendFacade: CurrentEmotionBackendFacade,
     emotionWords: Array<string>,
     onAnswered: () => void,
     onSkip?: () => void,

@@ -8,7 +8,7 @@ import { NavigationActions } from 'react-navigation';
 import { LargeButton, StandardButton } from './Buttons.js';
 import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { backendFacade } from '../services/backend.js';
+import { userBackendFacade } from '../services/user-backend.js';
 import { constants } from '../styles/constants.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -41,7 +41,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
     }
 
     _sendResetEmail() {
-        backendFacade
+        userBackendFacade
             .resetPassword(this.state.email)
             .then(() => {
                 this.setState({

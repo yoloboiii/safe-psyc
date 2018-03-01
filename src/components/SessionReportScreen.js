@@ -11,7 +11,7 @@ import {
     paramsOr,
     routeToCurrentFeelingOrHome,
 } from '../navigation-actions.js';
-import { backendFacade } from '../services/backend.js';
+import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 import { constants } from '../styles/constants.js';
 
 import type { Navigation } from '../navigation-actions.js';
@@ -31,7 +31,10 @@ type Props = {
 };
 export class SessionReportScreen extends React.Component<Props, {}> {
     _onDismiss() {
-        routeToCurrentFeelingOrHome(this.props.navigation, backendFacade);
+        routeToCurrentFeelingOrHome(
+            this.props.navigation,
+            currentEmotionBackendFacade
+        );
     }
 
     render() {

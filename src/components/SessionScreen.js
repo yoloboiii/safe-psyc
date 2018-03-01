@@ -8,7 +8,7 @@ import React from 'react';
 import { Text, StatusBar } from 'react-native';
 import { Session } from './Session.js';
 import { navigateToSessionReport } from '../navigation-actions.js';
-import { backendFacade } from '../services/backend.js';
+import { answerBackendFacade } from '../services/answer-backend.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
@@ -37,7 +37,7 @@ export class SessionScreen extends React.Component<Props, {}> {
 
             return (
                 <Session
-                    backendFacade={backendFacade}
+                    backendFacade={answerBackendFacade}
                     questions={navParams.questions}
                     onSessionFinished={report =>
                         navigateToSessionReport(this.props.navigation, report)
