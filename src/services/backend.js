@@ -4,6 +4,7 @@ import moment from 'moment';
 import { firebase } from './firebase.js';
 import { randomSessionService } from './random-session-service.js';
 import { log } from './logger.js';
+import { removeFrom } from '../utils/array-utils.js';
 import type {
     Question,
     AnswerType,
@@ -288,11 +289,22 @@ export class BackendFacade {
             });
     }
 
-    onUserLoggedIn(callback: () => void) {
+    onUserLoggedIn(callback: () => void): () => void {
         onLoggedInListeners.push(callback);
         if (onLoggedInListeners.length === 1) {
             registerAuthListeners();
         }
+
+        return () => {
+            removeFrom(onLoggedInListeners, callback);
+        };
+    }
+
+    onceUserLoggedIn(callback: () => void) {
+        const unregister = this.onUserLoggedIn(() => {
+            callback();
+            unregister();
+        });
     }
 
     onUserLoggedOut(callback: () => void) {

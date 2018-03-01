@@ -1,7 +1,7 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import { RedirectScreen } from './src/components/RedirectScreen.js';
+import { LoadingScreen } from './src/components/LoadingScreen.js';
 import { PitchScreen } from './src/components/PitchScreen.js';
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SettingsScreen } from './src/components/SettingsScreen.js';
@@ -14,8 +14,6 @@ import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 
 import { constants } from './src/styles/constants.js';
-import { backendFacade } from './src/services/backend.js';
-import { onUserLoggedIn, onUserLoggedOut } from './src/navigation-actions.js';
 
 const defaultScreenProps = {
     navigationOptions: {
@@ -27,7 +25,7 @@ const defaultScreenProps = {
 };
 
 const App = StackNavigator({
-    Redirect: { screen: RedirectScreen },
+    Loading: { screen: LoadingScreen },
     Pitch: { screen: PitchScreen },
     Login: { screen: LoginScreen },
     Home: { screen: HomeScreen },

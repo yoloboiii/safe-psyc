@@ -1,0 +1,107 @@
+// @flow
+
+import React from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { ImageBackground } from './ImageBackground.js';
+import { backendFacade } from '../services/backend.js';
+import { log } from '../services/logger.js';
+import { resetToHome, onUserLoggedOut } from '../navigation-actions.js';
+
+import type { Navigation } from '../navigation-actions.js';
+
+type Props = {
+    navigation: Navigation<{}>,
+};
+export class LoadingScreen extends React.Component<Props, {}> {
+    static navigationOptions = {
+        header: null,
+    };
+
+    autologinTimeout = null;
+
+    componentDidMount() {
+        this._startLoading().catch(e => {
+            log.error('Failed loading the app, %s', e);
+            // TODO: Show error message
+        });
+    }
+
+    async _startLoading() {
+        const isLoggedIn = await checkIfLoggedIn(backendFacade, this);
+
+        registerLoginRedirecter(backendFacade, this.props.navigation);
+
+        loadConfig();
+
+        this._redirect(isLoggedIn);
+    }
+
+    _redirect(isLoggedIn) {
+        if (isLoggedIn) {
+            resetToHome(this.props.navigation);
+        } else {
+            onUserLoggedOut(this.props.navigation);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.autologinTimeout) {
+            clearTimeout(this.autologinTimeout);
+        }
+    }
+
+    render() {
+        return (
+            <ImageBackground>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator />
+                </View>
+            </ImageBackground>
+        );
+    }
+}
+
+function checkIfLoggedIn(backend, state): Promise<boolean> {
+    const autologinTimeoutMs = 5000;
+    return new Promise((resolve, reject) => {
+        listenForLoginEvent(resolve);
+        startTimeout(resolve);
+    });
+
+    function listenForLoginEvent(resolve) {
+        backend.onceUserLoggedIn(() => {
+            clearTimer();
+            log.debug('Got logged in event, redirecting to home');
+            resolve(true);
+        });
+    }
+
+    function startTimeout(resolve) {
+        state.autologinTimeout = setTimeout(() => {
+            log.debug(
+                'Timed out waiting for autologin, redirecting to login screen'
+            );
+            resolve(false);
+        }, autologinTimeoutMs);
+    }
+
+    function clearTimer() {
+        if (state.autologinTimeout) {
+            clearTimeout(state.autologinTimeout);
+        }
+    }
+}
+
+function registerLoginRedirecter(backend, navigation) {
+    backend.onUserLoggedIn(() => {
+        resetToHome(navigation);
+    });
+
+    backend.onUserLoggedOut(() => {
+        onUserLoggedOut(navigation);
+    });
+}
+
+function loadConfig() {
+    // TODO
+}
