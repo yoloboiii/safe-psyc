@@ -6,7 +6,7 @@ import { StandardText } from './Texts.js';
 import { SnapSlider } from './SnapSlider.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
-import { intensityToGroup } from './Question.Intensity.js';
+import { intensityToGroup } from '../utils/intensity-utils.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
 
