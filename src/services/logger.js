@@ -29,6 +29,10 @@ export class Logger {
     }
 
     warn(msg: string, ...args: Array<mixed>) {
+        this.warning(msg, ...args);
+    }
+
+    warning(msg: string, ...args: Array<mixed>) {
         this._log(this.local.log, '[WARNING] ' + msg, args);
     }
 

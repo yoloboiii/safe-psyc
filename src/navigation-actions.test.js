@@ -7,32 +7,31 @@ import moment from 'moment';
 import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
 
 describe('startRandomSession', () => {
-    it('navigates to "Session"', done => {
+    it('navigates to "Session"', () => {
         const navigateMock = jest.fn();
 
-        navActions.startRandomSession({
+        return navActions.startRandomSession({
             navigate: navigateMock,
             dispatch: jest.fn(),
-        });
+        })
+            .then( () => {
+                expect(navigateMock).toHaveBeenCalledTimes(1);
+                expect(navigateMock).toHaveBeenCalledWith(
+                    'Session',
+                    expect.anything()
+                );
 
-        checkNextTick(done, () => {
-            expect(navigateMock).toHaveBeenCalledTimes(1);
-            expect(navigateMock).toHaveBeenCalledWith(
-                'Session',
-                expect.anything()
-            );
-        });
+            });
     });
 
-    it('contains 10 questions', done => {
+    it('contains 10 questions', () => {
         const navigateMock = jest.fn();
 
-        navActions.startRandomSession({
+        return navActions.startRandomSession({
             navigate: navigateMock,
             dispatch: jest.fn(),
-        });
+        }).then( () => {
 
-        checkNextTick(done, () => {
             const args = navigateMock.mock.calls[0][1];
             if (!args || !args.questions) {
                 throw 'was not called with 10 questions';

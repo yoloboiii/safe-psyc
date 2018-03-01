@@ -8,7 +8,12 @@ jest.mock('react-native-firebase', () => ({
         database: () => {},
         fabric: {
             crashlytics: () => {},
-        }
+        },
+        config: () => ({
+            getValue: () => Promise.resolve({
+                val: () => {},
+            }),
+        }),
     }),
 }));
 

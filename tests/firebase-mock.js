@@ -34,6 +34,9 @@ const mockObj = {
             },
         };
     },
+    config: () => ({
+        getValue: () => {},
+    }),
 };
 
 export default mockObj;

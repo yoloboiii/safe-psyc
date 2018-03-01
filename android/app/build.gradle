@@ -159,6 +159,8 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:11.0.0"
     implementation "com.google.firebase:firebase-database:11.0.0"
     implementation "com.google.firebase:firebase-perf:11.0.0"
+    implementation "com.google.firebase:firebase-config:11.0.0"
+
 
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true

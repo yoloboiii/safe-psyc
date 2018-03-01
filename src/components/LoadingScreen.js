@@ -4,6 +4,7 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { userBackendFacade } from '../services/user-backend.js';
+import { configBackendFacade } from '../services/config-backend.js';
 import { log } from '../services/logger.js';
 import { resetToHome, onUserLoggedOut } from '../navigation-actions.js';
 
@@ -31,7 +32,7 @@ export class LoadingScreen extends React.Component<Props, {}> {
 
         registerLoginRedirecter(userBackendFacade, this.props.navigation);
 
-        loadConfig();
+        await configBackendFacade.load();
 
         this._redirect(isLoggedIn);
     }
@@ -102,6 +103,3 @@ function registerLoginRedirecter(backend, navigation) {
     });
 }
 
-function loadConfig() {
-    // TODO
-}
