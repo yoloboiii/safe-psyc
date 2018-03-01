@@ -102,4 +102,3 @@ function registerLoginRedirecter(backend, navigation) {
         onUserLoggedOut(navigation);
     });
 }
-

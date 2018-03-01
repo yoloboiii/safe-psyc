@@ -7,6 +7,7 @@ import { SnapSlider } from './SnapSlider.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { intensityToGroup } from '../utils/intensity-utils.js';
+import { log } from '../services/logger.js';
 
 import type { IntensityQuestion } from '../models/questions.js';
 
@@ -30,6 +31,21 @@ export function IntensityQuestionRow(props: Props) {
         });
     }
 
+    const intensity = props.question.correctAnswer.intensity();
+    if (intensity === null || intensity === undefined) {
+        log.warn('The intensity for emotion %s was not set', props.question.correctAnswer.name);
+    }
+
+    const intensityVisialization = intensity
+        ?  <SnapSlider
+                items={items}
+                itemStyle={constants.smallText}
+                value={ intensityToGroup(intensity) - 1 }
+                disabled={true}
+            />
+        : null;
+
+
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View>
@@ -39,15 +55,6 @@ export function IntensityQuestionRow(props: Props) {
                 </StandardText>
             </View>
 
-            <SnapSlider
-                items={items}
-                itemStyle={constants.smallText}
-                value={
-                    intensityToGroup(props.question.correctAnswer.intensity()) -
-                    1
-                }
-                disabled={true}
-            />
 
             <VerticalSpace />
         </TouchableOpacity>

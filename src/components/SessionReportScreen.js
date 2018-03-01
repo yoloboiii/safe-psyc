@@ -48,7 +48,7 @@ export class SessionReportScreen extends React.Component<Props, {}> {
             >
                 <StandardText>
                     Great job! Congratulations on finishing the session, here's
-                    a summary of how it went!
+                    a summary of the emotions you saw!
                 </StandardText>
 
                 <VerticalSpace multiplier={4} />

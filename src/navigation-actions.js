@@ -4,7 +4,7 @@ import { InteractionManager, Alert, AsyncStorage } from 'react-native';
 import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
-import { configBackendFacade } from './services/config-backend.js'
+import { configBackendFacade } from './services/config-backend.js';
 import { randomSessionService } from './services/random-session-service.js';
 import { log } from './services/logger.js';
 
@@ -30,8 +30,9 @@ export function startRandomSession(
     navigation: Navigation<*>,
     onDataLoaded?: () => void
 ): Promise<{}> {
-    return configBackendFacade.getNumberOfQuestionsPerSession()
-        .then( numQuestions => {
+    return configBackendFacade
+        .getNumberOfQuestionsPerSession()
+        .then(numQuestions => {
             return doStartRandomSession(numQuestions, navigation, onDataLoaded);
         });
 }
@@ -39,8 +40,9 @@ export function startRandomSession(
 function doStartRandomSession(numQuestions, navigation, onDataLoaded) {
     return new Promise(resolve => {
         InteractionManager.runAfterInteractions(() => {
-
-            const questions = randomSessionService.getRandomQuestions(numQuestions);
+            const questions = randomSessionService.getRandomQuestions(
+                numQuestions
+            );
             onDataLoaded && onDataLoaded();
             navigation.navigate('Session', {
                 questions: questions,

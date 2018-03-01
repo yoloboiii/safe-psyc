@@ -44,17 +44,19 @@ export class ConfigBackendFacade {
     }
 
     getNumberOfQuestionsPerSession(): Promise<number> {
-        return this._getValue('numQuestionsPerSession')
-            .then(rawNumber => {
-                const n = Number(rawNumber);
-                if (Number.isNaN(n)) {
-                    log.warn("Unable to parse number of questions per session, '%s' was not a number", rawNumber);
+        return this._getValue('numQuestionsPerSession').then(rawNumber => {
+            const n = Number(rawNumber);
+            if (Number.isNaN(n)) {
+                log.warn(
+                    "Unable to parse number of questions per session, '%s' was not a number",
+                    rawNumber
+                );
 
-                    return this._getDefaults().numQuestionsPerSession;
-                }
+                return this._getDefaults().numQuestionsPerSession;
+            }
 
-                return n;
-            });
+            return n;
+        });
     }
 
     _getValue(key: string): Promise<string> {
