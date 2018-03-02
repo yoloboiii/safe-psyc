@@ -17,10 +17,7 @@ describe('startRandomSession', () => {
             })
             .then(() => {
                 expect(navigateMock).toHaveBeenCalledTimes(1);
-                expect(navigateMock).toHaveBeenCalledWith(
-                    'Session',
-                    expect.anything()
-                );
+                expect(navigateMock).toHaveBeenCalledWith('Session', expect.anything());
             });
     });
 
@@ -78,23 +75,17 @@ describe('routeToCurrentFeelingOrHome', () => {
                 const action = dispatchMock.mock.calls[0][0];
 
                 expect(action.index).toEqual(1);
-                expect(action.actions.map(a => a.routeName)).toEqual([
-                    'Home',
-                    'CurrentFeeling',
-                ]);
+                expect(action.actions.map(a => a.routeName)).toEqual(['Home', 'CurrentFeeling']);
             })
             .then(() => {
                 dispatchMock.mockReset();
-                return navActions.routeToCurrentFeelingOrHome(
-                    navigation,
-                    backendFacade
-                );
+                return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade);
             })
             .then(() => {
                 expect(dispatchMock).toHaveBeenCalledTimes(1);
-                expect(
-                    dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)
-                ).not.toContain('CurrentFeeling');
+                expect(dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)).not.toContain(
+                    'CurrentFeeling'
+                );
             });
     });
 
@@ -112,18 +103,14 @@ describe('routeToCurrentFeelingOrHome', () => {
         const dispatchMock = jest.fn();
         const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
 
-        return navActions
-            .routeToCurrentFeelingOrHome(navigation, backendFacade)
-            .then(() => {
-                expect(dispatchMock).toHaveBeenCalled();
-                const params = dispatchMock.mock.calls[0][0].actions
-                    .filter(a => a.routeName === 'CurrentFeeling')
-                    .map(a => a.params)[0];
+        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade).then(() => {
+            expect(dispatchMock).toHaveBeenCalled();
+            const params = dispatchMock.mock.calls[0][0].actions
+                .filter(a => a.routeName === 'CurrentFeeling')
+                .map(a => a.params)[0];
 
-                expect(params).toEqual(
-                    expect.objectContaining({ skippable: true })
-                );
-            });
+            expect(params).toEqual(expect.objectContaining({ skippable: true }));
+        });
     });
 });
 

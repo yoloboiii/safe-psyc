@@ -54,8 +54,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
         const emotionName = emotion.name;
 
         const navigation = this.props.navigation;
-        const onEmotionPress = () =>
-            navigateToEmotionDetails(navigation, emotion);
+        const onEmotionPress = () => navigateToEmotionDetails(navigation, emotion);
 
         return (
             <View style={containerStyle}>
@@ -73,13 +72,10 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
                         selectedGroup={this.state.lastAnswer}
                     />
 
-                    { __DEV__ && <DebugPlot question={question} />}
+                    {__DEV__ && <DebugPlot question={question} />}
                 </View>
 
-                <StandardButton
-                    onPress={this._submit.bind(this)}
-                    title={'Submit'}
-                />
+                <StandardButton onPress={this._submit.bind(this)} title={'Submit'} />
             </View>
         );
     }
@@ -131,19 +127,14 @@ export function IntensityScale(props: ScaleProps) {
 }
 
 export function IntensityQuestionOverlay(props: SpecificOverlayProps<number>) {
-    const text = props.answeredCorrectly
-        ? "That's correct!"
-        : "That's sadly incorrect";
+    const text = props.answeredCorrectly ? "That's correct!" : "That's sadly incorrect";
 
     return <StandardText>{text}</StandardText>;
 }
 
 function DebugPlot(props) {
     const { question } = props;
-    const activeDots = [
-        question.correctAnswer,
-        ...Array.from(question.referencePoints.values()),
-    ];
+    const activeDots = [question.correctAnswer, ...Array.from(question.referencePoints.values())];
     const inactiveDots = emotionService
         .getEmotionPool()
         .filter(e => !!e.coordinates)

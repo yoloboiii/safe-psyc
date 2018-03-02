@@ -16,11 +16,7 @@ it('contains a skip button that navigates to the login screen', () => {
     const navigation = {
         dispatch: dispatchMock,
     };
-    const component = render(
-        PitchScreen,
-        { navigation: navigation },
-        defaultProps
-    );
+    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
 
     clickSkipButton(component);
 
@@ -42,11 +38,7 @@ it('persists the fact that the pitch was skipped', () => {
     };
 
     const navigation = setupMockStorage(storageMock);
-    const component = render(
-        PitchScreen,
-        { navigation: navigation },
-        defaultProps
-    );
+    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
 
     clickSkipButton(component);
 
@@ -60,11 +52,7 @@ it('redirects even if the storing fails', () => {
 
     const navigation = setupMockStorage(storageMock);
     navigation.dispatch = jest.fn();
-    const component = render(
-        PitchScreen,
-        { navigation: navigation },
-        defaultProps
-    );
+    const component = render(PitchScreen, { navigation: navigation }, defaultProps);
 
     clickSkipButton(component);
 

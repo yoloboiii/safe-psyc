@@ -21,28 +21,22 @@ export type Navigation<P> = {
 };
 
 export function paramsOr<T, S>(navigation: Navigation<T>, or: S): T | S {
-    return navigation.state && navigation.state.params
-        ? navigation.state.params
-        : or;
+    return navigation.state && navigation.state.params ? navigation.state.params : or;
 }
 
 export function startRandomSession(
     navigation: Navigation<*>,
     onDataLoaded?: () => void
 ): Promise<{}> {
-    return configBackendFacade
-        .getNumberOfQuestionsPerSession()
-        .then(numQuestions => {
-            return doStartRandomSession(numQuestions, navigation, onDataLoaded);
-        });
+    return configBackendFacade.getNumberOfQuestionsPerSession().then(numQuestions => {
+        return doStartRandomSession(numQuestions, navigation, onDataLoaded);
+    });
 }
 
 function doStartRandomSession(numQuestions, navigation, onDataLoaded) {
     return new Promise(resolve => {
         InteractionManager.runAfterInteractions(() => {
-            const questions = randomSessionService.getRandomQuestions(
-                numQuestions
-            );
+            const questions = randomSessionService.getRandomQuestions(numQuestions);
             onDataLoaded && onDataLoaded();
             navigation.navigate('Session', {
                 questions: questions,
@@ -53,19 +47,13 @@ function doStartRandomSession(numQuestions, navigation, onDataLoaded) {
     });
 }
 
-export function navigateToEmotionDetails(
-    navigation: Navigation<*>,
-    emotion: Emotion
-) {
+export function navigateToEmotionDetails(navigation: Navigation<*>, emotion: Emotion) {
     navigation.navigate('EmotionDetails', {
         emotion: emotion,
     });
 }
 
-export function navigateToSessionReport(
-    navigation: Navigation<*>,
-    report: Report
-) {
+export function navigateToSessionReport(navigation: Navigation<*>, report: Report) {
     navigation.dispatch(
         NavigationActions.reset({
             index: 1,
@@ -107,8 +95,7 @@ export function routeToCurrentFeelingOrHome(
         })
         .then(context => {
             const { haveAlreadyAnswered, neverWantsToBeAsked } = context;
-            const shouldAskHowTheUserIsFeeling =
-                !haveAlreadyAnswered && !neverWantsToBeAsked;
+            const shouldAskHowTheUserIsFeeling = !haveAlreadyAnswered && !neverWantsToBeAsked;
 
             if (shouldAskHowTheUserIsFeeling) {
                 const resetAction = NavigationActions.reset({

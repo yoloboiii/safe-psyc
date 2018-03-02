@@ -14,10 +14,7 @@ it('contains the question text', () => {
     const component = render({ question: question });
 
     expect(component).toHaveChildMatching(child => {
-        return (
-            typeof child === 'string' &&
-            child.indexOf(question.questionText) > -1
-        );
+        return typeof child === 'string' && child.indexOf(question.questionText) > -1;
     });
 });
 

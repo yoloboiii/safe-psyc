@@ -31,9 +31,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const email = props.navigation.state
-            ? props.navigation.state.params.email || ''
-            : '';
+        const email = props.navigation.state ? props.navigation.state.params.email || '' : '';
         this.state = {
             email: email,
             emailSent: false,
@@ -88,10 +86,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
                 />
 
                 <VerticalSpace />
-                <LargeButton
-                    onPress={this._sendResetEmail.bind(this)}
-                    title={'Send reset email'}
-                />
+                <LargeButton onPress={this._sendResetEmail.bind(this)} title={'Send reset email'} />
             </View>
         );
     }

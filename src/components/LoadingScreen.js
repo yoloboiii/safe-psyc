@@ -79,9 +79,7 @@ function checkIfLoggedIn(backend, state): Promise<boolean> {
 
     function startTimeout(resolve) {
         state.autologinTimeout = setTimeout(() => {
-            log.debug(
-                'Timed out waiting for autologin, redirecting to login screen'
-            );
+            log.debug('Timed out waiting for autologin, redirecting to login screen');
             resolve(false);
         }, autologinTimeoutMs);
     }

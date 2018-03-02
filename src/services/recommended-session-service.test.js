@@ -21,12 +21,8 @@ it('gives a higher score for a hard question than an easy question when they wer
         when: when,
     };
 
-    const easyScore = recommendedSessionService._calculateScore([
-        easyDataPoint,
-    ]);
-    const hardScore = recommendedSessionService._calculateScore([
-        hardDataPoint,
-    ]);
+    const easyScore = recommendedSessionService._calculateScore([easyDataPoint]);
+    const hardScore = recommendedSessionService._calculateScore([hardDataPoint]);
 
     // $FlowFixMe
     expect(hardScore).toBeGreaterThan(easyScore);
@@ -51,12 +47,8 @@ it('gives a higher score for an easy question not seen in a long time than a har
         when: recently,
     };
 
-    const easyScore = recommendedSessionService._calculateScore([
-        easyDataPoint,
-    ]);
-    const hardScore = recommendedSessionService._calculateScore([
-        hardDataPoint,
-    ]);
+    const easyScore = recommendedSessionService._calculateScore([easyDataPoint]);
+    const hardScore = recommendedSessionService._calculateScore([hardDataPoint]);
 
     // $FlowFixMe
     expect(easyScore).toBeGreaterThan(hardScore);

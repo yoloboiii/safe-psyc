@@ -52,13 +52,9 @@ export class WelcomeScreen extends React.Component<Props, State> {
             <ImageBackground>
                 <View style={containerStyle}>
                     <View>
-                        <LargeText customStyle={{ alignSelf: 'center' }}>
-                            Welcome!
-                        </LargeText>
+                        <LargeText customStyle={{ alignSelf: 'center' }}>Welcome!</LargeText>
                         <VerticalSpace />
-                        <StandardText>
-                            Successfully registered {username}
-                        </StandardText>
+                        <StandardText>Successfully registered {username}</StandardText>
                     </View>
                     <HeroButton
                         title={"Let's get started!"}

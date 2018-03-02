@@ -7,10 +7,7 @@ import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { SessionReport } from './SessionReport.js';
 
-import {
-    paramsOr,
-    routeToCurrentFeelingOrHome,
-} from '../navigation-actions.js';
+import { paramsOr, routeToCurrentFeelingOrHome } from '../navigation-actions.js';
 import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 import { constants } from '../styles/constants.js';
 
@@ -31,37 +28,24 @@ type Props = {
 };
 export class SessionReportScreen extends React.Component<Props, {}> {
     _onDismiss() {
-        routeToCurrentFeelingOrHome(
-            this.props.navigation,
-            currentEmotionBackendFacade
-        );
+        routeToCurrentFeelingOrHome(this.props.navigation, currentEmotionBackendFacade);
     }
 
     render() {
-        const report = paramsOr(this.props.navigation, { report: new Map() })
-            .report;
+        const report = paramsOr(this.props.navigation, { report: new Map() }).report;
 
         return (
-            <ScrollView
-                style={backgroundStyle}
-                contentContainerStyle={constants.padding}
-            >
+            <ScrollView style={backgroundStyle} contentContainerStyle={constants.padding}>
                 <StandardText>
-                    Great job! Congratulations on finishing the session, here's
-                    a summary of the emotions you saw!
+                    Great job! Congratulations on finishing the session, here's a summary of the
+                    emotions you saw!
                 </StandardText>
 
                 <VerticalSpace multiplier={4} />
-                <SessionReport
-                    report={report}
-                    navigation={this.props.navigation}
-                />
+                <SessionReport report={report} navigation={this.props.navigation} />
                 <VerticalSpace multiplier={4} />
 
-                <StandardButton
-                    title={'Thanks!'}
-                    onPress={this._onDismiss.bind(this)}
-                />
+                <StandardButton title={'Thanks!'} onPress={this._onDismiss.bind(this)} />
             </ScrollView>
         );
     }

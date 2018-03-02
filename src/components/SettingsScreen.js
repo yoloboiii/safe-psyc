@@ -38,9 +38,7 @@ export class SettingsScreen extends React.Component<Props, {}> {
                         onPress={() =>
                             userBackendFacade
                                 .logOut()
-                                .then(() =>
-                                    onUserLoggedOut(this.props.navigation)
-                                )
+                                .then(() => onUserLoggedOut(this.props.navigation))
                         }
                         title={'Log out'}
                     />

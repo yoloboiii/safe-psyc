@@ -30,9 +30,7 @@ export class ReferencePointService {
             const { coordinates: otherCoords } = e;
             if (!otherCoords) continue;
 
-            const distance = Math.abs(
-                refEmotionCoords.polar - otherCoords.polar
-            );
+            const distance = Math.abs(refEmotionCoords.polar - otherCoords.polar);
             const isCloseEnough = distance <= 15;
 
             if (isCloseEnough) {
@@ -48,10 +46,7 @@ export class ReferencePointService {
         const isValid = removeSuperflousPointsAndValidate(refPoints);
 
         if (!isValid) {
-            log.warn(
-                'Did not find enough reference points for %s',
-                emotion.name
-            );
+            log.warn('Did not find enough reference points for %s', emotion.name);
         }
 
         return refPoints;

@@ -5,11 +5,7 @@ import { firebase } from './firebase.js';
 import { log } from './logger.js';
 import { userBackendFacade } from './user-backend.js';
 import { randomSessionService } from './random-session-service.js';
-import type {
-    Question,
-    AnswerType,
-    IncorrectAnswer,
-} from '../models/questions.js';
+import type { Question, AnswerType, IncorrectAnswer } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 
 const db = firebase.database();
@@ -17,14 +13,9 @@ const db = firebase.database();
 export class AnswerBackendFacade {
     registerCorrectAnswer(question: Question): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = userBackendFacade.getUserOrThrow(
-                'registerCorrectAnswer'
-            );
+            const user = userBackendFacade.getUserOrThrow('registerCorrectAnswer');
 
-            log.debug(
-                'Registering correct answer to %j',
-                question.correctAnswer.name
-            );
+            log.debug('Registering correct answer to %j', question.correctAnswer.name);
             const emotion = question.correctAnswer;
             const path = 'user-data/' + user.uid + '/correct-answers';
             const toWrite = {
@@ -37,14 +28,9 @@ export class AnswerBackendFacade {
         });
     }
 
-    registerIncorrectAnswer(
-        question: Question,
-        answer: AnswerType
-    ): Promise<void> {
+    registerIncorrectAnswer(question: Question, answer: AnswerType): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = userBackendFacade.getUserOrThrow(
-                'registerIncorrectAnswer'
-            );
+            const user = userBackendFacade.getUserOrThrow('registerIncorrectAnswer');
 
             const ansString = answer.name || answer.toString();
 
@@ -93,9 +79,7 @@ export class AnswerBackendFacade {
             });
 
         const emotionLookupTable = new Map();
-        randomSessionService
-            .getEmotionPool()
-            .forEach(e => emotionLookupTable.set(e.name, e));
+        randomSessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
         // Get all incorrect answers
         const incorrectPromise = firebase
             .database()

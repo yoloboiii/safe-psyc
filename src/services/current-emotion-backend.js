@@ -13,9 +13,7 @@ type LastEmotionAnswer = {
 export class CurrentEmotionBackendFacade {
     registerCurrentEmotion(emotion: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = userBackendFacade.getUserOrThrow(
-                'registerCurrentEmotion'
-            );
+            const user = userBackendFacade.getUserOrThrow('registerCurrentEmotion');
 
             log.debug('Registering current emotion, %j', emotion);
             const path = 'user-data/' + user.uid + '/emotions';
@@ -35,9 +33,7 @@ export class CurrentEmotionBackendFacade {
         log.debug('Reading last recorded feeling');
 
         return new Promise(resolve => {
-            const user = userBackendFacade.getUserOrThrow(
-                'getLastEmotionAnswer'
-            );
+            const user = userBackendFacade.getUserOrThrow('getLastEmotionAnswer');
 
             firebase
                 .database()
@@ -49,9 +45,7 @@ export class CurrentEmotionBackendFacade {
                     if (firebaseWeirdValue === null) {
                         resolve(null);
                     } else {
-                        const firebaseWeirdKey = Object.keys(
-                            firebaseWeirdValue
-                        )[0];
+                        const firebaseWeirdKey = Object.keys(firebaseWeirdValue)[0];
                         const value = firebaseWeirdValue[firebaseWeirdKey];
 
                         resolve({

@@ -3,10 +3,7 @@
 import { TouchableOpacity } from 'react-native';
 import { Link } from './Link.js';
 import { render } from '../../tests/render-utils.js';
-import {
-    getAllRenderedStrings,
-    findChildren,
-} from '../../tests/component-tree-utils.js';
+import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
 
 const defaultProps = {
     prefix: 'foo',

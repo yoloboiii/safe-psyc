@@ -1,13 +1,7 @@
 // @flow
 
 import React from 'react';
-import {
-    View,
-    Image,
-    ActivityIndicator,
-    TouchableOpacity,
-    Text,
-} from 'react-native';
+import { View, Image, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -50,7 +44,7 @@ export class HomeScreen extends React.Component<Props, State> {
         openSettings(this.props.navigation);
     }
 
-    _startRandomSession() {
+    _startSession() {
         const onNavDataLoaded = () => {
             this.setState({ loading: false });
         };
@@ -63,11 +57,7 @@ export class HomeScreen extends React.Component<Props, State> {
     }
 
     render() {
-        const buttonContent = this.state.loading ? (
-            <ActivityIndicator />
-        ) : (
-            'Start random session'
-        );
+        const buttonContent = this.state.loading ? <ActivityIndicator /> : 'Start session';
 
         // $FlowFixMe
         const cogwheel = require('../../images/settings.png');
@@ -75,13 +65,8 @@ export class HomeScreen extends React.Component<Props, State> {
             <ImageBackground>
                 <View style={contentStyle}>
                     <View style={{ alignItems: 'flex-end' }}>
-                        <TouchableOpacity
-                            onPress={this._openSettings.bind(this)}
-                        >
-                            <Image
-                                style={{ width: 40, height: 40 }}
-                                source={cogwheel}
-                            />
+                        <TouchableOpacity onPress={this._openSettings.bind(this)}>
+                            <Image style={{ width: 40, height: 40 }} source={cogwheel} />
                         </TouchableOpacity>
                     </View>
                     <View>
@@ -99,15 +84,10 @@ export class HomeScreen extends React.Component<Props, State> {
                         <VerticalSpace />
                         <HeroButton
                             title={'How are you feeling right now? '}
-                            onPress={() =>
-                                this.props.navigation.navigate('CurrentFeeling')
-                            }
+                            onPress={() => this.props.navigation.navigate('CurrentFeeling')}
                         />
                         <VerticalSpace />
-                        <HeroButton
-                            title={buttonContent}
-                            onPress={this._startRandomSession.bind(this)}
-                        />
+                        <HeroButton title={buttonContent} onPress={this._startSession.bind(this)} />
                     </View>
                 </View>
             </ImageBackground>

@@ -6,10 +6,7 @@ import { Button, View, StyleSheet } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
-import {
-    IntensityQuestionComponent,
-    IntensityQuestionOverlay,
-} from './Question.Intensity.js';
+import { IntensityQuestionComponent, IntensityQuestionOverlay } from './Question.Intensity.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
@@ -79,9 +76,7 @@ export class QuestionComponent extends React.Component<Props, State> {
         }
 
         const answeredCorrectly = this.state.currentAnswerState === 'CORRECT';
-        answeredCorrectly
-            ? this.props.onCorrectAnswer()
-            : this.props.onWrongAnswer(answer);
+        answeredCorrectly ? this.props.onCorrectAnswer() : this.props.onWrongAnswer(answer);
     }
 
     render() {
@@ -141,17 +136,13 @@ export class QuestionComponent extends React.Component<Props, State> {
             case 'WRONG':
                 const answer = this.state.currentAnswer;
                 if (!answer) {
-                    log.error(
-                        'Tried to render the resultoverlay with a null answer. Bat country!'
-                    );
+                    log.error('Tried to render the resultoverlay with a null answer. Bat country!');
                     return;
                 }
 
                 return (
                     <ResultOverlay
-                        answeredCorrectly={
-                            this.state.currentAnswerState === 'CORRECT'
-                        }
+                        answeredCorrectly={this.state.currentAnswerState === 'CORRECT'}
                         answer={answer}
                         question={this.props.question}
                         onDismiss={this._questionFinished.bind(this)}
@@ -231,11 +222,7 @@ class CorrectOverlay extends React.Component<*, {}> {
 
     render() {
         const style = resultOverlayStyleSheet.correct;
-        return (
-            <View style={[resultOverlayStyleSheet.root, style]}>
-                {this.props.children}
-            </View>
-        );
+        return <View style={[resultOverlayStyleSheet.root, style]}>{this.props.children}</View>;
     }
 }
 CorrectOverlay.childContextTypes = {
@@ -263,11 +250,7 @@ class WrongOverlay extends React.Component<*, {}> {
     render() {
         const style = resultOverlayStyleSheet.wrong;
 
-        return (
-            <View style={[resultOverlayStyleSheet.root, style]}>
-                {this.props.children}
-            </View>
-        );
+        return <View style={[resultOverlayStyleSheet.root, style]}>{this.props.children}</View>;
     }
 }
 WrongOverlay.childContextTypes = CorrectOverlay.childContextTypes;
@@ -275,9 +258,7 @@ WrongOverlay.childContextTypes = CorrectOverlay.childContextTypes;
 function QuestionSpecificOverlay(props: ResultOverlayProps) {
     if (props.question.type === 'eye-question') {
         if (typeof props.answer === 'number') {
-            throw new Error(
-                'Attempted to render EyeQuestionOverlay with a number as answer'
-            );
+            throw new Error('Attempted to render EyeQuestionOverlay with a number as answer');
         }
 
         return (

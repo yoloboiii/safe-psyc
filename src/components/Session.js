@@ -1,14 +1,7 @@
 // @flow
 
 import React from 'react';
-import {
-    View,
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    Alert,
-    BackHandler,
-} from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import { QuestionComponent } from './Question.js';
 import { SessionReport } from './SessionReport.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -151,17 +144,10 @@ export class Session extends React.Component<Props, State> {
         this.props.backendFacade
             .registerCorrectAnswer(currentQ)
             .then(() => {
-                log.debug(
-                    'Correct answer to %j saved',
-                    currentQ.correctAnswer.name
-                );
+                log.debug('Correct answer to %j saved', currentQ.correctAnswer.name);
             })
             .catch(e => {
-                log.error(
-                    'Failed saving correct answer to %j: %j',
-                    currentQ.correctAnswer.name,
-                    e
-                );
+                log.error('Failed saving correct answer to %j: %j', currentQ.correctAnswer.name, e);
             });
     }
 
@@ -204,10 +190,7 @@ export class Session extends React.Component<Props, State> {
         this.props.backendFacade
             .registerIncorrectAnswer(currentQ, answer)
             .then(() => {
-                log.debug(
-                    'Incorrect answer to %j saved',
-                    currentQ.correctAnswer.name
-                );
+                log.debug('Incorrect answer to %j saved', currentQ.correctAnswer.name);
             })
             .catch(e => {
                 log.error(

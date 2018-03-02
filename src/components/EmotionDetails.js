@@ -11,11 +11,7 @@ import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
 import { log } from '../services/logger.js';
 
-import type {
-    AnswerType,
-    IncorrectAnswer,
-    IncorrectEyeAnswer,
-} from '../models/questions.js';
+import type { AnswerType, IncorrectAnswer, IncorrectEyeAnswer } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { Navigation } from '../navigation-actions.js';
 
@@ -50,8 +46,7 @@ export function EmotionDetails(props: Props) {
     );
 
     const stats =
-        props.dataPoints.correct.length + props.dataPoints.incorrect.length <
-        4 ? (
+        props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4 ? (
             <StandardText>
                 You haven't encountered this emotion enough to give any stats
             </StandardText>
@@ -63,10 +58,7 @@ export function EmotionDetails(props: Props) {
                     navigation={props.navigation}
                 />
 
-                <StrengthMeter
-                    style={constants.flex1}
-                    dataPoints={props.dataPoints}
-                />
+                <StrengthMeter style={constants.flex1} dataPoints={props.dataPoints} />
             </View>
         );
 
@@ -79,9 +71,7 @@ export function EmotionDetails(props: Props) {
 
             {image}
 
-            <StandardText>
-                {formatParagraph(props.emotion.description)}
-            </StandardText>
+            <StandardText>{formatParagraph(props.emotion.description)}</StandardText>
             <VerticalSpace />
 
             {stats}

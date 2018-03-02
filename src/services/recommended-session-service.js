@@ -31,10 +31,7 @@ export class RecommendedSessionService {
             if (score) {
                 sortableData.push({ q: question, score });
             } else {
-                log.debug(
-                    "Didn't have enough data to calculate a score for",
-                    question
-                );
+                log.debug("Didn't have enough data to calculate a score for", question);
             }
         });
 
@@ -85,6 +82,4 @@ function sigmoid(t) {
     return 1 / (1 + Math.pow(Math.E, -t));
 }
 
-export const recommendedSessionService = new RecommendedSessionService(
-    answerService
-);
+export const recommendedSessionService = new RecommendedSessionService(answerService);

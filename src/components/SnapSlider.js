@@ -107,9 +107,7 @@ export class SnapSlider extends React.Component<Props, State> {
                 <Slider
                     ref="slider"
                     style={this._sliderStyle()}
-                    onSlidingComplete={value =>
-                        this._onSlidingCompleteCallback(value)
-                    }
+                    onSlidingComplete={value => this._onSlidingCompleteCallback(value)}
                     minimumValue={0}
                     maximumValue={this.props.items.length - 1}
                     step={1}
@@ -117,12 +115,7 @@ export class SnapSlider extends React.Component<Props, State> {
                     disabled={this.props.disabled || false}
                 />
 
-                <View
-                    style={[
-                        defaultStyles.itemWrapper,
-                        this.props.itemWrapperStyle,
-                    ]}
-                >
+                <View style={[defaultStyles.itemWrapper, this.props.itemWrapperStyle]}>
                     {labels}
                 </View>
             </View>

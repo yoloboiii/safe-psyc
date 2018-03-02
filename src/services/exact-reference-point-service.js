@@ -14,8 +14,7 @@ export class ExactReferencePointService {
     getReferencePointsTo(emotion: Emotion): Map<number, Emotion> {
         if (!emotion.coordinates) {
             throw new Error(
-                'Attempted to get reference points to emotion without coordinates: ' +
-                    emotion.name
+                'Attempted to get reference points to emotion without coordinates: ' + emotion.name
             );
         }
 
@@ -32,10 +31,7 @@ export class ExactReferencePointService {
         addIfSet(refPoints, 5, t);
 
         if (refPoints.size < 3) {
-            log.warn(
-                'Did not find enough reference points for %s',
-                emotion.name
-            );
+            log.warn('Did not find enough reference points for %s', emotion.name);
         }
 
         return refPoints;
@@ -57,8 +53,7 @@ class FindContext {
 
         return pool.find(e => {
             const shouldIgnore = e === ignore;
-            const coordsCorrect =
-                e.intensity() === intensity && e.polarity() === polar;
+            const coordsCorrect = e.intensity() === intensity && e.polarity() === polar;
 
             return !shouldIgnore && coordsCorrect;
         });

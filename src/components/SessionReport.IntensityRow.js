@@ -36,25 +36,21 @@ export function IntensityQuestionRow(props: Props) {
         log.warn('The intensity for emotion %s was not set', props.question.correctAnswer.name);
     }
 
-    const intensityVisialization = intensity
-        ?  <SnapSlider
-                items={items}
-                itemStyle={constants.smallText}
-                value={ intensityToGroup(intensity) - 1 }
-                disabled={true}
-            />
-        : null;
-
+    const intensityVisialization = intensity ? (
+        <SnapSlider
+            items={items}
+            itemStyle={constants.smallText}
+            value={intensityToGroup(intensity) - 1}
+            disabled={true}
+        />
+    ) : null;
 
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View>
                 <StandardText>{props.question.correctAnswer.name}</StandardText>
-                <StandardText style={constants.smallText}>
-                    {subtext}
-                </StandardText>
+                <StandardText style={constants.smallText}>{subtext}</StandardText>
             </View>
-
 
             <VerticalSpace />
         </TouchableOpacity>

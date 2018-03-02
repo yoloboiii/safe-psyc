@@ -2,10 +2,7 @@
 
 import { randomQuestion } from '../../tests/question-utils.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
-import {
-    randomSessionService,
-    RandomSessionService,
-} from './random-session-service.js';
+import { randomSessionService, RandomSessionService } from './random-session-service.js';
 
 it('returns the correct number of random questions', () => {
     expect(randomSessionService.getRandomQuestions(0).length).toBe(0);
@@ -27,9 +24,7 @@ it('converts image paths to something that can be shown in the app', () => {
 
     for (const question of questions) {
         if (question.type === 'eye-question') {
-            expect(question.image).toEqual(
-                expect.stringMatching(/^data\:image\//)
-            );
+            expect(question.image).toEqual(expect.stringMatching(/^data\:image\//));
         }
     }
 });
@@ -73,9 +68,7 @@ it('contains more eye questions than intensity questions', () => {
     for (let i = 0; i < 100; i++) {
         const questions = randomSessionService.getRandomQuestions(10);
 
-        const eyeCount = questions
-            .filter(q => q.type === 'eye-question')
-            .reduce(acc => acc + 1, 0);
+        const eyeCount = questions.filter(q => q.type === 'eye-question').reduce(acc => acc + 1, 0);
 
         const intensityCount = questions
             .filter(q => q.type === 'intensity')

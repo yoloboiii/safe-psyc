@@ -2,10 +2,7 @@
 
 import { EmotionDetails, StrengthMeter } from './EmotionDetails.js';
 import { render } from '../../tests/render-utils.js';
-import {
-    randomEmotion,
-    randomEmotionWithImage,
-} from '../../tests/emotion-utils.js';
+import { randomEmotion, randomEmotionWithImage } from '../../tests/emotion-utils.js';
 import { getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { Image } from 'react-native';
 import { capitalize, formatParagraph } from '../utils/text-utils.js';
@@ -98,12 +95,8 @@ it('shows emotions that the user often confuse with the main emotion', () => {
     );
 
     const strings = getAllRenderedStrings(component);
-    expect(strings).toEqual(
-        expect.arrayContaining([expect.stringContaining('confused')])
-    );
-    expect(strings).toEqual(
-        expect.arrayContaining([emotionA.name, emotionB.name])
-    );
+    expect(strings).toEqual(expect.arrayContaining([expect.stringContaining('confused')]));
+    expect(strings).toEqual(expect.arrayContaining([emotionA.name, emotionB.name]));
 });
 
 it('ignores intensity answers in the confusion list', () => {
@@ -126,9 +119,7 @@ it('ignores intensity answers in the confusion list', () => {
     );
 
     const strings = getAllRenderedStrings(component);
-    expect(strings).not.toEqual(
-        expect.arrayContaining([expect.stringMatching(/.*confus.*/i)])
-    );
+    expect(strings).not.toEqual(expect.arrayContaining([expect.stringMatching(/.*confus.*/i)]));
 });
 
 it('considers old mistakes forgotten in the confusion list', () => {

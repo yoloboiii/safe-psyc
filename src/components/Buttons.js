@@ -2,13 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    View,
-    TouchableHighlight,
-    TouchableOpacity,
-    Text,
-    Button,
-} from 'react-native';
+import { View, TouchableHighlight, TouchableOpacity, Text, Button } from 'react-native';
 import { constants } from '../styles/constants.js';
 
 const largeTextButtonStyle = {
@@ -41,10 +35,7 @@ type StandardButtonContext = {
     buttonContainerStyle?: Object,
     buttonTextStyle?: Object,
 };
-export function StandardButton(
-    props: StandardButtonProps,
-    context: StandardButtonContext
-) {
+export function StandardButton(props: StandardButtonProps, context: StandardButtonContext) {
     const { title, containerStyle, textStyle, ...restProps } = props;
 
     return (
@@ -56,13 +47,7 @@ export function StandardButton(
             ]}
             {...restProps}
         >
-            <Text
-                style={[
-                    standardButtonDefaultStyles.text,
-                    context.buttonTextStyle,
-                    textStyle,
-                ]}
-            >
+            <Text style={[standardButtonDefaultStyles.text, context.buttonTextStyle, textStyle]}>
                 {title}
             </Text>
         </TouchableOpacity>
@@ -84,9 +69,7 @@ export function LargeButton(props: LargeButtonProps) {
         paddingVertical: 1 * constants.space,
         elevation: 2,
     };
-    const concreteStyle = style
-        ? Object.assign({}, defaultStyle, style)
-        : defaultStyle;
+    const concreteStyle = style ? Object.assign({}, defaultStyle, style) : defaultStyle;
 
     return (
         <TouchableHighlight style={concreteStyle} {...restProps}>

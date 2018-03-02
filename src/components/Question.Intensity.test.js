@@ -8,10 +8,7 @@ import {
 import { StandardButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { randomIntensityQuestion } from '../../tests/question-utils.js';
-import {
-    getAllRenderedStrings,
-    findChildren,
-} from '../../tests/component-tree-utils.js';
+import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 import uuid from 'uuid';
 import { TouchableOpacity } from 'react-native';
@@ -27,11 +24,7 @@ describe('IntensityQuestionComponent', () => {
     it('contains a description of the question', () => {
         const question = randomIntensityQuestion();
 
-        const component = render(
-            IntensityQuestionComponent,
-            { question },
-            defaultProps
-        );
+        const component = render(IntensityQuestionComponent, { question }, defaultProps);
         expect(getAllRenderedStrings(component)).toEqual(
             expect.arrayContaining([
                 expect.stringMatching(/how intense/i),
@@ -48,10 +41,7 @@ describe('IntensityQuestionComponent', () => {
     it('the scale contains three reference points', () => {
         const component = render(IntensityQuestionComponent, {}, defaultProps);
         expect(component).toHaveChildMatching(child => {
-            return (
-                child.type === IntensityScale &&
-                child.props.referencePoints.size === 3
-            );
+            return child.type === IntensityScale && child.props.referencePoints.size === 3;
         });
     });
 
@@ -163,10 +153,7 @@ describe('IntensityQuestionComponent', () => {
             defaultProps
         );
 
-        const emotionNameComponent = findChildren(
-            component,
-            TouchableOpacity
-        ).filter(c => {
+        const emotionNameComponent = findChildren(component, TouchableOpacity).filter(c => {
             const strings = getAllRenderedStrings(c);
             const isEmotionName = strings[0] === question.correctAnswer.name;
             return isEmotionName;
@@ -204,11 +191,7 @@ describe('IntensityQuestionComponent', () => {
         try {
             expect(correctMock).toHaveBeenCalled();
         } catch (e) {
-            throw sprintf(
-                'expected intensity %d to be in group %d',
-                conf.intensity,
-                conf.group
-            );
+            throw sprintf('expected intensity %d to be in group %d', conf.intensity, conf.group);
         }
     }
 

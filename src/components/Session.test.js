@@ -14,10 +14,7 @@ import { QuestionComponent } from './Question.js';
 import { QuestionProgress } from './QuestionProgress.js';
 
 import { render, renderShallow } from '../../tests/render-utils.js';
-import {
-    findChildren,
-    getAllRenderedStrings,
-} from '../../tests/component-tree-utils.js';
+import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import {
     randomQuestions,
     randomQuestion,
@@ -38,11 +35,7 @@ const defaultProps = {
 
 it('shows an error screen if no questions are given', () => {
     const questions = [];
-    const component = renderShallow(
-        Session,
-        { questions: questions },
-        defaultProps
-    );
+    const component = renderShallow(Session, { questions: questions }, defaultProps);
 
     expect(component).toContainStrings('no', 'question');
     expect(component).not.toHaveChild(QuestionComponent);
@@ -50,11 +43,7 @@ it('shows an error screen if no questions are given', () => {
 
 it('starts by showing a question', () => {
     const questions = randomQuestions();
-    const component = renderShallow(
-        Session,
-        { questions: questions },
-        defaultProps
-    );
+    const component = renderShallow(Session, { questions: questions }, defaultProps);
 
     expect(component).toHaveChild(QuestionComponent);
 });
@@ -178,9 +167,7 @@ it('calls back with a report when the session is finished', () => {
             clickAnswerAndDismissOverlay(component);
         } else {
             const button = clickWrongAnswerAndDismissOverlay(component);
-            const emotion = q.answers.filter(
-                a => a.name === button.props.title
-            )[0];
+            const emotion = q.answers.filter(a => a.name === button.props.title)[0];
             report.set(q, [emotion]);
             clickAnswerAndDismissOverlay(component);
         }
@@ -221,8 +208,7 @@ it('increases the number of questions left after three wrong answers', () => {
     clickWrongAnswerAndDismissOverlay(component);
     clickWrongAnswerAndDismissOverlay(component);
 
-    const currentTotal = findChildren(component, QuestionProgress)[0].props
-        .total;
+    const currentTotal = findChildren(component, QuestionProgress)[0].props.total;
     expect(currentTotal).toBe(prevTotal + 1);
 });
 
@@ -242,9 +228,7 @@ it('invokes the backend facade on correct answers', () => {
 
     clickAnswerAndDismissOverlay(component);
     expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledTimes(1);
-    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledWith(
-        questions[0]
-    );
+    expect(backendFacade.registerCorrectAnswer).toHaveBeenCalledWith(questions[0]);
 });
 
 it('invokes the backend facade on wrong answers', () => {

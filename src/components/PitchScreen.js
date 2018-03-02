@@ -49,10 +49,7 @@ export class PitchScreen extends React.Component<Props, State> {
                 log.debug('Successfully persisted to skip the pitch');
             })
             .catch(e => {
-                log.error(
-                    'Unable to persist that the pitch is to be skipped: %s',
-                    e
-                );
+                log.error('Unable to persist that the pitch is to be skipped: %s', e);
             });
 
         resetToLogin(this.props.navigation);
@@ -118,20 +115,14 @@ function ItIsImportant() {
         'https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html',
         'a nytimes article'
     );
-    urlMap.set(
-        'https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/',
-        're:Work'
-    );
+    urlMap.set('https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/', 're:Work');
     urlMap.set(
         'https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/',
         'YANSS #111'
     );
 
     function urlToText(url) {
-        return (
-            urlMap.get(url) ||
-            url.substring(url.indexOf('/', url.indexOf('/') + 1) + 1)
-        );
+        return urlMap.get(url) || url.substring(url.indexOf('/', url.indexOf('/') + 1) + 1);
     }
 
     return (
@@ -140,16 +131,12 @@ function ItIsImportant() {
                 Social intelligence directly impacts your team's performance
             </LargeText>
 
-            <Hyperlink
-                linkDefault={true}
-                linkStyle={linkStyle}
-                linkText={urlToText}
-            >
+            <Hyperlink linkDefault={true} linkStyle={linkStyle} linkText={urlToText}>
                 <Paragraph>
                     According to
                     https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
-                    Google found social intelligence to be the primary indicator
-                    to psycological safety.
+                    Google found social intelligence to be the primary indicator to psycological
+                    safety.
                 </Paragraph>
                 <Paragraph>
                     "All team members can actively shape a team’s norm." -
@@ -185,9 +172,7 @@ function HowSPDoesIt2() {
     return (
         <View>
             <StandardText>This app does it like this..</StandardText>
-            <View
-                style={{ width: 400, height: 500, backgroundColor: 'green' }}
-            />
+            <View style={{ width: 400, height: 500, backgroundColor: 'green' }} />
         </View>
     );
 }
@@ -198,10 +183,7 @@ function LetsStart(props) {
             <View style={{ flex: 2 }} />
 
             <View style={{ flex: 1 }}>
-                <HeroButton
-                    title={"Let's get started!"}
-                    onPress={props.onStart}
-                />
+                <HeroButton title={"Let's get started!"} onPress={props.onStart} />
             </View>
         </View>
     );

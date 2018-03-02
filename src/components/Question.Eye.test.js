@@ -10,15 +10,9 @@ import {
     randomEyeQuestion,
     randomEyeQuestions,
 } from '../../tests/question-utils.js';
-import {
-    randomEmotionWithImage,
-    randomEmotionWithoutImage,
-} from '../../tests/emotion-utils.js';
+import { randomEmotionWithImage, randomEmotionWithoutImage } from '../../tests/emotion-utils.js';
 import { render, renderShallow } from '../../tests/render-utils.js';
-import {
-    findChildren,
-    getAllRenderedStrings,
-} from '../../tests/component-tree-utils.js';
+import { findChildren, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 
 import { answerService } from '../services/answer-service.js';
 import { MockSessionService } from '../../tests/MockSessionService.js';
@@ -30,11 +24,7 @@ it('contains the image', () => {
     const component = customRender({ question: question });
 
     expect(component).toHaveChildMatching(child => {
-        return (
-            child.props &&
-            child.props.source &&
-            child.props.source.uri === question.image
-        );
+        return child.props && child.props.source && child.props.source.uri === question.image;
     });
 });
 
@@ -68,9 +58,7 @@ it('shows the image of the answer in the overlay - image exists', () => {
         answer: answer,
     });
 
-    const images = findChildren(component, Image).map(
-        img => img.props.source.uri
-    );
+    const images = findChildren(component, Image).map(img => img.props.source.uri);
     expect(images).toEqual(expect.arrayContaining([answer.image]));
 });
 

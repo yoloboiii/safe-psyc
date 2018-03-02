@@ -39,8 +39,8 @@ export function EyeQuestionComponent(props: Props) {
         <View style={containerStyle}>
             <View>
                 <StandardText>
-                    Which of the following emotions best describe what the
-                    person in the image is feeling?
+                    Which of the following emotions best describe what the person in the image is
+                    feeling?
                 </StandardText>
                 <VerticalSpace multiplier={2} />
 
@@ -66,11 +66,7 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
 
     if (answeredCorrectly) {
-        return (
-            <StandardText>
-                {capitalize(answer.name) + ' is correct!'}
-            </StandardText>
-        );
+        return <StandardText>{capitalize(answer.name) + ' is correct!'}</StandardText>;
     } else if (!answerImage) {
         return (
             <Link

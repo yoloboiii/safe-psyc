@@ -32,12 +32,8 @@ export function EyeQuestionRow(props: Props) {
         <TouchableOpacity onPress={props.onPress}>
             <View style={eyeContainerStyle}>
                 <View>
-                    <StandardText>
-                        {props.question.correctAnswer.name}
-                    </StandardText>
-                    <StandardText style={constants.smallText}>
-                        {subtext}
-                    </StandardText>
+                    <StandardText>{props.question.correctAnswer.name}</StandardText>
+                    <StandardText style={constants.smallText}>{subtext}</StandardText>
                 </View>
                 <View style={imageContainerStyle}>
                     <Image

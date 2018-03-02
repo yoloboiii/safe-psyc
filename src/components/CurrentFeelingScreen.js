@@ -28,9 +28,7 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
                 ? !!this.props.navigation.state.params.skippable
                 : false;
 
-        const onSkip = skippable
-            ? () => resetToHome(this.props.navigation)
-            : undefined;
+        const onSkip = skippable ? () => resetToHome(this.props.navigation) : undefined;
 
         return (
             <CurrentFeeling

@@ -51,16 +51,13 @@ export class CurrentFeeling extends React.Component<Props, State> {
         return (
             <View style={constants.padflex}>
                 <StandardText>
-                    Please choose the word that best describes how you are
-                    feeling right now
+                    Please choose the word that best describes how you are feeling right now
                 </StandardText>
                 <VerticalSpace />
 
                 <Picker
                     selectedValue={this.state.selectedEmotion}
-                    onValueChange={itemValue =>
-                        this.setState({ selectedEmotion: itemValue })
-                    }
+                    onValueChange={itemValue => this.setState({ selectedEmotion: itemValue })}
                 >
                     {words}
                 </Picker>
@@ -77,20 +74,13 @@ export class CurrentFeeling extends React.Component<Props, State> {
     _createSubmitButton() {
         switch (this.state.submissionState) {
             case 'successful':
-                return (
-                    <StandardButton
-                        title={'Success!'}
-                        onPress={this.props.onAnswered}
-                    />
-                );
+                return <StandardButton title={'Success!'} onPress={this.props.onAnswered} />;
             case 'failed':
             case 'not-started':
                 return (
                     <StandardButton
                         title={'Submit'}
-                        onPress={() =>
-                            this._chooseEmotionWord(this.state.selectedEmotion)
-                        }
+                        onPress={() => this._chooseEmotionWord(this.state.selectedEmotion)}
                     />
                 );
 
@@ -101,9 +91,7 @@ export class CurrentFeeling extends React.Component<Props, State> {
 
     _createSkipButton() {
         if (this.props.onSkip) {
-            return (
-                <StandardButton title={'Skip'} onPress={this.props.onSkip} />
-            );
+            return <StandardButton title={'Skip'} onPress={this.props.onSkip} />;
         } else {
             return <View />;
         }

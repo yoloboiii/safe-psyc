@@ -60,11 +60,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     });
                 })
                 .catch(e => {
-                    log.error(
-                        'Failed getting answers to emotion %j: %s',
-                        emotion.name,
-                        e
-                    );
+                    log.error('Failed getting answers to emotion %j: %s', emotion.name, e);
                     this.setState({
                         loadingState: 'failed',
                     });
@@ -77,17 +73,9 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
         const { state, navigate } = this.props.navigation;
         if (state) {
             const navParams = state.params;
-            return (
-                <View style={constants.padflex}>
-                    {this._renderEmotion(navParams.emotion)}
-                </View>
-            );
+            return <View style={constants.padflex}>{this._renderEmotion(navParams.emotion)}</View>;
         } else {
-            return (
-                <StandardText>
-                    No navigation state! Don't know what to do
-                </StandardText>
-            );
+            return <StandardText>No navigation state! Don't know what to do</StandardText>;
         }
     }
 
@@ -96,11 +84,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
             case 'started':
                 return <ActivityIndicator />;
             case 'not-started':
-                return (
-                    <StandardText>
-                        About to start loading data I hope
-                    </StandardText>
-                );
+                return <StandardText>About to start loading data I hope</StandardText>;
             case 'failed':
                 return <StandardText>Unable to load data!</StandardText>;
             case 'successful':

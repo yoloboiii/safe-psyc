@@ -13,7 +13,7 @@ export const constants = {
     space,
 
     // https://coolors.co/33658a-86bbd8-ffc145-698e30-ff5151
-    primaryColor: '#ffc145',
+    primaryColor: '#fdb807',
     positiveColor: '#2dde98',
     negativeColor: '#ff4f81',
     hilightColor1: '#1cc7d0',

@@ -17,11 +17,7 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
-import {
-    onUserLoggedIn,
-    onUserRegistered,
-    toResetPassword,
-} from '../navigation-actions.js';
+import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';
 
 import type { Navigation } from '../navigation-actions.js';
 

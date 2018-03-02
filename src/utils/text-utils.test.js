@@ -14,9 +14,9 @@ describe('capitalize', () => {
 
 describe('formatParagraph', () => {
     it('capitalizes only first word in a list if sentences', () => {
-        expect(
-            formatParagraph('hello world. and the other thing. also this')
-        ).toEqual('Hello world. And the other thing. Also this.');
+        expect(formatParagraph('hello world. and the other thing. also this')).toEqual(
+            'Hello world. And the other thing. Also this.'
+        );
     });
 
     it("Adds a dot if one isn't there - one sentence", () => {
