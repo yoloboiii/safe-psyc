@@ -70,11 +70,33 @@ describe('calculateDueDate', () => {
 
         expect(actualDueDate).toEqualDate(expectedDueDate);
     });
+
+    it('gives answered questions a sooner due date than unanswered questions', () => {
+        const unansweredDueDate = calculateDueDate([]);
+        const answeredDueDate = calculateDueDate(correctAnswers([aFewDaysAgo(), aboutAMonthAgo()]));
+
+        const now = moment();
+        expect(answeredDueDate).toBeCloserTo(now, {
+            than: unansweredDueDate,
+        });
+    });
 });
+
+function correctAnswers(dates) {
+    return dates.map(d => correctAnswerWithDate(d));
+}
 
 function correctAnswerWithDate(date) {
     return {
         correct: true,
         when: moment(date),
     };
+}
+
+function aFewDaysAgo() {
+    return moment().subtract(3, 'days');
+}
+
+function aboutAMonthAgo() {
+    return moment().subtract(32, 'days');
 }

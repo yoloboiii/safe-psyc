@@ -47,11 +47,11 @@ export class SpacedRepetitionSessionService {
 
         const questions = [];
         for (const emotion of emotionsWithImage) {
-            questions.push(generateEyeQuestion(emotion));
+            questions.push(generateEyeQuestion(emotion, this._answerService));
         }
 
         for (const emotion of emotionsWithCoordinates) {
-            questions.push(generateIntensityQuestion(emotion));
+            questions.push(generateIntensityQuestion(emotion, this._referencePointService));
         }
 
         return knuthShuffle(questions);

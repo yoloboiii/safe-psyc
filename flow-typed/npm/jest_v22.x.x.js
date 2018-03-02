@@ -127,6 +127,7 @@ type EnzymeMatchersType = {
   toHaveResetTo(string): void,
   toContainDuplicates(): void,
   toEqualDate(mixed): void,
+  toBeCloserTo(moment$Moment, { than: moment$Moment }): void,
 
   toBeChecked(): void,
   toBeDisabled(): void,
