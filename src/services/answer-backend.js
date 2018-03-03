@@ -11,15 +11,20 @@ import type { Emotion } from '../models/emotion.js';
 const db = firebase.database();
 
 export class AnswerBackendFacade {
+
     registerCorrectAnswer(question: Question): Promise<void> {
+
         return new Promise((resolve, reject) => {
+
             const user = userBackendFacade.getUserOrThrow('registerCorrectAnswer');
 
             log.debug('Registering correct answer to %j', question.correctAnswer.name);
+
             const emotion = question.correctAnswer;
-            const path = 'user-data/' + user.uid + '/correct-answers';
+            const path = 'user-data/' + user.uid + '/answers/' + emotion.name;
+
             const toWrite = {
-                emotion: emotion.name,
+                correct: true,
                 questionType: question.type,
                 when: moment().format('x'), // x is the unix timestamps in ms
             };
@@ -30,6 +35,7 @@ export class AnswerBackendFacade {
 
     registerIncorrectAnswer(question: Question, answer: AnswerType): Promise<void> {
         return new Promise((resolve, reject) => {
+
             const user = userBackendFacade.getUserOrThrow('registerIncorrectAnswer');
 
             const ansString = answer.name || answer.toString();
@@ -39,10 +45,11 @@ export class AnswerBackendFacade {
                 ansString,
                 question.correctAnswer.name
             );
+
             const emotion = question.correctAnswer;
-            const path = 'user-data/' + user.uid + '/incorrect-answers';
+            const path = 'user-data/' + user.uid + '/answers/' + emotion.name;
             const toWrite = {
-                emotion: emotion.name,
+                correct: false,
                 questionType: question.type,
                 answer: ansString,
                 when: moment().format('x'), // x is the unix timestamps in ms
@@ -52,76 +59,85 @@ export class AnswerBackendFacade {
         });
     }
 
-    getAnswersTo(
-        emotion: Emotion
-    ): Promise<{
+    getAnswersTo(emotion: Emotion): Promise<{
         correct: Array<moment$Moment>,
         incorrect: Array<IncorrectAnswer>,
     }> {
-        const user = userBackendFacade.getUserOrThrow('getAnswersTo');
+        return new Promise((resolve, reject) => {
+            const user = userBackendFacade.getUserOrThrow('getAnswersTo');
 
-        // Get all correct answers
-        const correctPromise = firebase
-            .database()
-            .ref('user-data/' + user.uid + '/correct-answers')
-            .once('value')
-            .then(snap => {
-                const correctAnswers = [];
-                snap.forEach(correctAnswer => {
-                    const val = correctAnswer.val();
-                    if (val.emotion === emotion.name) {
-                        correctAnswers.push(moment(val.when, 'x'));
-                    }
+            const emotionLookupTable = createEmotionLookupTable();
+            const correct = [];
+            const incorrect = [];
 
-                    return false;
-                });
-                return correctAnswers;
-            });
+            return firebase
+                .database()
+                .ref('user-data/' + user.uid + '/answers/' + emotion.name)
+                .once('value')
+                .then( answersSnap => {
+                    answersSnap.forEach(answerRef => {
+                        const val = answerRef.val();
 
-        const emotionLookupTable = new Map();
-        randomSessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
-        // Get all incorrect answers
-        const incorrectPromise = firebase
-            .database()
-            .ref('user-data/' + user.uid + '/incorrect-answers')
-            .once('value')
-            .then(snap => {
-                const incorrectAnswers = [];
-                snap.forEach(incorrectAnswer => {
-                    const val = incorrectAnswer.val();
-                    if (val.emotion === emotion.name) {
-                        let answer = null;
-                        if (isNumber(val.answer)) {
-                            answer = parseFloat(val.answer);
+                        if (val.correct) {
+                            correct.push(dbTimeToMoment(val.when));
+
                         } else {
-                            answer = emotionLookupTable.get(val.answer);
+
+                            incorrect.push(
+                                dbObjToIncorrectAnswer(val, emotionLookupTable)
+                            );
+                        }
+                    });
+
+                    return { correct, incorrect };
+                })
+                .then(resolve)
+                .catch(reject);
+        });
+    }
+
+    getAllAnswers(): Promise<Map<string, { correct: boolean, when: moment$Moment }>> {
+
+        return new Promise((resolve, reject) => {
+            const user = userBackendFacade.getUserOrThrow('getAnswersTo');
+
+            const emotionLookupTable = createEmotionLookupTable();
+            const answers = new Map();
+
+            return firebase
+                .database()
+                .ref('user-data/' + user.uid + '/answers')
+                .once('value')
+                .then( emotionsSnap => {
+                    emotionsSnap.forEach(emotionSnap => {
+                        const emotionName = emotionSnap.key;
+                        const answersRef = emotionSnap.ref;
+
+                        if (!answers.has(emotionName)) {
+                            answers.set(emotionName, []);
                         }
 
-                        incorrectAnswers.push({
-                            answer: answer,
-                            when: moment(val.when, 'x'),
-                            questionType: val.questionType,
-                        });
-                    }
+                        answersRef
+                            .once('value')
+                            .then( answerSnap => {
+                                answerSnap.forEach(answerRef => {
+                                    const answer = answerRef.val();
+                                    const when = dbTimeToMoment(answer.when);
 
-                    return false;
-                });
-                return incorrectAnswers;
-            });
+                                    // $FlowFixMe: Guaranteed non-null by it being set above
+                                    answers.get(emotionName).push({
+                                        correct: answer.correct,
+                                        when,
+                                    });
+                                })
+                            });
+                    });
 
-        return Promise.all([correctPromise, incorrectPromise])
-            .then(results => {
-                const correct = results[0];
-                const incorrect = results[1];
-                return {
-                    correct,
-                    incorrect,
-                };
-            })
-            .catch(e => {
-                log.error('Failed getting answers to %d, %j', emotion.name, e);
-                throw e;
-            });
+                    return answers;
+                })
+                .then(resolve)
+                .catch(reject);
+        });
     }
 }
 
@@ -136,6 +152,52 @@ function thenableToPromise(resolve, reject): (?Object) => void {
         }
     };
 }
+
+function createEmotionLookupTable(): Map<string, Emotion> {
+    // The incorrect answers in the database only contain the name of the emotion
+    // the user answered, not the whole emotion object. This map resolves that reference.
+    const emotionLookupTable = new Map();
+    randomSessionService.getEmotionPool().forEach(e => emotionLookupTable.set(e.name, e));
+
+    return emotionLookupTable;
+}
+
+function dbTimeToMoment(dbTime): moment$Moment {
+    return moment(dbTime, 'x');
+}
+
+function dbObjToIncorrectAnswer(dbObj, emotionLookupTable): IncorrectAnswer {
+
+    if (dbObj.questionType === 'intensity') {
+
+        if (!isNumber(dbObj.answer)) {
+            throw new Error('intensity answer was not a number: ' + dbObj.answer);
+        }
+
+        return {
+            questionType: 'intensity',
+            answer: parseFloat(dbObj.answer),
+            when: dbTimeToMoment(dbObj.when),
+        };
+    }
+
+    if (dbObj.questionType === 'eye-question') {
+
+        const answer = emotionLookupTable.get(dbObj.answer);
+        if(!answer) {
+            throw new Error('Unable to resolve db answer to an emotion object: ' + dbObj.answer);
+        }
+
+        return {
+            questionType: 'eye-question',
+            answer,
+            when: dbTimeToMoment(dbObj.when),
+        };
+    }
+
+    throw new Error('Unknown question type: ' + dbObj.questionType);
+}
+
 
 function isNumber(candidate) {
     return !isNaN(parseFloat(candidate)) && isFinite(candidate);
