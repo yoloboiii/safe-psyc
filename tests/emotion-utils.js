@@ -20,6 +20,11 @@ export function randomEmotion(name: string = uuid.v4(), description: string = uu
 function baseBuilder(name: string = uuid.v4(), description: string = uuid.v4()) {
     return new EmotionBuilder()
         .withName(name)
+        .withImage('image-' + name)
+        .withCoordinates({
+            intensity: Math.floor(Math.random() * 10),
+            polar: Math.floor(Math.random() * 10),
+        })
         .withDescription(description);
 }
 

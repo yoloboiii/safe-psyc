@@ -5,8 +5,8 @@ import { Emotion } from '../models/emotion.js';
 export class EmotionService {
     _emotionPool: ?Array<Emotion>;
 
-    constructor() {
-        this._emotionPool = undefined;
+    constructor(emotionPool?: Array<Emotion>) {
+        this._emotionPool = emotionPool;
     }
 
     getEmotionPool(): Array<Emotion> {

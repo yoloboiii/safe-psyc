@@ -96,7 +96,10 @@ export class AnswerBackendFacade {
         });
     }
 
-    getAllAnswers(): Promise<Map<string, { correct: boolean, when: moment$Moment }>> {
+    getLastTwoAnswersToAllQuestions(): Promise<Map<
+        string,
+        Array<{ correct: boolean, when: moment$Moment, emotion: Emotion, questionType: string }>
+    >> {
 
         return new Promise((resolve, reject) => {
             const user = userBackendFacade.getUserOrThrow('getAnswersTo');
@@ -110,24 +113,37 @@ export class AnswerBackendFacade {
                 .once('value')
                 .then( emotionsSnap => {
                     emotionsSnap.forEach(emotionSnap => {
-                        const emotionName = emotionSnap.key;
                         const answersRef = emotionSnap.ref;
 
-                        if (!answers.has(emotionName)) {
-                            answers.set(emotionName, []);
+                        const emotionName = emotionSnap.key;
+                        const emotion = emotionLookupTable.get(emotionName);
+                        if (!emotion) {
+                            log.warn('Unable to resolve db answer to an emotion object: %s', emotionName);
+                            return;
                         }
 
                         answersRef
                             .once('value')
+                            .orderByChild('when')
+                            .limitToLast(2)
                             .then( answerSnap => {
                                 answerSnap.forEach(answerRef => {
                                     const answer = answerRef.val();
                                     const when = dbTimeToMoment(answer.when);
 
+                                    const { correct, questionType } = answer;
+                                    const mapKey = emotion.name + ': ' + questionType;
+
+                                    if (!answers.has(mapKey)) {
+                                        answers.set(mapKey, []);
+                                    }
+
                                     // $FlowFixMe: Guaranteed non-null by it being set above
-                                    answers.get(emotionName).push({
-                                        correct: answer.correct,
+                                    answers.get(mapKey).push({
+                                        correct,
                                         when,
+                                        emotion,
+                                        questionType,
                                     });
                                 })
                             });
