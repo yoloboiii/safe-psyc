@@ -18,6 +18,7 @@ export const constants = {
     negativeColor: '#ff4f81',
     hilightColor1: '#1cc7d0',
     hilightColor2: '#00aeff',
+    disabledColor: lightTextColor,
 
     notReallyWhite: '#FAFAFF',
     defaultTextColor,

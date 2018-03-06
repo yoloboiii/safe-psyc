@@ -5,6 +5,7 @@ import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { CurrentFeeling } from './CurrentFeeling.js';
+import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { emotionService } from '../services/emotion-service.js';
 import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 import { resetToHome } from '../navigation-actions.js';
@@ -31,14 +32,11 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
         const onSkip = skippable ? () => resetToHome(this.props.navigation) : undefined;
 
         return (
-            <CurrentFeeling
+            <PhotographicAffectMeter
                 onAnswered={() => resetToHome(this.props.navigation)}
                 onSkip={onSkip}
-                emotionWords={emotionService
-                    .getEmotionPool()
-                    .map(e => e.name)
-                    .sort()}
                 backendFacade={currentEmotionBackendFacade}
+                emotionImages={require('../../SECRETS/pam/pam-images.json')}
             />
         );
     }

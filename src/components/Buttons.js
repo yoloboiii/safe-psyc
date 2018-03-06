@@ -14,19 +14,35 @@ const largeTextButtonStyle = {
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const standardButtonDefaultStyles = {
-    container: {
-        borderRadius: constants.mediumRadius,
-        backgroundColor: constants.primaryColor,
+    enabled: {
+        container: {
+            borderRadius: constants.mediumRadius,
+            backgroundColor: constants.primaryColor,
+        },
+        text: {
+            ...constants.normalText,
+            color: constants.notReallyWhite,
+            textAlign: 'center',
+            padding: constants.space,
+        },
     },
-    text: {
-        ...constants.normalText,
-        color: constants.notReallyWhite,
-        textAlign: 'center',
-        padding: constants.space,
+
+    disabled: {
+        container: {
+            borderRadius: constants.mediumRadius,
+            backgroundColor: constants.disabledColor,
+        },
+        text: {
+            ...constants.normalText,
+            color: constants.notReallyWhite,
+            textAlign: 'center',
+            padding: constants.space,
+        },
     },
 };
 type StandardButtonProps = {
     onPress: () => *,
+    disabled?: boolean,
     title: string,
     containerStyle?: Object,
     textStyle?: Object,
@@ -36,18 +52,23 @@ type StandardButtonContext = {
     buttonTextStyle?: Object,
 };
 export function StandardButton(props: StandardButtonProps, context: StandardButtonContext) {
-    const { title, containerStyle, textStyle, ...restProps } = props;
+    const { title, containerStyle, textStyle, disabled, ...restProps } = props;
+
+    const defaultStyles = disabled
+        ? standardButtonDefaultStyles.disabled
+        : standardButtonDefaultStyles.enabled;
 
     return (
         <TouchableOpacity
             style={[
-                standardButtonDefaultStyles.container,
+                defaultStyles.container,
                 context.buttonContainerStyle,
                 containerStyle,
             ]}
+            disabled={disabled}
             {...restProps}
         >
-            <Text style={[standardButtonDefaultStyles.text, context.buttonTextStyle, textStyle]}>
+            <Text style={[defaultStyles.text, context.buttonTextStyle, textStyle]}>
                 {title}
             </Text>
         </TouchableOpacity>

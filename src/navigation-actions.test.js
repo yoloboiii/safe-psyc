@@ -1,6 +1,5 @@
 // @flow
 
-import { InteractionManager } from 'react-native';
 import * as navActions from './navigation-actions.js';
 import moment from 'moment';
 
@@ -157,15 +156,3 @@ describe('onUserLoggedOut', () => {
         });
     }
 });
-
-function checkNextTick(done, check) {
-    InteractionManager.runAfterInteractions(() => {
-        try {
-            check();
-            done();
-        } catch (e) {
-            // $FlowFixMe
-            done(e);
-        }
-    });
-}
