@@ -81,7 +81,7 @@ function writeEmotions() {
     var fileName = 'emotions.json';
     var data = JSON.stringify(Object.values(emotions), null, 4);
 
-    fs.writeFile('emotions.json', data, 'utf8', (err) => {
+    fs.writeFile(fileName, data, 'utf8', (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
     });
