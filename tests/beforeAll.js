@@ -29,6 +29,7 @@ jest.mock('../src/services/logger', () => {
     const log = {
         debug: jest.fn(),
         warn: jest.fn(),
+        error: jest.fn(),
     };
     return {
         log: log,

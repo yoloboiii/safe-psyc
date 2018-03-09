@@ -4,7 +4,6 @@ import React from 'react';
 import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { CurrentFeeling } from './CurrentFeeling.js';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { emotionService } from '../services/emotion-service.js';
 import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';

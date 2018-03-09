@@ -81,6 +81,36 @@ StandardButton.contextTypes = {
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
+const secondaryButtonStyles = {
+    container: {
+    },
+    text: {
+        ...constants.normalText,
+        textDecorationLine: 'underline',
+        textAlign: 'center',
+        padding: constants.space,
+    },
+};
+type SecondaryButtonProps = {
+    onPress: () => *,
+    title: string,
+    containerStyle?: Object,
+    textStyle?: Object,
+};
+export function SecondaryButton(props: SecondaryButtonProps) {
+    const { title, onPress, containerStyle, textStyle } = props;
+    return <TouchableOpacity
+        onPress={onPress}
+        style={[ secondaryButtonStyles.container, containerStyle ]}
+    >
+        <Text style={[ secondaryButtonStyles.text, textStyle ]}>
+            {title}
+        </Text>
+    </TouchableOpacity>
+}
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 type LargeButtonProps = { title: string, style?: Object };
 export function LargeButton(props: LargeButtonProps) {
     const { title, style, ...restProps } = props;

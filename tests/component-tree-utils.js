@@ -30,6 +30,19 @@ export function findChildren(root: React.Component<*, *>, childType: Function|st
         });
 }
 
+export function findFirstChild(root: React.Component<*, *>, childType: Function|string): React.Component<*, *> {
+    const children = findChildren(root, childType);
+    if (children.length === 0) {
+        const name = typeof(childType) === 'function'
+            ? childType.name
+            : childType;
+
+        throw new Error("Did not find any children matching " + name);
+    } else {
+        return children[0];
+    }
+}
+
 export function stringifyComponent(component: React.Component<*,*>): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);

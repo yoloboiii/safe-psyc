@@ -11,22 +11,31 @@ type LastEmotionAnswer = {
 };
 
 export class CurrentEmotionBackendFacade {
-    registerCurrentEmotion(emotion: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const user = userBackendFacade.getUserOrThrow('registerCurrentEmotion');
+    registerCurrentEmotion(emotion: string, onComplete: (?Error) => void, id: ?string): string {
+        const user = userBackendFacade.getUserOrThrow('registerCurrentEmotion');
 
-            log.debug('Registering current emotion, %j', emotion);
-            const path = 'user-data/' + user.uid + '/emotions';
-            const toWrite = {
-                emotion: emotion,
-                when: moment().format('x'), // x is the unix timestamps in ms
-            };
+        log.debug('Registering current emotion, %j', emotion);
 
-            firebase
+        const toWrite = {
+            emotion: emotion,
+            when: moment().format('x'), // x is the unix timestamps in ms
+        };
+
+        const basePath = 'user-data/' + user.uid + '/emotions';
+        if (id) {
+            const ref = firebase
                 .database()
-                .ref(path)
-                .push(toWrite, thenableToPromise(resolve, reject));
-        });
+                .ref(basePath + '/' + id);
+
+            ref.set(toWrite, onComplete);
+            return ref.key;
+        } else {
+            return firebase
+                .database()
+                .ref(basePath)
+                .push(toWrite, onComplete)
+                .key;
+        }
     }
 
     getLastEmotionAnswer(): Promise<?LastEmotionAnswer> {

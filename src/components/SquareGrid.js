@@ -7,26 +7,27 @@ type Props<T> = {
     items: Array<T>,
     itemsPerRow: number,
     renderItem: T => React$Element<*>,
-    keyExtractor: (Array<T>) => *,
+    keyExtractor: (Array<T>) => string,
+    style?: Object,
 };
 
 export function SquareGrid<T>(props: Props<T>) {
-    const data = groupBy(props.items, props.itemsPerRow);
+    const { items, itemsPerRow, renderItem, keyExtractor, style, ...restProps } = props;
+    const rows = groupBy(items, itemsPerRow);
 
-    let i = 0;
     return (
-        <FlatList
-            data={data}
-            keyExtractor={props.keyExtractor }
-            renderItem={datum => {
-                const items = datum.item;
+        <View style={[styles.container, style]}>
+            {rows.map(row => {
                 return <Row
-                    items={items}
-                    renderItem={props.renderItem}
-                    itemsPerRow={props.itemsPerRow}
+                    // $FlowFixMe
+                    key={keyExtractor(row)}
+                    items={row}
+                    renderItem={renderItem}
+                    itemsPerRow={itemsPerRow}
                 />;
-            }}
-        />
+            })}
+
+        </View>
     );
 }
 SquareGrid.defaultProps = {
@@ -73,12 +74,15 @@ function Row(rowProps) {
 }
 
 const styles = {
+    container: {
+
+    },
     row: {
-        flex: 1,
+        //flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     emptyCell: {
-        flex: 1,
+        //flex: 1,
     },
 };

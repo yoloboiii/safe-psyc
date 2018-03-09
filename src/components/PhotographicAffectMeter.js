@@ -3,13 +3,16 @@
 // TODO: Allow the user to change their mind even after submitting the emotion
 
 import React from 'react';
-import { View, Image, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableHighlight, ActivityIndicator, Alert } from 'react-native';
 import { StandardText } from './Texts.js';
-import { StandardButton } from './Buttons.js';
+import { StandardButton, SecondaryButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { SquareGrid } from './SquareGrid.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
+import { randomElement } from '../utils/array-utils.js';
+
+import type { CurrentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 
 type Props = {
     backendFacade: CurrentEmotionBackendFacade,
@@ -20,9 +23,29 @@ type Props = {
 type State = {
     selectedEmotion: ?string,
     submissionState: 'not-started' | 'submitting' | 'successful' | 'failed',
+    submittedEmotion: ?string,
     selectedImages: Array<{ emotion: string, image: string}>,
+    dbId: ?string,
 };
 
+const emotionOrder = [
+    'afraid',
+    'tense',
+    'excited',
+    'delighted',
+    'frustrated',
+    'angry',
+    'happy',
+    'glad',
+    'miserable',
+    'sad',
+    'calm',
+    'satisfied',
+    'gloomy',
+    'tired',
+    'sleepy',
+    'serene',
+];
 export class PhotographicAffectMeter extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -30,44 +53,72 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         this.state = {
             selectedEmotion: null,
             submissionState: 'not-started',
+            submittedEmotion: null,
             selectedImages: this._selectImages(),
+            dbId: null,
         };
     }
 
     _selectImages() {
+        const currentImages = this.state
+            ? (this.state.selectedImages || []).map(i => i.image)
+            : null;
+
         const images = [];
         for (const emotion of Object.keys(this.props.emotionImages)) {
-            const image = randomElement(this.props.emotionImages[emotion])
+            const image = randomElement(this.props.emotionImages[emotion], currentImages)
 
             images.push({
                 emotion,
                 image,
             });
         }
+
+        images.sort((a,b) => {
+            const ai = emotionOrder.indexOf(a.emotion);
+            const bi = emotionOrder.indexOf(b.emotion);
+
+            return ai - bi;
+        });
         return images;
     }
 
+    componentDidMount() {
+        this.setState({
+            dbId: null,
+        });
+    }
+
     _chooseEmotionWord(emotion) {
+        if (!emotion) {
+            log.warning("Attempted to submit emotion without first selecting one");
+            return;
+        }
+
         this.setState(
             {
                 submissionState: 'submitting',
             },
             () => {
-                this.props.backendFacade
-                    .registerCurrentEmotion(emotion)
-                    .then(() => {
-                        log.debug('Current emotion saved');
-                        this.setState({
-                            submissionState: 'successful',
-                        });
-                    })
-                    .catch(e => {
-                        this.setState({
-                            submissionState: 'failed',
-                        });
-                        log.error('Failed saving current emotion', e);
-                        Alert.alert('Save failure', e.message);
-                    });
+                const dbId = this.props.backendFacade
+                    .registerCurrentEmotion(emotion, (error) => {
+
+                        if (error) {
+                            this.setState({
+                                submissionState: 'failed',
+                            });
+                            log.error('Failed saving current emotion', error);
+                            Alert.alert('Save failure', error.message);
+                        } else {
+                            log.debug('Current emotion saved');
+                            this.setState({
+                                submissionState: 'successful',
+                                submittedEmotion: emotion,
+                            });
+                        }
+                    }, this.state.dbId)
+
+                this.setState({ dbId });
             }
         );
     }
@@ -77,61 +128,73 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         const skipButton = this._createSkipButton();
 
         return (
-            <View style={constants.padflex}>
-                <StandardText>
-                    Please choose the image that best illustrates how you are feeling right now
-                </StandardText>
-                <VerticalSpace />
+            <View style={styles.container}>
+                <View>
+                    <StandardText>
+                        Please choose the image that best illustrates how you are feeling right now
+                    </StandardText>
+                    <VerticalSpace multiplier={3} />
 
-                <PhotoGrid
-                    emotionImages={this.state.selectedImages}
-                    onSelect={emotion => this.setState({ selectedEmotion: emotion })}
-                    selectedEmotion={this.state.selectedEmotion}
-                    disabled={['successful', 'submitting'].includes(this.state.submissionState)}
-                />
+                    <PhotoGrid
+                        emotionImages={this.state.selectedImages}
+                        onSelect={emotion => this.setState( s => ({
+                            selectedEmotion: emotion,
+                            submissionState: 'not-started',
+                        }))}
+                        selectedEmotion={this.state.selectedEmotion}
+                        disabled={this.state.submissionState === 'submitting'}
+                    />
+                    <VerticalSpace />
+                    <SecondaryButton
+                        testName='newImages'
+                        title="shuffle images"
+                        textStyle={{ textAlign: 'right' }}
+                        onPress={ () => this.setState({
+                            selectedImages: this._selectImages(),
+                        })}
+                    />
+                </View>
 
-                <VerticalSpace multiplier={2} />
-
-                <StandardText>
-                {
-                    this.state.selectedEmotion &&
-                    this.state.submissionState !== 'successful' &&
-                        'Are you feeling ' + this.state.selectedEmotion + '?'
-                }
-                </StandardText>
-
-                <View style={styles.buttonRowStyle}>
-                    {skipButton}
-                    {submitButton}
+                <View>
+                    { this._createConfirmationText() }
+                    <View style={styles.buttonRowStyle}>
+                        {skipButton}
+                        {submitButton}
+                    </View>
                 </View>
             </View>
         );
     }
 
     _createSubmitButton() {
-        switch (this.state.submissionState) {
-            case 'successful':
-                return <StandardButton
-                    testName='submitButton'
-                    title={'Success!'}
-                    onPress={this.props.onAnswered}
-                />;
-            case 'failed':
-            case 'not-started':
-                const disabled = this.state.selectedEmotion === null;
-                return (
-                    <StandardButton
-                        testName='submitButton'
-                        containerStyle={{ minWidth: 140 }}
-                        disabled={disabled}
-                        title={ disabled ? 'Save' : 'Yes'}
-                        onPress={() => this._chooseEmotionWord(this.state.selectedEmotion)}
-                    />
-                );
 
-            case 'submitting':
-                return <ActivityIndicator />;
+        if (this.state.submissionState === 'submitting') {
+            return <ActivityIndicator />;
         }
+
+        const disabled = this.state.selectedEmotion === null;
+
+        const title = disabled
+            ? 'Save'
+            : this.state.selectedEmotion === this.state.submittedEmotion
+            ? 'Success!'
+            : this.state.submittedEmotion === null
+            ? 'Yes'
+            : 'Change';
+
+        const onPress = title === 'Success!'
+            ? this.props.onAnswered
+            : () => this._chooseEmotionWord(this.state.selectedEmotion);
+
+        return (
+            <StandardButton
+                testName='submitButton'
+                containerStyle={{ minWidth: 140 }}
+                disabled={disabled}
+                title={title}
+                onPress={onPress}
+            />
+        );
     }
 
     _createSkipButton() {
@@ -140,6 +203,22 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         } else {
             return <View />;
         }
+    }
+
+    _createConfirmationText() {
+        const { selectedEmotion, submissionState, submittedEmotion } = this.state;
+
+        if (submissionState === 'successful'
+            || selectedEmotion === null || selectedEmotion === undefined
+            || selectedEmotion === submittedEmotion) {
+            return <StandardText>{'\u0020'}</StandardText>
+        }
+
+        if (submittedEmotion === null) {
+            return <StandardText>{'Are you feeling ' + selectedEmotion + '?'}</StandardText>
+        }
+
+        return <StandardText>{'Did you mean ' + selectedEmotion + '?'}</StandardText>
     }
 }
 
@@ -187,12 +266,11 @@ function PhotoGrid(props) {
         />
 }
 
-function randomElement(array) {
-    const rnd = Math.floor(Math.random() * array.length);
-    return array[rnd];
-}
-
 const styles = {
+    container: {
+        ...constants.padflex,
+        justifyContent: 'space-between',
+    },
     buttonRowStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -48,3 +48,7 @@ it('chooses reference points closest to the answer emotion', () => {
     expect(refPoints).toEqual(expect.arrayContaining(close));
     expect(refPoints).not.toEqual(expect.arrayContaining(far));
 });
+
+it('gives either 1,3,5 or 2,4 reference points or warns if it is unable', () => {
+    expect(true).toBe(false);
+});
