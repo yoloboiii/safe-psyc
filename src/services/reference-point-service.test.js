@@ -1,5 +1,6 @@
 // @flow
 
+import { log } from '../services/logger.js';
 import { ReferencePointService } from './reference-point-service.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 
@@ -49,6 +50,36 @@ it('chooses reference points closest to the answer emotion', () => {
     expect(refPoints).not.toEqual(expect.arrayContaining(far));
 });
 
-it('gives either 1,3,5 or 2,4 reference points or warns if it is unable', () => {
-    expect(true).toBe(false);
+it('prefers points at 1,3,5 over 2,4', () => {
+
+    const src = randomEmotionWithCoordinates();
+    const emotions = ranomEmotionsWithIntensities([1,2,3,4,5,6,7,8,9,10]);
+    const service = new ReferencePointService(emotions);
+    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+
+    expect(refPoints).toEqual([1, 3, 5]);
 });
+
+it('accepts points at 2,4 if 1,3 or 5 is empty', () => {
+    const src = randomEmotionWithCoordinates();
+    const emotions = ranomEmotionsWithIntensities([3,4,5,6,7,8,9,10]);
+    const service = new ReferencePointService(emotions);
+    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+
+    expect(refPoints).toEqual([2, 4]);
+});
+
+it('warns if unable to find enough reference points', () => {
+
+    const src = randomEmotionWithCoordinates();
+    const emotions = ranomEmotionsWithIntensities([1, 3, 5]);
+    const service = new ReferencePointService(emotions);
+    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+
+    expect(log.warn).toHaveBeenCalledWith(expect.stringMatching(/not find enough/i), expect.anything());
+    expect(refPoints).toEqual([1, 2, 3]);
+});
+
+function ranomEmotionsWithIntensities(intensities) {
+    return intensities.map(i => randomEmotionWithCoordinates({ polar: 1, intensity: i }));
+}
