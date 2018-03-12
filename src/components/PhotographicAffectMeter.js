@@ -161,8 +161,10 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
                     { this._createConfirmationText() }
                     <View style={styles.buttonRowStyle}>
                         {skipButton}
-                        {doNotChangeButton}
-                        {submitButton}
+                        <View style={{ flexDirection: 'row' }}>
+                            {doNotChangeButton}
+                            {submitButton}
+                        </View>
                     </View>
                 </View>
             </View>
@@ -201,7 +203,7 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
     }
 
     _createDoNotChangeButton() {
-        const { selectedEmotion, submittedEmotion } = this.state;
+        const { selectedEmotion, submittedEmotion, submissionState } = this.state;
 
         const hasSubmitted = submittedEmotion !== null;
         const changed = selectedEmotion !== submittedEmotion;
@@ -211,8 +213,12 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
 
         return <StandardButton
             testName='nah-correct'
+
             title='Nah, it was correct'
             onPress={this.props.onAnswered}
+
+            containerStyle={{ marginRight: constants.space }}
+            disabled={submissionState === 'submitting'}
         />
     }
 
@@ -220,7 +226,8 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         if (this.props.onSkip) {
             return <StandardButton title={'Skip'} onPress={this.props.onSkip} />;
         } else {
-            return null;
+            // If this is null the save button gets left-aligned, I want it right-aligned.
+            return <View />;
         }
     }
 
@@ -307,5 +314,6 @@ const styles = {
     buttonRowStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        height: 45,
     },
 }
