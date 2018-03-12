@@ -23,7 +23,7 @@ import type { Navigation } from '../navigation-actions.js';
 
 const containerStyle = {
     flex: 1,
-    padding: constants.space,
+    padding: constants.space(),
     justifyContent: 'center',
 };
 const kaedeLabelStyle = { backgroundColor: constants.hilightColor2 };
@@ -33,14 +33,14 @@ const buttonContainerStyle = {
 };
 const loginStyle = {
     flex: 1,
-    marginRight: constants.space / 2,
-    borderWidth: constants.space / 2,
+    marginRight: constants.space(0.5),
+    borderWidth: constants.space(0.5),
     borderColor: 'transparent',
 };
 const registerStyle = {
     flex: 1,
-    marginLeft: constants.space / 2,
-    borderWidth: constants.space / 2,
+    marginLeft: constants.space(0.5),
+    borderWidth: constants.space(0.5),
     borderColor: constants.primaryColor,
 
     backgroundColor: 'transparent',

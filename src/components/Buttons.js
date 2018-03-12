@@ -17,7 +17,7 @@ const standardButtonDefaultStyles = {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space,
+            padding: constants.space(),
         },
     },
 
@@ -30,7 +30,7 @@ const standardButtonDefaultStyles = {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space,
+            padding: constants.space(),
         },
     },
 };
@@ -82,7 +82,7 @@ const secondaryButtonStyles = {
         ...constants.normalText,
         textDecorationLine: 'underline',
         textAlign: 'center',
-        padding: constants.space,
+        padding: constants.space(),
     },
 };
 type SecondaryButtonProps = {
@@ -117,7 +117,7 @@ export function LargeButton(props: LargeButtonProps) {
 
     const defaultStyle = {
         backgroundColor: constants.primaryColor,
-        paddingVertical: 1 * constants.space,
+        paddingVertical: constants.space(),
         elevation: 2,
     };
     const concreteStyle = style ? Object.assign({}, defaultStyle, style) : defaultStyle;
@@ -133,7 +133,7 @@ export function LargeButton(props: LargeButtonProps) {
 ///////////////////////////////////////////////////////
 const heroContainerStyle = {
     backgroundColor: constants.hilightColor2,
-    padding: 3 * constants.space,
+    padding: constants.space(3),
     borderRadius: 10,
     elevation: 2,
 };

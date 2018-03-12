@@ -70,7 +70,7 @@ export class PitchScreen extends React.Component<Props, State> {
             <View
                 style={{
                     flex: 1,
-                    padding: constants.space,
+                    padding: constants.space(),
                     backgroundColor: constants.primaryColor,
                 }}
             >
@@ -104,7 +104,7 @@ export class PitchScreen extends React.Component<Props, State> {
 function Paragraph(props: { style?: Object }) {
     const { style, ...restProps } = props;
 
-    const defaultStyle = { paddingTop: constants.space };
+    const defaultStyle = { paddingTop: constants.space() };
     const actualStyle = Object.assign({}, defaultStyle, style);
     return <StandardText style={actualStyle} {...restProps} />;
 }
@@ -127,7 +127,7 @@ function ItIsImportant() {
 
     return (
         <View>
-            <LargeText style={{ paddingTop: constants.space * 5 }}>
+            <LargeText style={{ paddingTop: constants.space(5) }}>
                 Social intelligence directly impacts your team's performance
             </LargeText>
 

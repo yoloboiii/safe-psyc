@@ -21,8 +21,8 @@ const containerStyle = {
 const defaultTouchableStyle = {
     backgroundColor: constants.primaryColor,
     borderRadius: constants.mediumRadius,
-    paddingVertical: constants.space / 2,
-    paddingHorizontal: constants.space,
+    paddingVertical: constants.space(0.5),
+    paddingHorizontal: constants.space(),
 };
 const defaultTextStyle = {
     textAlignVertical: 'center',

@@ -12,7 +12,7 @@ const memoizedStyles = {};
 export function getMemoizedStyle(multiplier: number = 1): Object {
     if (memoizedStyles[multiplier] === undefined) {
         memoizedStyles[multiplier] = {
-            height: constants.space * multiplier,
+            height: constants.space(multiplier),
         };
     }
 

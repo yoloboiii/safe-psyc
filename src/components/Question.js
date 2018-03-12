@@ -168,7 +168,7 @@ const resultOverlayStyleSheet = StyleSheet.create({
         top: 155, // TODO: I want the overlay to show just beneath the question image in case the user wants to compare them
         width: '100%',
 
-        padding: 3 * constants.space,
+        padding: constants.space(3),
         elevation: 10,
     },
     correct: {

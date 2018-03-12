@@ -217,7 +217,7 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
             title='Nah, it was correct'
             onPress={this.props.onAnswered}
 
-            containerStyle={{ marginRight: constants.space }}
+            containerStyle={{ marginRight: constants.space() }}
             disabled={submissionState === 'submitting'}
         />
     }
@@ -255,9 +255,9 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
 function PhotoGrid(props) {
 
     const containerStyle = {
-        margin: constants.space / 2,
+        margin: constants.space(0.5),
     };
-    const borderWidth = constants.space / 2;
+    const borderWidth = constants.space(0.5);
     const selectedImageStyle = {
         borderWidth,
         borderColor: constants.primaryColor,

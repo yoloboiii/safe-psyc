@@ -20,7 +20,7 @@ export function QuestionProgress(props: Props) {
                 progress={progress}
                 color={constants.primaryColor}
                 width={null}
-                height={constants.space}
+                height={constants.space()}
                 borderRadius={constants.mediumRadius}
                 animated={true}
                 useNativeDriver={true}

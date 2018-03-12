@@ -16,8 +16,8 @@ import { log } from '../services/logger.js';
 import type { Navigation } from '../navigation-actions.js';
 
 const contentStyle = {
-    paddingTop: statusBarHeight + constants.space,
-    padding: constants.space,
+    paddingTop: statusBarHeight + constants.space(),
+    padding: constants.space(),
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',

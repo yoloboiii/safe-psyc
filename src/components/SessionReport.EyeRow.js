@@ -7,14 +7,14 @@ import { constants } from '../styles/constants.js';
 import type { EyeQuestion } from '../models/questions.js';
 
 const eyeContainerStyle = {
-    paddingBottom: 2 * constants.space,
+    paddingBottom: constants.space(2),
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
 };
 const imageContainerStyle = {
     width: '40%',
-    height: 4 * constants.space,
+    height: constants.space(4),
 };
 const imageStyle = {
     height: '100%',

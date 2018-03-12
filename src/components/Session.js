@@ -43,11 +43,11 @@ const backgroundStyle = {
 };
 const topRow = {
     flexDirection: 'row',
-    paddingHorizontal: constants.space,
-    paddingTop: constants.space,
+    paddingHorizontal: constants.space(),
+    paddingTop: constants.space(),
 };
 const abortContainer = {
-    paddingRight: constants.space,
+    paddingRight: constants.space(),
 };
 export class Session extends React.Component<Props, State> {
     timeout: ?TimeoutID;
@@ -256,8 +256,8 @@ export function AbortSessionButton(props: { onPress: () => * }) {
             <Image
                 source={closeImage}
                 style={{ tintColor: constants.primaryColor }}
-                width={3 * constants.space}
-                height={3 * constants.space}
+                width={constants.space(3)}
+                height={constants.space(3)}
             />
         </TouchableOpacity>
     );

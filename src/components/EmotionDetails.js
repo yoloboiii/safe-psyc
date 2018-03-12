@@ -53,7 +53,7 @@ export function EmotionDetails(props: Props) {
         ) : (
             <View style={{ flexDirection: 'row' }}>
                 <ConfusionList
-                    style={{ flex: 2, paddingRight: constants.space }}
+                    style={{ flex: 2, paddingRight: constants.space() }}
                     dataPoints={props.dataPoints}
                     navigation={props.navigation}
                 />
@@ -80,8 +80,8 @@ export function EmotionDetails(props: Props) {
 }
 
 const filledMeterStyle = {
-    width: constants.space * 4,
-    height: constants.space * 20,
+    width: constants.space(4),
+    height: constants.space(20),
     backgroundColor: constants.hilightColor2,
 };
 const unfilledMeterStyle = {

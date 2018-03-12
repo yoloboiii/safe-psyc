@@ -1,11 +1,13 @@
 // @flow
 
-const space = 10;
+function space(multiplier: number = 1): number {
+    return multiplier * 10;
+};
 const flex1 = {
     flex: 1,
 };
 const padding = {
-    padding: space,
+    padding: space(),
 };
 const defaultTextColor = '#666';
 const lightTextColor = '#CCC';
@@ -49,5 +51,5 @@ export const constants = {
         ...padding,
     },
 
-    mediumRadius: 2 * space,
+    mediumRadius: space(2),
 };
