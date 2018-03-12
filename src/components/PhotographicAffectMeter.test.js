@@ -323,8 +323,6 @@ it('shows a nah-it-was-correct button when changing emotion after submission whi
     const { component, emotion } = renderAndSubmit({ onAnswered });
     selectAnotherEmotion(component, emotion);
 
-    expect(component).toHaveChildWithProps(StandardButton, { testName: 'nah-correct' });
-
     const btn = findChildren(component, StandardButton).find(b => b.props.testName === 'nah-correct');
     if (!btn) throw new Error('Found no nah-correct button');
     btn.props.onPress();
@@ -343,9 +341,7 @@ it('highlights the first emotion when changing emotion after submission', () => 
     if (!submitted) throw new Error('Unable to find the touchable for the submitted emotion');
 
     expect(others.length).toBeGreaterThan(1);
-    console.log(submitted.props.style);
     for (const other of others) {
-        console.log(other.props.style);
         expect(other.props.style).not.toEqual(submitted.props.style);
     }
 });

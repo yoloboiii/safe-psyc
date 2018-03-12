@@ -22,7 +22,7 @@ type Props = {
 };
 type State = {
     selectedEmotion: ?string,
-    submissionState: 'not-started' | 'submitting' | 'successful' | 'failed',
+    submissionState: 'not-started' | 'submitting' | 'successful' | Error,
     submittedEmotion: ?string,
     selectedImages: Array<{ emotion: string, image: string}>,
     dbId: ?string,
@@ -105,7 +105,7 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
 
                         if (error) {
                             this.setState({
-                                submissionState: 'failed',
+                                submissionState: error,
                             });
                             log.error('Failed saving current emotion', error);
                             Alert.alert('Save failure', error.message);
@@ -124,8 +124,9 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
     }
 
     render() {
-        const submitButton = this._createSubmitButton();
         const skipButton = this._createSkipButton();
+        const doNotChangeButton = this._createDoNotChangeButton();
+        const submitButton = this._createSubmitButton();
 
         return (
             <View style={styles.container}>
@@ -142,6 +143,7 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
                             submissionState: 'not-started',
                         }))}
                         selectedEmotion={this.state.selectedEmotion}
+                        submittedEmotion={this.state.submittedEmotion}
                         disabled={this.state.submissionState === 'submitting'}
                     />
                     <VerticalSpace />
@@ -159,6 +161,7 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
                     { this._createConfirmationText() }
                     <View style={styles.buttonRowStyle}>
                         {skipButton}
+                        {doNotChangeButton}
                         {submitButton}
                     </View>
                 </View>
@@ -197,11 +200,27 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         );
     }
 
+    _createDoNotChangeButton() {
+        const { selectedEmotion, submittedEmotion } = this.state;
+
+        const hasSubmitted = submittedEmotion !== null;
+        const changed = selectedEmotion !== submittedEmotion;
+        if (!hasSubmitted || !changed) {
+            return null;
+        }
+
+        return <StandardButton
+            testName='nah-correct'
+            title='Nah, it was correct'
+            onPress={this.props.onAnswered}
+        />
+    }
+
     _createSkipButton() {
         if (this.props.onSkip) {
             return <StandardButton title={'Skip'} onPress={this.props.onSkip} />;
         } else {
-            return <View />;
+            return null;
         }
     }
 
@@ -212,6 +231,10 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
             || selectedEmotion === null || selectedEmotion === undefined
             || selectedEmotion === submittedEmotion) {
             return <StandardText>{'\u0020'}</StandardText>
+        }
+
+        if (submissionState instanceof Error) {
+            return <StandardText>{'Unable to submit, ' + submissionState.message}</StandardText>
         }
 
         if (submittedEmotion === null) {
@@ -234,6 +257,13 @@ function PhotoGrid(props) {
 
         margin: containerStyle.margin - borderWidth,
     };
+    const submittedImageStyle = {
+        borderWidth,
+        borderColor: constants.hilightColor2,
+
+        margin: containerStyle.margin - borderWidth,
+    };
+
     return <SquareGrid
             items={props.emotionImages}
             keyExtractor={ (a) => {
@@ -243,9 +273,12 @@ function PhotoGrid(props) {
             renderItem={(emotionImage) => {
 
                 const isSelected = emotionImage.emotion === props.selectedEmotion;
+                const isSubmitted = emotionImage.emotion === props.submittedEmotion;
                 const containerStyles = [containerStyle];
                 if (isSelected) {
                     containerStyles.push(selectedImageStyle);
+                } else if (isSubmitted) {
+                    containerStyles.push(submittedImageStyle);
                 }
 
                 return <TouchableHighlight
