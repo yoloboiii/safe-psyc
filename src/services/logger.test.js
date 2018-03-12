@@ -41,7 +41,7 @@ it("logs to remote logger if there's an error", () => {
     const e = new Error();
     log.info('foo %j', e);
 
-    expect(remoteMock.recordError).toHaveBeenCalledWith(1, e);
+    expect(remoteMock.recordError).toHaveBeenCalledWith(e);
 });
 
 it('replaces variables in the format string', () => {
@@ -60,7 +60,16 @@ it('logs the error message locally and the error remotely', () => {
     log.debug('foo %s', e);
 
     expect(localMock.log).toHaveBeenCalledWith('foo Error: bar');
-    expect(remoteMock.recordError).toHaveBeenCalledWith(1, e);
+    expect(remoteMock.recordError).toHaveBeenCalledWith(e);
+});
+
+it('logs events remotely only', () => {
+    const { log, localMock, remoteMock } = createLog();
+
+    log.event('foo');
+
+    expect(localMock.log).not.toHaveBeenCalled();
+    expect(remoteMock.logEvent).toHaveBeenCalledWith('foo');
 });
 
 function createLog() {
@@ -71,6 +80,7 @@ function createLog() {
     const remoteMock = {
         log: jest.fn(),
         recordError: jest.fn(),
+        logEvent: jest.fn(),
     };
     const log = new Logger(localMock, remoteMock);
 

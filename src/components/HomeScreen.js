@@ -11,6 +11,7 @@ import { constants } from '../styles/constants.js';
 
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 import { randomSessionService } from '../services/random-session-service.js';
+import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
@@ -38,6 +39,10 @@ export class HomeScreen extends React.Component<Props, State> {
         this.state = {
             loading: false,
         };
+    }
+
+    componentDidMount() {
+        log.event('HOME_SCREEN_MOUNTED');
     }
 
     _openSettings() {

@@ -9,7 +9,8 @@ interface LocalLogger {
 }
 interface RemoteLogger {
     log(string): void;
-    recordError(number, Error): void;
+    recordError(Error): void;
+    logEvent(string): void,
 }
 export class Logger {
     local: LocalLogger;
@@ -47,10 +48,40 @@ export class Logger {
 
         args.forEach(a => {
             if (a instanceof Error) {
-                this.remote.recordError(1, a);
+                this.remote.recordError(a);
             }
         });
     }
+
+    event(eventName: string) {
+        this.remote.logEvent(eventName);
+    }
 }
 
-export const log = new Logger(console, firebase.fabric.crashlytics());
+class FirebaseLogger {
+
+    crashlytics: Object;
+    analytics: Object;
+
+    constructor() {
+        this.crashlytics = firebase.fabric.crashlytics();
+        this.analytics = firebase.analytics();
+
+        this.analytics.setAnalyticsCollectionEnabled(true);
+    }
+
+    log(message: string) {
+        this.crashlytics.log(message);
+    }
+
+    recordError(error: Error) {
+        this.crashlytics.recordError(1, error);
+    }
+
+    logEvent(eventName) {
+        //console.log('keuk', this.analytics);
+        this.analytics.logEvent(eventName);
+    }
+}
+
+export const log = new Logger(console, new FirebaseLogger());

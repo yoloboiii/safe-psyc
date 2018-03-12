@@ -9,6 +9,9 @@ jest.mock('react-native-firebase', () => ({
         fabric: {
             crashlytics: () => {},
         },
+        analytics: () => ({
+            setAnalyticsCollectionEnabled: () => {},
+        }),
         config: () => ({
             getValue: () => Promise.resolve({
                 val: () => {},
@@ -30,6 +33,7 @@ jest.mock('../src/services/logger', () => {
         debug: jest.fn(),
         warn: jest.fn(),
         error: jest.fn(),
+        event: jest.fn(),
     };
     return {
         log: log,

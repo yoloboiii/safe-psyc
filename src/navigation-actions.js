@@ -28,6 +28,7 @@ export function startRandomSession(
     navigation: Navigation<*>,
     onDataLoaded?: () => void
 ): Promise<{}> {
+    log.event("START_RANDOM_SESSION");
     return configBackendFacade.getNumberOfQuestionsPerSession().then(numQuestions => {
         return doStartRandomSession(numQuestions, navigation, onDataLoaded);
     });
