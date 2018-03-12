@@ -5,12 +5,6 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text, Button } from 'react-native';
 import { constants } from '../styles/constants.js';
 
-const largeTextButtonStyle = {
-    ...constants.largeText,
-    color: constants.notReallyWhite,
-    alignSelf: 'center',
-};
-
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const standardButtonDefaultStyles = {
@@ -111,6 +105,12 @@ export function SecondaryButton(props: SecondaryButtonProps) {
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
+const largeTextButtonStyle = {
+    ...constants.largeText,
+    color: constants.notReallyWhite,
+    alignSelf: 'center',
+};
+
 type LargeButtonProps = { title: string, style?: Object };
 export function LargeButton(props: LargeButtonProps) {
     const { title, style, ...restProps } = props;

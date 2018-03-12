@@ -9,6 +9,7 @@ const padding = {
 };
 const defaultTextColor = '#666';
 const lightTextColor = '#CCC';
+const defaultFontFamily = 'Lato';
 export const constants = {
     space,
 
@@ -26,14 +27,18 @@ export const constants = {
 
     smallText: {
         fontSize: 12,
+        fontFamily: defaultFontFamily,
         color: defaultTextColor,
     },
     normalText: {
         fontSize: 16,
+        fontFamily: defaultFontFamily,
         color: defaultTextColor,
+        lineHeight: 16 * 1.5,
     },
     largeText: {
         fontSize: 22,
+        fontFamily: defaultFontFamily,
         color: defaultTextColor,
     },
 
