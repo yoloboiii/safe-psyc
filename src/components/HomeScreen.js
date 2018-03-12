@@ -92,7 +92,12 @@ export class HomeScreen extends React.Component<Props, State> {
                             onPress={() => this.props.navigation.navigate('CurrentFeeling')}
                         />
                         <VerticalSpace />
-                        <HeroButton title={buttonContent} onPress={this._startSession.bind(this)} />
+
+                        <HeroButton
+                            title={buttonContent}
+                            onPress={this._startSession.bind(this)}
+                            style={{ height: 90 }}
+                        />
                     </View>
                 </View>
             </ImageBackground>

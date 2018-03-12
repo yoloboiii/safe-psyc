@@ -139,9 +139,10 @@ const heroContainerStyle = {
 };
 type HeroButtonProps = {
     title: any,
+    style?: Object,
 };
 export function HeroButton(props: HeroButtonProps) {
-    const { title, ...restProps } = props;
+    const { title, style, ...restProps } = props;
     const content =
         typeof title === 'string' ? (
             <Text style={largeTextButtonStyle}>{title.toUpperCase()}</Text>
@@ -150,7 +151,7 @@ export function HeroButton(props: HeroButtonProps) {
         );
 
     return (
-        <TouchableOpacity style={heroContainerStyle} {...restProps}>
+        <TouchableOpacity style={[heroContainerStyle, style]} {...restProps}>
             {content}
         </TouchableOpacity>
     );
