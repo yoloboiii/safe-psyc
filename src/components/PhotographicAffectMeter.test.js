@@ -1,5 +1,6 @@
 // @flow
 
+import React from 'react';
 import { Image, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { StandardButton, SecondaryButton } from './Buttons.js';
@@ -258,7 +259,7 @@ it('invokes the onAnswered prop to finish everything off', () => {
             registerCurrentEmotion: registerCurrentEmotionMock,
         },
     };
-    const component = renderAndSubmit(props);
+    const { component } = renderAndSubmit(props);
 
     return checkNextTick(() => {
         findSubmitButton(component).props.onPress();
@@ -325,6 +326,7 @@ it('shows a nah-it-was-correct button when changing emotion after submission whi
     expect(component).toHaveChildWithProps(StandardButton, { testName: 'nah-correct' });
 
     const btn = findChildren(component, StandardButton).find(b => b.props.testName === 'nah-correct');
+    if (!btn) throw new Error('Found no nah-correct button');
     btn.props.onPress();
 
     expect(onAnswered).toHaveBeenCalledTimes(1);
@@ -338,6 +340,8 @@ it('highlights the first emotion when changing emotion after submission', () => 
     const submitted = touchables.find(t => t.props.testName === submittedEmotion);
     const others = touchables.filter(t => t.props.testName !== submittedEmotion);
 
+    if (!submitted) throw new Error('Unable to find the touchable for the submitted emotion');
+
     expect(others.length).toBeGreaterThan(1);
     console.log(submitted.props.style);
     for (const other of others) {
@@ -346,7 +350,10 @@ it('highlights the first emotion when changing emotion after submission', () => 
     }
 });
 
-function renderAndSubmit(props = {}) {
+function renderAndSubmit(props = {}): {
+    component: React.Component<*, *>,
+    emotion: string,
+}{
     const component = render(PhotographicAffectMeter, props, defaultProps);
     const emotion = selectEmotion(component);
 
@@ -384,7 +391,7 @@ function selectAnotherEmotion(component, firstEmotion): string {
     throw new Error("Found no other emotion than " + firstEmotion);
 }
 
-function findSubmitButton(component) {
+function findSubmitButton(component: React.Component<*, *>) {
     const btn = findChildren(component, StandardButton)
         .find(t => t.props.testName === 'submitButton');
 

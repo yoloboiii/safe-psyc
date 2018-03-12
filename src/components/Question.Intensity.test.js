@@ -15,6 +15,7 @@ import { TouchableOpacity } from 'react-native';
 import { sprintf } from 'sprintf-js';
 
 describe('IntensityQuestionComponent', () => {
+
     const defaultProps = {
         question: randomIntensityQuestion(),
         onCorrectAnswer: jest.fn(),
