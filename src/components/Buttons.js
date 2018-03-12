@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, TouchableOpacity, Text, Button } from 'react-native';
+import { View, TouchableOpacity, Text, Button } from 'react-native';
 import { constants } from '../styles/constants.js';
 
 const largeTextButtonStyle = {
@@ -123,9 +123,9 @@ export function LargeButton(props: LargeButtonProps) {
     const concreteStyle = style ? Object.assign({}, defaultStyle, style) : defaultStyle;
 
     return (
-        <TouchableHighlight style={concreteStyle} {...restProps}>
+        <TouchableOpacity style={concreteStyle} {...restProps}>
             <Text style={largeTextButtonStyle}>{title}</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
     );
 }
 
@@ -150,8 +150,8 @@ export function HeroButton(props: HeroButtonProps) {
         );
 
     return (
-        <TouchableHighlight style={heroContainerStyle} {...restProps}>
+        <TouchableOpacity style={heroContainerStyle} {...restProps}>
             {content}
-        </TouchableHighlight>
+        </TouchableOpacity>
     );
 }
