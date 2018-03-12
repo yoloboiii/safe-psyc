@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, View, StyleSheet } from 'react-native';
+import { Button, Image, View, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
@@ -11,6 +11,7 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 
+import { flagQuestionBackendFacade } from '../services/flag-question-backend.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
@@ -197,7 +198,17 @@ export function ResultOverlay(props: ResultOverlayProps) {
 
     return (
         <Overlay>
-            <QuestionSpecificOverlay {...props} />
+            <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }}>
+                <QuestionSpecificOverlay {...props} />
+                <FlagQuestionButton
+                    style={{ marginLeft: constants.space() }}
+                    question={props.question}
+                />
+            </View>
             <VerticalSpace multiplier={2} />
             <StandardButton title={'Ok'} onPress={props.onDismiss} />
         </Overlay>
@@ -292,3 +303,74 @@ function QuestionSpecificOverlay(props: ResultOverlayProps) {
         return <StandardText>{text}</StandardText>;
     }
 }
+
+// TODO: Move to separate file and test :(
+export class FlagQuestionButton extends React.Component<{ question: Question, style?: Object }, { status: 'not-submitted' | 'submitting' | 'success' | Error }> {
+
+    iconStyle = {
+        tintColor: constants.notReallyWhite,
+        width: constants.space(3),
+        height: constants.space(3),
+    };
+
+    constructor() {
+        super();
+        this.state = {
+            status: 'not-submitted',
+        };
+    }
+
+    render() {
+        const { status } = this.state;
+        const { question, style } = this.props;
+
+        const concreteStyle = [this.iconStyle, style];
+        if (status instanceof Error) {
+            return <Image
+                // $FlowFixMe
+                source={require('../../images/error.png')}
+                style={concreteStyle}
+            />
+        }
+
+        if (status === 'submitting') {
+            return <ActivityIndicator style={concreteStyle} />
+        }
+
+        if (status === 'success') {
+            return <Image
+                // $FlowFixMe
+                source={require('../../images/success.png')}
+                style={concreteStyle}
+            />
+        }
+
+        // $FlowFixMe
+        const flagIcon = require('../../images/flag.png');
+
+        return <TouchableOpacity
+                onPress={ () => {
+                    this.setState({ status: 'submitting' }, () => {
+
+                        flagQuestionBackendFacade.flagQuestion(question)
+                            .then( () => {
+                                this.setState({ status: 'success' });
+                                Alert.alert('Question flagged', 'An administrator will look at the question and make sure it is up to our standards');
+                            })
+                            .catch( e => {
+                                log.error('Unable to flag question %s-%s, %s', question.correctAnswer.name, question.type, e);
+
+                                this.setState({ status: e });
+                                Alert.alert('Something went wrong', 'Unable to flag the question. This has been logged and someone will look into it');
+                            });
+                    });
+                }}
+            >
+                <Image
+                    source={flagIcon}
+                    style={concreteStyle}
+                />
+            </TouchableOpacity>
+    }
+}
+

@@ -77,7 +77,7 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
         );
     } else {
         return (
-            <View>
+            <View style={constants.flex1}>
                 <Link
                     prefix={"That's sadly incorrect. "}
                     linkText={capitalize(answer.name)}

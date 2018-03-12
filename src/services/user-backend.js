@@ -29,6 +29,10 @@ function registerAuthListeners() {
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
+export type User = {
+    uid: string,
+    email: string,
+};
 export class UserBackendFacade {
     createNewUser(email: string, password: string): Promise<{ email: string }> {
         email = email.trim();
@@ -108,11 +112,11 @@ export class UserBackendFacade {
         onLoggedOutListeners.push(callback);
     }
 
-    getLoggedInUser(): ?Object {
+    getLoggedInUser(): ?User {
         return loggedInUser;
     }
 
-    getUserOrThrow(component: string): Object {
+    getUserOrThrow(component: string): User {
         const user = this.getLoggedInUser();
 
         if (!user) {
