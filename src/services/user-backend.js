@@ -11,6 +11,8 @@ let loggedInUser = null;
 const onLoggedInListeners = [];
 const onLoggedOutListeners = [];
 
+
+let listenersRegistered = false;
 function registerAuthListeners() {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -25,6 +27,8 @@ function registerAuthListeners() {
             onLoggedOutListeners.forEach(l => l());
         }
     });
+
+    listenersRegistered = true;
 }
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
@@ -92,7 +96,7 @@ export class UserBackendFacade {
 
     onUserLoggedIn(callback: () => void): () => void {
         onLoggedInListeners.push(callback);
-        if (onLoggedInListeners.length === 1) {
+        if (!listenersRegistered) {
             registerAuthListeners();
         }
 
@@ -110,7 +114,22 @@ export class UserBackendFacade {
 
     onUserLoggedOut(callback: () => void) {
         onLoggedOutListeners.push(callback);
+        if (!listenersRegistered) {
+            registerAuthListeners();
+        }
+
+        return () => {
+            removeFrom(onLoggedOutListeners, callback);
+        };
     }
+
+    onceUserLoggedOut(callback: () => void) {
+        const unregister = this.onUserLoggedOut(() => {
+            callback();
+            unregister();
+        });
+    }
+
 
     getLoggedInUser(): ?User {
         return loggedInUser;

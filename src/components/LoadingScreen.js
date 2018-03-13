@@ -63,7 +63,7 @@ export class LoadingScreen extends React.Component<Props, {}> {
 }
 
 function checkIfLoggedIn(backend, state): Promise<boolean> {
-    const autologinTimeoutMs = 5000;
+    const autologinTimeoutMs = 1000;
     return new Promise((resolve, reject) => {
         listenForLoginEvent(resolve);
         startTimeout(resolve);
@@ -74,6 +74,12 @@ function checkIfLoggedIn(backend, state): Promise<boolean> {
             clearTimer();
             log.debug('Got logged in event, redirecting to home');
             resolve(true);
+        });
+
+        backend.onceUserLoggedOut(() => {
+            clearTimer();
+            log.debug('Got logged out event, redirecting to login screen');
+            resolve(false);
         });
     }
 
