@@ -38,7 +38,7 @@ export class UserBackendFacade {
         email = email.trim();
         return firebase
             .auth()
-            .createUserWithEmailAndPassword(email, password)
+            .createUserAndRetrieveDataWithEmailAndPassword(email, password)
             .then(user => {
                 log.debug('Created user');
                 return user;
@@ -53,7 +53,7 @@ export class UserBackendFacade {
         email = email.trim();
         return firebase
             .auth()
-            .signInWithEmailAndPassword(email, password)
+            .signInAndRetrieveDataWithEmailAndPassword(email, password)
             .then(function() {
                 log.debug('Login successful');
             })

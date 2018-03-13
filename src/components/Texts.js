@@ -17,9 +17,7 @@ type Context = {
 export function StandardText(props: Props, context: Context) {
     const { style, ...restProps } = props;
 
-    const actualStyle = Object.assign({}, standardDefaultStyle, context.textStyle, style);
-
-    return <Text style={actualStyle} {...restProps} />;
+    return <Text style={[standardDefaultStyle, context.textStyle, style]} {...restProps} />;
 }
 StandardText.contextTypes = {
     textStyle: PropTypes.object,
@@ -28,6 +26,5 @@ StandardText.contextTypes = {
 export function LargeText(props: Props) {
     const { style, ...restProps } = props;
 
-    const actualStyle = Object.assign({}, largeDefaultStyle, style);
-    return <Text style={actualStyle} {...restProps} />;
+    return <Text style={[largeDefaultStyle, style]} {...restProps} />;
 }

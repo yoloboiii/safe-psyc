@@ -36,10 +36,16 @@ export class WelcomeScreen extends React.Component<Props, State> {
         if (props) {
             return this._render(props);
         } else {
-            log.error('Invalid welcome screen props', new Error());
+            log.error('Invalid welcome screen props', new Error('Invalid welcome screen props'));
             return (
                 <View>
-                    <StandardText>Invalid welcome screen props</StandardText>
+                    <StandardText
+                        style={{
+                            color: constants.notReallyWhite,
+                        }}
+                    >
+                        Invalid welcome screen props
+                    </StandardText>
                 </View>
             );
         }
@@ -52,9 +58,20 @@ export class WelcomeScreen extends React.Component<Props, State> {
             <ImageBackground>
                 <View style={containerStyle}>
                     <View>
-                        <LargeText customStyle={{ alignSelf: 'center' }}>Welcome!</LargeText>
+                        <LargeText
+                            style={{
+                                alignSelf: 'center',
+                                color: constants.notReallyWhite,
+                            }}
+                        >
+                            Welcome!
+                        </LargeText>
                         <VerticalSpace />
-                        <StandardText>Successfully registered {username}</StandardText>
+                        <StandardText
+                            style={{
+                                color: constants.notReallyWhite,
+                            }}
+                        >Successfully registered {username}</StandardText>
                     </View>
                     <HeroButton
                         title={"Let's get started!"}

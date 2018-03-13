@@ -153,14 +153,14 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     // RNFirebase required dependencies
-    implementation "com.google.firebase:firebase-core:11.0.0"
+    implementation "com.google.firebase:firebase-core:11.8.0"
 
     // RNFirebase optional dependencies
-    implementation "com.google.firebase:firebase-auth:11.0.0"
-    implementation "com.google.firebase:firebase-database:11.0.0"
-    implementation "com.google.firebase:firebase-perf:11.0.0"
-    implementation "com.google.firebase:firebase-config:11.0.0"
-    implementation "com.google.firebase:firebase-analytics:11.0.0"
+    implementation "com.google.firebase:firebase-auth:11.8.0"
+    implementation "com.google.firebase:firebase-database:11.8.0"
+    implementation "com.google.firebase:firebase-perf:11.8.0"
+    implementation "com.google.firebase:firebase-config:11.8.0"
+    implementation "com.google.firebase:firebase-analytics:11.8.0"
 
 
 

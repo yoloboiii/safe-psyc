@@ -11,8 +11,7 @@ import {
     TouchableHighlight,
 } from 'react-native';
 import { Kaede } from 'react-native-textinput-effects';
-import { LargeButton } from './Buttons.js';
-import { StandardText } from './Texts.js';
+import { LargeButton, SecondaryButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { constants } from '../styles/constants.js';
@@ -168,9 +167,14 @@ export class LoginScreen extends React.Component<Props, State> {
                     </View>
 
                     <VerticalSpace />
-                    <StandardText onPress={this._resetPassword.bind(this)}>
-                        Forgot password
-                    </StandardText>
+                    <SecondaryButton
+                        title="forgot password"
+                        onPress={this._resetPassword.bind(this)}
+                        textStyle={{
+                            color: constants.notReallyWhite,
+                            textAlign: 'left',
+                        }}
+                    />
                 </View>
             </ImageBackground>
         );
