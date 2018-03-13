@@ -223,12 +223,20 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
     }
 
     _createSkipButton() {
-        if (this.props.onSkip) {
-            return <StandardButton title={'Skip'} onPress={this.props.onSkip} />;
-        } else {
+        const hasOnSkipProp = !!this.props.onSkip;
+        const hasSubmittedSuccessfully = this.state.submissionState === 'successful';
+
+        if (!hasOnSkipProp || hasSubmittedSuccessfully) {
             // If this is null the save button gets left-aligned, I want it right-aligned.
             return <View />;
         }
+
+        return <StandardButton
+            title={'Skip'}
+            // $FlowFixMe: This is guaranteed to be non-null by the if-statement above :(
+            onPress={this.props.onSkip}
+            disabled={this.state.submissionState === 'submitting'}
+        />;
     }
 
     _createConfirmationText() {
@@ -245,10 +253,18 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         }
 
         if (submittedEmotion === null) {
-            return <StandardText>{'Are you feeling ' + selectedEmotion + '?'}</StandardText>
+            return <StandardText
+                    style={styles.confirmationText}
+                >
+                    {'Are you feeling ' + selectedEmotion + '?'}
+                </StandardText>
         }
 
-        return <StandardText>{'Did you mean ' + selectedEmotion + '?'}</StandardText>
+        return <StandardText
+                style={styles.confirmationText}
+            >
+                {'Did you mean ' + selectedEmotion + '?'}
+            </StandardText>
     }
 }
 
@@ -315,5 +331,11 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: 45,
+
+        marginTop: constants.space(),
+    },
+
+    confirmationText: {
+        textAlign: 'right',
     },
 }

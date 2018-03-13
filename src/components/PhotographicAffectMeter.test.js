@@ -251,6 +251,33 @@ it('shows a skip button if the onSkip prop is given', () => {
     expect(skipButton).not.toBeUndefined();
 });
 
+it('disables the skip button while submitting', () => {
+    const { component } = renderAndSubmit({
+        onSkip: jest.fn(),
+        backendFacade: {
+            registerCurrentEmotion: jest.fn(),  // never invoke the callback
+        },
+    });
+
+    const buttons = findChildren(component, StandardButton);
+    const skipButton = buttons.find(b => b.props.title === 'Skip');
+
+    if (!skipButton) throw new Error('Unable to find the skip button');
+
+    expect(skipButton.props.disabled).toBe(true);
+});
+
+it('removes the skip button when submitted', () => {
+    const { component } = renderAndSubmit({
+        onSkip: jest.fn(),
+    });
+
+    const buttons = findChildren(component, StandardButton);
+    const skipButton = buttons.find(b => b.props.title === 'Skip');
+
+    expect(skipButton).toBeUndefined();
+});
+
 it('invokes the onAnswered prop to finish everything off', () => {
     const registerCurrentEmotionMock = jest.fn( (_a, cb) => cb(null) );
     const props = {

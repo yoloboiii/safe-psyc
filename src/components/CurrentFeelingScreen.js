@@ -19,7 +19,7 @@ type Props = {
 type State = {};
 export class CurrentFeelingScreen extends React.Component<Props, State> {
     static navigationOptions = {
-        title: 'How are you feeling right now?',
+        title: 'How are you feeling?',
     };
 
     render() {
