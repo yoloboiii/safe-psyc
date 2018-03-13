@@ -91,6 +91,20 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+
+import groovy.json.JsonSlurper
+def getNpmVersion() {
+    def inputFile = new File("../package.json")
+    def packageJson = new JsonSlurper().parseText(inputFile.text)
+    return packageJson["version"]
+}
+/* calculated from git commits to give sequential integers */
+def getGitVersion() {
+    def process = "git rev-list master --first-parent --count".execute()
+    return process.text.toInteger()
+}
+
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -100,8 +114,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0"
+        versionCode getGitVersion()
+        versionName getNpmVersion()
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
