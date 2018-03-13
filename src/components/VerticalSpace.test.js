@@ -13,12 +13,13 @@ it('defaults to multiplier 1', () => {
     expect(multiplier).toBe(1);
 });
 
-it.skip('returns the EXACT SAME style object', () => {
-    // TODO: This test passes even if I always create new styles in the VerticalSpace component. I need help understanding this.
-
-    const getStyle = component => renderer.create(component).toJSON().props.style;
+it('returns the EXACT SAME style object', () => {
     const firstStyle = getStyle(<VerticalSpace />);
     const secondStyle = getStyle(<VerticalSpace />);
 
-    expect(firstStyle === secondStyle).toBe(true);
+    expect(firstStyle).toBe(secondStyle);
 });
+
+function getStyle(component) {
+    return renderer.create(component).toJSON().props.style;
+}
