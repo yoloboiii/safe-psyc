@@ -1,7 +1,10 @@
 node_modules/
 .expo/
 npm-debug.*
+yarn-error.log
 SECRETS
 
 build
 .gradle
+local.properties
+.idea
