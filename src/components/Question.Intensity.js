@@ -148,6 +148,7 @@ function DebugPlot(props) {
                 verticalLinesAt={[0]}
                 data={[
                     {
+                        // Just to set the size of the chart
                         color: 'white',
                         values: [{ x: 20, y: 20 }, { x: -20, y: -20 }],
                     },
