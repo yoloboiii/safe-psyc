@@ -23,6 +23,8 @@ import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
+import com.testfairy.react.TestFairyPackage;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -43,7 +45,9 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseDatabasePackage(),
           new RNFirebasePerformancePackage(),
           new RNFirebaseRemoteConfigPackage(),
-          new RNFirebaseCrashlyticsPackage()
+          new RNFirebaseCrashlyticsPackage(),
+
+          new TestFairyPackage()
       );
     }
   };
