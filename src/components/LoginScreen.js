@@ -10,10 +10,10 @@ import {
     ActivityIndicator,
     TouchableHighlight,
 } from 'react-native';
-import { Kaede } from 'react-native-textinput-effects';
 import { LargeButton, SecondaryButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
+import { FancyInput } from './Inputs.js';
 import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';
@@ -24,13 +24,6 @@ const containerStyle = {
     flex: 1,
     padding: constants.space(),
     justifyContent: 'center',
-};
-const kaedeLabelStyle = {
-    color: constants.notReallyWhite,
-    backgroundColor: constants.hilightColor2,
-};
-const kaedeInputStyle = {
-    ...constants.normalText,
 };
 const buttonContainerStyle = {
     flexDirection: 'row',
@@ -147,23 +140,19 @@ export class LoginScreen extends React.Component<Props, State> {
         return (
             <ImageBackground>
                 <View style={containerStyle}>
-                    <Kaede
-                        labelStyle={kaedeLabelStyle}
-                        inputStyle={kaedeInputStyle}
+                    <FancyInput
                         label={'Email'}
                         value={this.state.email}
                         keyboardType={'email-address'}
-                        onChangeText={text => this.setState({ email: text })}
+                        onChange={text => this.setState({ email: text })}
                     />
 
                     <VerticalSpace />
-                    <Kaede
-                        labelStyle={kaedeLabelStyle}
-                        inputStyle={kaedeInputStyle}
+                    <FancyInput
                         label={'Password'}
                         secureTextEntry={true}
                         value={this.state.password}
-                        onChangeText={text => this.setState({ password: text })}
+                        onChange={text => this.setState({ password: text })}
                     />
 
                     <VerticalSpace multiplier={2} />

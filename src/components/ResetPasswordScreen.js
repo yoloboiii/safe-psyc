@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { Kaede } from 'react-native-textinput-effects';
+import { FancyInput } from './Inputs.js';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
 import { LargeButton, StandardButton } from './Buttons.js';
@@ -11,8 +11,6 @@ import { VerticalSpace } from './VerticalSpace.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { constants } from '../styles/constants.js';
 import type { Navigation } from '../navigation-actions.js';
-
-const kaedeLabelStyle = { backgroundColor: constants.hilightColor2 };
 
 type Props = {
     navigation: Navigation<{
@@ -77,12 +75,17 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
         }
 
         return (
-            <View style={constants.flex1}>
-                <Kaede
-                    labelStyle={kaedeLabelStyle}
+            <View style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+
+                margin: constants.space(),
+            }}>
+                <FancyInput
                     label={'EMAIL'}
                     value={this.state.email}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChange={text => this.setState({ email: text })}
                 />
 
                 <VerticalSpace />
