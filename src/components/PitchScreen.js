@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { View, AsyncStorage } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { StandardText, LargeText } from './Texts.js';
 import { StandardButton, HeroButton } from './Buttons.js';
@@ -38,6 +39,14 @@ export class PitchScreen extends React.Component<Props, State> {
         };
     }
 
+    getChildContext() {
+        return {
+            textStyle: {
+                color: constants.notReallyWhite,
+            },
+        };
+    }
+
     _skip() {
         const storage = paramsOr(this.props.navigation, {
             storage: AsyncStorage,
@@ -58,12 +67,15 @@ export class PitchScreen extends React.Component<Props, State> {
     render() {
         const skipButton = this.state.showSkipButton ? (
             <StandardButton
-                customColor={constants.hilightColor2}
+                containerStyle={{
+                    backgroundColor: constants.hilightColor2,
+                    height: 44,
+                }}
                 title={"Let's get started!"}
                 onPress={this._skip.bind(this)}
             />
         ) : (
-            <View style={{ height: 35 }} />
+            <View style={{ height: 44 }} />
         );
 
         return (
@@ -100,16 +112,19 @@ export class PitchScreen extends React.Component<Props, State> {
         );
     }
 }
+PitchScreen.childContextTypes = {
+    textStyle: PropTypes.object,
+};
 
 function Paragraph(props: { style?: Object }) {
     const { style, ...restProps } = props;
 
-    const defaultStyle = { paddingTop: constants.space() };
+    const defaultStyle = { paddingTop: constants.space(), flex: 1 };
     const actualStyle = Object.assign({}, defaultStyle, style);
-    return <StandardText style={actualStyle} {...restProps} />;
+    return <View style={actualStyle} {...restProps} />;
 }
 
-function ItIsImportant() {
+function Link(props) {
     const urlMap = new Map();
     urlMap.set(
         'https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html',
@@ -125,28 +140,63 @@ function ItIsImportant() {
         return urlMap.get(url) || url.substring(url.indexOf('/', url.indexOf('/') + 1) + 1);
     }
 
+    return <Hyperlink linkDefault={true} linkStyle={linkStyle} linkText={urlToText} {...props} />
+}
+
+function Quote(props: { text: string, by: * }) {
+
+    return <View style={constants.flex1}>
+        <View style={{
+            flex: 1,
+            //backgroundColor: 'red',
+            flexDirection: 'row',
+        }}>
+            // $FlowFixMe
+            <Image source={require('../../images/quote.png')} style={{ tintColor: constants.notReallyWhite }}/>
+            <StandardText style={{ color: constants.notReallyWhite }}>
+                { props.text }
+            </StandardText>
+        </View>
+
+        <View style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+        }}>
+            <StandardText>{'- '}</StandardText>
+            { props.by }
+        </View>
+    </View>
+}
+
+function ItIsImportant() {
     return (
-        <View>
+        <View style={styles.slideContainer}>
             <LargeText style={{ paddingTop: constants.space(5) }}>
                 Social intelligence directly impacts your team's performance
             </LargeText>
 
-            <Hyperlink linkDefault={true} linkStyle={linkStyle} linkText={urlToText}>
-                <Paragraph>
+            <Paragraph>
+                <Link>
                     According to
-                    https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
+                        https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
                     Google found social intelligence to be the primary indicator to psycological
                     safety.
-                </Paragraph>
-                <Paragraph>
-                    "All team members can actively shape a team’s norm." -
-                    https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/
-                </Paragraph>
-                <Paragraph>
+                </Link>
+            </Paragraph>
+            <Paragraph>
+                <Quote
+                    text={"All team members can actively shape a team’s norm."}
+                    by={<Link>
+                            https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/
+                        </Link>
+                    } />
+            </Paragraph>
+            <Paragraph>
+                <Link>
                     The not-smart pod episode
                     https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/
-                </Paragraph>
-            </Hyperlink>
+                </Link>
+            </Paragraph>
         </View>
     );
 }
@@ -188,3 +238,10 @@ function LetsStart(props) {
         </View>
     );
 }
+
+const styles = {
+    slideContainer: {
+        flex: 1,
+        paddingHorizontal: constants.space(2),
+    },
+};

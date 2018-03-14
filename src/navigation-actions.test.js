@@ -114,7 +114,7 @@ describe('routeToCurrentFeelingOrHome', () => {
 });
 
 describe('onUserLoggedOut', () => {
-    it.skip('resets to pitch if file system marker not set', () => {
+    it('resets to pitch if file system marker not set', () => {
         return doNav({
             expectedRoute: 'Pitch',
             hasSeenThePitch: Promise.resolve('false'),
