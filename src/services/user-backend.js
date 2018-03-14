@@ -130,7 +130,6 @@ export class UserBackendFacade {
         });
     }
 
-
     getLoggedInUser(): ?User {
         return loggedInUser;
     }
@@ -145,6 +144,13 @@ export class UserBackendFacade {
         }
 
         return user;
+    }
+
+    getUserOrReject(component: string): Promise<User> {
+        return new Promise( resolve => {
+            const user = this.getUserOrThrow(component);
+            resolve(user);
+        });
     }
 }
 

@@ -8,15 +8,50 @@ import type { Question } from '../models/questions.js';
 
 export class FlagQuestionBackendFacade {
 
-    flagQuestion(question: Question): Promise<void> {
-        const user = userBackendFacade.getUserOrThrow('flag-question');
+    flagQuestion(question: Question): Promise<string> {
+        return userBackendFacade.getUserOrReject('flag-question')
+            .then( user => {
 
-        return firebase.
-            database()
-            .ref('user-data/' + user.uid + '/flagged-questions/' + question.correctAnswer.name)
-            .push({
-                type: question.type,
-                when: moment().format('x'),
+                const path = 'user-data/'
+                    + user.uid
+                    + '/flagged-questions/'
+                    + question.correctAnswer.name;
+
+                const toWrite = {
+                    type: question.type,
+                    when: moment().format('x'),
+                };
+
+                const ref = firebase
+                    .database()
+                    .ref(path)
+                    .push();
+
+                return new Promise((resolve, reject) => {
+                    ref.set(
+                        toWrite,
+                        (error) => error
+                            ? reject(error)
+                            : resolve(ref.key)
+                    );
+                });
+        });
+    }
+
+    unflagQuestion(question: Question, id: string): Promise<void> {
+        return userBackendFacade.getUserOrReject('unflag-question')
+            .then( user => {
+                const path = 'user-data/'
+                    + user.uid
+                    + '/flagged-questions/'
+                    + question.correctAnswer.name
+                    + '/'
+                    + id;
+
+                return firebase
+                    .database()
+                    .ref(path)
+                    .remove();
             });
     }
 }
