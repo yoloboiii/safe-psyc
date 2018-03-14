@@ -21,7 +21,7 @@ export class CurrentEmotionBackendFacade {
             when: moment().format('x'), // x is the unix timestamps in ms
         };
 
-        const basePath = 'user-data/' + user.uid + '/emotions';
+        const basePath = 'user-data/' + user.uid + '/current-emotions';
         if (id) {
             const ref = firebase
                 .database()
@@ -46,7 +46,7 @@ export class CurrentEmotionBackendFacade {
 
             firebase
                 .database()
-                .ref('user-data/' + user.uid + '/emotions')
+                .ref('user-data/' + user.uid + '/current-emotions')
                 .orderByChild('when')
                 .limitToLast(1)
                 .once('value', snap => {
