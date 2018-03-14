@@ -50,5 +50,11 @@ export const constants = {
         ...padding,
     },
 
+    colApart: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+
     mediumRadius: space(2),
 };

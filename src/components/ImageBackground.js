@@ -1,7 +1,9 @@
 // @flow
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, ImageBackground as ImgBg } from 'react-native';
+import { constants } from '../styles/constants.js';
 
 const bgImageStyle = {
     width: '100%',
@@ -9,7 +11,7 @@ const bgImageStyle = {
 };
 const contentStyle = {
     height: '100%',
-    backgroundColor: 'rgba(45,222,152, 0.5)',
+    backgroundColor: 'rgba(253,184,7, 0.45)',
     flex: 1,
 };
 
@@ -17,15 +19,30 @@ type Props = {
     image?: any,
     children: any,
 };
-export function ImageBackground(props: Props) {
-    const { children, image } = props;
+export class ImageBackground extends React.Component<Props, {}> {
 
-    // $FlowFixMe
-    const img = image || require('../../images/stripes.png');
+    getChildContext() {
+        return {
+            textStyle: {
+                color: constants.notReallyWhite,
+            },
+        };
+    }
 
-    return (
-        <ImgBg source={img} resizeMode="cover" style={bgImageStyle}>
-            <View style={contentStyle}>{children}</View>
-        </ImgBg>
-    );
+    render() {
+        const { children, image } = this.props;
+
+        // $FlowFixMe
+        const img = image || require('../../images/stripes.png');
+
+        return (
+            <ImgBg source={img} resizeMode="cover" style={bgImageStyle}>
+                <View style={contentStyle}>{children}</View>
+            </ImgBg>
+        );
+    }
 }
+
+ImageBackground.childContextTypes = {
+    textStyle: PropTypes.object,
+};

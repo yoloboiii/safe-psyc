@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
+import { Title, StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../styles/status-bar-height.js';
@@ -11,14 +12,6 @@ import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
-
-const contentStyle = {
-    paddingTop: statusBarHeight + constants.space(),
-    padding: constants.space(),
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-};
 
 type Props = {
     navigation: Navigation<{}>,
@@ -65,24 +58,50 @@ export class HomeScreen extends React.Component<Props, State> {
         const cogwheel = require('../../images/settings.png');
         return (
             <ImageBackground>
-                <View style={contentStyle}>
-                    <View style={{ alignItems: 'flex-end' }}>
+                <View style={constants.colApart}>
+                    <View style={{ alignItems: 'flex-end', margin: constants.space() }}>
                         <TouchableOpacity onPress={this._openSettings.bind(this)}>
-                            <Image style={{ width: 40, height: 40 }} source={cogwheel} />
+                            <Image style={{
+                                width: 30,
+                                height: 30,
+                                tintColor: constants.defaultTextColor,
+                            }} source={cogwheel} />
                         </TouchableOpacity>
                     </View>
-                    <View>
-                        <HeroButton
-                            title={"View progress"}
-                            disabled={true}
-                            style={{ height: 90 }}
-                        />
-                        <VerticalSpace />
-                        <HeroButton
-                            title={sessionButtonContent}
-                            onPress={this._startSession.bind(this)}
-                            style={{ height: 90 }}
-                        />
+
+                    <View style={constants.colApart}>
+                        <View>
+                            <View style={{ marginTop: 100 }}>
+                                <View style={{
+                                    position: 'absolute',
+                                    top: 14,
+
+                                    width: 320,
+                                    height: 0,
+                                    borderTopWidth: 80, // the height of the thing
+                                    borderTopColor: constants.primaryColor,
+
+                                    borderRightWidth: 20,
+                                    borderRightColor: 'transparent',
+                                }}/>
+                                <Title>
+                                    safe psyc
+                                </Title>
+                            </View>
+                        </View>
+                        <View style={constants.padding}>
+                            <HeroButton
+                                title={"View progress"}
+                                disabled={true}
+                                style={{ height: 90 }}
+                            />
+                            <VerticalSpace />
+                            <HeroButton
+                                title={sessionButtonContent}
+                                onPress={this._startSession.bind(this)}
+                                style={{ height: 90 }}
+                            />
+                        </View>
                     </View>
                 </View>
             </ImageBackground>

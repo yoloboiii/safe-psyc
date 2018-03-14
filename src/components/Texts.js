@@ -6,7 +6,6 @@ import { Text } from 'react-native';
 import { constants } from '../styles/constants.js';
 
 const standardDefaultStyle = constants.normalText;
-const largeDefaultStyle = constants.largeText;
 
 type Props = {
     style?: Object,
@@ -23,8 +22,30 @@ StandardText.contextTypes = {
     textStyle: PropTypes.object,
 };
 
-export function LargeText(props: Props) {
+/////////////////////////////////////////
+/////////////////////////////////////////
+const largeDefaultStyle = constants.largeText;
+export function LargeText(props: Props, context: Context) {
     const { style, ...restProps } = props;
 
-    return <Text style={[largeDefaultStyle, style]} {...restProps} />;
+    return <Text style={[largeDefaultStyle, context.textStyle, style]} {...restProps} />;
 }
+LargeText.contextTypes = {
+    textStyle: PropTypes.object,
+};
+
+/////////////////////////////////////////
+/////////////////////////////////////////
+const titleDefaultStyle = {
+    fontSize: constants.space(7),
+    flex: 0,
+};
+export function Title(props: Props, context: Context) {
+    const { style, ...restProps } = props;
+
+    return <Text style={[titleDefaultStyle, context.textStyle, style]} {...restProps} />;
+}
+Title.contextTypes = {
+    textStyle: PropTypes.object,
+};
+
