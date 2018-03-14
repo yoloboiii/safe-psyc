@@ -1,13 +1,16 @@
 // @flow
 
 import React from 'react';
-import { View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Image, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../styles/status-bar-height.js';
 import { constants } from '../styles/constants.js';
+
+import { navigateToEmotionDetails } from '../navigation-actions.js';
+import { randomSessionService } from '../services/random-session-service.js';
 import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
@@ -26,7 +29,7 @@ type Props = {
 type State = {
     loading: boolean,
 };
-export class HomeScreen extends React.Component<Props, State> {
+export class DebugScreen extends React.Component<Props, State> {
     static navigationOptions = {
         header: null,
     };
@@ -36,10 +39,6 @@ export class HomeScreen extends React.Component<Props, State> {
         this.state = {
             loading: false,
         };
-    }
-
-    componentDidMount() {
-        log.event('HOME_SCREEN_MOUNTED');
     }
 
     _openSettings() {
@@ -59,7 +58,7 @@ export class HomeScreen extends React.Component<Props, State> {
     }
 
     render() {
-        const sessionButtonContent = this.state.loading ? <ActivityIndicator /> : 'Start session';
+        const buttonContent = this.state.loading ? <ActivityIndicator /> : 'Start session';
 
         // $FlowFixMe
         const cogwheel = require('../../images/settings.png');
@@ -73,16 +72,36 @@ export class HomeScreen extends React.Component<Props, State> {
                     </View>
                     <View>
                         <HeroButton
-                            title={"View progress"}
-                            disabled={true}
-                            style={{ height: 90 }}
+                            title={'Emotion details'}
+                            onPress={() =>
+                                navigateToEmotionDetails(
+                                    this.props.navigation,
+                                    randomSessionService
+                                        .getEmotionPool()
+                                        .filter(e => e.name === 'bitter')[0]
+                                )
+                            }
                         />
                         <VerticalSpace />
+
                         <HeroButton
-                            title={sessionButtonContent}
+                            title={'How are you feeling right now?'}
+                            onPress={() => this.props.navigation.navigate('CurrentFeeling')}
+                        />
+                        <VerticalSpace />
+
+                        <HeroButton
+                            title={'Real home'}
+                            onPress={() => this.props.navigation.navigate('AlwaysHome')}
+                        />
+                        <VerticalSpace />
+
+                        <HeroButton
+                            title={buttonContent}
                             onPress={this._startSession.bind(this)}
                             style={{ height: 90 }}
                         />
+                        <VerticalSpace />
                     </View>
                 </View>
             </ImageBackground>

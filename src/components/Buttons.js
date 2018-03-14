@@ -132,17 +132,26 @@ export function LargeButton(props: LargeButtonProps) {
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const heroContainerStyle = {
-    backgroundColor: constants.hilightColor2,
-    padding: constants.space(3),
-    borderRadius: 10,
-    elevation: 2,
+    enabled: {
+        backgroundColor: constants.hilightColor2,
+        padding: constants.space(3),
+        borderRadius: 10,
+        elevation: 2,
+    },
+    disabled: {
+        backgroundColor: constants.defaultTextColor,
+        padding: constants.space(3),
+        borderRadius: 10,
+        elevation: 2,
+    },
 };
 type HeroButtonProps = {
     title: any,
     style?: Object,
+    disabled?: boolean,
 };
 export function HeroButton(props: HeroButtonProps) {
-    const { title, style, ...restProps } = props;
+    const { title, style, disabled, ...restProps } = props;
     const content =
         typeof title === 'string' ? (
             <Text style={largeTextButtonStyle}>{title.toUpperCase()}</Text>
@@ -150,8 +159,16 @@ export function HeroButton(props: HeroButtonProps) {
             title
         );
 
+    const defaultStyles = disabled
+        ? heroContainerStyle.disabled
+        : heroContainerStyle.enabled;
+
     return (
-        <TouchableOpacity style={[heroContainerStyle, style]} {...restProps}>
+        <TouchableOpacity
+            style={[defaultStyles, style]}
+            disabled={disabled}
+            {...restProps}
+        >
             {content}
         </TouchableOpacity>
     );

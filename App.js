@@ -12,6 +12,7 @@ import { SessionReportScreen } from './src/components/SessionReportScreen.js';
 import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
+import { DebugScreen } from './src/components/DebugScreen.js';
 
 import { constants } from './src/styles/constants.js';
 
@@ -28,7 +29,8 @@ const App = StackNavigator({
     Loading: { screen: LoadingScreen },
     Pitch: { screen: PitchScreen },
     Login: { screen: LoginScreen },
-    Home: { screen: HomeScreen },
+    Home: { screen: __DEV__ ? DebugScreen : HomeScreen },
+
     Welcome: { screen: WelcomeScreen },
     Settings: { screen: SettingsScreen, ...defaultScreenProps },
     ResetPassword: { screen: ResetPasswordScreen, ...defaultScreenProps },
@@ -37,6 +39,10 @@ const App = StackNavigator({
     SessionReport: { screen: SessionReportScreen, ...defaultScreenProps },
     EmotionDetails: { screen: EmotionDetailsScreen, ...defaultScreenProps },
     CurrentFeeling: { screen: CurrentFeelingScreen, ...defaultScreenProps },
+
+    // Since the "Home" screen gives the debug screen in dev mode but I want to be able to see the
+    // real home screen in dev too I need a second screen for this :)
+    AlwaysHome: { screen: HomeScreen },
 });
 
 // The props available in navigationOptions is a little hard to find, so
