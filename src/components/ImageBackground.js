@@ -9,7 +9,7 @@ const bgImageStyle = {
 };
 const contentStyle = {
     height: '100%',
-    backgroundColor: 'rgba(255, 193, 69, 0.6)',
+    backgroundColor: 'rgba(45,222,152, 0.5)',
     flex: 1,
 };
 
@@ -21,7 +21,7 @@ export function ImageBackground(props: Props) {
     const { children, image } = props;
 
     // $FlowFixMe
-    const img = image || require('../../images/home-bg.jpg');
+    const img = image || require('../../images/stripes.png');
 
     return (
         <ImgBg source={img} resizeMode="cover" style={bgImageStyle}>

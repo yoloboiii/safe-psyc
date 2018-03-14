@@ -25,7 +25,13 @@ const containerStyle = {
     padding: constants.space(),
     justifyContent: 'center',
 };
-const kaedeLabelStyle = { backgroundColor: constants.hilightColor2 };
+const kaedeLabelStyle = {
+    color: constants.notReallyWhite,
+    backgroundColor: constants.hilightColor2,
+};
+const kaedeInputStyle = {
+    ...constants.normalText,
+};
 const buttonContainerStyle = {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -62,10 +68,8 @@ export class LoginScreen extends React.Component<Props, State> {
         super(props);
         this.state = {
             loading: 'no',
-            //email: '',
-            //password: '',
-            email: 'lol@lol.lol',
-            password: 'lollol',
+            email:    __DEV__ ? 'lol@lol.lol' : '',
+            password: __DEV__ ? 'lollol'      : '',
         };
     }
 
@@ -145,6 +149,7 @@ export class LoginScreen extends React.Component<Props, State> {
                 <View style={containerStyle}>
                     <Kaede
                         labelStyle={kaedeLabelStyle}
+                        inputStyle={kaedeInputStyle}
                         label={'Email'}
                         value={this.state.email}
                         keyboardType={'email-address'}
@@ -154,6 +159,7 @@ export class LoginScreen extends React.Component<Props, State> {
                     <VerticalSpace />
                     <Kaede
                         labelStyle={kaedeLabelStyle}
+                        inputStyle={kaedeInputStyle}
                         label={'Password'}
                         secureTextEntry={true}
                         value={this.state.password}
