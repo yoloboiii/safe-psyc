@@ -22,10 +22,15 @@ export function generateEyeQuestion(emotion: Emotion, answerService: AnswerServi
 export function generateIntensityQuestion(
     emotion: Emotion,
     referencePointService: ReferencePointService
-): IntensityQuestion {
+): { question: IntensityQuestion, isValid: boolean } {
+    const { refPoints, isValid } = referencePointService.getReferencePointsTo(emotion);
+
     return {
-        type: 'intensity',
-        correctAnswer: emotion,
-        referencePoints: referencePointService.getReferencePointsTo(emotion),
+        question: {
+            type: 'intensity',
+            correctAnswer: emotion,
+            referencePoints: refPoints,
+        },
+        isValid,
     };
 }

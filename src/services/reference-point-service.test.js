@@ -20,7 +20,7 @@ it("doesn't include the correct answer in the reference points", () => {
 
     const service = new ReferencePointService([e1, e2]);
 
-    const refPoints = service.getReferencePointsTo(e1).values();
+    const refPoints = service.getReferencePointsTo(e1).refPoints.values();
     expect(refPoints).not.toContain(e1);
 });
 
@@ -44,7 +44,7 @@ it('chooses reference points closest to the answer emotion', () => {
 
     // $FlowFixMe
     const service = new ReferencePointService([...close, ...far, src]);
-    const refPoints = Array.from(service.getReferencePointsTo(src).values());
+    const refPoints = Array.from(service.getReferencePointsTo(src).refPoints.values());
 
     expect(refPoints).toEqual(expect.arrayContaining(close));
     expect(refPoints).not.toEqual(expect.arrayContaining(far));
@@ -55,7 +55,7 @@ it('prefers points at 1,3,5 over 2,4', () => {
     const src = randomEmotionWithCoordinates();
     const emotions = ranomEmotionsWithIntensities([1,2,3,4,5,6,7,8,9,10]);
     const service = new ReferencePointService(emotions);
-    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+    const refPoints = getRefPointNumbers(service.getReferencePointsTo(src));
 
     expect(refPoints).toEqual([1, 3, 5]);
 });
@@ -64,7 +64,7 @@ it('accepts points at 2,4 if 1,3 or 5 is empty', () => {
     const src = randomEmotionWithCoordinates();
     const emotions = ranomEmotionsWithIntensities([3,4,5,6,7,8,9,10]);
     const service = new ReferencePointService(emotions);
-    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+    const refPoints = getRefPointNumbers(service.getReferencePointsTo(src));
 
     expect(refPoints).toEqual([2, 4]);
 });
@@ -74,7 +74,7 @@ it('warns if unable to find enough reference points', () => {
     const src = randomEmotionWithCoordinates();
     const emotions = ranomEmotionsWithIntensities([1, 3, 5]);
     const service = new ReferencePointService(emotions);
-    const refPoints = Array.from(service.getReferencePointsTo(src).keys());
+    const refPoints = getRefPointNumbers(service.getReferencePointsTo(src));
 
     expect(log.warn).toHaveBeenCalledWith(expect.stringMatching(/not find enough/i), expect.anything());
     expect(refPoints).toEqual([1, 2, 3]);
@@ -82,4 +82,9 @@ it('warns if unable to find enough reference points', () => {
 
 function ranomEmotionsWithIntensities(intensities) {
     return intensities.map(i => randomEmotionWithCoordinates({ polar: 1, intensity: i }));
+}
+
+function getRefPointNumbers(serviceReturnValue) {
+    const { refPoints } = serviceReturnValue;
+    return Array.from(refPoints.keys());
 }

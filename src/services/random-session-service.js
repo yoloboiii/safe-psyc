@@ -38,18 +38,18 @@ export class RandomSessionService {
             numEyeQuestions,
             this.getEmotionPool().filter(e => !!e.image)
         );
-        const emotionsWithCoordinates = getRandomElementsFromArray(
-            numIntensityQuestions,
-            this.getEmotionPool().filter(e => !!e.coordinates)
-        );
 
         const questions = [];
         for (const emotion of emotionsWithImage) {
             questions.push(generateEyeQuestion(emotion, this._answerService));
         }
 
-        for (const emotion of emotionsWithCoordinates) {
-            questions.push(generateIntensityQuestion(emotion, this._referencePointService));
+        const emotionsWithCoordinates = this.getEmotionPool().filter(e => !!e.coordinates);
+        for (let i=0; i<emotionsWithCoordinates.length && questions.length < numQuestions; i++) {
+            const { question, isValid } = generateIntensityQuestion(emotionsWithCoordinates[i], this._referencePointService);
+            if (isValid) {
+                questions.push(question);
+            }
         }
 
         return knuthShuffle(questions);

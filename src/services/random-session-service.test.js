@@ -45,16 +45,7 @@ it('generates three reference points to intensity questions', () => {
         pool.push(e);
     }
 
-    const answerService = {
-        setAnswerPool: jest.fn(),
-        getAnswersTo: jest.fn(),
-    };
-    const emotionService = {
-        getEmotionPool: () => pool,
-    };
-
-    // $FlowFixMe
-    const service = new RandomSessionService(answerService, emotionService);
+    const service = serviceWithEmotionPool(pool);
 
     const questions = service.getRandomQuestions(10);
     expect(questions.length).toBeGreaterThan(0);
@@ -81,6 +72,16 @@ it('contains more eye questions than intensity questions', () => {
     }
 });
 
+it('doesn\'t include intensity questions with bad reference points', () => {
+    // from a pool with only one emotion no intensity questions will have enough
+    // reference points
+    const pool = [randomEmotionWithCoordinates()];
+
+    const service = serviceWithEmotionPool(pool);
+
+    expect(service.getRandomQuestions(1)).toEqual([]);
+});
+
 it('shuffles the questions', () => {
     const numberOfQuestionTypes = 2;
 
@@ -97,3 +98,17 @@ it('shuffles the questions', () => {
 
     expect(changes).toBeGreaterThan(numberOfQuestionTypes - 1);
 });
+
+function serviceWithEmotionPool(pool) {
+
+    const answerService = {
+        setAnswerPool: jest.fn(),
+        getAnswersTo: jest.fn(),
+    };
+    const emotionService = {
+        getEmotionPool: () => pool,
+    };
+
+    // $FlowFixMe
+    return new RandomSessionService(answerService, emotionService);
+}

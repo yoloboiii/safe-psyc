@@ -12,7 +12,10 @@ export class ReferencePointService {
         this._emotionPool = emotionPool.filter(e => !!e.coordinates);
     }
 
-    getReferencePointsTo(emotion: Emotion): Map<number, Emotion> {
+    getReferencePointsTo(emotion: Emotion): {
+        refPoints: Map<number, Emotion>,
+        isValid: boolean,
+    } {
         const refPoints = new Map();
 
         const { coordinates: refEmotionCoords } = emotion;
@@ -21,7 +24,7 @@ export class ReferencePointService {
                 'Tried to get reference points to an emotion without coordinates, ',
                 emotion.name
             );
-            return refPoints;
+            return { refPoints, isValid: false };
         }
 
         for (const e of this._emotionPool) {
@@ -49,7 +52,7 @@ export class ReferencePointService {
             log.warn('Did not find enough reference points for %s', emotion.name);
         }
 
-        return refPoints;
+        return { refPoints, isValid };
     }
 }
 
