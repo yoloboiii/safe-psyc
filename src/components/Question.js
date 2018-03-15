@@ -202,14 +202,20 @@ export function ResultOverlay(props: ResultOverlayProps) {
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                position: 'relative',
             }}>
                 <View style={constants.flex1}>
                     <QuestionSpecificOverlay {...props} />
                 </View>
-                <FlagQuestionButton
-                    style={{ marginLeft: constants.space() }}
-                    question={props.question}
-                />
+                <View
+                    style={{
+                        marginLeft: constants.space(),
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                    }}>
+                    <FlagQuestionButton question={props.question} />
+                </View>
             </View>
             <VerticalSpace multiplier={2} />
             <StandardButton title={'Ok'} onPress={props.onDismiss} />
