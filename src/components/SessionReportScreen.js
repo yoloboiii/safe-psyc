@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { StandardText } from './Texts.js';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -27,6 +27,12 @@ type Props = {
     }>,
 };
 export class SessionReportScreen extends React.Component<Props, {}> {
+
+    static navigationOptions = {
+        title: 'Session Report',
+        headerLeft: <View/>,
+    };
+
     _onDismiss() {
         routeToCurrentFeelingOrHome(this.props.navigation, currentEmotionBackendFacade);
     }
