@@ -3,7 +3,7 @@
 // TODO: Allow the user to change their mind even after submitting the emotion
 
 import React from 'react';
-import { View, Image, TouchableHighlight, Alert } from 'react-native';
+import { View, Image, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
 import { StandardText } from './Texts.js';
 import { StandardButton, SecondaryButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -124,17 +124,36 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         );
     }
 
+    _showHelp() {
+        Alert.alert(null, 'An important part of emotional intelligence is learning to identify your feelings. This is a Photographic Affect Meter and can help you put words to what you\'re feeling.');
+    }
+
     render() {
         const skipButton = this._createSkipButton();
         const doNotChangeButton = this._createDoNotChangeButton();
         const submitButton = this._createSubmitButton();
 
+        const apa = <StandardText>
+                    </StandardText>
         return (
             <View style={styles.container}>
                 <View>
-                    <StandardText>
-                        Please choose the image that best illustrates how you are feeling right now
-                    </StandardText>
+                    <View style={{ flexDirection: 'row' }}>
+                        <StandardText style={{ maxWidth: '90%' }}>
+                            Please choose the image that best illustrates how you are feeling right now.
+                        </StandardText>
+
+                        <TouchableOpacity onPress={ () => this._showHelp() }>
+                            <Image
+                                // $FlowFixMe
+                                source={require('../../images/help.png')}
+                                style={{
+                                    tintColor: constants.defaultTextColor,
+                                    width: 30,
+                                    height: 30,
+                                }} />
+                        </TouchableOpacity>
+                    </View>
                     <VerticalSpace multiplier={3} />
 
                     <PhotoGrid
