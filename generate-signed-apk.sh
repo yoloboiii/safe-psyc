@@ -39,11 +39,25 @@ cd android
 ./gradlew assembleRelease
 
 
+APK_PATH=$(readlink -f "$ABS_WD/android/app/build/outputs/apk/release/app-release.apk")
+RELATIVE_APK_PATH=$(realpath --relative-to="$ABS_WD" "$APK_PATH")
+
 echo
 echo
 echo
-echo "The APK can be found at $(readlink -f ./app/build/outputs/apk/release/app-release.apk)"
+echo "The APK can be found at $APK_PATH"
+
+command -v xclip >/dev/null 2>&1 && {
+    echo -n "$APK_PATH" | xclip -selection clipboard
+    echo "I put the path in your clipboard"
+}
+
+echo
+echo "You can install the apk by running"
+echo "adb install -r ./$RELATIVE_APK_PATH"
+echo
 echo
 echo "Please make sure there is no .keystore file in android/app"
 echo "and no RELEASE_ keys in android/gradle.properties"
+echo
 
