@@ -10,58 +10,65 @@ type Props = {
     linkText: string,
     onLinkPress: () => void,
     postfix?: string,
-    underlineColor?: string,
 };
+
+const spaceWidth = 5;
+const vertSpace = 5;
 
 const containerStyle = {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'flex-start',
 };
-const defaultTouchableStyle = {
+const textStyle = {
+    paddingVertical: vertSpace,
+    ...constants.largeText,
+};
+const pillStyle = {
+    ...constants.largeText,
     backgroundColor: constants.primaryColor,
+    color: constants.notReallyWhite,
+
     borderRadius: constants.mediumRadius,
-    paddingVertical: constants.space(0.5),
-    paddingHorizontal: constants.space(),
-};
-const defaultTextStyle = {
-    textAlignVertical: 'center',
-    paddingVertical: defaultTouchableStyle.paddingVertical,
+
+    paddingVertical: vertSpace,
+    paddingHorizontal: 2 * vertSpace,
 };
 export function Link(props: Props) {
-    const { prefix, linkText, onLinkPress, postfix, underlineColor } = props;
-
-    const prefixComponent = prefix ? (
-        <StandardText style={defaultTextStyle}>{prefix}</StandardText>
-    ) : null;
-
-    const touchableStyle = underlineColor
-        ? Object.assign({}, defaultTouchableStyle, {
-              borderBottomColor: underlineColor,
-          })
-        : defaultTouchableStyle;
-
-    const touchable = (
-        <TouchableOpacity onPress={onLinkPress} style={touchableStyle}>
-            <StandardText
-                style={{
-                    color: constants.notReallyWhite,
-                }}
-            >
-                {linkText}
-            </StandardText>
-        </TouchableOpacity>
-    );
-
-    const postfixComponent = postfix ? (
-        <StandardText style={defaultTextStyle}>{postfix}</StandardText>
-    ) : null;
+    const { prefix, linkText, onLinkPress, postfix } = props;
 
     return (
         <View style={containerStyle}>
-            {prefixComponent}
-            {touchable}
-            {postfixComponent}
+            <Prefix text={prefix} />
+            <Pill text={linkText} onPress={onLinkPress} />
+            <Postfix text={postfix} />
         </View>
     );
 }
+
+function Prefix(props) {
+    const { text } = props;
+    if (text) {
+        return <StandardText style={[textStyle, { marginRight: spaceWidth }]}>{text}</StandardText>;
+    } else {
+        return null;
+    }
+}
+
+function Postfix(props) {
+    const { text } = props;
+    if (text) {
+        return <StandardText style={[textStyle, { marginLeft: spaceWidth }]}>{text}</StandardText>;
+    } else {
+        return null;
+    }
+}
+
+function Pill(props) {
+    const { text, onPress } = props;
+    return <TouchableOpacity onPress={onPress}>
+        <StandardText style={pillStyle}>
+            { text }
+        </StandardText>
+    </TouchableOpacity>
+}
+

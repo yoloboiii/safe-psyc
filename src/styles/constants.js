@@ -30,6 +30,7 @@ export const constants = {
         fontSize: 12,
         fontFamily: defaultFontFamily,
         color: defaultTextColor,
+        lineHeight: 12 * 1.5,
     },
     normalText: {
         fontSize: 16,
@@ -41,6 +42,7 @@ export const constants = {
         fontSize: 26,
         fontFamily: defaultFontFamily,
         color: defaultTextColor,
+        lineHeight: 26 * 1.5,
     },
     boldWeight: '800',
 
