@@ -111,8 +111,6 @@ export class PitchScreen extends React.Component<Props, State> {
                     <ItIsImportantForYou />
                     <ItIsImportantForTheTeam />
                     <ItCanBeImproved />
-                    { /* <HowSPDoesIt1 />
-                    <HowSPDoesIt2 /> */ }
                     <LetsStart onStart={this._skip.bind(this)} />
                 </Swiper>
 
@@ -230,7 +228,8 @@ function ItIsImportantForTheTeam() {
         <TitledSlide
             title="Social intelligence directly impacts your team's performance"
         >
-            <View> {/* Required for the tests, the tag=10 thing */}
+            {/* Required for the tests, the tag=10 thing */}
+            <View>
                 <Paragraph>
                     <Link>
                         According to
