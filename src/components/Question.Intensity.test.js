@@ -8,7 +8,7 @@ import {
 import { StandardButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { randomIntensityQuestion } from '../../tests/question-utils.js';
-import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
+import { getAllRenderedStrings, findChildren, getChildrenAndParent } from '../../tests/component-tree-utils.js';
 import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
 import uuid from 'uuid';
 import { TouchableOpacity } from 'react-native';
@@ -154,10 +154,11 @@ describe('IntensityQuestionComponent', () => {
             defaultProps
         );
 
-        const emotionNameComponent = findChildren(component, TouchableOpacity).filter(c => {
+        const emotionNameComponent = getChildrenAndParent(component).filter(c => {
+            const isPressable = c.props && c.props.onPress;
             const strings = getAllRenderedStrings(c);
             const isEmotionName = strings[0] === question.correctAnswer.name;
-            return isEmotionName;
+            return isEmotionName && isPressable;
         })[0];
         expect(emotionNameComponent).toBeDefined();
 

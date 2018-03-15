@@ -3,7 +3,7 @@
 import { TouchableOpacity } from 'react-native';
 import { Link } from './Link.js';
 import { render } from '../../tests/render-utils.js';
-import { getAllRenderedStrings, findChildren } from '../../tests/component-tree-utils.js';
+import { getAllRenderedStrings, getChildrenAndParent } from '../../tests/component-tree-utils.js';
 
 const defaultProps = {
     prefix: 'foo',
@@ -30,7 +30,13 @@ it('renders prefix, link text and postfix', () => {
 it('contains a touchable thing', () => {
     const component = render(Link, {}, defaultProps);
 
-    expect(component).toHaveChild(TouchableOpacity);
+    expect(component).toHaveChildMatching(c => {
+        if (c.props) {
+            return !!c.props.onPress;
+        } else {
+            return false;
+        }
+    });
 });
 
 it('The touchable thing invokes the callback on press', () => {
@@ -46,10 +52,12 @@ it('The touchable thing invokes the callback on press', () => {
         defaultProps
     );
 
-    const touchable = findChildren(component, TouchableOpacity).filter(c => {
+    const touchable = getChildrenAndParent(component).filter(c => {
+        const isPressable = c.props && c.props.onPress;
         const strings = getAllRenderedStrings(c);
         const isLinkText = strings[0] === linkText;
-        return isLinkText;
+
+        return isLinkText && isPressable;
     })[0];
 
     expect(onLinkPressMock).not.toHaveBeenCalled();
