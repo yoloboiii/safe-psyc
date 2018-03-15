@@ -57,5 +57,5 @@ export const constants = {
         justifyContent: 'space-between',
     },
 
-    mediumRadius: space(2),
+    mediumRadius: space(3),
 };

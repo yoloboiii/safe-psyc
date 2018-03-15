@@ -3,6 +3,8 @@ package se.larko.safepsyc;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.testfairy.react.TestFairyPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -22,8 +24,6 @@ import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
-
-import com.testfairy.react.TestFairyPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -47,7 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseRemoteConfigPackage(),
           new RNFirebaseCrashlyticsPackage(),
 
-          new TestFairyPackage()
+          new TestFairyPackage(),
+          new LinearGradientPackage()
       );
     }
   };

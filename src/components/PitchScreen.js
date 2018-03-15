@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
+import LinearGradient from 'react-native-linear-gradient';
 import { StandardText, LargeText } from './Texts.js';
 import { StandardButton, HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -18,6 +19,7 @@ import type { Navigation } from '../navigation-actions.js';
 const linkStyle = {
     color: constants.hilightColor2,
     textDecorationLine: 'underline',
+    textShadowColor: 'transparent',
 };
 
 type Props = {
@@ -44,6 +46,8 @@ export class PitchScreen extends React.Component<Props, State> {
         return {
             textStyle: {
                 color: constants.notReallyWhite,
+                textShadowColor: 'rgba(0, 0, 0, 0.2)',
+                textShadowOffset: {width: 0, height: 1},
             },
         };
     }
@@ -80,7 +84,10 @@ export class PitchScreen extends React.Component<Props, State> {
         );
 
         return (
-            <View
+            <LinearGradient
+                colors={['#ffd533', constants.primaryColor]}
+                start={{x: 0.8, y: 0.0}}
+                end={{x: 0.3, y: 0.18}}
                 style={{
                     flex: 1,
                     padding: constants.space(),
@@ -89,27 +96,30 @@ export class PitchScreen extends React.Component<Props, State> {
             >
                 <Swiper
                     style={constants.flex1}
-                    dotColor={constants.defaultTextColor}
+                    dotColor={'rgba(255,255,255, 0.2)'}
                     activeDotColor={constants.hilightColor2}
                     loop={false}
-                    showsButtons={true}
-                    nextButton={<StandardText>{'>'}</StandardText>}
-                    prevButton={<StandardText>{'<'}</StandardText>}
+
+                    showsButtons={false}
+                    nextButton={<ChangeSlideButton image={require('../../images/chevron-right.png')} />}
+                    prevButton={<ChangeSlideButton image={require('../../images/chevron-left.png')} />}
+
                     onIndexChanged={index =>
                         this.setState({
-                            showSkipButton: index !== 4,
+                            showSkipButton: index !== 3,
                         })
                     }
                 >
-                    <ItIsImportant />
+                    <ItIsImportantForYou />
+                    <ItIsImportantForTheTeam />
                     <ItCanBeImproved />
-                    <HowSPDoesIt1 />
-                    <HowSPDoesIt2 />
+                    { /* <HowSPDoesIt1 />
+                    <HowSPDoesIt2 /> */ }
                     <LetsStart onStart={this._skip.bind(this)} />
                 </Swiper>
 
                 {skipButton}
-            </View>
+            </LinearGradient>
         );
     }
 }
@@ -117,12 +127,29 @@ PitchScreen.childContextTypes = {
     textStyle: PropTypes.object,
 };
 
+function ChangeSlideButton(props) {
+    return <Image
+        source={props.image}
+        style={{
+            tintColor: constants.notReallyWhite,
+            width: 20,
+            height: 20,
+        }}
+    />
+}
+
 function Paragraph(props: { style?: Object }) {
-    const { style, ...restProps } = props;
+    const { style, children, ...restProps } = props;
 
     const defaultStyle = { paddingBottom: constants.space(5) };
+    const concreteStyle = [defaultStyle, style];
 
-    return <View style={[defaultStyle, style]} {...restProps} />;
+    if (typeof children === 'string') {
+        return <StandardText style={concreteStyle} {...restProps}>
+            {children}
+        </StandardText>
+    }
+    return <View style={concreteStyle} {...restProps} children={children} />;
 }
 
 function Link(props) {
@@ -137,6 +164,7 @@ function Link(props) {
         'YANSS #111'
     );
     urlMap.set('http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212', 'research article');
+    urlMap.set('https://hbr.org/2013/05/can-you-really-improve-your-em', 'Harvard Business Review');
 
     function urlToText(url) {
         return urlMap.get(url) || url.substring(url.indexOf('/', url.indexOf('/') + 1) + 1);
@@ -181,17 +209,41 @@ function Quote(props: { text: string, by: * }) {
     </View>
 }
 
-function ItIsImportant() {
+function TitledSlide(props) {
     return (
         <View style={[styles.slideContainer, { justifyContent: 'flex-start' }]}>
             <LargeText style={{
                 paddingTop: constants.space(5),
                 fontWeight: constants.boldWeight,
             }}>
-                Social intelligence directly impacts your team's performance
+                {props.title}
             </LargeText>
             <VerticalSpace multiplier={3} />
 
+            {props.children}
+        </View>
+    )
+
+}
+
+function ItIsImportantForYou() {
+    return <TitledSlide
+        title="High EQ is a significant indicator of happiness and success"
+        >
+            <Paragraph style={constants.flex1}>
+                <Quote
+                    text="Studies have shown that a high emotional quotient (or EQ) boosts career success, entrepreneurial potential, leadership talent, health, relationship satisfaction, humor, and happiness."
+                    by={<Link>https://hbr.org/2013/05/can-you-really-improve-your-em</Link>}
+                />
+            </Paragraph>
+        </TitledSlide>
+}
+
+function ItIsImportantForTheTeam() {
+    return (
+        <TitledSlide
+            title="Social intelligence directly impacts your team's performance"
+        >
             <Paragraph>
                 <Link>
                     According to
@@ -223,15 +275,34 @@ function ItIsImportant() {
                     https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/
                 </Link>
             </Paragraph>}
-        </View>
+        </TitledSlide>
     );
 }
 
 function ItCanBeImproved() {
     return (
-        <View>
-            <StandardText>Repetition can improve your SI</StandardText>
-            <StandardText>Sources....</StandardText>
+        <View style={[styles.slideContainer, { justifyContent: 'space-between', alignItems: 'flex-end'} ]}>
+
+            <View style={{ height: '55%', justifyContent: 'flex-end' }}>
+                <LargeText style={{
+                    fontWeight: constants.boldWeight,
+                }}>
+                    You can improve your EQ!
+                </LargeText>
+            </View>
+
+            <View style={constants.flex1}>
+                <StandardText
+                    style={{
+                        textAlign: 'right',
+                        marginTop: constants.space(),
+                        marginRight: constants.space(),
+                        maxWidth: '50%',
+                    }}
+                >
+                    and safe-psyc will help you do just that!
+                </StandardText>
+            </View>
         </View>
     );
 }
