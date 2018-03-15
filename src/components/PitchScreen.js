@@ -101,8 +101,6 @@ export class PitchScreen extends React.Component<Props, State> {
                     loop={false}
 
                     showsButtons={false}
-                    nextButton={<ChangeSlideButton image={require('../../images/chevron-right.png')} />}
-                    prevButton={<ChangeSlideButton image={require('../../images/chevron-left.png')} />}
 
                     onIndexChanged={index =>
                         this.setState({
@@ -127,18 +125,7 @@ PitchScreen.childContextTypes = {
     textStyle: PropTypes.object,
 };
 
-function ChangeSlideButton(props) {
-    return <Image
-        source={props.image}
-        style={{
-            tintColor: constants.notReallyWhite,
-            width: 20,
-            height: 20,
-        }}
-    />
-}
-
-function Paragraph(props: { style?: Object }) {
+function Paragraph(props: { style?: Object, children?: Object }) {
     const { style, children, ...restProps } = props;
 
     const defaultStyle = { paddingBottom: constants.space(5) };
@@ -262,7 +249,7 @@ function ItIsImportantForTheTeam() {
                 </Paragraph>
 
                 { false && <Paragraph>
-                    <RightQuote
+                    <Quote
                         text="The research also found that collective intelligence was correlated with the individual group members’ ability to reason about the mental states of others."
                         by={<Link>http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212</Link>}
                     />

@@ -8,7 +8,7 @@ import { constants } from '../styles/constants.js';
 const standardDefaultStyle = constants.normalText;
 
 type Props = {
-    style?: Object,
+    style?: ?Object | Array<?Object>,
 };
 type Context = {
     textStyle?: Object,
