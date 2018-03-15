@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { StandardText } from './Texts';
 import { StandardButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
-import { Credits } from './Credits.js';
 import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedOut } from '../navigation-actions.js';
@@ -43,7 +42,6 @@ export class SettingsScreen extends React.Component<Props, {}> {
                         title={'Log out'}
                     />
                 </View>
-                <Credits />
             </View>
         );
     }

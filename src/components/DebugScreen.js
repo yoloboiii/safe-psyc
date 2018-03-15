@@ -87,7 +87,7 @@ export class DebugScreen extends React.Component<Props, State> {
 
                         <HeroButton
                             title={'How are you feeling right now?'}
-                            onPress={() => this.props.navigation.navigate('CurrentFeeling')}
+                            onPress={() => this.props.navigation.navigate('CurrentFeeling', { skippable: true })}
                         />
                         <VerticalSpace />
 

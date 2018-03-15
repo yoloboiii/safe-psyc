@@ -8,6 +8,7 @@ import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { emotionService } from '../services/emotion-service.js';
 import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';
 import { resetToHome } from '../navigation-actions.js';
+import { log } from '../services/logger.js';
 
 import type { Navigation } from '../navigation-actions.js';
 
@@ -22,13 +23,18 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
         title: 'How are you feeling?',
     };
 
+    _skip() {
+        log.event('CURRENT_EMOTION_SKIPPED');
+        resetToHome(this.props.navigation);
+    }
+
     render() {
         const skippable =
             this.props.navigation.state && this.props.navigation.state.params
                 ? !!this.props.navigation.state.params.skippable
                 : false;
 
-        const onSkip = skippable ? () => resetToHome(this.props.navigation) : undefined;
+        const onSkip = skippable ? () => this._skip() : undefined;
 
         return (
             <PhotographicAffectMeter
