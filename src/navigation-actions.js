@@ -149,7 +149,7 @@ export function onUserLoggedOut(
     return storage
         .getItem('hasSeenThePitch')
         .then(hasSeenThePitch => {
-            if (true || hasSeenThePitch === 'true') {
+            if (hasSeenThePitch === 'true') {
                 return 'Login';
             } else {
                 return 'Pitch';

@@ -91,6 +91,12 @@ export class DebugScreen extends React.Component<Props, State> {
                         <VerticalSpace />
 
                         <HeroButton
+                            title={'Pitch'}
+                            onPress={() => this.props.navigation.navigate('Pitch')}
+                        />
+                        <VerticalSpace />
+
+                        <HeroButton
                             title={'Real home'}
                             onPress={() => this.props.navigation.navigate('AlwaysHome')}
                         />

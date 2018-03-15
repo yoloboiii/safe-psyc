@@ -6,6 +6,7 @@ import { View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { StandardText, LargeText } from './Texts.js';
 import { StandardButton, HeroButton } from './Buttons.js';
+import { VerticalSpace } from './VerticalSpace.js';
 import Hyperlink from 'react-native-hyperlink';
 import { resetToLogin } from '../navigation-actions.js';
 import { paramsOr } from '../navigation-actions.js';
@@ -119,41 +120,53 @@ PitchScreen.childContextTypes = {
 function Paragraph(props: { style?: Object }) {
     const { style, ...restProps } = props;
 
-    const defaultStyle = { paddingTop: constants.space(), flex: 1 };
-    const actualStyle = Object.assign({}, defaultStyle, style);
-    return <View style={actualStyle} {...restProps} />;
+    const defaultStyle = { paddingBottom: constants.space(5) };
+
+    return <View style={[defaultStyle, style]} {...restProps} />;
 }
 
 function Link(props) {
     const urlMap = new Map();
     urlMap.set(
         'https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html',
-        'a nytimes article'
+        'an article in the New York Times'
     );
     urlMap.set('https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/', 're:Work');
     urlMap.set(
         'https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/',
         'YANSS #111'
     );
+    urlMap.set('http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212', 'research article');
 
     function urlToText(url) {
         return urlMap.get(url) || url.substring(url.indexOf('/', url.indexOf('/') + 1) + 1);
     }
 
-    return <Hyperlink linkDefault={true} linkStyle={linkStyle} linkText={urlToText} {...props} />
+    const { children, ...rest } = props;
+    return <Hyperlink linkDefault={true} linkStyle={linkStyle} linkText={urlToText} {...rest}>
+        <StandardText>{children}</StandardText>
+    </Hyperlink>
 }
 
 function Quote(props: { text: string, by: * }) {
 
     return <View style={constants.flex1}>
         <View style={{
-            flex: 1,
-            //backgroundColor: 'red',
             flexDirection: 'row',
         }}>
-            // $FlowFixMe
-            <Image source={require('../../images/quote.png')} style={{ tintColor: constants.notReallyWhite }}/>
-            <StandardText style={{ color: constants.notReallyWhite }}>
+            <Image
+                // $FlowFixMe
+                source={require('../../images/quote.png')}
+                style={{
+                    tintColor: constants.notReallyWhite,
+                }}
+            />
+            <StandardText style={{
+                flex: 1,
+                color: constants.notReallyWhite,
+                marginTop: constants.space(),
+                marginLeft: constants.space(),
+            }}>
                 { props.text }
             </StandardText>
         </View>
@@ -170,20 +183,24 @@ function Quote(props: { text: string, by: * }) {
 
 function ItIsImportant() {
     return (
-        <View style={styles.slideContainer}>
-            <LargeText style={{ paddingTop: constants.space(5) }}>
+        <View style={[styles.slideContainer, { justifyContent: 'flex-start' }]}>
+            <LargeText style={{
+                paddingTop: constants.space(5),
+                fontWeight: constants.boldWeight,
+            }}>
                 Social intelligence directly impacts your team's performance
             </LargeText>
+            <VerticalSpace multiplier={3} />
 
             <Paragraph>
                 <Link>
                     According to
-                        https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
-                    Google found social intelligence to be the primary indicator to psycological
+                    https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
+                    Google found social intelligence to be the primary indicator of psycological
                     safety.
                 </Link>
             </Paragraph>
-            <Paragraph>
+            <Paragraph style={constants.flex1}>
                 <Quote
                     text={"All team members can actively shape a team’s norm."}
                     by={<Link>
@@ -191,12 +208,21 @@ function ItIsImportant() {
                         </Link>
                     } />
             </Paragraph>
-            <Paragraph>
+
+            { false && <Paragraph>
+                <RightQuote
+                    text="The research also found that collective intelligence was correlated with the individual group members’ ability to reason about the mental states of others."
+                    by={<Link>http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212</Link>}
+                />
+
+            </Paragraph>}
+
+            { false && <Paragraph>
                 <Link>
                     The not-smart pod episode
                     https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/
                 </Link>
-            </Paragraph>
+            </Paragraph>}
         </View>
     );
 }

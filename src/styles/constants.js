@@ -38,10 +38,11 @@ export const constants = {
         lineHeight: 16 * 1.5,
     },
     largeText: {
-        fontSize: 22,
+        fontSize: 26,
         fontFamily: defaultFontFamily,
         color: defaultTextColor,
     },
+    boldWeight: '800',
 
     flex1,
     padding,
