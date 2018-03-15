@@ -44,7 +44,7 @@ export class RandomSessionService {
             questions.push(generateEyeQuestion(emotion, this._answerService));
         }
 
-        const emotionsWithCoordinates = this.getEmotionPool().filter(e => !!e.coordinates);
+        const emotionsWithCoordinates = knuthShuffle(this.getEmotionPool().filter(e => !!e.coordinates));
         for (let i=0; i<emotionsWithCoordinates.length && questions.length < numQuestions; i++) {
             const { question, isValid } = generateIntensityQuestion(emotionsWithCoordinates[i], this._referencePointService);
             if (isValid) {
