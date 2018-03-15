@@ -75,7 +75,7 @@ class FirebaseLogger {
     }
 
     recordError(error: Error) {
-        this.crashlytics.recordError(1, error);
+        this.crashlytics.recordError(1, error.message);
     }
 
     logEvent(eventName) {
