@@ -69,11 +69,13 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
         return <StandardText>{capitalize(answer.name) + ' is correct!'}</StandardText>;
     } else if (!answerImage) {
         return (
-            <Link
-                linkText={capitalize(answer.name)}
-                onLinkPress={toEmotionDetails}
-                postfix={' is sadly incorrect'}
-            />
+            <View style={{ flex: 1, width: '97%'}}>
+                <Link
+                    linkText={capitalize(answer.name)}
+                    onLinkPress={toEmotionDetails}
+                    postfix={' is sadly incorrect'}
+                />
+            </View>
         );
     } else {
         return (
