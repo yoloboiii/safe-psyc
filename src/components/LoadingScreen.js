@@ -1,8 +1,9 @@
 // @flow
 
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { configBackendFacade } from '../services/config-backend.js';
 import { log } from '../services/logger.js';
@@ -55,7 +56,7 @@ export class LoadingScreen extends React.Component<Props, {}> {
         return (
             <ImageBackground>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator />
+                    <ActivityIndicator size='large' />
                 </View>
             </ImageBackground>
         );

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, TextInput, FlatList, ActivityIndicator } from 'react-native';
+import { View, TextInput, FlatList } from 'react-native';
 import { StandardText } from './Texts.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';

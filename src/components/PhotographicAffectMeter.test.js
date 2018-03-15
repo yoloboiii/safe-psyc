@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { Image, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
+import { Image, TouchableHighlight, Text } from 'react-native';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { StandardButton, SecondaryButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';

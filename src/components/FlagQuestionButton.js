@@ -1,14 +1,22 @@
 // @flow
 
 import React from 'react';
-import { Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { Image, TouchableOpacity, Alert } from 'react-native';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { constants } from '../styles/constants.js';
 import { flagQuestionBackendFacade } from '../services/flag-question-backend.js';
 import { log } from '../services/logger.js';
 
 import type { Question } from '../models/questions.js';
 
-export class FlagQuestionButton extends React.Component<{ question: Question, style?: Object }, { status: 'not-submitted' | 'submitting' | 'success' | Error }> {
+type Props = {
+    question: Question,
+    style?: Object,
+};
+type State  = {
+    status: 'not-submitted' | 'submitting' | 'success' | Error,
+};
+export class FlagQuestionButton extends React.Component<Props, State> {
 
     sizeStyle = {
         width: constants.space(3),

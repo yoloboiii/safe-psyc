@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { View, ActivityIndicator, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { EmotionDetails } from './EmotionDetails.js';
 import { StandardText } from './Texts.js';
 import { answerBackendFacade } from '../services/answer-backend.js';

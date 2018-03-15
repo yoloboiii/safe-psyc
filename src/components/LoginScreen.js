@@ -7,13 +7,13 @@ import {
     TextInput,
     Alert,
     Keyboard,
-    ActivityIndicator,
     TouchableHighlight,
 } from 'react-native';
 import { LargeButton, SecondaryButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import { ImageBackground } from './ImageBackground.js';
 import { FancyInput } from './Inputs.js';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';

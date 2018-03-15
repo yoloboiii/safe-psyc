@@ -1,10 +1,11 @@
 // @flow
 
 import React from 'react';
-import { View, Image, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from './ImageBackground.js';
 import { HeroButton } from './Buttons.js';
 import { VerticalSpace } from './VerticalSpace.js';
+import { ActivityIndicator } from './ActivityIndicator.js';
 import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../styles/status-bar-height.js';
 import { constants } from '../styles/constants.js';
