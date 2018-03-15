@@ -90,12 +90,12 @@ export class HomeScreen extends React.Component<Props, State> {
                             </View>
                         </View>
                         <View style={constants.padding}>
-                            <HeroButton
+                            { /*<HeroButton
                                 title={"View progress"}
                                 disabled={true}
                                 style={{ height: 90 }}
                             />
-                            <VerticalSpace />
+                            <VerticalSpace /> */ }
                             <HeroButton
                                 title={sessionButtonContent}
                                 onPress={this._startSession.bind(this)}
