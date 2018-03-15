@@ -223,7 +223,6 @@ function TitledSlide(props) {
             {props.children}
         </View>
     )
-
 }
 
 function ItIsImportantForYou() {
@@ -244,37 +243,39 @@ function ItIsImportantForTheTeam() {
         <TitledSlide
             title="Social intelligence directly impacts your team's performance"
         >
-            <Paragraph>
-                <Link>
-                    According to
-                    https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
-                    Google found social intelligence to be the primary indicator of psycological
-                    safety.
-                </Link>
-            </Paragraph>
-            <Paragraph style={constants.flex1}>
-                <Quote
-                    text={"All team members can actively shape a team’s norm."}
-                    by={<Link>
-                            https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/
-                        </Link>
-                    } />
-            </Paragraph>
+            <View> {/* Required for the tests, the tag=10 thing */}
+                <Paragraph>
+                    <Link>
+                        According to
+                        https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html,
+                        Google found social intelligence to be the primary indicator of psycological
+                        safety.
+                    </Link>
+                </Paragraph>
+                <Paragraph style={constants.flex1}>
+                    <Quote
+                        text={"All team members can actively shape a team’s norm."}
+                        by={<Link>
+                                https://rework.withgoogle.com/blog/how-to-foster-psychological-safety/
+                            </Link>
+                        } />
+                </Paragraph>
 
-            { false && <Paragraph>
-                <RightQuote
-                    text="The research also found that collective intelligence was correlated with the individual group members’ ability to reason about the mental states of others."
-                    by={<Link>http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212</Link>}
-                />
+                { false && <Paragraph>
+                    <RightQuote
+                        text="The research also found that collective intelligence was correlated with the individual group members’ ability to reason about the mental states of others."
+                        by={<Link>http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115212</Link>}
+                    />
 
-            </Paragraph>}
+                </Paragraph>}
 
-            { false && <Paragraph>
-                <Link>
-                    The not-smart pod episode
-                    https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/
-                </Link>
-            </Paragraph>}
+                { false && <Paragraph>
+                    <Link>
+                        The not-smart pod episode
+                        https://youarenotsosmart.com/2017/10/01/yanss-111-some-groups-are-smarter-than-others-and-psychologists-want-to-understand-why/
+                    </Link>
+                </Paragraph>}
+            </View>
         </TitledSlide>
     );
 }
