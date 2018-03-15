@@ -128,7 +128,7 @@ export class Session extends React.Component<Props, State> {
                         this.setState({ finished: 'yes' }, () => {
                             this.props.onSessionFinished(this.state.report);
                         });
-                    }, 750);
+                    }, 500);
                 }
             );
         } else {

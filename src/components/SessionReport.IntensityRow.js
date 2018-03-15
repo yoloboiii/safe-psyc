@@ -47,12 +47,16 @@ export function IntensityQuestionRow(props: Props) {
 
     return (
         <TouchableOpacity onPress={props.onPress}>
+            {/* for the tag=10 test thing */}
             <View>
-                <StandardText>{props.question.correctAnswer.name}</StandardText>
-                <StandardText style={constants.smallText}>{subtext}</StandardText>
-            </View>
+                <View>
+                    <StandardText>{props.question.correctAnswer.name}</StandardText>
+                    <StandardText style={constants.smallText}>{subtext}</StandardText>
+                </View>
+                { intensityVisialization }
 
-            <VerticalSpace />
+                <VerticalSpace />
+            </View>
         </TouchableOpacity>
     );
 

@@ -85,7 +85,7 @@ export class SnapSlider extends React.Component<Props, State> {
 
     render() {
         const itemStyle = [defaultStyles.item, this.props.itemStyle];
-        const alignments = ['left', undefined, 'center', undefined, 'right'];
+        const alignments = ['left', undefined, 'center', 'center', 'right'];
         const labels = this.props.items.map(i => {
             const alignment = { textAlign: alignments[i.value - 1] };
             return (
