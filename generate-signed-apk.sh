@@ -41,6 +41,7 @@ cd android
 
 APK_PATH=$(readlink -f "$ABS_WD/android/app/build/outputs/apk/release/app-release.apk")
 RELATIVE_APK_PATH=$(realpath --relative-to="$ABS_WD" "$APK_PATH")
+TESTFAIRY_API_KEY=$(< "$ABS_WD/SECRETS/testfairy-api-key")
 
 echo
 echo
@@ -56,6 +57,8 @@ echo
 echo "You can install the apk by running"
 echo "adb install -r ./$RELATIVE_APK_PATH"
 echo
+echo "You can upload it to testfairy by running"
+echo "./testfairy-uploader.sh $TESTFAIRY_API_KEY ./$RELATIVE_APK_PATH"
 echo
 echo "Please make sure there is no .keystore file in android/app"
 echo "and no RELEASE_ keys in android/gradle.properties"
