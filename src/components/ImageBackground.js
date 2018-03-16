@@ -11,7 +11,7 @@ const bgImageStyle = {
 };
 const contentStyle = {
     height: '100%',
-    backgroundColor: 'rgba(253,184,7, 0.45)',
+    backgroundColor: 'rgba(253,184,7, 0.4)',
     flex: 1,
 };
 
