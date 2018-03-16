@@ -6,7 +6,7 @@ import { View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
 import { StandardText, LargeText } from './Texts.js';
-import { StandardButton, HeroButton } from './Buttons.js';
+import { ZoomAndRiseButton } from './lib/ZoomAndRiseButton.js';
 import { VerticalSpace } from './VerticalSpace.js';
 import Hyperlink from 'react-native-hyperlink';
 import { resetToLogin } from '../navigation-actions.js';
@@ -70,18 +70,14 @@ export class PitchScreen extends React.Component<Props, State> {
     }
 
     render() {
-        const skipButton = this.state.showSkipButton ? (
-            <StandardButton
-                containerStyle={{
+        const skipButton = <ZoomAndRiseButton
+                style={{
                     backgroundColor: constants.hilightColor2,
-                    height: 44,
                 }}
                 title={"Let's get started!"}
                 onPress={this._skip.bind(this)}
+                animate={!this.state.showSkipButton}
             />
-        ) : (
-            <View style={{ height: 44 }} />
-        );
 
         return (
             <LinearGradient
@@ -312,15 +308,8 @@ function HowSPDoesIt2() {
 }
 
 function LetsStart(props) {
-    return (
-        <View style={{ flex: 1 }}>
-            <View style={{ flex: 2 }} />
-
-            <View style={{ flex: 1 }}>
-                <HeroButton title={"Let's get started!"} onPress={props.onStart} />
-            </View>
-        </View>
-    );
+    // This is just an empty screen where the ZoomAndRiseButton can rise to
+    return <View/>
 }
 
 const styles = {
