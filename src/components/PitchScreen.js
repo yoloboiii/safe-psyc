@@ -225,7 +225,7 @@ function ItIsImportantForTheTeam() {
             title="Social intelligence directly impacts your team's performance"
         >
             {/* Required for the tests, the tag=10 thing */}
-            <View>
+            <View style={constants.flex1}>
                 <Paragraph>
                     <Link>
                         According to

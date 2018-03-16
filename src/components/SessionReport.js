@@ -43,12 +43,15 @@ export function SessionReport(props: Props) {
         });
     });
 
+    const sectionsProp = Object.values(sections);
+    sectionsProp.sort((a, b) => {
+        // $FlowFixMe
+        return a.title > b.title;
+    });
+
     return (
         <SectionList
-            sections={Object.values(sections).sort((a, b) => {
-                // $FlowFixMe
-                return a.title > b.title;
-            })}
+            sections={sectionsProp}
             renderItem={data => renderRow(data.item, onPressItem)}
             ItemSeparatorComponent={() => <VerticalSpace />}
         />

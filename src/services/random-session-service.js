@@ -26,13 +26,7 @@ export class RandomSessionService {
     }
 
     getRandomQuestions(numQuestions: number): Array<Question> {
-        const minNumEye = Math.min(numQuestions / 2 + 1, numQuestions);
-        const minNumIntensity = Math.floor(numQuestions * 0.1);
-        const numEyeQuestions = Math.max(
-            0,
-            Math.floor(Math.random() * (numQuestions / 2 - minNumIntensity)) + minNumEye
-        );
-        const numIntensityQuestions = numQuestions - numEyeQuestions;
+        const numEyeQuestions = numQuestions - 1;
 
         const emotionsWithImage = getRandomElementsFromArray(
             numEyeQuestions,
