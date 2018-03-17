@@ -32,8 +32,8 @@ it('shows all the images', () => {
         defaultProps
     );
 
-    const images = findChildren(component, Image);
-    const sources = images.map(i => i.props.source.uri);
+    const images = getImages(component);
+    const sources = images.map(i => i.props.source.uri).filter(i => i !== undefined);
 
     expect(sources).toEqual(expect.arrayContaining([
         expect.stringMatching(/a+/),
@@ -41,6 +41,10 @@ it('shows all the images', () => {
     ]));
     expect(sources).toHaveLength(2);
 });
+
+function getImages(component) {
+    return findChildren(component, Image).filter(i => i.props.source.uri !== undefined);
+}
 
 it('makes all images pressable', () => {
     const component = render(PhotographicAffectMeter, {}, defaultProps);
@@ -85,8 +89,7 @@ it('shows the name of the selected emotion somewhere', () => {
     const component = render(PhotographicAffectMeter, {}, defaultProps);
     const emotion = selectEmotion(component);
 
-    const texts = findChildren(component, Text)
-        .map(t => t.props.children);
+    const texts = getAllRenderedStrings(component);
 
     expect(texts).toEqual(expect.arrayContaining([
         expect.stringMatching("\\b" +emotion+ "\\b"),
@@ -190,9 +193,9 @@ it('has a show-new-images button that replaces all the images', () => {
     }
 
     for (let i=0; i < 50; i++) {
-        const imagesBefore = findChildren(component, Image).map(i => i.props.source.uri);
+        const imagesBefore = getImages(component).map(i => i.props.source.uri);
         showNewImagesButton.props.onPress();
-        const imagesAfter = findChildren(component, Image).map(i => i.props.source.uri);
+        const imagesAfter = getImages(component).map(i => i.props.source.uri);
 
         const hasAtLeastOneElementInCommon = imagesAfter.some(i => imagesBefore.includes(i));
         if (hasAtLeastOneElementInCommon) throw new Error('Expected all images to be changed\n\n  Got: ' + imagesBefore.join(', ') + '\n  and: ' + imagesAfter.join(', '));
@@ -321,7 +324,7 @@ it('renders the emotion images in the correct order', () => {
         defaultProps
     );
 
-    const images = findChildren(component, Image);
+    const images = getImages(component);
 
     // For some reason I do not understand this returns the images in reverse order...
     const sources = images.map(i => i.props.source.uri).reverse();

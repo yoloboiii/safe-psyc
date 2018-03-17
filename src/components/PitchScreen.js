@@ -77,6 +77,7 @@ export class PitchScreen extends React.Component<Props, State> {
                 title={"Let's get started!"}
                 onPress={this._skip.bind(this)}
                 animate={!this.state.showSkipButton}
+                testID="skipButton"
             />
 
         return (

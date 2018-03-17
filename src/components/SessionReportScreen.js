@@ -51,7 +51,7 @@ export class SessionReportScreen extends React.Component<Props, {}> {
                 <SessionReport report={report} navigation={this.props.navigation} />
                 <VerticalSpace multiplier={4} />
 
-                <StandardButton title={'Thanks!'} onPress={this._onDismiss.bind(this)} />
+                <StandardButton title={'Done!'} onPress={this._onDismiss.bind(this)} />
             </ScrollView>
         );
     }

@@ -3,7 +3,7 @@
 import { PitchScreen } from './PitchScreen.js';
 import { StandardButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';
-import { findChildren } from '../../tests/component-tree-utils.js';
+import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
 
 const defaultProps = {
     navigation: {
@@ -24,8 +24,8 @@ it('contains a skip button that navigates to the login screen', () => {
 });
 
 function clickSkipButton(component) {
-    const skipButton = findChildren(component, StandardButton).filter(
-        b => b.props.title.toLowerCase() === "let's get started!"
+    const skipButton = getChildrenAndParent(component).filter(
+        b => b.props && b.props.testID === 'skipButton'
     )[0];
     expect(skipButton).toBeDefined();
 
