@@ -127,9 +127,9 @@ export function IntensityScale(props: ScaleProps) {
 }
 
 export function IntensityQuestionOverlay(props: SpecificOverlayProps<number>) {
-    const text = props.answeredCorrectly ? "That's correct!" : "That's sadly incorrect";
+    const text = props.answeredCorrectly ? "That's correct!" : "That's unfortunately incorrect";
 
-    return <StandardText>{text}</StandardText>;
+    return <StandardText style={{ width: '97%' }}>{text}</StandardText>;
 }
 
 function DebugPlot(props) {

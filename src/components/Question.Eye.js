@@ -66,21 +66,23 @@ export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
     const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
 
     if (answeredCorrectly) {
-        return <StandardText>{capitalize(answer.name) + ' is correct!'}</StandardText>;
+        return <StandardText style={{ width: '97%' }}>
+            {capitalize(answer.name) + ' is correct!'}
+        </StandardText>;
     } else if (!answerImage) {
         return (
             <View style={{ flex: 1, width: '97%'}}>
                 <Link
                     linkText={capitalize(answer.name)}
                     onLinkPress={toEmotionDetails}
-                    postfix={' is sadly incorrect'}
+                    postfix={' is unfortunately incorrect'}
                 />
             </View>
         );
     } else {
         return (
-            <View style={constants.flex1}>
-                <StandardText>That's sadly incorrect.</StandardText>
+            <View style={{ flex: 1, width: '97%'}}>
+                <StandardText>That's unfortunately incorrect.</StandardText>
                 <Link
                     linkText={capitalize(answer.name)}
                     onLinkPress={toEmotionDetails}

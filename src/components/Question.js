@@ -307,8 +307,8 @@ function QuestionSpecificOverlay(props: ResultOverlayProps) {
 
         const text = props.answeredCorrectly
             ? answer + ' is correct!'
-            : answer + ' is sadly incorrect';
-        return <StandardText>{text}</StandardText>;
+            : answer + ' is unfortunately incorrect';
+        return <StandardText style={{ width: '97%' }}>{text}</StandardText>;
     }
 }
 
