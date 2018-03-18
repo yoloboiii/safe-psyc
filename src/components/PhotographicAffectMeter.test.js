@@ -7,7 +7,7 @@ import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { StandardButton, SecondaryButton } from './Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { findChildren, stringifyComponent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
-import { checkNextTick, failFast } from '../../tests/utils.js';
+import { checkNextTick } from '../../tests/utils.js';
 
 
 const defaultProps = {
