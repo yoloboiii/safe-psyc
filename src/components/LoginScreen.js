@@ -118,7 +118,7 @@ export class LoginScreen extends React.Component<Props, State> {
                 <ActivityIndicator style={constants.flex1} />
             ) : (
                 <LargeButton
-                    style={loginStyle}
+                    containerStyle={loginStyle}
                     onPress={this._login.bind(this)}
                     disabled={this.state.loading !== 'no'}
                     title={'Login'}
@@ -130,7 +130,11 @@ export class LoginScreen extends React.Component<Props, State> {
                 <ActivityIndicator style={constants.flex1} />
             ) : (
                 <LargeButton
-                    style={registerStyle}
+                    containerStyle={registerStyle}
+                    textStyle={{
+                        textShadowColor: 'rgba(0, 0, 0, 0.2)',
+                        textShadowOffset: {width: 0, height: 1},
+                    }}
                     onPress={this._register.bind(this)}
                     disabled={this.state.loading !== 'no'}
                     title={'Register'}

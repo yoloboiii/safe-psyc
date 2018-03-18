@@ -111,20 +111,22 @@ const largeTextButtonStyle = {
     alignSelf: 'center',
 };
 
-type LargeButtonProps = { title: string, style?: Object };
+type LargeButtonProps = {
+    title: string,
+    containerStyle?: Object,
+    textStyle?: Object,
+};
 export function LargeButton(props: LargeButtonProps) {
-    const { title, style, ...restProps } = props;
+    const { title, containerStyle, textStyle, ...restProps } = props;
 
     const defaultStyle = {
         backgroundColor: constants.primaryColor,
         paddingVertical: constants.space(),
         elevation: 2,
     };
-    const concreteStyle = style ? Object.assign({}, defaultStyle, style) : defaultStyle;
-
     return (
-        <TouchableOpacity style={concreteStyle} {...restProps}>
-            <Text style={largeTextButtonStyle}>{title}</Text>
+        <TouchableOpacity style={[defaultStyle, containerStyle]} {...restProps}>
+            <Text style={[largeTextButtonStyle, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 }
