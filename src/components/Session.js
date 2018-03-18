@@ -17,7 +17,7 @@ import type { Question, AnswerType } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { Report } from './SessionReport.js';
-import type { Navigation } from '../navigation-actions.js';
+import type { Navigation, Subscription } from '../navigation-actions.js';
 
 type Props = {
     backendFacade: AnswerBackendFacade,
@@ -51,6 +51,8 @@ const abortContainer = {
 };
 export class Session extends React.Component<Props, State> {
     timeout: ?TimeoutID;
+    didFocusSubscription: ?Subscription;
+    willBlurSubscription: ?Subscription;
 
     constructor(props: Props) {
         super(props);
@@ -63,6 +65,20 @@ export class Session extends React.Component<Props, State> {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this._askAbort);
+
+        this.props.navigation.addListener('didFocus', payload => {
+            BackHandler.addEventListener('hardwareBackPress', this._askAbort);
+        });
+
+        this.props.navigation.addListener('willBlur', payload => {
+            BackHandler.removeEventListener('hardwareBackPress', this._askAbort);
+        });
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this._askAbort);
+        this.didFocusSubscription && this.didFocusSubscription.remove();
+        this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
     // Needs to be an anonymous function for removeEventListener to

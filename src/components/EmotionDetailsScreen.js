@@ -52,7 +52,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     log.debug(
                         'Got %j answer(s) to emotion %j',
                         answers.correct.length + answers.incorrect.length,
-                        emotion
+                        emotion.name
                     );
 
                     this.setState({

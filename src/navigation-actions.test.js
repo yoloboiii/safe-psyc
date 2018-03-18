@@ -7,29 +7,25 @@ import type { CurrentEmotionBackendFacade } from './services/current-emotion-bac
 
 describe('startRandomSession', () => {
     it('navigates to "Session"', () => {
-        const navigateMock = jest.fn();
+        const navigation = mockNavigation();
+        const { navigate } = navigation;
 
         return navActions
-            .startRandomSession({
-                navigate: navigateMock,
-                dispatch: jest.fn(),
-            })
+            .startRandomSession(navigation)
             .then(() => {
-                expect(navigateMock).toHaveBeenCalledTimes(1);
-                expect(navigateMock).toHaveBeenCalledWith('Session', expect.anything());
+                expect(navigate).toHaveBeenCalledTimes(1);
+                expect(navigate).toHaveBeenCalledWith('Session', expect.anything());
             });
     });
 
     it('contains 10 questions', () => {
-        const navigateMock = jest.fn();
+        const navigation = mockNavigation();
+        const { navigate } = navigation;
 
         return navActions
-            .startRandomSession({
-                navigate: navigateMock,
-                dispatch: jest.fn(),
-            })
+            .startRandomSession(navigation)
             .then(() => {
-                const args = navigateMock.mock.calls[0][1];
+                const args = navigate.mock.calls[0][1];
                 if (!args || !args.questions) {
                     throw 'was not called with 10 questions';
                 } else {
@@ -38,6 +34,14 @@ describe('startRandomSession', () => {
             });
     });
 });
+
+function mockNavigation() {
+    return {
+        navigate: jest.fn(),
+        dispatch: jest.fn(),
+        addListener: jest.fn(),
+    };
+}
 
 describe('routeToCurrentFeelingOrHome', () => {
     it('should redirect to howrufeelin once per day', () => {
@@ -63,26 +67,26 @@ describe('routeToCurrentFeelingOrHome', () => {
                 ),
         }: any): CurrentEmotionBackendFacade);
 
-        const dispatchMock = jest.fn();
-        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
+        const navigation = mockNavigation();
+        const { dispatch } = navigation;
 
         return navActions
             .routeToCurrentFeelingOrHome(navigation, backendFacade)
             .then(() => {
-                expect(dispatchMock).toHaveBeenCalledTimes(1);
+                expect(dispatch).toHaveBeenCalledTimes(1);
 
-                const action = dispatchMock.mock.calls[0][0];
+                const action = dispatch.mock.calls[0][0];
 
                 expect(action.index).toEqual(1);
                 expect(action.actions.map(a => a.routeName)).toEqual(['Home', 'CurrentFeeling']);
             })
             .then(() => {
-                dispatchMock.mockReset();
+                dispatch.mockReset();
                 return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade);
             })
             .then(() => {
-                expect(dispatchMock).toHaveBeenCalledTimes(1);
-                expect(dispatchMock.mock.calls[0][0].actions.map(a => a.routeName)).not.toContain(
+                expect(dispatch).toHaveBeenCalledTimes(1);
+                expect(dispatch.mock.calls[0][0].actions.map(a => a.routeName)).not.toContain(
                     'CurrentFeeling'
                 );
             });
@@ -99,12 +103,12 @@ describe('routeToCurrentFeelingOrHome', () => {
             ),
         }: any): CurrentEmotionBackendFacade);
 
-        const dispatchMock = jest.fn();
-        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
+        const navigation = mockNavigation();
+        const { dispatch } = navigation;
 
         return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade).then(() => {
-            expect(dispatchMock).toHaveBeenCalled();
-            const params = dispatchMock.mock.calls[0][0].actions
+            expect(dispatch).toHaveBeenCalled();
+            const params = dispatch.mock.calls[0][0].actions
                 .filter(a => a.routeName === 'CurrentFeeling')
                 .map(a => a.params)[0];
 
@@ -144,13 +148,13 @@ describe('onUserLoggedOut', () => {
         const storage = {
             getItem: () => conf.hasSeenThePitch,
         };
-        const dispatchMock = jest.fn();
-        const navigation = { navigate: jest.fn(), dispatch: dispatchMock };
+        const navigation = mockNavigation();
+        const { dispatch } = navigation;
 
         return navActions.onUserLoggedOut(navigation, storage).then(() => {
-            expect(dispatchMock).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(1);
 
-            const arg = dispatchMock.mock.calls[0][0];
+            const arg = dispatch.mock.calls[0][0];
             expect(arg.index).toBe(0);
             expect(arg.actions).toEqual([{ routeName: conf.expectedRoute }]);
         });

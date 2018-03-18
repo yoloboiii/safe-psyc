@@ -31,6 +31,11 @@ const defaultProps = {
     },
     onSessionFinished: () => {},
     answerService: answerService,
+    navigation: {
+        navigate: jest.fn(),
+        dispatch: jest.fn(),
+        addListener: jest.fn(),
+    },
 };
 
 it('shows an error screen if no questions are given', () => {
@@ -295,6 +300,7 @@ it('aborts the session when the abort confirm is tapped', () => {
     const props = {
         navigation: {
             dispatch: jest.fn(),
+            addListener: jest.fn(),
         },
     };
     const component = render(Session, props, defaultProps);

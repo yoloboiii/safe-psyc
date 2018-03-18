@@ -18,6 +18,11 @@ export type Navigation<P> = {
     state?: {
         params: P,
     },
+    addListener: ('willBlur'|'willFocus'|'didBlur'|'didFocus', () => void) => Subscription,
+};
+
+export type Subscription = {
+    remove: () => void,
 };
 
 export function paramsOr<T, S>(navigation: Navigation<T>, or: S): T | S {
