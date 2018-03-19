@@ -32,18 +32,20 @@ export function IntensityQuestionRow(props: Props) {
     }
 
     const intensity = props.question.correctAnswer.intensity();
+    let intensityVisialization = null;
     if (intensity === null || intensity === undefined) {
         log.warn('The intensity for emotion %s was not set', props.question.correctAnswer.name);
-    }
+    } else {
 
-    const intensityVisialization = intensity ? (
-        <SnapSlider
-            items={items}
-            itemStyle={constants.smallText}
-            value={intensityToGroup(intensity) - 1}
-            disabled={true}
-        />
-    ) : null;
+        intensityVisialization = (
+            <SnapSlider
+                items={items}
+                itemStyle={constants.smallText}
+                value={intensityToGroup(intensity) - 1}
+                disabled={true}
+            />
+        );
+    }
 
     return (
         <TouchableOpacity onPress={props.onPress}>

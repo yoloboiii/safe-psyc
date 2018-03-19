@@ -85,18 +85,25 @@ it('doesn\'t include intensity questions with bad reference points', () => {
 it('shuffles the questions', () => {
     const numberOfQuestionTypes = 2;
 
-    const questions = randomSessionService.getRandomQuestions(10);
+    let passed = false;
+    for(let i=0; i < 100; i++) {
+        const questions = randomSessionService.getRandomQuestions(10);
 
-    let lastType = questions[0].type;
-    let changes = 0;
-    for (const q of questions) {
-        if (q.type !== lastType) {
-            changes++;
+        let lastType = questions[0].type;
+        let changes = 0;
+        for (const q of questions) {
+            if (q.type !== lastType) {
+                changes++;
+            }
+            lastType = q.type;
         }
-        lastType = q.type;
+
+        if (changes > numberOfQuestionTypes - 1) {
+            passed = true;
+        }
     }
 
-    expect(changes).toBeGreaterThan(numberOfQuestionTypes - 1);
+    if (!passed) throw new Error('The questions were not shuffled');
 });
 
 function serviceWithEmotionPool(pool) {
