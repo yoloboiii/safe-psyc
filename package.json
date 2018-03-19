@@ -5,11 +5,15 @@
   "devDependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "flow-bin": "^0.67.1",
     "flow-typed": "^2.3.0",
     "jest": "^22.4.2",
+    "jest-enzyme": "^6.0.0",
     "prettier": "^1.11.1",
     "react-devtools": "^3.1.0",
+    "react-dom": "16",
     "react-element-to-jsx-string": "^13.1.0",
     "react-test-renderer": "^16.2.0",
     "uuid": "^3.2.1"
