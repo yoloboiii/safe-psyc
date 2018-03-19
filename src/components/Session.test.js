@@ -172,7 +172,8 @@ it('calls back with a report when the session is finished', () => {
             clickAnswerAndDismissOverlay(component);
         } else {
             const button = clickWrongAnswerAndDismissOverlay(component);
-            const emotion = q.answers.filter(a => a.name === button.props.title)[0];
+            const answer = getAllRenderedStrings(button)[0];
+            const emotion = q.answers.find(a => a.name === answer);
             report.set(q, [emotion]);
             clickAnswerAndDismissOverlay(component);
         }
@@ -251,10 +252,12 @@ it('invokes the backend facade on wrong answers', () => {
     );
 
     const b = clickWrongAnswerAndDismissOverlay(component);
+    const answer = getAllRenderedStrings(b)[0];
+
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledTimes(1);
     expect(backendFacade.registerIncorrectAnswer).toHaveBeenCalledWith(
         questions[0],
-        expect.objectContaining({ name: b.props.title })
+        expect.objectContaining({ name: answer })
     );
 });
 

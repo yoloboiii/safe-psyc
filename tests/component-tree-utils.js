@@ -42,6 +42,11 @@ export function findFirstChild(root: React.Component<*, *>, childType: Function|
     }
 }
 
+export function findAllByTestId(root: React.Component<*,*>, testId: string): Array<React.Component<*,*>> {
+    return getChildrenAndParent(root)
+        .filter(c => c.props && c.props.testID === testId);
+}
+
 export function stringifyComponent(component: React.Component<*,*>): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);
@@ -133,7 +138,6 @@ export function getAllRenderedStrings(component: React.Component<*,*>): Array<st
         .filter(node => {
             return typeof node === 'string';
         });
-
 
     return ((strings: any): Array<string>);
 }

@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 
 import { VerticalAnswerList } from './VerticalAnswerList.js';
 import { VerticalSpace } from './VerticalSpace.js';
@@ -14,6 +14,7 @@ import { capitalize } from '../utils/text-utils.js';
 import type { EyeQuestion } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
 import type { SpecificOverlayProps } from './Question.js';
+import type { Navigation } from '../navigation-actions.js';
 
 const containerStyle = {
     flex: 1,
@@ -26,9 +27,10 @@ type Props = {
     answers: Array<Emotion>,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: Emotion) => void,
+    navigation: Navigation<{}>,
 };
 export function EyeQuestionComponent(props: Props) {
-    const { question } = props;
+    const { question, answers, onCorrectAnswer, onWrongAnswer } = props;
 
     /* TODO: this height is to make sure that the elements below the
      * image doesn't jump around so it needs to be at least as high as
@@ -49,13 +51,18 @@ export function EyeQuestionComponent(props: Props) {
             </View>
 
             <VerticalAnswerList
-                answers={props.answers}
+                answers={answers}
                 correctAnswer={question.correctAnswer}
-                onCorrectAnswer={props.onCorrectAnswer}
-                onWrongAnswer={props.onWrongAnswer}
+                onCorrectAnswer={onCorrectAnswer}
+                onWrongAnswer={onWrongAnswer}
+                onHelp={toEmotionDetails}
             />
         </View>
     );
+
+    function toEmotionDetails(emotion) {
+        navigateToEmotionDetails(props.navigation, emotion);
+    }
 }
 
 const overlayImageStyle = { height: 100 };

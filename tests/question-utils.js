@@ -3,7 +3,7 @@
 import React from 'react';
 import { StandardButton } from '../src/components/Buttons.js';
 import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
-import { getChildrenAndParent, findChildren } from './component-tree-utils.js';
+import { getChildrenAndParent, findChildren, findFirstChild, getAllRenderedStrings } from './component-tree-utils.js';
 import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWithCoordinates } from './emotion-utils.js';
 import { Emotion } from '../src/models/emotion.js';
 import uuid from 'uuid';
@@ -90,7 +90,10 @@ export function clickAnswer(component: React.Component<*,*>) {
     const buttons = findAnswerButtons(component);
     const correctAnswerButton = buttons
         .filter(b => {
-            return b.props.title.indexOf('ans') > -1;
+            const isAnswer = getAllRenderedStrings(b)
+                .find(s => s.indexOf('ans') >= 0);
+
+            return isAnswer;
         })[0];
 
 
@@ -99,17 +102,8 @@ export function clickAnswer(component: React.Component<*,*>) {
 }
 
 function findAnswerButtons(component: React.Component<*,*>): Array<React.Component<*,*>> {
-    const qComponent = getChildrenAndParent(component)
-        .filter(c => {
-            // $FlowFixMe
-            return c.type === QuestionComponent;
-        })[0];
-
-    const buttons = getChildrenAndParent(qComponent)
-        .filter(c => {
-            // $FlowFixMe
-            return c.type === StandardButton;
-        });
+    const qComponent = findFirstChild(component, QuestionComponent);
+    const buttons = findChildren(qComponent, StandardButton);
 
     if (buttons.length === 0) {
         console.log('Found no buttons');
@@ -122,7 +116,10 @@ export function clickWrongAnswer(component: React.Component<*,*>) {
     const buttons = findAnswerButtons(component);
     const wrongAnswerButton = buttons
         .filter(b => {
-           return b.props.title.indexOf('ans') === -1;
+            const isAnswer = getAllRenderedStrings(b)
+                .find(s => s.indexOf('ans') >= 0);
+
+           return !isAnswer;
         })[0];
 
 

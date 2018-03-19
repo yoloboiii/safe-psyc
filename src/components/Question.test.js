@@ -161,8 +161,11 @@ it('contains the clicked text in the overlay - correct', () => {
     const button = clickAnswer(component);
     const overlay = findChildren(component, ResultOverlay)[0];
 
+    const clickedText = getAllRenderedStrings(button)[0];
     const s = getAllRenderedStrings(overlay);
-    expect(s).toEqual(expect.arrayContaining([expect.stringContaining(button.props.title)]));
+    expect(s).toEqual(expect.arrayContaining([
+        expect.stringMatching(new RegExp(clickedText))
+    ]));
 });
 
 it('contains the clicked text in the overlay - wrong', () => {
@@ -172,7 +175,10 @@ it('contains the clicked text in the overlay - wrong', () => {
     const button = clickWrongAnswer(component);
     const overlay = findChildren(component, ResultOverlay)[0];
 
+    const clickedText = getAllRenderedStrings(button)[0];
     const s = getAllRenderedStrings(overlay);
-    expect(s).toEqual(expect.arrayContaining([expect.stringContaining(button.props.title)]));
+    expect(s).toEqual(expect.arrayContaining([
+        expect.stringMatching(new RegExp(clickedText))
+    ]));
 });
 

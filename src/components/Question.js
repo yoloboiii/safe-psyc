@@ -92,7 +92,7 @@ export class QuestionComponent extends React.Component<Props, State> {
     }
 
     _getQuestionComponent() {
-        const { question } = this.props;
+        const { question, navigation } = this.props;
 
         const onCorrectAnswer = this._correctAnswer.bind(this);
         const onWrongAnswer = this._wrongAnswer.bind(this);
@@ -105,6 +105,7 @@ export class QuestionComponent extends React.Component<Props, State> {
                         answers={question.answers}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
+                        navigation={navigation}
                     />
                 );
             case 'word-question':

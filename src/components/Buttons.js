@@ -37,7 +37,7 @@ const standardButtonDefaultStyles = {
 type StandardButtonProps = {
     onPress: () => *,
     disabled?: boolean,
-    title: string,
+    title: string | ({ textStyle: Array<?Object>}) => Object,
     containerStyle?: Object,
     textStyle?: Object,
 };
@@ -62,11 +62,22 @@ export function StandardButton(props: StandardButtonProps, context: StandardButt
             disabled={disabled}
             {...restProps}
         >
-            <Text style={[defaultStyles.text, context.buttonTextStyle, textStyle]}>
-                {title}
-            </Text>
+            {contents()}
         </TouchableOpacity>
     );
+
+    function contents() {
+        if (typeof title === 'string') {
+            return <Text style={[defaultStyles.text, context.buttonTextStyle, textStyle]}>
+                {title}
+            </Text>
+        } else {
+            // react-native requires components to be capitalized
+            const Title = title;
+
+            return <Title textStyle={[defaultStyles.text, context.buttonTextStyle, textStyle]} />;
+        }
+    }
 }
 StandardButton.contextTypes = {
     buttonContainerStyle: PropTypes.object,
