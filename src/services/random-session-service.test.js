@@ -1,8 +1,10 @@
 // @flow
 
 import { randomQuestion } from '../../tests/question-utils.js';
-import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
+import { randomEmotionWithCoordinates, randomEmotions } from '../../tests/emotion-utils.js';
 import { randomSessionService, RandomSessionService } from './random-session-service.js';
+import { AnswerService } from './answer-service.js';
+import type { WordQuestion } from '../models/questions.js';
 
 it('returns the correct number of random questions', () => {
     expect(randomSessionService.getRandomQuestions(0).length).toBe(0);
@@ -47,7 +49,7 @@ it('generates three reference points to intensity questions', () => {
 
     const service = serviceWithEmotionPool(pool);
 
-    const questions = service.getRandomQuestions(10);
+    const questions = service.getRandomQuestions(10).filter(q => q.type === 'intensity');
     expect(questions.length).toBeGreaterThan(0);
     for (const question of questions) {
         // $FlowFixMe
@@ -73,17 +75,21 @@ it('contains more eye questions than intensity questions', () => {
 });
 
 it('doesn\'t include intensity questions with bad reference points', () => {
-    // from a pool with only one emotion no intensity questions will have enough
+    // from a pool with only two emotions no intensity questions will have enough
     // reference points
-    const pool = [randomEmotionWithCoordinates()];
+    const pool = [
+        randomEmotionWithCoordinates(),
+        randomEmotionWithCoordinates(),
+    ];
 
     const service = serviceWithEmotionPool(pool);
+    const intensityQuestions = service.getRandomQuestions(10).filter(q => q.type === 'intensity');
 
-    expect(service.getRandomQuestions(1)).toEqual([]);
+    expect(intensityQuestions).toEqual([]);
 });
 
 it('shuffles the questions', () => {
-    const numberOfQuestionTypes = 2;
+    const numberOfQuestionTypes = 3;
 
     let passed = false;
     for(let i=0; i < 100; i++) {
@@ -106,16 +112,41 @@ it('shuffles the questions', () => {
     if (!passed) throw new Error('The questions were not shuffled');
 });
 
+it('includes word questions in the session', () => {
+    const questions = serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions(10);
+    const types = questions.map(q => q.type);
+
+    expect(types).toContain('word-question');
+});
+
+it('gives some answers to the word question', () => {
+    const wordQuestion = getWordQuestion();
+
+    expect(wordQuestion.answers.length).toBeGreaterThan(0);
+});
+
+it('phrases the word questions reasonably', () => {
+    const wordQuestion = getWordQuestion();
+
+    expect(wordQuestion.questionText).toEqual(expect.stringMatching(/\?$/));
+    expect(wordQuestion.questionText).toEqual(expect.stringContaining(wordQuestion.correctAnswer.name));
+});
+
 function serviceWithEmotionPool(pool) {
 
-    const answerService = {
-        setAnswerPool: jest.fn(),
-        getAnswersTo: jest.fn(),
-    };
+    const answerService = new AnswerService(pool);
     const emotionService = {
         getEmotionPool: () => pool,
     };
 
     // $FlowFixMe
     return new RandomSessionService(answerService, emotionService);
+}
+
+function getWordQuestion(): WordQuestion {
+    const questions = serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions(10);
+    const wordQuestion = questions.find(q => q.type === 'word-question');
+    if (!wordQuestion) throw new Error("Found no word questions");
+
+    return ((wordQuestion:any): WordQuestion);
 }

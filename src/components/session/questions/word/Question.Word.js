@@ -1,34 +1,50 @@
 // @flow
 
 import React from 'react';
-import { Text, View } from 'react-native';
-
-import { VerticalAnswerList } from '../VerticalAnswerList.js';
+import { View } from 'react-native';
+import { StandardText } from '../../../lib/Texts.js';
 import { VerticalSpace } from '../../../lib/VerticalSpace.js';
+import { VerticalAnswerList } from '../VerticalAnswerList.js';
+import { constants } from '../../../../styles/constants.js';
+import { navigateToEmotionDetails } from '../../../../navigation-actions.js';
 
-import type { EmotionWordQuestion } from '../../../../models/questions.js';
+import type { WordQuestion } from '../../../../models/questions.js';
 import type { Emotion } from '../../../../models/emotion.js';
+import type { Navigation } from '../../../../navigation-actions.js';
 
 type Props = {
-    question: EmotionWordQuestion,
-    answers: Array<Emotion>,
+    question: WordQuestion,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: Emotion) => void,
+    navigation: Navigation<{}>,
 };
 
-export function EmotionWordQuestionComponent(props: Props) {
+export class EmotionWordQuestionComponent extends React.Component<Props, {}> {
+    render(){
+        const props = this.props;
     const { question } = props;
 
     return (
-        <View>
-            <Text>{question.questionText}</Text>
-            <VerticalSpace multiplier={2} />
+        <View style={constants.colApart}>
+            <StandardText
+                testID='question-text'
+                style={{
+                    flex: 1,
+                }}
+            >{question.questionText}</StandardText>
+
             <VerticalAnswerList
-                answers={props.answers}
+                answers={question.answers}
                 correctAnswer={question.correctAnswer}
                 onCorrectAnswer={props.onCorrectAnswer}
                 onWrongAnswer={props.onWrongAnswer}
+                onHelp={toEmotionDetails}
             />
         </View>
     );
+
+    function toEmotionDetails(emotion) {
+        navigateToEmotionDetails(props.navigation, emotion);
+    }
+}
 }

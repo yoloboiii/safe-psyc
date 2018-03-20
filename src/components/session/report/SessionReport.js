@@ -12,7 +12,7 @@ import { navigateToEmotionDetails } from '../../../navigation-actions.js';
 import type {
     Question,
     EyeQuestion,
-    EmotionWordQuestion,
+    WordQuestion,
     IntensityQuestion,
     AnswerType,
 } from '../../../models/questions.js';
@@ -76,7 +76,7 @@ function renderRow(item, onPress) {
     } else if (question.type === 'word-question') {
         return (
             <WordQuestionRow
-                question={(question: EmotionWordQuestion)}
+                question={(question: WordQuestion)}
                 wrongAnswers={wrongAnswers}
             />
         );
