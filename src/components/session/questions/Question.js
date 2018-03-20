@@ -18,7 +18,7 @@ import { log } from '../../../services/logger.js';
 import type {
     Question,
     EyeQuestion,
-    EmotionWordQuestion,
+    WordQuestion,
     AnswerType,
 } from '../../../models/questions.js';
 import type { Emotion } from '../../../models/emotion.js';
@@ -102,7 +102,6 @@ export class QuestionComponent extends React.Component<Props, State> {
                 return (
                     <EyeQuestionComponent
                         question={question}
-                        answers={question.answers}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
                         navigation={navigation}
@@ -112,18 +111,18 @@ export class QuestionComponent extends React.Component<Props, State> {
                 return (
                     <EmotionWordQuestionComponent
                         question={question}
-                        answers={question.answers}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
+                        navigation={navigation}
                     />
                 );
             case 'intensity':
                 return (
                     <IntensityQuestionComponent
-                        navigation={this.props.navigation}
                         question={question}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
+                        navigation={this.props.navigation}
                     />
                 );
 

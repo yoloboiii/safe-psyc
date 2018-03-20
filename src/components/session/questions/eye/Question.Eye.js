@@ -24,13 +24,12 @@ const imageStyle = { height: 200 };
 
 type Props = {
     question: EyeQuestion,
-    answers: Array<Emotion>,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: Emotion) => void,
     navigation: Navigation<{}>,
 };
 export function EyeQuestionComponent(props: Props) {
-    const { question, answers, onCorrectAnswer, onWrongAnswer } = props;
+    const { question, onCorrectAnswer, onWrongAnswer } = props;
 
     /* TODO: this height is to make sure that the elements below the
      * image doesn't jump around so it needs to be at least as high as
@@ -51,7 +50,7 @@ export function EyeQuestionComponent(props: Props) {
             </View>
 
             <VerticalAnswerList
-                answers={answers}
+                answers={question.answers}
                 correctAnswer={question.correctAnswer}
                 onCorrectAnswer={onCorrectAnswer}
                 onWrongAnswer={onWrongAnswer}

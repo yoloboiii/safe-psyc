@@ -2,22 +2,29 @@
 
 import type { Emotion } from './emotion.js';
 
-export type Question = EyeQuestion | EmotionWordQuestion | IntensityQuestion;
 export type AnswerType = Emotion | number;
 
 export type IncorrectAnswer =
     | IncorrectEyeAnswer
-    | {
-          questionType: 'intensity',
-          answer: number,
-          when: moment$Moment,
-      };
+    | IncorrectIntensityAnswer
+    | IncorrectWordAnswer;
 export type IncorrectEyeAnswer = {
     questionType: 'eye-question',
     answer: Emotion,
     when: moment$Moment,
 };
+export type IncorrectIntensityAnswer = {
+    questionType: 'intensity',
+    answer: number,
+    when: moment$Moment,
+};
+export type IncorrectWordAnswer = {
+    questionType: 'word',
+    answer: Emotion,
+    when: moment$Moment,
+};
 
+export type Question = EyeQuestion | WordQuestion | IntensityQuestion;
 export type EyeQuestion = {
     type: 'eye-question',
     correctAnswer: Emotion,
@@ -25,25 +32,18 @@ export type EyeQuestion = {
 
     image: string,
 };
-
-export type EmotionWordQuestion = {
+export type WordQuestion = {
     type: 'word-question',
     correctAnswer: Emotion,
     answers: Array<Emotion>,
 
     questionText: string,
 };
-
 export type IntensityQuestion = {
     type: 'intensity',
     correctAnswer: Emotion,
     referencePoints: Map<number, Emotion>,
 };
-
-// To be asked at the end of the first training session
-// Nice with the coordinates thing and then being asked
-// to name the emotion
-export type HowAreYouFeelingToday = {};
 
 // Place the emotion in a grid or something where the
 // axes are e.g. activation and pleasure. Anger being high in

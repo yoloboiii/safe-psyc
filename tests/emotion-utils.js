@@ -13,23 +13,24 @@ export function randomEmotions(num: number): Array<Emotion> {
     return es;
 }
 
-export function randomEmotion(name: string = uuid.v4(), description: string = uuid.v4()): Emotion {
+export function randomEmotion(name?: string, description?: string): Emotion {
     return baseBuilder(name, description).build();
 }
 
-function baseBuilder(name: string = uuid.v4(), description: string = uuid.v4()) {
+function baseBuilder(
+    name: string = 'name-' + uuid.v4(),
+    description: string = 'desc-' + uuid.v4()
+) {
     return new EmotionBuilder()
         .withName(name)
         .withDescription(description);
 }
 
 export function randomEmotionWithImage(name?: string) {
-    name = name === undefined
-        ? uuid.v4()
-        : name;
+    const builder =  baseBuilder(name);
 
-    return baseBuilder(name)
-        .withImage('image' + name)
+    return builder
+        .withImage('image' + builder.name)
         .build();
 }
 

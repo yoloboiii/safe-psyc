@@ -42,9 +42,27 @@ export function findFirstChild(root: React.Component<*, *>, childType: Function|
     }
 }
 
+export function findChild(root: React.Component<*,*>, childType: Function|string): React.Component<*,*> {
+    const all = findChildren(root, childType);
+    if (all.length !== 1) {
+        throw new Error('Found ' + all.length + ' child(ren) with the specified type, expected exactly one');
+    }
+
+    return all[0];
+}
+
 export function findAllByTestId(root: React.Component<*,*>, testId: string): Array<React.Component<*,*>> {
     return getChildrenAndParent(root)
         .filter(c => c.props && c.props.testID === testId);
+}
+
+export function findFirstByTestId(root: React.Component<*,*>, testId: string): React.Component<*,*> {
+    const all = findAllByTestId(root, testId);
+    if (all.length === 0) {
+        throw new Error('Did not find any children with testID=' + testId);
+    }
+
+    return all[0];
 }
 
 export function stringifyComponent(component: React.Component<*,*>): string {

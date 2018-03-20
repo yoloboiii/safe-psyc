@@ -1,6 +1,6 @@
 // @flow
 
-import { stringifyComponent } from './component-tree-utils.js';
+import { getAllRenderedStrings } from './component-tree-utils.js';
 
 expect.extend({
     toContainString: (component, string) => {
@@ -11,11 +11,11 @@ expect.extend({
 
 function toContainStrings(component, ...strings) {
     const needles = [].concat.apply([], strings);
-    const stringRep = stringifyComponent(component).toLowerCase();
+    const renderedStrings = getAllRenderedStrings(component).map(s => s.toLowerCase()).join('');
 
     return {
-        pass: needles.every(needle => stringRep.indexOf(needle) !== -1),
-        message: 'expected\n  ' + stringRep + '\n\nto contain all of\n  [' + needles.join(', ') + ']',
+        pass: needles.every(needle => renderedStrings.indexOf(needle.toLowerCase()) !== -1),
+        message: () => 'expected\n  ' + renderedStrings + '\n\nto contain all of\n  [' + needles.join(', ') + ']',
     };
 }
 

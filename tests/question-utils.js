@@ -8,7 +8,7 @@ import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWit
 import { Emotion } from '../src/models/emotion.js';
 import uuid from 'uuid';
 
-import type { Question, EyeQuestion, EmotionWordQuestion, IntensityQuestion } from '../src/models/questions.js';
+import type { Question, EyeQuestion, WordQuestion, IntensityQuestion } from '../src/models/questions.js';
 
 export function randomEyeQuestions(numberOfQuestions:number = 10): Array<EyeQuestion> {
     const qs = [];
@@ -32,7 +32,7 @@ export function randomEyeQuestion(c?: string): EyeQuestion {
     };
 }
 
-export function randomWordQuestions(numberOfQuestions:number = 10): Array<EmotionWordQuestion> {
+export function randomWordQuestions(numberOfQuestions:number = 10): Array<WordQuestion> {
     const qs = [];
     for (let i = 0; i < numberOfQuestions; i++) {
         qs.push(randomWordQuestion(i.toString()));
@@ -40,7 +40,7 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<Emotio
     return qs;
 }
 
-export function randomWordQuestion(c?: string): EmotionWordQuestion {
+export function randomWordQuestion(c?: string): WordQuestion {
     c = c === undefined ? uuid.v4() : c;
     const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
     const answer = randomEmotion('ans' + uniqueString);

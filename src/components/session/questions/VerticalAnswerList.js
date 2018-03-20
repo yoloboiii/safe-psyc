@@ -19,7 +19,7 @@ type Props = {
 
 export function VerticalAnswerList(props: Props) {
     return (
-        <View style={constants.flex1}>
+        <View>
             { props.answers.map(answer => <AnswerButton
                     key={answer.name}
                     emotion={answer}
@@ -40,13 +40,9 @@ type AnswerButtonProps = {
 function AnswerButton(props: AnswerButton) {
     const { emotion, onPress, onHelp } = props;
 
-    const onHelpComponent = onHelp && <Help onHelp={() => onHelp(emotion)} />;
-    const horizontalCenterer = onHelp && <View style={{ width: 25 + constants.space() }} />
-
     return (
-        <View style={constants.flex1} testID='answer-button'>
+        <View testID='answer-button'>
             <View style={{
-                flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -67,15 +63,20 @@ type AnswerButtonContainerHoCProps = {
     onHelp: (Emotion) => void,
 };
 function AnswerButtonContainerHoC(props: AnswerButtonContainerHoCProps) {
+
+    const { emotion, onHelp } = props;
+    const onHelpComponent = onHelp && <Help onHelp={() => onHelp(emotion)} />;
+    const horizontalCenterer = onHelp && <View style={{ width: 25 + 2 * constants.space() }} />
+
     return (innerProps) => <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
         }}
     >
-        <View style={{ width: 25 + 2 * constants.space() }} />
-        <StandardText style={[...innerProps.textStyle, constants.flex1]}>{props.emotion.name}</StandardText>
-        <Help onHelp={() => props.onHelp(props.emotion)}/>
+        { horizontalCenterer }
+        <StandardText style={[...innerProps.textStyle, constants.flex1]}>{emotion.name}</StandardText>
+        { onHelpComponent }
     </View>
 }
 

@@ -1,7 +1,7 @@
 // @flow
 
 import type { Emotion } from '../models/emotion.js';
-import type { EyeQuestion, IntensityQuestion } from '../models/questions.js';
+import type { EyeQuestion, IntensityQuestion, WordQuestion } from '../models/questions.js';
 import type { AnswerService } from '../services/answer-service.js';
 import type { ReferencePointService } from '../services/reference-point-service.js';
 
@@ -32,5 +32,15 @@ export function generateIntensityQuestion(
             referencePoints: refPoints,
         },
         isValid,
+    };
+}
+
+export function generateWordQuestion(emotion: Emotion, answerService: AnswerService): WordQuestion {
+    return {
+        type: 'word-question',
+        correctAnswer: emotion,
+        answers: answerService.getAnswersTo(emotion, 3),
+
+        questionText: 'Which alternative best describes ' + emotion.description + '?',
     };
 }
