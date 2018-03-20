@@ -33,7 +33,7 @@ export class ImageBackground extends React.Component<Props, {}> {
         const { children, image } = this.props;
 
         // $FlowFixMe
-        const img = image || require('../../images/stripes.png');
+        const img = image || require('../../../images/stripes.png');
 
         return (
             <ImgBg source={img} resizeMode="cover" style={bgImageStyle}>
