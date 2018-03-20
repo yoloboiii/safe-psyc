@@ -2,15 +2,14 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { FancyInput } from './Inputs.js';
-// $FlowFixMe
-import { NavigationActions } from 'react-navigation';
-import { LargeButton, StandardButton } from './Buttons.js';
-import { StandardText } from './Texts.js';
-import { ActivityIndicator } from './ActivityIndicator.js';
-import { VerticalSpace } from './VerticalSpace.js';
+import { FancyInput } from './lib/Inputs.js';
+import { LargeButton, StandardButton } from './lib/Buttons.js';
+import { StandardText } from './lib/Texts.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { constants } from '../styles/constants.js';
+import { resetTo } from '../navigation-actions.js';
 import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
@@ -57,16 +56,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
     }
 
     _done() {
-        this.props.navigation.dispatch(
-            NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({
-                        routeName: 'Login',
-                    }),
-                ],
-            })
-        );
+        resetTo(this.props.navigation, 'Login');
     }
 
     render() {

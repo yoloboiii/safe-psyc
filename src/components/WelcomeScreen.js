@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText, LargeText } from './Texts.js';
-import { HeroButton } from './Buttons.js';
-import { ImageBackground } from './ImageBackground.js';
-import { VerticalSpace } from './VerticalSpace.js';
+import { StandardText, LargeText } from './lib/Texts.js';
+import { HeroButton } from './lib/Buttons.js';
+import { ImageBackground } from './lib/ImageBackground.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
 import { log } from '../services/logger.js';
 import { resetToHome } from '../navigation-actions.js';
 import { constants } from '../styles/constants.js';

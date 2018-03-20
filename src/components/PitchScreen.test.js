@@ -1,7 +1,7 @@
 // @flow
 
 import { PitchScreen } from './PitchScreen.js';
-import { StandardButton } from './Buttons.js';
+import { StandardButton } from './lib/Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
 

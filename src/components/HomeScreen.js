@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { ImageBackground } from './ImageBackground.js';
-import { HeroButton } from './Buttons.js';
-import { Title, StandardText } from './Texts.js';
-import { VerticalSpace } from './VerticalSpace.js';
-import { ActivityIndicator } from './ActivityIndicator.js';
+import { ImageBackground } from './lib/ImageBackground.js';
+import { HeroButton } from './lib/Buttons.js';
+import { Title, StandardText } from './lib/Texts.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
 import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../styles/status-bar-height.js';
 import { constants } from '../styles/constants.js';

@@ -10,7 +10,7 @@ import { log } from './services/logger.js';
 
 import type { Emotion } from './models/emotion.js';
 import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
-import type { Report } from './components/SessionReport.js';
+import type { Report } from './components/session/report/SessionReport.js';
 
 export type Navigation<P> = {
     navigate: (string, ?Object) => void,
@@ -169,7 +169,7 @@ export function onUserLoggedOut(
         });
 }
 
-function resetTo(navigation, routeName: string) {
+export function resetTo(navigation: Navigation<*>, routeName: string) {
     navigation.dispatch(
         NavigationActions.reset({
             index: 0,

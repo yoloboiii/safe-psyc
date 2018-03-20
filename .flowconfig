@@ -35,6 +35,7 @@
 .*/node_modules/editions/es2015/*
 .*/node_modules/react-navigation/*
 .*/node_modules/metro-bundler/*
+.*/node_modules/metro/*
 
 [include]
 

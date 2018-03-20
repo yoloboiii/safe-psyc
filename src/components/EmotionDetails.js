@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { View, Image, FlatList } from 'react-native';
-import { StandardText } from './Texts';
-import { VerticalSpace } from './VerticalSpace.js';
-import { Link } from './Link.js';
+import { StandardText } from './lib/Texts';
+import { VerticalSpace } from './lib/VerticalSpace.js';
+import { Link } from './lib/Link.js';
 import { constants } from '../styles/constants.js';
 import { navigateToEmotionDetails } from '../navigation-actions.js';
 import { capitalize, formatParagraph } from '../utils/text-utils.js';

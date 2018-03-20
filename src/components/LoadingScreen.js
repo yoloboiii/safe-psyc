@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { ImageBackground } from './ImageBackground.js';
-import { ActivityIndicator } from './ActivityIndicator.js';
+import { ImageBackground } from './lib/ImageBackground.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { configBackendFacade } from '../services/config-backend.js';
 import { log } from '../services/logger.js';

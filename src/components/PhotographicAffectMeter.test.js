@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Image, TouchableHighlight, Text } from 'react-native';
-import { ActivityIndicator } from './ActivityIndicator.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
-import { StandardButton, SecondaryButton } from './Buttons.js';
+import { StandardButton, SecondaryButton } from './lib/Buttons.js';
 import { render } from '../../tests/render-utils.js';
 import { findChildren, stringifyComponent, getAllRenderedStrings } from '../../tests/component-tree-utils.js';
 import { checkNextTick } from '../../tests/utils.js';

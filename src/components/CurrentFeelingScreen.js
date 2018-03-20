@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { View, TextInput, FlatList } from 'react-native';
-import { StandardText } from './Texts.js';
-import { VerticalSpace } from './VerticalSpace.js';
+import { StandardText } from './lib/Texts.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
 import { PhotographicAffectMeter } from './PhotographicAffectMeter.js';
 import { emotionService } from '../services/emotion-service.js';
 import { currentEmotionBackendFacade } from '../services/current-emotion-backend.js';

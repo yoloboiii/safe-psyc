@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import { StandardButton } from '../src/components/Buttons.js';
-import { QuestionComponent, ResultOverlay } from '../src/components/Question.js';
+import { StandardButton } from '../src/components/lib/Buttons.js';
+import { QuestionComponent, ResultOverlay } from '../src/components/session/questions/Question.js';
 import { getChildrenAndParent, findChildren, findFirstChild, getAllRenderedStrings } from './component-tree-utils.js';
 import { randomEmotion, randomEmotionWithImage, randomEmotions, randomEmotionWithCoordinates } from './emotion-utils.js';
 import { Emotion } from '../src/models/emotion.js';
