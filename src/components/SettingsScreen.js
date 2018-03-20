@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText } from './Texts';
-import { StandardButton } from './Buttons.js';
-import { VerticalSpace } from './VerticalSpace.js';
+import { StandardText } from './lib/Texts';
+import { StandardButton } from './lib/Buttons.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
 import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedOut } from '../navigation-actions.js';

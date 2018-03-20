@@ -4,11 +4,11 @@
 
 import React from 'react';
 import { View, Image, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
-import { StandardText } from './Texts.js';
-import { StandardButton, SecondaryButton } from './Buttons.js';
-import { VerticalSpace } from './VerticalSpace.js';
-import { SquareGrid } from './SquareGrid.js';
-import { ActivityIndicator } from './ActivityIndicator.js';
+import { StandardText } from './lib/Texts.js';
+import { StandardButton, SecondaryButton } from './lib/Buttons.js';
+import { VerticalSpace } from './lib/VerticalSpace.js';
+import { SquareGrid } from './lib/SquareGrid.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 import { randomElement } from '../utils/array-utils.js';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Button, Animated, Easing, TouchableOpacity } from 'react-native';
-import { StandardText } from '../Texts.js';
+import { StandardText } from './Texts.js';
 import { constants } from '../../styles/constants.js';
 
 type Props = {

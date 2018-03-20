@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { ActivityIndicator } from './ActivityIndicator.js';
+import { ActivityIndicator } from './lib/ActivityIndicator.js';
 import { EmotionDetails } from './EmotionDetails.js';
-import { StandardText } from './Texts.js';
+import { StandardText } from './lib/Texts.js';
 import { answerBackendFacade } from '../services/answer-backend.js';
 import { log } from '../services/logger.js';
 import { constants } from '../styles/constants.js';
