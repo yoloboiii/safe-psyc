@@ -93,7 +93,7 @@ export class Session extends React.Component<Props, State> {
                     onPress: () => {
                         // TODO: log how many questions were answered
                         log.event('ABORT_SESSION');
-                        resetToHome(this.props.navigation);
+                        resetToHome();
                     },
                 },
                 { text: 'No', style: 'cancel' },
@@ -252,7 +252,6 @@ export class Session extends React.Component<Props, State> {
                     <VerticalSpace />
 
                     <QuestionComponent
-                        navigation={this.props.navigation}
                         question={currentQuestion}
                         onCorrectAnswer={this._answeredCorrectly.bind(this)}
                         onWrongAnswer={this._wrongAnswer.bind(this)}

@@ -22,6 +22,7 @@ import {
     clickAnswerAndDismissOverlay,
     clickWrongAnswerAndDismissOverlay,
 } from '../../../tests/question-utils.js';
+import { mockNavigation } from '../../../tests/navigation-utils.js';
 
 const defaultProps = {
     questions: randomQuestions(5),
@@ -301,10 +302,7 @@ it('aborts the session when the abort confirm is tapped', () => {
     };
 
     const props = {
-        navigation: {
-            dispatch: jest.fn(),
-            addListener: jest.fn(),
-        },
+        navigation: mockNavigation(),
     };
     const component = render(Session, props, defaultProps);
     const abortButton = findChildren(component, AbortSessionButton)[0];

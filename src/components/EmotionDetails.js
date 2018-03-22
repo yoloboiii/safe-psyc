@@ -13,7 +13,6 @@ import { log } from '../services/logger.js';
 
 import type { AnswerType, IncorrectAnswer, IncorrectEyeAnswer } from '../models/questions.js';
 import type { Emotion } from '../models/emotion.js';
-import type { Navigation } from '../navigation-actions.js';
 
 const detailsContainerStyle = {
     flex: 1,
@@ -29,7 +28,6 @@ export type DataPoints = {
 type Props = {
     emotion: Emotion,
     dataPoints: DataPoints,
-    navigation: Navigation<*>,
 };
 export function EmotionDetails(props: Props) {
     const image = props.emotion.image ? (
@@ -55,7 +53,6 @@ export function EmotionDetails(props: Props) {
                 <ConfusionList
                     style={{ flex: 2, paddingRight: constants.space() }}
                     dataPoints={props.dataPoints}
-                    navigation={props.navigation}
                 />
 
                 <StrengthMeter style={constants.flex1} dataPoints={props.dataPoints} />
@@ -112,7 +109,6 @@ export function StrengthMeter(props: StrengthMeterProps) {
 }
 
 type ConfusionListProps = {
-    navigation: Navigation<*>,
     dataPoints: {
         correct: Array<*>,
         incorrect: Array<*>,
@@ -124,7 +120,6 @@ type ConfusionListProps = {
 // Bitter and Despondent when shown the Angry image, this
 // component will show a list with Bitter and Despondent.
 function ConfusionList(props: ConfusionListProps) {
-    const { navigation, ...restProps } = props;
     const { correct, incorrect } = props.dataPoints;
 
     // $FlowFixMe
@@ -134,12 +129,12 @@ function ConfusionList(props: ConfusionListProps) {
     }> = filterOldAndEyeAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
-        return <View {...restProps} />;
+        return <View />;
     }
 
     const data = toFlatListData(incorrectEmotions);
     return (
-        <View {...restProps}>
+        <View {...props}>
             <StandardText>You sometimes get this confused with</StandardText>
             <VerticalSpace />
             <FlatList data={Array.from(data.values())} renderItem={renderRow} />
@@ -190,7 +185,7 @@ function ConfusionList(props: ConfusionListProps) {
 
     function renderRow(props: { item: { emotion: Emotion } }) {
         const { emotion } = props.item;
-        const navigate = () => navigateToEmotionDetails(navigation, emotion);
+        const navigate = () => navigateToEmotionDetails(emotion);
         return <Link linkText={emotion.name} onLinkPress={navigate} />;
     }
 }

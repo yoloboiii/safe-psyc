@@ -11,7 +11,6 @@ import { render } from '../../../../../tests/render-utils.js';
 const defaultProps = {
     onCorrectAnswer: () => {},
     onWrongAnswer: () => {},
-    navigation: jest.fn(),
 };
 
 it('contains the question text', () => {

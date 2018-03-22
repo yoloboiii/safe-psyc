@@ -93,7 +93,6 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     <EmotionDetails
                         emotion={emotion}
                         dataPoints={this.state.dataPoints}
-                        navigation={this.props.navigation}
                     />
                 );
         }

@@ -9,10 +9,7 @@ import { configBackendFacade } from '../services/config-backend.js';
 import { log } from '../services/logger.js';
 import { resetToHome, onUserLoggedOut } from '../navigation-actions.js';
 
-import type { Navigation } from '../navigation-actions.js';
-
 type Props = {
-    navigation: Navigation<{}>,
 };
 export class LoadingScreen extends React.Component<Props, {}> {
     static navigationOptions = {
@@ -31,7 +28,7 @@ export class LoadingScreen extends React.Component<Props, {}> {
     async _startLoading() {
         const isLoggedIn = await checkIfLoggedIn(userBackendFacade, this);
 
-        registerLoginRedirecter(userBackendFacade, this.props.navigation);
+        registerLoginRedirecter(userBackendFacade);
 
         await configBackendFacade.load();
 
@@ -40,9 +37,9 @@ export class LoadingScreen extends React.Component<Props, {}> {
 
     _redirect(isLoggedIn) {
         if (isLoggedIn) {
-            resetToHome(this.props.navigation);
+            resetToHome();
         } else {
-            onUserLoggedOut(this.props.navigation);
+            onUserLoggedOut();
         }
     }
 
@@ -98,12 +95,12 @@ function checkIfLoggedIn(backend, state): Promise<boolean> {
     }
 }
 
-function registerLoginRedirecter(backend, navigation) {
+function registerLoginRedirecter(backend) {
     backend.onUserLoggedIn(() => {
-        resetToHome(navigation);
+        resetToHome();
     });
 
     backend.onUserLoggedOut(() => {
-        onUserLoggedOut(navigation);
+        onUserLoggedOut();
     });
 }

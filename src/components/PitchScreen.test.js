@@ -3,24 +3,20 @@
 import { PitchScreen } from './PitchScreen.js';
 import { StandardButton } from './lib/Buttons.js';
 import { render } from '../../tests/render-utils.js';
+import { mockNavigation } from '../../tests/navigation-utils.js';
 import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
 
 const defaultProps = {
-    navigation: {
-        dispatch: jest.fn(),
-    },
+    navigation: mockNavigation(),
 };
 
 it('contains a skip button that navigates to the login screen', () => {
-    const dispatchMock = jest.fn();
-    const navigation = {
-        dispatch: dispatchMock,
-    };
+    const navigation = mockNavigation();
     const component = render(PitchScreen, { navigation: navigation }, defaultProps);
 
     clickSkipButton(component);
 
-    expect(dispatchMock).toHaveResetTo('Login');
+    expect(navigation.dispatch).toHaveResetTo('Login');
 });
 
 function clickSkipButton(component) {
@@ -51,7 +47,6 @@ it('redirects even if the storing fails', () => {
     };
 
     const navigation = setupMockStorage(storageMock);
-    navigation.dispatch = jest.fn();
     const component = render(PitchScreen, { navigation: navigation }, defaultProps);
 
     clickSkipButton(component);
@@ -60,7 +55,7 @@ it('redirects even if the storing fails', () => {
 });
 
 function setupMockStorage(mock) {
-    return Object.assign({}, defaultProps.navigation, {
+    return Object.assign({}, mockNavigation(), {
         state: {
             params: {
                 storage: mock,

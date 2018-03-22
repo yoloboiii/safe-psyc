@@ -2,6 +2,7 @@
 
 import * as navActions from './navigation-actions.js';
 import moment from 'moment';
+import { mockNavigation } from '../tests/navigation-utils.js';
 
 import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
 
@@ -11,7 +12,7 @@ describe('startRandomSession', () => {
         const { navigate } = navigation;
 
         return navActions
-            .startRandomSession(navigation)
+            .startRandomSession()
             .then(() => {
                 expect(navigate).toHaveBeenCalledTimes(1);
                 expect(navigate).toHaveBeenCalledWith('Session', expect.anything());
@@ -23,7 +24,7 @@ describe('startRandomSession', () => {
         const { navigate } = navigation;
 
         return navActions
-            .startRandomSession(navigation)
+            .startRandomSession()
             .then(() => {
                 const args = navigate.mock.calls[0][1];
                 if (!args || !args.questions) {
@@ -34,14 +35,6 @@ describe('startRandomSession', () => {
             });
     });
 });
-
-function mockNavigation() {
-    return {
-        navigate: jest.fn(),
-        dispatch: jest.fn(),
-        addListener: jest.fn(),
-    };
-}
 
 describe('routeToCurrentFeelingOrHome', () => {
     it('should redirect to howrufeelin once per day', () => {
@@ -71,7 +64,7 @@ describe('routeToCurrentFeelingOrHome', () => {
         const { dispatch } = navigation;
 
         return navActions
-            .routeToCurrentFeelingOrHome(navigation, backendFacade)
+            .routeToCurrentFeelingOrHome(backendFacade)
             .then(() => {
                 expect(dispatch).toHaveBeenCalledTimes(1);
 
@@ -82,7 +75,7 @@ describe('routeToCurrentFeelingOrHome', () => {
             })
             .then(() => {
                 dispatch.mockReset();
-                return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade);
+                return navActions.routeToCurrentFeelingOrHome(backendFacade);
             })
             .then(() => {
                 expect(dispatch).toHaveBeenCalledTimes(1);
@@ -106,7 +99,7 @@ describe('routeToCurrentFeelingOrHome', () => {
         const navigation = mockNavigation();
         const { dispatch } = navigation;
 
-        return navActions.routeToCurrentFeelingOrHome(navigation, backendFacade).then(() => {
+        return navActions.routeToCurrentFeelingOrHome(backendFacade).then(() => {
             expect(dispatch).toHaveBeenCalled();
             const params = dispatch.mock.calls[0][0].actions
                 .filter(a => a.routeName === 'CurrentFeeling')
@@ -151,7 +144,7 @@ describe('onUserLoggedOut', () => {
         const navigation = mockNavigation();
         const { dispatch } = navigation;
 
-        return navActions.onUserLoggedOut(navigation, storage).then(() => {
+        return navActions.onUserLoggedOut(storage).then(() => {
             expect(dispatch).toHaveBeenCalledTimes(1);
 
             const arg = dispatch.mock.calls[0][0];

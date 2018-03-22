@@ -43,7 +43,7 @@ export class DebugScreen extends React.Component<Props, State> {
     }
 
     _openSettings() {
-        openSettings(this.props.navigation);
+        openSettings();
     }
 
     _startSession() {
@@ -52,7 +52,7 @@ export class DebugScreen extends React.Component<Props, State> {
         };
 
         const onStateUpdated = () => {
-            startRandomSession(this.props.navigation, onNavDataLoaded);
+            startRandomSession(onNavDataLoaded);
         };
 
         this.setState({ loading: true }, onStateUpdated);
@@ -76,7 +76,6 @@ export class DebugScreen extends React.Component<Props, State> {
                             title={'Emotion details'}
                             onPress={() =>
                                 navigateToEmotionDetails(
-                                    this.props.navigation,
                                     randomSessionService
                                         .getEmotionPool()
                                         .filter(e => e.name === 'bitter')[0]

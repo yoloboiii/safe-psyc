@@ -22,6 +22,7 @@ import {
 
 import { answerService } from '../../../../services/answer-service.js';
 import { MockSessionService } from '../../../../../tests/MockSessionService.js';
+import { mockNavigation } from '../../../../../tests/navigation-utils.js';
 
 import type { Question } from '../../../../models/questions.js';
 
@@ -86,15 +87,12 @@ it("shows the image of the answer in the overlay - image doesn't exists", () => 
 it('has a link to the emotion details in the overlay', () => {
     const question = randomEyeQuestion();
     const answer = randomEmotionWithImage();
-    const navigationMock = {
-        navigate: jest.fn(),
-    };
+    const navigationMock = mockNavigation();
 
     const component = render(EyeQuestionOverlay, {
         answeredCorrectly: false,
         question: question,
         answer: answer,
-        navigation: navigationMock,
     });
 
     const helpLink = findChildren(component, Link).filter(c => {
@@ -120,12 +118,10 @@ it("doesn't have a link to the emotion details if answered correctly", () => {
 
 it('has a link to the emotion details for each answer', () => {
     const question = randomEyeQuestion();
-    const navigationMock = {
-        navigate: jest.fn(),
-    };
+    const navigationMock = mockNavigation();
+
     const component = customRender({
         question: question,
-        navigation: navigationMock,
     });
 
     const answerButtons = findAllByTestId(component, 'answer-button');

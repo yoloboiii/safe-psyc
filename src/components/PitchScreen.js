@@ -66,7 +66,7 @@ export class PitchScreen extends React.Component<Props, State> {
                 log.error('Unable to persist that the pitch is to be skipped: %s', e);
             });
 
-        resetToLogin(this.props.navigation);
+        resetToLogin();
     }
 
     render() {

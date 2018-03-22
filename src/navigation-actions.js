@@ -25,26 +25,34 @@ export type Subscription = {
     remove: () => void,
 };
 
+
+
+let navigation: ?Navigation<mixed> = null;
+function safeNavigate() {
+    if (navigation) return navigation;
+    else throw new Error("Tried to navigate but the navigation handle was not set");
+}
+export function setNavigation(nav: Navigation<mixed>) {
+    navigation = nav;
+}
+
 export function paramsOr<T, S>(navigation: Navigation<T>, or: S): T | S {
     return navigation.state && navigation.state.params ? navigation.state.params : or;
 }
 
-export function startRandomSession(
-    navigation: Navigation<*>,
-    onDataLoaded?: () => void
-): Promise<{}> {
+export function startRandomSession(onDataLoaded?: () => void): Promise<{}> {
     log.event("START_RANDOM_SESSION");
     return configBackendFacade.getNumberOfQuestionsPerSession().then(numQuestions => {
-        return doStartRandomSession(numQuestions, navigation, onDataLoaded);
+        return doStartRandomSession(numQuestions, onDataLoaded);
     });
 }
 
-function doStartRandomSession(numQuestions, navigation, onDataLoaded) {
+function doStartRandomSession(numQuestions, onDataLoaded) {
     return new Promise(resolve => {
         InteractionManager.runAfterInteractions(() => {
             const questions = randomSessionService.getRandomQuestions(numQuestions);
             onDataLoaded && onDataLoaded();
-            navigation.navigate('Session', {
+            safeNavigate().navigate('Session', {
                 questions: questions,
             });
 
@@ -53,14 +61,14 @@ function doStartRandomSession(numQuestions, navigation, onDataLoaded) {
     });
 }
 
-export function navigateToEmotionDetails(navigation: Navigation<*>, emotion: Emotion) {
-    navigation.navigate('EmotionDetails', {
+export function navigateToEmotionDetails(emotion: Emotion) {
+    safeNavigate().navigate('EmotionDetails', {
         emotion: emotion,
     });
 }
 
-export function navigateToSessionReport(navigation: Navigation<*>, report: Report) {
-    navigation.dispatch(
+export function navigateToSessionReport(report: Report) {
+    safeNavigate().dispatch(
         NavigationActions.reset({
             index: 1,
             actions: [
@@ -76,10 +84,7 @@ export function navigateToSessionReport(navigation: Navigation<*>, report: Repor
     );
 }
 
-export function routeToCurrentFeelingOrHome(
-    navigation: Navigation<*>,
-    backend: CurrentEmotionBackendFacade
-): Promise<*> {
+export function routeToCurrentFeelingOrHome(backend: CurrentEmotionBackendFacade): Promise<*> {
     return backend
         .getLastEmotionAnswer()
         .then(answer => {
@@ -116,9 +121,9 @@ export function routeToCurrentFeelingOrHome(
                         }),
                     ],
                 });
-                navigation.dispatch(resetAction);
+                safeNavigate().dispatch(resetAction);
             } else {
-                resetToHome(navigation);
+                resetToHome();
             }
         })
         .catch(e => {
@@ -127,30 +132,27 @@ export function routeToCurrentFeelingOrHome(
         });
 }
 
-export function toResetPassword(navigation: Navigation<*>, email?: string) {
-    navigation.navigate('ResetPassword', {
+export function toResetPassword(email?: string) {
+    safeNavigate().navigate('ResetPassword', {
         email: email,
     });
 }
 
-export function openSettings(navigation: Navigation<*>) {
-    navigation.navigate('Settings');
+export function openSettings() {
+    safeNavigate().navigate('Settings');
 }
 
-export function onUserRegistered(navigation: Navigation<*>, username: string) {
-    navigation.navigate('Welcome', {
+export function onUserRegistered(username: string) {
+    safeNavigate().navigate('Welcome', {
         username: username,
     });
 }
 
-export function onUserLoggedIn(navigation: Navigation<*>) {
-    resetToHome(navigation);
+export function onUserLoggedIn() {
+    resetToHome();
 }
 
-export function onUserLoggedOut(
-    navigation: Navigation<*>,
-    storage: * = AsyncStorage
-): Promise<void> {
+export function onUserLoggedOut(storage: * = AsyncStorage): Promise<void> {
     return storage
         .getItem('hasSeenThePitch')
         .then(hasSeenThePitch => {
@@ -165,12 +167,12 @@ export function onUserLoggedOut(
             return 'Pitch';
         })
         .then(route => {
-            resetTo(navigation, route);
+            resetTo(route);
         });
 }
 
-export function resetTo(navigation: Navigation<*>, routeName: string) {
-    navigation.dispatch(
+export function resetTo(routeName: string) {
+    safeNavigate().dispatch(
         NavigationActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: routeName })],
@@ -178,10 +180,10 @@ export function resetTo(navigation: Navigation<*>, routeName: string) {
     );
 }
 
-export function resetToHome(navigation: Navigation<*>) {
-    resetTo(navigation, 'Home');
+export function resetToHome() {
+    resetTo('Home');
 }
 
-export function resetToLogin(navigation: Navigation<*>) {
-    resetTo(navigation, 'Login');
+export function resetToLogin() {
+    resetTo('Login');
 }
