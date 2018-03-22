@@ -4,6 +4,7 @@ import { SessionReport } from './SessionReport.js';
 import { Image, TouchableOpacity } from 'react-native';
 
 import { render } from '../../../../tests/render-utils.js';
+import { mockNavigation } from '../../../../tests/navigation-utils.js';
 import {
     randomEyeQuestion,
     randomEyeQuestions,
@@ -41,21 +42,21 @@ it('contains the question text of word-questions', () => {
 });
 
 it('navigates to the question details when clicking the row', () => {
-    const navigateMock = jest.fn();
+    const navigation = mockNavigation();
 
     const eyeQuestion = randomEyeQuestion();
     const report = createReportWithNoWrongAnswers([eyeQuestion]);
     const component = render(SessionReport, {
         report: report,
-        navigation: { navigate: navigateMock },
+        navigation: navigation,
     });
 
     const touchable = findChildren(component, TouchableOpacity)[0];
     expect(touchable).toBeDefined();
 
-    expect(navigateMock).not.toHaveBeenCalled();
+    expect(navigation).toNeverHaveNavigated();
     touchable.props.onPress();
-    expect(navigateMock).toHaveBeenCalledWith('EmotionDetails', {
+    expect(navigation).toHaveNavigatedTo('EmotionDetails', {
         emotion: eyeQuestion.correctAnswer,
     });
 });

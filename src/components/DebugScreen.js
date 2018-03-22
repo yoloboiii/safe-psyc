@@ -10,11 +10,9 @@ import { startRandomSession, openSettings } from '../navigation-actions.js';
 import { statusBarHeight } from '../styles/status-bar-height.js';
 import { constants } from '../styles/constants.js';
 
-import { navigateToEmotionDetails } from '../navigation-actions.js';
+import { navigateToEmotionDetails, UNSAFE_navigateTo } from '../navigation-actions.js';
 import { randomSessionService } from '../services/random-session-service.js';
 import { log } from '../services/logger.js';
-
-import type { Navigation } from '../navigation-actions.js';
 
 const contentStyle = {
     paddingTop: statusBarHeight + constants.space(),
@@ -24,9 +22,7 @@ const contentStyle = {
     justifyContent: 'space-between',
 };
 
-type Props = {
-    navigation: Navigation<{}>,
-};
+type Props = {};
 type State = {
     loading: boolean,
 };
@@ -43,7 +39,7 @@ export class DebugScreen extends React.Component<Props, State> {
     }
 
     _openSettings() {
-        openSettings(this.props.navigation);
+        openSettings();
     }
 
     _startSession() {
@@ -52,7 +48,7 @@ export class DebugScreen extends React.Component<Props, State> {
         };
 
         const onStateUpdated = () => {
-            startRandomSession(this.props.navigation, onNavDataLoaded);
+            startRandomSession(onNavDataLoaded);
         };
 
         this.setState({ loading: true }, onStateUpdated);
@@ -76,7 +72,6 @@ export class DebugScreen extends React.Component<Props, State> {
                             title={'Emotion details'}
                             onPress={() =>
                                 navigateToEmotionDetails(
-                                    this.props.navigation,
                                     randomSessionService
                                         .getEmotionPool()
                                         .filter(e => e.name === 'bitter')[0]
@@ -87,19 +82,19 @@ export class DebugScreen extends React.Component<Props, State> {
 
                         <HeroButton
                             title={'How are you feeling right now?'}
-                            onPress={() => this.props.navigation.navigate('CurrentFeeling', { skippable: true })}
+                            onPress={() => UNSAFE_navigateTo('CurrentFeeling', { skippable: true })}
                         />
                         <VerticalSpace />
 
                         <HeroButton
                             title={'Pitch'}
-                            onPress={() => this.props.navigation.navigate('Pitch')}
+                            onPress={() => UNSAFE_navigateTo('Pitch')}
                         />
                         <VerticalSpace />
 
                         <HeroButton
                             title={'Real home'}
-                            onPress={() => this.props.navigation.navigate('AlwaysHome')}
+                            onPress={() => UNSAFE_navigateTo('AlwaysHome')}
                         />
                         <VerticalSpace />
 

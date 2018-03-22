@@ -75,7 +75,7 @@ export class WelcomeScreen extends React.Component<Props, State> {
                     </View>
                     <HeroButton
                         title={"Let's get started!"}
-                        onPress={() => resetToHome(this.props.navigation)}
+                        onPress={() => resetToHome()}
                     />
                 </View>
             </ImageBackground>

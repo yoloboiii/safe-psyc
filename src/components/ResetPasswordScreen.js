@@ -56,7 +56,7 @@ export class ResetPasswordScreen extends React.Component<Props, State> {
     }
 
     _done() {
-        resetTo(this.props.navigation, 'Login');
+        resetTo('Login');
     }
 
     render() {

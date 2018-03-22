@@ -16,13 +16,11 @@ import { emotionService } from '../../../../services/emotion-service';
 import { ScatterChart } from '../../../scatter-plot';
 
 import type { IntensityQuestion } from '../../../../models/questions.js';
-import type { Navigation } from '../../../../navigation-actions.js';
 
 type Props = {
     question: IntensityQuestion,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: number) => void,
-    navigation: Navigation<{}>,
 };
 type State = {
     lastAnswer: number,
@@ -53,8 +51,7 @@ export class IntensityQuestionComponent extends React.Component<Props, State> {
         const emotion = question.correctAnswer;
         const emotionName = emotion.name;
 
-        const navigation = this.props.navigation;
-        const onEmotionPress = () => navigateToEmotionDetails(navigation, emotion);
+        const onEmotionPress = () => navigateToEmotionDetails(emotion);
 
         return (
             <View style={containerStyle}>

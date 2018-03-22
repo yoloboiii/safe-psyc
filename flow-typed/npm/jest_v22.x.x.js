@@ -125,6 +125,8 @@ type EnzymeMatchersType = {
   toContainString(string: string): void,
   toContainStrings(...strings: Array<string>): void,
   toHaveResetTo(string): void,
+  toHaveNavigatedTo(string, ?Object): void,
+  toNeverHaveNavigated(): void,
   toContainDuplicates(): void,
   toEqualDate(mixed): void,
   toBeCloserTo(moment$Moment, { than: moment$Moment }): void,

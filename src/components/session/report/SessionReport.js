@@ -17,12 +17,10 @@ import type {
     AnswerType,
 } from '../../../models/questions.js';
 import type { Emotion } from '../../../models/emotion.js';
-import type { Navigation } from '../../../navigation-actions.js';
 
 export type Report = Map<Question, Array<AnswerType>>;
 type Props = {
     report: Report,
-    navigation: Navigation<any>,
 };
 
 export function SessionReport(props: Props) {
@@ -58,7 +56,7 @@ export function SessionReport(props: Props) {
     );
 
     function onPressItem(question) {
-        navigateToEmotionDetails(props.navigation, question.correctAnswer);
+        navigateToEmotionDetails(question.correctAnswer);
     }
 }
 

@@ -18,7 +18,6 @@ import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';
 
-import type { Navigation } from '../navigation-actions.js';
 
 const containerStyle = {
     flex: 1,
@@ -45,7 +44,6 @@ const registerStyle = {
 };
 
 type Props = {
-    navigation: Navigation<{}>,
 };
 type State = {
     loading: 'no' | 'login' | 'register',
@@ -77,7 +75,7 @@ export class LoginScreen extends React.Component<Props, State> {
             .login(email, password)
             .then(() => {
                 Keyboard.dismiss();
-                onUserLoggedIn(this.props.navigation);
+                onUserLoggedIn();
             })
             .catch(e => {
                 this.setState({
@@ -98,7 +96,7 @@ export class LoginScreen extends React.Component<Props, State> {
             .createNewUser(email, password)
             .then(user => {
                 Keyboard.dismiss();
-                onUserRegistered(this.props.navigation, user.email);
+                onUserRegistered(user.email);
             })
             .catch(e => {
                 this.setState({
@@ -109,7 +107,7 @@ export class LoginScreen extends React.Component<Props, State> {
     }
 
     _resetPassword() {
-        toResetPassword(this.props.navigation, this.state.email);
+        toResetPassword(this.state.email);
     }
 
     render() {

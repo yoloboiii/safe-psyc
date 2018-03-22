@@ -39,7 +39,7 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        const { state, navigate } = this.props.navigation;
+        const { state } = this.props.navigation;
         if (state) {
             const { emotion } = state.params;
             this.setState({
@@ -67,11 +67,13 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     });
                     Alert.alert('Unable read data', e.message);
                 });
+        } else {
+            log.warn('Tried to mount EmotionDetailsScreen without navigation state');
         }
     }
 
     render() {
-        const { state, navigate } = this.props.navigation;
+        const { state } = this.props.navigation;
         if (state) {
             const navParams = state.params;
             return <View style={constants.padflex}>{this._renderEmotion(navParams.emotion)}</View>;
@@ -93,7 +95,6 @@ export class EmotionDetailsScreen extends React.Component<Props, State> {
                     <EmotionDetails
                         emotion={emotion}
                         dataPoints={this.state.dataPoints}
-                        navigation={this.props.navigation}
                     />
                 );
         }

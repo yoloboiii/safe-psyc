@@ -14,7 +14,6 @@ import { capitalize } from '../../../../utils/text-utils.js';
 import type { EyeQuestion } from '../../../../models/questions.js';
 import type { Emotion } from '../../../../models/emotion.js';
 import type { SpecificOverlayProps } from '../Question.js';
-import type { Navigation } from '../../../../navigation-actions.js';
 
 const containerStyle = {
     flex: 1,
@@ -26,7 +25,6 @@ type Props = {
     question: EyeQuestion,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: Emotion) => void,
-    navigation: Navigation<{}>,
 };
 export function EyeQuestionComponent(props: Props) {
     const { question, onCorrectAnswer, onWrongAnswer } = props;
@@ -60,16 +58,16 @@ export function EyeQuestionComponent(props: Props) {
     );
 
     function toEmotionDetails(emotion) {
-        navigateToEmotionDetails(props.navigation, emotion);
+        navigateToEmotionDetails(emotion);
     }
 }
 
 const overlayImageStyle = { height: 100 };
 export function EyeQuestionOverlay(props: SpecificOverlayProps<Emotion>) {
-    const { answeredCorrectly, answer, navigation } = props;
+    const { answeredCorrectly, answer } = props;
     const answerImage = answer.image;
 
-    const toEmotionDetails = () => navigateToEmotionDetails(navigation, answer);
+    const toEmotionDetails = () => navigateToEmotionDetails(answer);
 
     if (answeredCorrectly) {
         return <StandardText style={{ width: '97%' }}>

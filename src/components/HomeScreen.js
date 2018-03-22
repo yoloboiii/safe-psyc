@@ -12,10 +12,7 @@ import { statusBarHeight } from '../styles/status-bar-height.js';
 import { constants } from '../styles/constants.js';
 import { log } from '../services/logger.js';
 
-import type { Navigation } from '../navigation-actions.js';
-
 type Props = {
-    navigation: Navigation<{}>,
 };
 type State = {
     loading: boolean,
@@ -37,7 +34,7 @@ export class HomeScreen extends React.Component<Props, State> {
     }
 
     _openSettings() {
-        openSettings(this.props.navigation);
+        openSettings();
     }
 
     _startSession() {
@@ -46,7 +43,7 @@ export class HomeScreen extends React.Component<Props, State> {
         };
 
         const onStateUpdated = () => {
-            startRandomSession(this.props.navigation, onNavDataLoaded);
+            startRandomSession(onNavDataLoaded);
         };
 
         this.setState({ loading: true }, onStateUpdated);

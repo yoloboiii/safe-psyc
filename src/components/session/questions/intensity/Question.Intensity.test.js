@@ -7,6 +7,7 @@ import {
 } from './Question.Intensity.js';
 import { StandardButton } from '../../../lib/Buttons.js';
 import { render } from '../../../../../tests/render-utils.js';
+import { mockNavigation } from '../../../../../tests/navigation-utils.js';
 import { randomIntensityQuestion } from '../../../../../tests/question-utils.js';
 import { getAllRenderedStrings, findChildren, getChildrenAndParent } from '../../../../../tests/component-tree-utils.js';
 import { randomEmotionWithCoordinates } from '../../../../../tests/emotion-utils.js';
@@ -142,14 +143,12 @@ describe('IntensityQuestionComponent', () => {
 
     it('Pressing the emotion name navigates to the emotion details', () => {
         const question = randomIntensityQuestion();
-        const navigationMock = jest.fn();
+        const navigation = mockNavigation();
         const component = render(
             IntensityQuestionComponent,
             {
                 question,
-                navigation: {
-                    navigate: navigationMock,
-                },
+                navigation,
             },
             defaultProps
         );
@@ -163,7 +162,7 @@ describe('IntensityQuestionComponent', () => {
         expect(emotionNameComponent).toBeDefined();
 
         emotionNameComponent.props.onPress();
-        expect(navigationMock).toHaveBeenCalledWith('EmotionDetails', {
+        expect(navigation).toHaveNavigatedTo('EmotionDetails', {
             emotion: question.correctAnswer,
         });
     });

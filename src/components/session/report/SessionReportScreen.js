@@ -34,7 +34,7 @@ export class SessionReportScreen extends React.Component<Props, {}> {
     };
 
     _onDismiss() {
-        routeToCurrentFeelingOrHome(this.props.navigation, currentEmotionBackendFacade);
+        routeToCurrentFeelingOrHome(currentEmotionBackendFacade);
     }
 
     render() {
@@ -48,7 +48,7 @@ export class SessionReportScreen extends React.Component<Props, {}> {
                 </StandardText>
 
                 <VerticalSpace multiplier={4} />
-                <SessionReport report={report} navigation={this.props.navigation} />
+                <SessionReport report={report} />
                 <VerticalSpace multiplier={4} />
 
                 <StandardButton title={'Done!'} onPress={this._onDismiss.bind(this)} />

@@ -26,7 +26,7 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
 
     _skip() {
         log.event('CURRENT_EMOTION_SKIPPED');
-        resetToHome(this.props.navigation);
+        resetToHome();
     }
 
     render() {
@@ -39,7 +39,7 @@ export class CurrentFeelingScreen extends React.Component<Props, State> {
 
         return (
             <PhotographicAffectMeter
-                onAnswered={() => resetToHome(this.props.navigation)}
+                onAnswered={() => resetToHome()}
                 onSkip={onSkip}
                 backendFacade={currentEmotionBackendFacade}
                 emotionImages={require('../../SECRETS/pam/pam-images.json')}

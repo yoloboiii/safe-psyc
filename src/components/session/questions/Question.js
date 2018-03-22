@@ -22,7 +22,6 @@ import type {
     AnswerType,
 } from '../../../models/questions.js';
 import type { Emotion } from '../../../models/emotion.js';
-import type { Navigation } from '../../../navigation-actions.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 
@@ -30,7 +29,6 @@ export type Props = {
     question: Question,
     onCorrectAnswer: () => void,
     onWrongAnswer: (answer: AnswerType) => void,
-    navigation: Navigation<{}>,
 };
 type State = {
     currentAnswerState: CurrentAnswerState,
@@ -92,7 +90,7 @@ export class QuestionComponent extends React.Component<Props, State> {
     }
 
     _getQuestionComponent() {
-        const { question, navigation } = this.props;
+        const { question } = this.props;
 
         const onCorrectAnswer = this._correctAnswer.bind(this);
         const onWrongAnswer = this._wrongAnswer.bind(this);
@@ -104,7 +102,6 @@ export class QuestionComponent extends React.Component<Props, State> {
                         question={question}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
-                        navigation={navigation}
                     />
                 );
             case 'word-question':
@@ -113,7 +110,6 @@ export class QuestionComponent extends React.Component<Props, State> {
                         question={question}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
-                        navigation={navigation}
                     />
                 );
             case 'intensity':
@@ -122,7 +118,6 @@ export class QuestionComponent extends React.Component<Props, State> {
                         question={question}
                         onCorrectAnswer={onCorrectAnswer}
                         onWrongAnswer={onWrongAnswer}
-                        navigation={this.props.navigation}
                     />
                 );
 
@@ -147,7 +142,6 @@ export class QuestionComponent extends React.Component<Props, State> {
                         answer={answer}
                         question={this.props.question}
                         onDismiss={this._questionFinished.bind(this)}
-                        navigation={this.props.navigation}
                     />
                 );
 
@@ -185,13 +179,11 @@ type ResultOverlayProps = {
     answer: AnswerType,
     answeredCorrectly: boolean,
     onDismiss: () => void,
-    navigation: Navigation<{}>,
 };
 export type SpecificOverlayProps<T> = {
     answeredCorrectly: boolean,
     answer: T,
     question: Question,
-    navigation: Navigation<{}>,
 };
 export function ResultOverlay(props: ResultOverlayProps) {
     const Overlay = props.answeredCorrectly ? CorrectOverlay : WrongOverlay;
@@ -285,7 +277,6 @@ function QuestionSpecificOverlay(props: ResultOverlayProps) {
                 question={props.question}
                 answeredCorrectly={props.answeredCorrectly}
                 answer={props.answer}
-                navigation={props.navigation}
             />
         );
     } else if (props.question.type === 'intensity') {
@@ -294,7 +285,6 @@ function QuestionSpecificOverlay(props: ResultOverlayProps) {
                 question={props.question}
                 answeredCorrectly={props.answeredCorrectly}
                 answer={props.answer}
-                navigation={props.navigation}
             />
         );
     } else {

@@ -9,6 +9,7 @@ import { Text, StatusBar } from 'react-native';
 import { Session } from './Session.js';
 import { navigateToSessionReport } from '../../navigation-actions.js';
 import { answerBackendFacade } from '../../services/answer-backend.js';
+import { log } from '../../services/logger.js';
 
 import type { Navigation } from '../../navigation-actions.js';
 
@@ -31,7 +32,7 @@ export class SessionScreen extends React.Component<Props, {}> {
     }
 
     render() {
-        const { state, navigate } = this.props.navigation;
+        const { state } = this.props.navigation;
         if (state) {
             const navParams = state.params;
 
@@ -40,12 +41,13 @@ export class SessionScreen extends React.Component<Props, {}> {
                     backendFacade={answerBackendFacade}
                     questions={navParams.questions}
                     onSessionFinished={report =>
-                        navigateToSessionReport(this.props.navigation, report)
+                        navigateToSessionReport(report)
                     }
                     navigation={((this.props.navigation: any): Navigation<{}>)}
                 />
             );
         } else {
+            log.warning("Rendered SessionScreen without navigation state");
             return <Text>No navigation state! Don't know what to do</Text>;
         }
     }

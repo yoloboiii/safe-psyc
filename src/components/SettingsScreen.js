@@ -9,10 +9,8 @@ import { constants } from '../styles/constants.js';
 import { userBackendFacade } from '../services/user-backend.js';
 import { onUserLoggedOut } from '../navigation-actions.js';
 
-import type { Navigation } from '../navigation-actions.js';
 
 type Props = {
-    navigation: Navigation<{}>,
 };
 export class SettingsScreen extends React.Component<Props, {}> {
     static navigationOptions = {
@@ -37,7 +35,7 @@ export class SettingsScreen extends React.Component<Props, {}> {
                         onPress={() =>
                             userBackendFacade
                                 .logOut()
-                                .then(() => onUserLoggedOut(this.props.navigation))
+                                .then(() => onUserLoggedOut())
                         }
                         title={'Log out'}
                     />

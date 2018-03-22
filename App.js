@@ -14,6 +14,7 @@ import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
 import { DebugScreen } from './src/components/DebugScreen.js';
 
+import { setNavigation } from './src/navigation-actions.js';
 import { constants } from './src/styles/constants.js';
 
 const defaultScreenProps = {
@@ -48,4 +49,6 @@ const App = StackNavigator({
 // The props available in navigationOptions is a little hard to find, so
 // the link is here https://reactnavigation.org/docs/navigators/stack#StackNavigatorConfig
 
-export default App;
+export default function AppPa(props) {
+    return <App ref={ r => setNavigation(r) } />
+};
