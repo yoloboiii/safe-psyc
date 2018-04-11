@@ -10,6 +10,7 @@ export function findChildren(root: React.Component<*, *>, childType: Function|st
     return getChildrenAndParent(root)
         .filter(c => {
             let correctType = false;
+            // $FlowFixMe
             if (c && c.type) {
                 if (typeof(childType) === 'string') {
 
@@ -65,7 +66,7 @@ export function findFirstByTestId(root: React.Component<*,*>, testId: string): R
     return all[0];
 }
 
-export function stringifyComponent(component: React.Component<*,*>): string {
+export function stringifyComponent(component: ReactTestRenderer): string {
     if (isShallowRendered(component)) {
         return reactElementToJSXString(component);
     } else if (component.toJSON) {
@@ -96,8 +97,8 @@ function isShallowRendered(component) {
 function getChildrenAndParent_TestRenderer(parent) {
     const comps = [];
 
+    // $FlowFixMe
     const tree = parent.toTree
-        // $FlowFixMe
         ? parent.toTree()
         : parent;
     visitComponentTree(tree, c => comps.push(c));
@@ -135,6 +136,7 @@ export function visitComponentTree(root: React.Component<*,*>, visitor: (React.C
 
         visitor(component);
 
+        // $FlowFixMe
         if (component.rendered) {
             if (Array.isArray(component.rendered)) {
                 for (const child of component.rendered) {
