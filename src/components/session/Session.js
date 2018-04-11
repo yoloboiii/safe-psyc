@@ -2,22 +2,23 @@
 
 import React from 'react';
 import { View, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { StandardButton } from '~/src/components/lib//Buttons.js';
+import { StandardText } from '~/src/components/lib//Texts.js';
+import { constants } from '~/src/styles/constants.js';
+import { log } from '~/src/services/logger.js';
+import { resetToHome } from '~/src/navigation-actions.js';
+
 import { QuestionComponent } from './questions/Question.js';
 import { SessionReport } from './report/SessionReport.js';
-import { VerticalSpace } from '../lib/VerticalSpace.js';
-import { StandardButton } from '../lib//Buttons.js';
-import { StandardText } from '../lib//Texts.js';
 import { QuestionProgress } from './questions/QuestionProgress.js';
-import { constants } from '../../styles/constants.js';
-import { log } from '../../services/logger.js';
-import { resetToHome } from '../../navigation-actions.js';
 
-import type { AnswerBackendFacade } from '../../services/answer-backend.js';
-import type { Question, AnswerType } from '../../models/questions.js';
-import type { Emotion } from '../../models/emotion.js';
-import type { AnswerService } from '../../services/answer-service.js';
+import type { AnswerBackendFacade } from '~/src/services/answer-backend.js';
+import type { Question, AnswerType } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
+import type { AnswerService } from '~/src/services/answer-service.js';
 import type { Report } from './report/SessionReport.js';
-import type { Navigation, Subscription } from '../../navigation-actions.js';
+import type { Navigation, Subscription } from '~/src/navigation-actions.js';
 
 type Props = {
     backendFacade: AnswerBackendFacade,

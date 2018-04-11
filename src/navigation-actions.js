@@ -4,13 +4,13 @@ import { InteractionManager, Alert, AsyncStorage } from 'react-native';
 import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
-import { configBackendFacade } from './services/config-backend.js';
-import { randomSessionService } from './services/random-session-service.js';
-import { log } from './services/logger.js';
+import { configBackendFacade } from '~/src/services/config-backend.js';
+import { randomSessionService } from '~/src/services/random-session-service.js';
+import { log } from '~/src/services/logger.js';
 
-import type { Emotion } from './models/emotion.js';
-import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
-import type { Report } from './components/session/report/SessionReport.js';
+import type { Emotion } from '~/src/models/emotion.js';
+import type { CurrentEmotionBackendFacade } from '~/src/services/current-emotion-backend.js';
+import type { Report } from '~/src/components/session/report/SessionReport.js';
 
 export type Navigation<P> = {
     dispatch: Object => void,

@@ -1,7 +1,7 @@
 // @flow
 
 import { knuthShuffle } from 'knuth-shuffle';
-import type { Emotion } from '../models/emotion.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 export class AnswerService {
     _answerPool: Array<Emotion>;

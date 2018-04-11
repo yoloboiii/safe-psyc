@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { ImageBackground } from './lib/ImageBackground.js';
-import { HeroButton } from './lib/Buttons.js';
-import { Title, StandardText } from './lib/Texts.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { startRandomSession, openSettings } from '../navigation-actions.js';
-import { statusBarHeight } from '../styles/status-bar-height.js';
-import { constants } from '../styles/constants.js';
-import { log } from '../services/logger.js';
+import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
+import { HeroButton } from '~/src/components/lib/Buttons.js';
+import { Title, StandardText } from '~/src/components/lib/Texts.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { startRandomSession, openSettings } from '~/src/navigation-actions.js';
+import { statusBarHeight } from '~/src/styles/status-bar-height.js';
+import { constants } from '~/src/styles/constants.js';
+import { log } from '~/src/services/logger.js';
 
 type Props = {
 };

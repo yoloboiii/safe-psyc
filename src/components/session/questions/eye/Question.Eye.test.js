@@ -2,29 +2,29 @@
 
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
-import { Link } from '../../../lib/Link.js';
+import { Link } from '~/src/components/lib/Link.js';
+import { answerService } from '~/src/services/answer-service.js';
 
 import { EyeQuestionComponent, EyeQuestionOverlay } from './Question.Eye.js';
 import {
     randomQuestion,
     randomEyeQuestion,
     randomEyeQuestions,
-} from '../../../../../tests/question-utils.js';
-import { randomEmotionWithImage, randomEmotionWithoutImage } from '../../../../../tests/emotion-utils.js';
-import { render, renderShallow } from '../../../../../tests/render-utils.js';
+} from '~/tests/question-utils.js';
+import { randomEmotionWithImage, randomEmotionWithoutImage } from '~/tests/emotion-utils.js';
+import { render, renderShallow } from '~/tests/render-utils.js';
 import {
     findFirstChild,
     findChildren,
     getAllRenderedStrings,
     findAllByTestId,
     stringifyComponent,
-} from '../../../../../tests/component-tree-utils.js';
+} from '~/tests/component-tree-utils.js';
 
-import { answerService } from '../../../../services/answer-service.js';
-import { MockSessionService } from '../../../../../tests/MockSessionService.js';
-import { mockNavigation } from '../../../../../tests/navigation-utils.js';
+import { MockSessionService } from '~/tests/MockSessionService.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
 
-import type { Question } from '../../../../models/questions.js';
+import type { Question } from '~/src/models/questions.js';
 
 it('contains the image', () => {
     const question = randomEyeQuestion();

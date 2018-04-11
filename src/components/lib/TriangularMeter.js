@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { constants } from '../../styles/constants.js';
+import { constants } from '~/src/styles/constants.js';
 
 const triangleBorderStyle = {
     width: 0,

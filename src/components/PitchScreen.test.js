@@ -1,10 +1,10 @@
 // @flow
 
-import { PitchScreen } from './PitchScreen.js';
-import { StandardButton } from './lib/Buttons.js';
-import { render } from '../../tests/render-utils.js';
-import { mockNavigation } from '../../tests/navigation-utils.js';
-import { getChildrenAndParent } from '../../tests/component-tree-utils.js';
+import { PitchScreen } from '~/src/components/PitchScreen.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { render } from '~/tests/render-utils.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
+import { getChildrenAndParent } from '~/tests/component-tree-utils.js';
 
 const defaultProps = {
     navigation: mockNavigation(),

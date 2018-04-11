@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ImageBackground as ImgBg } from 'react-native';
-import { constants } from '../../styles/constants.js';
+import { constants } from '~/src/styles/constants.js';
 
 const bgImageStyle = {
     width: '100%',

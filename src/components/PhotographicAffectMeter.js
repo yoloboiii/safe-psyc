@@ -4,16 +4,16 @@
 
 import React from 'react';
 import { View, ScrollView, Image, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
-import { StandardText } from './lib/Texts.js';
-import { StandardButton, SecondaryButton } from './lib/Buttons.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { SquareGrid } from './lib/SquareGrid.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { constants } from '../styles/constants.js';
-import { log } from '../services/logger.js';
-import { randomElement } from '../utils/array-utils.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { StandardButton, SecondaryButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { SquareGrid } from '~/src/components/lib/SquareGrid.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { constants } from '~/src/styles/constants.js';
+import { log } from '~/src/services/logger.js';
+import { randomElement } from '~/src/utils/array-utils.js';
 
-import type { CurrentEmotionBackendFacade } from '../services/current-emotion-backend.js';
+import type { CurrentEmotionBackendFacade } from '~/src/services/current-emotion-backend.js';
 
 type Props = {
     backendFacade: CurrentEmotionBackendFacade,

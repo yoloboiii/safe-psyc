@@ -1,8 +1,8 @@
 // @flow
 
-import { log } from '../services/logger.js';
+import { log } from '~/src/services/logger.js';
 
-import type { Emotion, Coordinates } from '../models/emotion.js';
+import type { Emotion, Coordinates } from '~/src/models/emotion.js';
 
 export class ExactReferencePointService {
     _emotionPool: Array<Emotion>;

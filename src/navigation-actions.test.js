@@ -1,10 +1,10 @@
 // @flow
 
-import * as navActions from './navigation-actions.js';
 import moment from 'moment';
-import { mockNavigation } from '../tests/navigation-utils.js';
+import * as navActions from './navigation-actions.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
 
-import type { CurrentEmotionBackendFacade } from './services/current-emotion-backend.js';
+import type { CurrentEmotionBackendFacade } from '~/src/services/current-emotion-backend.js';
 
 describe('startRandomSession', () => {
     it('navigates to "Session"', () => {

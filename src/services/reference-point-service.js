@@ -1,9 +1,9 @@
 // @flow
 
-import { log } from '../services/logger.js';
-import { intensityToGroup } from '../utils/intensity-utils.js';
+import { log } from '~/src/services/logger.js';
+import { intensityToGroup } from '~/src/utils/intensity-utils.js';
 
-import type { Emotion } from '../models/emotion.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 export class ReferencePointService {
     _emotionPool: Array<Emotion>;

@@ -1,9 +1,9 @@
 // @flow
 
 import moment from 'moment';
-import { firebase } from './firebase.js';
-import { log } from './logger.js';
-import { userBackendFacade } from './user-backend.js';
+import { firebase } from '~/src/services/firebase.js';
+import { log } from '~/src/services/logger.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
 
 type LastEmotionAnswer = {
     emotion: string,

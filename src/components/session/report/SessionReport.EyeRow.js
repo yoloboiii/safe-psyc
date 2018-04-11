@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { StandardText } from '../../lib/Texts.js';
-import { constants } from '../../../styles/constants.js';
-import type { EyeQuestion } from '../../../models/questions.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { constants } from '~/src/styles/constants.js';
+import type { EyeQuestion } from '~/src/models/questions.js';
 
 const eyeContainerStyle = {
     paddingBottom: constants.space(2),

@@ -4,10 +4,10 @@ import React from 'react';
 import { SectionList, View, Modal } from 'react-native';
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
-import { EmotionDetails } from '../../EmotionDetails.js';
-import { StandardText } from '../../lib/Texts.js';
-import { VerticalSpace } from '../../lib/VerticalSpace.js';
-import { navigateToEmotionDetails } from '../../../navigation-actions.js';
+import { EmotionDetails } from '~/src/components/EmotionDetails.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
 
 import type {
     Question,
@@ -15,8 +15,8 @@ import type {
     WordQuestion,
     IntensityQuestion,
     AnswerType,
-} from '../../../models/questions.js';
-import type { Emotion } from '../../../models/emotion.js';
+} from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 export type Report = Map<Question, Array<AnswerType>>;
 type Props = {

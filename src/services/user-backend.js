@@ -1,8 +1,8 @@
 // @flow
 
-import { firebase } from './firebase.js';
-import { log } from './logger.js';
-import { removeFrom } from '../utils/array-utils.js';
+import { firebase } from '~/src/services/firebase.js';
+import { log } from '~/src/services/logger.js';
+import { removeFrom } from '~/src/utils/array-utils.js';
 
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////

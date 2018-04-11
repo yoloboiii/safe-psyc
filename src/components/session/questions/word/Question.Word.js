@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText } from '../../../lib/Texts.js';
-import { VerticalSpace } from '../../../lib/VerticalSpace.js';
-import { VerticalAnswerList } from '../VerticalAnswerList.js';
-import { constants } from '../../../../styles/constants.js';
-import { navigateToEmotionDetails } from '../../../../navigation-actions.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { VerticalAnswerList } from '~/src/components/session/questions/VerticalAnswerList.js';
+import { constants } from '~/src/styles/constants.js';
+import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
 
-import type { WordQuestion } from '../../../../models/questions.js';
-import type { Emotion } from '../../../../models/emotion.js';
+import type { WordQuestion } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 type Props = {
     question: WordQuestion,

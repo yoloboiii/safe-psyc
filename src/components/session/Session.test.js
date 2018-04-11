@@ -8,21 +8,22 @@ jest.mock('BackHandler', () => {
 import React from 'react';
 import { Button, TouchableOpacity, Alert, BackHandler } from 'react-native';
 
+import { answerService } from '~/src/services/answer-service.js';
+
 import { Session, AbortSessionButton } from './Session.js';
-import { answerService } from '../../services/answer-service.js';
 import { QuestionComponent } from './questions/Question.js';
 import { QuestionProgress } from './questions/QuestionProgress.js';
 
-import { render, renderShallow } from '../../../tests/render-utils.js';
-import { findChildren, getAllRenderedStrings } from '../../../tests/component-tree-utils.js';
+import { render, renderShallow } from '~/tests/render-utils.js';
+import { findChildren, getAllRenderedStrings } from '~/tests/component-tree-utils.js';
 import {
     randomQuestions,
     randomQuestion,
     getQuestion,
     clickAnswerAndDismissOverlay,
     clickWrongAnswerAndDismissOverlay,
-} from '../../../tests/question-utils.js';
-import { mockNavigation } from '../../../tests/navigation-utils.js';
+} from '~/tests/question-utils.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
 
 const defaultProps = {
     questions: randomQuestions(5),

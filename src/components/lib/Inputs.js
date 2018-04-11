@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Kaede } from 'react-native-textinput-effects';
-import { constants } from '../../styles/constants.js';
+import { constants } from '~/src/styles/constants.js';
 
 const kaedeLabelStyle = {
     color: constants.notReallyWhite,

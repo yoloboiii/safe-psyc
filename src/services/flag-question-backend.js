@@ -1,10 +1,11 @@
 // @flow
 
-import { firebase } from './firebase.js';
-import { userBackendFacade } from './user-backend.js';
 import moment from 'moment';
 
-import type { Question } from '../models/questions.js';
+import { firebase } from '~/src/services/firebase.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+
+import type { Question } from '~/src/models/questions.js';
 
 export class FlagQuestionBackendFacade {
 

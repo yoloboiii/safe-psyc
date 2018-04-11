@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import { StandardText } from './Texts.js';
-import { constants } from '../../styles/constants.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { constants } from '~/src/styles/constants.js';
 
 type Props = {
     prefix?: string,

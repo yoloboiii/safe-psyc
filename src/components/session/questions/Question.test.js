@@ -1,28 +1,30 @@
 // @flow
 
 import React from 'react';
-import { render, renderShallow } from '../../../../tests/render-utils.js';
+import { Text } from 'react-native';
+
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { answerService } from '~/src/services/answer-service.js';
+import { QuestionComponent, ResultOverlay } from './Question.js';
+import { EyeQuestionComponent } from './eye/Question.Eye.js';
+import { EmotionWordQuestionComponent } from './word/Question.Word.js';
+
+import { render, renderShallow } from '~/tests/render-utils.js';
 import {
     randomQuestion,
     randomWordQuestion,
     randomEyeQuestion,
     clickAnswer,
     clickWrongAnswer,
-} from '../../../../tests/question-utils.js';
-import { randomEmotion } from '../../../../tests/emotion-utils.js';
+} from '~/tests/question-utils.js';
+import { randomEmotion } from '~/tests/emotion-utils.js';
 import {
     getChildrenAndParent,
     findChildren,
     stringifyComponent,
     getAllRenderedStrings,
-} from '../../../../tests/component-tree-utils.js';
-import { Text } from 'react-native';
-import { StandardButton } from '../../lib/Buttons.js';
+} from '~/tests/component-tree-utils.js';
 
-import { QuestionComponent, ResultOverlay } from './Question.js';
-import { EyeQuestionComponent } from './eye/Question.Eye.js';
-import { EmotionWordQuestionComponent } from './word/Question.Word.js';
-import { answerService } from '../../../services/answer-service.js';
 
 import type { Props as QuestionProps } from './Question.js';
 

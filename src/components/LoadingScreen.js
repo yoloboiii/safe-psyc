@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { ImageBackground } from './lib/ImageBackground.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { userBackendFacade } from '../services/user-backend.js';
-import { configBackendFacade } from '../services/config-backend.js';
-import { log } from '../services/logger.js';
-import { resetToHome, onUserLoggedOut } from '../navigation-actions.js';
+import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+import { configBackendFacade } from '~/src/services/config-backend.js';
+import { log } from '~/src/services/logger.js';
+import { resetToHome, onUserLoggedOut } from '~/src/navigation-actions.js';
 
 type Props = {
 };

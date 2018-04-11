@@ -2,20 +2,21 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, AsyncStorage } from 'react-native';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
-import { StandardText, LargeText } from './lib/Texts.js';
-import { StandardButton, HeroButton } from './lib/Buttons.js';
-import { ZoomAndRiseButton } from './lib/ZoomAndRiseButton.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
 import Hyperlink from 'react-native-hyperlink';
-import { resetToLogin } from '../navigation-actions.js';
-import { paramsOr } from '../navigation-actions.js';
-import { log } from '../services/logger.js';
-import { constants } from '../styles/constants.js';
+import { View, Image, AsyncStorage } from 'react-native';
 
-import type { Navigation } from '../navigation-actions.js';
+import { StandardText, LargeText } from '~/src/components/lib/Texts.js';
+import { StandardButton, HeroButton } from '~/src/components/lib/Buttons.js';
+import { ZoomAndRiseButton } from '~/src/components/lib/ZoomAndRiseButton.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { resetToLogin } from '~/src/navigation-actions.js';
+import { paramsOr } from '~/src/navigation-actions.js';
+import { log } from '~/src/services/logger.js';
+import { constants } from '~/src/styles/constants.js';
+
+import type { Navigation } from '~/src/navigation-actions.js';
 
 const linkStyle = {
     color: constants.hilightColor2,

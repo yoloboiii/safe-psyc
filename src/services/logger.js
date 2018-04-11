@@ -1,6 +1,6 @@
 // @flow
 
-import { firebase } from './firebase.js';
+import { firebase } from '~/src/services/firebase.js';
 import { vsprintf } from 'sprintf-js';
 
 interface LocalLogger {

@@ -2,18 +2,18 @@
 
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { StandardText } from '../../lib/Texts.js';
-import { StandardButton } from '../../lib/Buttons.js';
-import { VerticalSpace } from '../../lib/VerticalSpace.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { SessionReport } from './SessionReport.js';
 
-import { paramsOr, routeToCurrentFeelingOrHome } from '../../../navigation-actions.js';
-import { currentEmotionBackendFacade } from '../../../services/current-emotion-backend.js';
-import { constants } from '../../../styles/constants.js';
+import { paramsOr, routeToCurrentFeelingOrHome } from '~/src/navigation-actions.js';
+import { currentEmotionBackendFacade } from '~/src/services/current-emotion-backend.js';
+import { constants } from '~/src/styles/constants.js';
 
-import type { Navigation } from '../../../navigation-actions.js';
-import type { Question } from '../../../models/questions.js';
-import type { Emotion } from '../../../models/emotion.js';
+import type { Navigation } from '~/src/navigation-actions.js';
+import type { Question } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 import type { Report } from './SessionReport.js';
 
 const backgroundStyle = {

@@ -1,15 +1,16 @@
 // @flow
 
-import { answerService } from './answer-service.js';
-import { emotionService } from './emotion-service.js';
-import { ReferencePointService } from './reference-point-service.js';
 import { knuthShuffle } from 'knuth-shuffle';
-import { generateEyeQuestion, generateIntensityQuestion, generateWordQuestion } from '../utils/question-utils.js';
 
-import type { Emotion } from '../models/emotion.js';
-import type { Question, EyeQuestion, IntensityQuestion, WordQuestion } from '../models/questions.js';
-import type { AnswerService } from './answer-service.js';
-import type { EmotionService } from './emotion-service.js';
+import { answerService } from '~/src/services/answer-service.js';
+import { emotionService } from '~/src/services/emotion-service.js';
+import { ReferencePointService } from '~/src/services/reference-point-service.js';
+import { generateEyeQuestion, generateIntensityQuestion, generateWordQuestion } from '~/src/utils/question-utils.js';
+
+import type { Emotion } from '~/src/models/emotion.js';
+import type { Question, EyeQuestion, IntensityQuestion, WordQuestion } from '~/src/models/questions.js';
+import type { AnswerService } from '~/src/services/answer-service.js';
+import type { EmotionService } from '~/src/services/emotion-service.js';
 
 export class RandomSessionService {
     _answerService: AnswerService;

@@ -1,9 +1,9 @@
 // @flow
 
-import type { Emotion } from '../models/emotion.js';
-import type { EyeQuestion, IntensityQuestion, WordQuestion } from '../models/questions.js';
-import type { AnswerService } from '../services/answer-service.js';
-import type { ReferencePointService } from '../services/reference-point-service.js';
+import type { Emotion } from '~/src/models/emotion.js';
+import type { EyeQuestion, IntensityQuestion, WordQuestion } from '~/src/models/questions.js';
+import type { AnswerService } from '~/src/services/answer-service.js';
+import type { ReferencePointService } from '~/src/services/reference-point-service.js';
 
 export function generateEyeQuestion(emotion: Emotion, answerService: AnswerService): EyeQuestion {
     const image = emotion.image;

@@ -7,21 +7,22 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { EyeQuestionComponent, EyeQuestionOverlay } from './eye/Question.Eye.js';
 import { EmotionWordQuestionComponent } from './word/Question.Word.js';
 import { IntensityQuestionComponent, IntensityQuestionOverlay } from './intensity/Question.Intensity.js';
-import { VerticalSpace } from '../../lib/VerticalSpace.js';
-import { StandardText } from '../../lib/Texts.js';
-import { StandardButton } from '../../lib/Buttons.js';
 import { FlagQuestionButton } from './FlagQuestionButton.js';
 
-import { constants } from '../../../styles/constants.js';
-import { log } from '../../../services/logger.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+
+import { constants } from '~/src/styles/constants.js';
+import { log } from '~/src/services/logger.js';
 
 import type {
     Question,
     EyeQuestion,
     WordQuestion,
     AnswerType,
-} from '../../../models/questions.js';
-import type { Emotion } from '../../../models/emotion.js';
+} from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 type CurrentAnswerState = 'NOT-ANSWERED' | 'CORRECT' | 'WRONG';
 

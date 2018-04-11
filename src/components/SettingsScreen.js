@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText } from './lib/Texts';
-import { StandardButton } from './lib/Buttons.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { constants } from '../styles/constants.js';
-import { userBackendFacade } from '../services/user-backend.js';
-import { onUserLoggedOut } from '../navigation-actions.js';
+import { StandardText } from '~/src/components/lib/Texts';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { constants } from '~/src/styles/constants.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+import { onUserLoggedOut } from '~/src/navigation-actions.js';
 
 
 type Props = {

@@ -1,7 +1,7 @@
 // @flow
 
 import { ExactReferencePointService } from './exact-reference-point-service.js';
-import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
+import { randomEmotionWithCoordinates } from '~/tests/emotion-utils.js';
 
 it("doesn't include the correct answer in the reference points", () => {
     // These intensities have to match the intensities selected by

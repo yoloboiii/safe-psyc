@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { FancyInput } from './lib/Inputs.js';
-import { LargeButton, StandardButton } from './lib/Buttons.js';
-import { StandardText } from './lib/Texts.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { userBackendFacade } from '../services/user-backend.js';
-import { constants } from '../styles/constants.js';
-import { resetTo } from '../navigation-actions.js';
-import type { Navigation } from '../navigation-actions.js';
+import { FancyInput } from '~/src/components/lib/Inputs.js';
+import { LargeButton, StandardButton } from '~/src/components/lib/Buttons.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+import { constants } from '~/src/styles/constants.js';
+import { resetTo } from '~/src/navigation-actions.js';
+import type { Navigation } from '~/src/navigation-actions.js';
 
 type Props = {
     navigation: Navigation<{

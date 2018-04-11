@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { VerticalSpace } from '../../lib/VerticalSpace.js';
-import { StandardButton } from '../../lib/Buttons.js';
-import { StandardText } from '../../lib/Texts.js';
-import { constants } from '../../../styles/constants.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { constants } from '~/src/styles/constants.js';
 
-import type { Emotion } from '../../../models/emotion.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 type Props = {
     correctAnswer: Emotion,

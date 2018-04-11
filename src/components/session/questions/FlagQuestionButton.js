@@ -2,12 +2,12 @@
 
 import React from 'react';
 import { Image, TouchableOpacity, Alert } from 'react-native';
-import { ActivityIndicator } from '../../lib/ActivityIndicator.js';
-import { constants } from '../../../styles/constants.js';
-import { flagQuestionBackendFacade } from '../../../services/flag-question-backend.js';
-import { log } from '../../../services/logger.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { constants } from '~/src/styles/constants.js';
+import { flagQuestionBackendFacade } from '~/src/services/flag-question-backend.js';
+import { log } from '~/src/services/logger.js';
 
-import type { Question } from '../../../models/questions.js';
+import type { Question } from '~/src/models/questions.js';
 
 type Props = {
     question: Question,

@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { EmotionWordQuestionComponent } from './Question.Word.js';
-import { VerticalAnswerList } from '../VerticalAnswerList.js';
-import { findChild, findFirstByTestId, stringifyComponent } from '../../../../../tests/component-tree-utils.js';
-import { randomWordQuestion } from '../../../../../tests/question-utils.js';
-import { answerService } from '../../../../services/answer-service.js';
-import { render } from '../../../../../tests/render-utils.js';
+import { VerticalAnswerList } from '~/src/components/session/questions/VerticalAnswerList.js';
+import { answerService } from '~/src/services/answer-service.js';
+
+import { findChild, findFirstByTestId, stringifyComponent } from '~/tests/component-tree-utils.js';
+import { randomWordQuestion } from '~/tests/question-utils.js';
+import { render } from '~/tests/render-utils.js';
 
 const defaultProps = {
     onCorrectAnswer: () => {},

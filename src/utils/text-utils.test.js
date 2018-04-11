@@ -1,6 +1,6 @@
 // @flow
 
-import { capitalize, formatParagraph } from './text-utils.js';
+import { capitalize, formatParagraph } from '~/src/utils/text-utils.js';
 
 describe('capitalize', () => {
     it('uppercases the first char if it is lowercase', () => {

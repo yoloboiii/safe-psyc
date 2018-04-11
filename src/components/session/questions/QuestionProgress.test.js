@@ -1,9 +1,9 @@
 // @flow
 
-import { QuestionProgress } from './QuestionProgress.js';
-import { render } from '../../../../tests/render-utils.js';
-import { findChildren } from '../../../../tests/component-tree-utils.js';
 import * as Progress from 'react-native-progress';
+import { QuestionProgress } from './QuestionProgress.js';
+import { render } from '~/tests/render-utils.js';
+import { findChildren } from '~/tests/component-tree-utils.js';
 
 it('shows 0% progress on the first question', () => {
     const component = render(QuestionProgress, { current: 1, total: 10 });

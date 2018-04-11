@@ -3,17 +3,17 @@
 import React from 'react';
 import { View, Image, Alert } from 'react-native';
 
-import { VerticalAnswerList } from '../VerticalAnswerList.js';
-import { VerticalSpace } from '../../../lib/VerticalSpace.js';
-import { StandardText } from '../../../lib/Texts.js';
-import { Link } from '../../../lib/Link.js';
-import { constants } from '../../../../styles/constants.js';
-import { navigateToEmotionDetails } from '../../../../navigation-actions.js';
-import { capitalize } from '../../../../utils/text-utils.js';
+import { VerticalAnswerList } from '~/src/components/session/questions/VerticalAnswerList.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { Link } from '~/src/components/lib/Link.js';
+import { constants } from '~/src/styles/constants.js';
+import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
+import { capitalize } from '~/src/utils/text-utils.js';
 
-import type { EyeQuestion } from '../../../../models/questions.js';
-import type { Emotion } from '../../../../models/emotion.js';
-import type { SpecificOverlayProps } from '../Question.js';
+import type { EyeQuestion } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
+import type { SpecificOverlayProps } from '~/src/components/session/questions/Question.js';
 
 const containerStyle = {
     flex: 1,

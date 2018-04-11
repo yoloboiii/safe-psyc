@@ -1,19 +1,21 @@
 // @flow
 
+import uuid from 'uuid';
+import { TouchableOpacity } from 'react-native';
+import { sprintf } from 'sprintf-js';
+
 import {
     IntensityQuestionComponent,
     IntensityScale,
     IntensityQuestionOverlay,
 } from './Question.Intensity.js';
-import { StandardButton } from '../../../lib/Buttons.js';
-import { render } from '../../../../../tests/render-utils.js';
-import { mockNavigation } from '../../../../../tests/navigation-utils.js';
-import { randomIntensityQuestion } from '../../../../../tests/question-utils.js';
-import { getAllRenderedStrings, findChildren, getChildrenAndParent } from '../../../../../tests/component-tree-utils.js';
-import { randomEmotionWithCoordinates } from '../../../../../tests/emotion-utils.js';
-import uuid from 'uuid';
-import { TouchableOpacity } from 'react-native';
-import { sprintf } from 'sprintf-js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+
+import { render } from '~/tests/render-utils.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
+import { randomIntensityQuestion } from '~/tests/question-utils.js';
+import { getAllRenderedStrings, findChildren, getChildrenAndParent } from '~/tests/component-tree-utils.js';
+import { randomEmotionWithCoordinates } from '~/tests/emotion-utils.js';
 
 describe('IntensityQuestionComponent', () => {
 

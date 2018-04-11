@@ -1,6 +1,6 @@
 // @flow
 
-import type { Emotion } from './emotion.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 export type AnswerType = Emotion | number;
 

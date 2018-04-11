@@ -1,12 +1,13 @@
 // @flow
 
 import moment from 'moment';
-import { firebase } from './firebase.js';
-import { log } from './logger.js';
-import { userBackendFacade } from './user-backend.js';
-import { randomSessionService } from './random-session-service.js';
-import type { Question, AnswerType, IncorrectAnswer } from '../models/questions.js';
-import type { Emotion } from '../models/emotion.js';
+import { firebase } from '~/src/services/firebase.js';
+import { log } from '~/src/services/logger.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+import { randomSessionService } from '~/src/services/random-session-service.js';
+
+import type { Question, AnswerType, IncorrectAnswer } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 const db = firebase.database();
 

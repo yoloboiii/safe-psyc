@@ -2,20 +2,20 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText } from '../../../lib/Texts.js';
-import { Link } from '../../../lib/Link.js';
-import { StandardButton } from '../../../lib/Buttons.js';
-import { VerticalSpace } from '../../../lib/VerticalSpace.js';
-import { SnapSlider } from '../../../lib/SnapSlider.js';
-import { constants } from '../../../../styles/constants.js';
-import { navigateToEmotionDetails } from '../../../../navigation-actions.js';
-import { intensityToGroup } from '../../../../utils/intensity-utils.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { Link } from '~/src/components/lib/Link.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { SnapSlider } from '~/src/components/lib/SnapSlider.js';
+import { constants } from '~/src/styles/constants.js';
+import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
+import { intensityToGroup } from '~/src/utils/intensity-utils.js';
 
 // TODO: REMOVE
-import { emotionService } from '../../../../services/emotion-service';
-import { ScatterChart } from '../../../scatter-plot';
+import { emotionService } from '~/src/services/emotion-service';
+import { ScatterChart } from '~/src/components/scatter-plot';
 
-import type { IntensityQuestion } from '../../../../models/questions.js';
+import type { IntensityQuestion } from '~/src/models/questions.js';
 
 type Props = {
     question: IntensityQuestion,

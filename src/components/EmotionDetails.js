@@ -2,17 +2,17 @@
 
 import React from 'react';
 import { View, Image, FlatList } from 'react-native';
-import { StandardText } from './lib/Texts';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { Link } from './lib/Link.js';
-import { constants } from '../styles/constants.js';
-import { navigateToEmotionDetails } from '../navigation-actions.js';
-import { capitalize, formatParagraph } from '../utils/text-utils.js';
+import { StandardText } from '~/src/components/lib/Texts';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { Link } from '~/src/components/lib/Link.js';
+import { constants } from '~/src/styles/constants.js';
+import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
+import { capitalize, formatParagraph } from '~/src/utils/text-utils.js';
 import moment from 'moment';
-import { log } from '../services/logger.js';
+import { log } from '~/src/services/logger.js';
 
-import type { AnswerType, IncorrectAnswer, IncorrectEyeAnswer } from '../models/questions.js';
-import type { Emotion } from '../models/emotion.js';
+import type { AnswerType, IncorrectAnswer, IncorrectEyeAnswer } from '~/src/models/questions.js';
+import type { Emotion } from '~/src/models/emotion.js';
 
 const detailsContainerStyle = {
     flex: 1,

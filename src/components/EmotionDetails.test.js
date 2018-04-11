@@ -1,12 +1,14 @@
 // @flow
 
-import { EmotionDetails, StrengthMeter } from './EmotionDetails.js';
-import { render } from '../../tests/render-utils.js';
-import { randomEmotion, randomEmotionWithImage } from '../../tests/emotion-utils.js';
-import { getAllRenderedStrings } from '../../tests/component-tree-utils.js';
-import { Image } from 'react-native';
-import { capitalize, formatParagraph } from '../utils/text-utils.js';
 import moment from 'moment';
+import { Image } from 'react-native';
+
+import { EmotionDetails, StrengthMeter } from './EmotionDetails.js';
+import { capitalize, formatParagraph } from '~/src/utils/text-utils.js';
+
+import { render } from '~/tests/render-utils.js';
+import { randomEmotion, randomEmotionWithImage } from '~/tests/emotion-utils.js';
+import { getAllRenderedStrings } from '~/tests/component-tree-utils.js';
 
 const defaultProps = {
     emotion: randomEmotion('EMOTION NAME'),

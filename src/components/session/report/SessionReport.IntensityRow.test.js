@@ -2,9 +2,9 @@
 
 import { TouchableOpacity } from 'react-native';
 import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
-import { SnapSlider } from '../../lib/SnapSlider.js';
-import { render } from '../../../../tests/render-utils.js';
-import { randomIntensityQuestion } from '../../../../tests/question-utils.js';
+import { SnapSlider } from '~/src/components/lib/SnapSlider.js';
+import { render } from '~/tests/render-utils.js';
+import { randomIntensityQuestion } from '~/tests/question-utils.js';
 
 const defaultProps = {
     question: randomIntensityQuestion(),

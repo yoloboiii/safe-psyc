@@ -1,8 +1,8 @@
 // @flow
 
 import moment from 'moment';
-import { randomEmotion } from '../../tests/emotion-utils.js';
 import { beginningOfTime, calculateDueDate } from './spaced-repetition-session-service.js';
+import { randomEmotion } from '~/tests/emotion-utils.js';
 
 describe('calculateDueDate', () => {
     it('returns the beginning of time for unanswered questions', () => {

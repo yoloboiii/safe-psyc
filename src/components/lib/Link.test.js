@@ -1,9 +1,9 @@
 // @flow
 
 import { TouchableOpacity } from 'react-native';
-import { Link } from './Link.js';
-import { render } from '../../../tests/render-utils.js';
-import { getAllRenderedStrings, getChildrenAndParent } from '../../../tests/component-tree-utils.js';
+import { Link } from '~/src/components/lib/Link.js';
+import { render } from '~/tests/render-utils.js';
+import { getAllRenderedStrings, getChildrenAndParent } from '~/tests/component-tree-utils.js';
 
 const defaultProps = {
     prefix: 'foo',

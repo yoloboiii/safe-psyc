@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { StandardText, LargeText } from './lib/Texts.js';
-import { HeroButton } from './lib/Buttons.js';
-import { ImageBackground } from './lib/ImageBackground.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { log } from '../services/logger.js';
-import { resetToHome } from '../navigation-actions.js';
-import { constants } from '../styles/constants.js';
+import { StandardText, LargeText } from '~/src/components/lib/Texts.js';
+import { HeroButton } from '~/src/components/lib/Buttons.js';
+import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { log } from '~/src/services/logger.js';
+import { resetToHome } from '~/src/navigation-actions.js';
+import { constants } from '~/src/styles/constants.js';
 
-import type { Navigation } from '../navigation-actions.js';
+import type { Navigation } from '~/src/navigation-actions.js';
 
 const containerStyle = {
     ...constants.padflex,

@@ -1,7 +1,7 @@
 // @flow
 
-import { firebase } from './firebase.js';
-import { log } from '../services/logger.js';
+import { firebase } from '~/src/services/firebase.js';
+import { log } from '~/src/services/logger.js';
 
 export class ConfigBackendFacade {
     load(): Promise<void> {

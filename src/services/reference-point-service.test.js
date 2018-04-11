@@ -1,8 +1,8 @@
 // @flow
 
-import { log } from '../services/logger.js';
+import { log } from '~/src/services/logger.js';
 import { ReferencePointService } from './reference-point-service.js';
-import { randomEmotionWithCoordinates } from '../../tests/emotion-utils.js';
+import { randomEmotionWithCoordinates } from '~/tests/emotion-utils.js';
 
 it("doesn't include the correct answer in the reference points", () => {
     const e1 = randomEmotionWithCoordinates();

@@ -1,10 +1,13 @@
 // @flow
 
-import { randomQuestion } from '../../tests/question-utils.js';
-import { randomEmotionWithCoordinates, randomEmotions } from '../../tests/emotion-utils.js';
+import { AnswerService } from '~/src/services/answer-service.js';
+
 import { randomSessionService, RandomSessionService } from './random-session-service.js';
-import { AnswerService } from './answer-service.js';
-import type { WordQuestion } from '../models/questions.js';
+
+import { randomQuestion } from '~/tests/question-utils.js';
+import { randomEmotionWithCoordinates, randomEmotions } from '~/tests/emotion-utils.js';
+
+import type { WordQuestion } from '~/src/models/questions.js';
 
 it('returns the correct number of random questions', () => {
     expect(randomSessionService.getRandomQuestions(0).length).toBe(0);

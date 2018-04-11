@@ -2,17 +2,17 @@
 
 import React from 'react';
 import { View, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
-import { ImageBackground } from './lib/ImageBackground.js';
-import { HeroButton } from './lib/Buttons.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { startRandomSession, openSettings } from '../navigation-actions.js';
-import { statusBarHeight } from '../styles/status-bar-height.js';
-import { constants } from '../styles/constants.js';
+import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
+import { HeroButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { startRandomSession, openSettings } from '~/src/navigation-actions.js';
+import { statusBarHeight } from '~/src/styles/status-bar-height.js';
+import { constants } from '~/src/styles/constants.js';
 
-import { navigateToEmotionDetails, UNSAFE_navigateTo } from '../navigation-actions.js';
-import { randomSessionService } from '../services/random-session-service.js';
-import { log } from '../services/logger.js';
+import { navigateToEmotionDetails, UNSAFE_navigateTo } from '~/src/navigation-actions.js';
+import { randomSessionService } from '~/src/services/random-session-service.js';
+import { log } from '~/src/services/logger.js';
 
 const contentStyle = {
     paddingTop: statusBarHeight + constants.space(),

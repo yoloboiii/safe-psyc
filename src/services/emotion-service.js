@@ -1,6 +1,6 @@
 // @flow
 
-import { Emotion } from '../models/emotion.js';
+import { Emotion } from '~/src/models/emotion.js';
 
 export class EmotionService {
     _emotionPool: ?Array<Emotion>;

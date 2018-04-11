@@ -2,16 +2,16 @@
 
 import React from 'react';
 import { View, Alert } from 'react-native';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { EmotionDetails } from './EmotionDetails.js';
-import { StandardText } from './lib/Texts.js';
-import { answerBackendFacade } from '../services/answer-backend.js';
-import { log } from '../services/logger.js';
-import { constants } from '../styles/constants.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { EmotionDetails } from '~/src/components/EmotionDetails.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { answerBackendFacade } from '~/src/services/answer-backend.js';
+import { log } from '~/src/services/logger.js';
+import { constants } from '~/src/styles/constants.js';
 
-import type { Navigation } from '../navigation-actions.js';
-import type { Emotion } from '../models/emotion.js';
-import type { DataPoints } from './EmotionDetails.js';
+import type { Navigation } from '~/src/navigation-actions.js';
+import type { Emotion } from '~/src/models/emotion.js';
+import type { DataPoints } from '~/src/components/EmotionDetails.js';
 
 type Props = {
     navigation: Navigation<{

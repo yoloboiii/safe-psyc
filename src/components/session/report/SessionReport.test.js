@@ -3,18 +3,18 @@
 import { SessionReport } from './SessionReport.js';
 import { Image, TouchableOpacity } from 'react-native';
 
-import { render } from '../../../../tests/render-utils.js';
-import { mockNavigation } from '../../../../tests/navigation-utils.js';
+import { render } from '~/tests/render-utils.js';
+import { mockNavigation } from '~/tests/navigation-utils.js';
 import {
     randomEyeQuestion,
     randomEyeQuestions,
     randomWordQuestions,
-} from '../../../../tests/question-utils.js';
+} from '~/tests/question-utils.js';
 import {
     stringifyComponent,
     findChildren,
     getAllRenderedStrings,
-} from '../../../../tests/component-tree-utils.js';
+} from '~/tests/component-tree-utils.js';
 
 it('contains all images of eye-questions', () => {
     const eyeQuestions = randomEyeQuestions(5);

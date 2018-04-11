@@ -9,14 +9,14 @@ import {
     Keyboard,
     TouchableHighlight,
 } from 'react-native';
-import { LargeButton, SecondaryButton } from './lib/Buttons.js';
-import { VerticalSpace } from './lib/VerticalSpace.js';
-import { ImageBackground } from './lib/ImageBackground.js';
-import { FancyInput } from './lib/Inputs.js';
-import { ActivityIndicator } from './lib/ActivityIndicator.js';
-import { constants } from '../styles/constants.js';
-import { userBackendFacade } from '../services/user-backend.js';
-import { onUserLoggedIn, onUserRegistered, toResetPassword } from '../navigation-actions.js';
+import { LargeButton, SecondaryButton } from '~/src/components/lib/Buttons.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
+import { FancyInput } from '~/src/components/lib/Inputs.js';
+import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { constants } from '~/src/styles/constants.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
+import { onUserLoggedIn, onUserRegistered, toResetPassword } from '~/src/navigation-actions.js';
 
 
 const containerStyle = {

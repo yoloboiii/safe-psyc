@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { StandardText } from '../../lib/Texts.js';
-import { SnapSlider } from '../../lib/SnapSlider.js';
-import { VerticalSpace } from '../../lib/VerticalSpace.js';
-import { constants } from '../../../styles/constants.js';
-import { intensityToGroup } from '../../../utils/intensity-utils.js';
-import { log } from '../../../services/logger.js';
+import { StandardText } from '~/src/components/lib/Texts.js';
+import { SnapSlider } from '~/src/components/lib/SnapSlider.js';
+import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
+import { constants } from '~/src/styles/constants.js';
+import { intensityToGroup } from '~/src/utils/intensity-utils.js';
+import { log } from '~/src/services/logger.js';
 
-import type { IntensityQuestion } from '../../../models/questions.js';
+import type { IntensityQuestion } from '~/src/models/questions.js';
 
 type Props = {
     question: IntensityQuestion,

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ActivityIndicator as RNActivityIndicator } from 'react-native';
-import { constants } from '../../styles/constants.js';
+import { constants } from '~/src/styles/constants.js';
 
 type Props = {
     size: 'small' | 'large',
