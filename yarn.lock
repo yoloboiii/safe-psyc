@@ -4509,9 +4509,9 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
-react-native-firebase@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.3.1.tgz#b93cbb9b11f4f8a23a0d608567573b43a8c2de70"
+react-native-firebase@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.0.1.tgz#95a8d87e287e421ea526161868efc95fc8ad14ec"
   dependencies:
     opencollective "^1.0.3"
     postinstall-build "^5.0.1"

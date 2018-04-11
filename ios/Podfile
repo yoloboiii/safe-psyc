@@ -6,8 +6,8 @@ pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Performance'
 pod 'Firebase/RemoteConfig'
-pod 'Fabric', '~> 1.7.2'
-pod 'Crashlytics', '~> 3.9.3'
+pod 'Fabric', '~> 1.7.5'
+pod 'Crashlytics', '~> 3.10.1'
 
 target 'safepsyc' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
