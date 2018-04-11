@@ -46,7 +46,7 @@ export function EmotionDetails(props: Props) {
     const stats =
         props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4 ? (
             <StandardText style={[constants.smallText, { textAlign: 'right' }]}>
-                As you practive more you will be able to see some statistics about the emotion here.
+                As you practice more you will be able to see some statistics about the emotion here.
             </StandardText>
         ) : (
             <View style={{ flexDirection: 'row' }}>

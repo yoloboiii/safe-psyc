@@ -72,17 +72,17 @@ export class HomeScreen extends React.Component<Props, State> {
                             <View style={{ marginTop: 100 }}>
                                 <View style={{
                                     position: 'absolute',
-                                    top: 14,
+                                    top: 2,
 
                                     width: 320,
                                     height: 0,
-                                    borderTopWidth: 80, // the height of the thing
+                                    borderTopWidth: 91, // the height of the thing
                                     borderTopColor: constants.primaryColor,
 
                                     borderRightWidth: 20,
                                     borderRightColor: 'transparent',
                                 }}/>
-                                <Title>
+                                <Title style={{ paddingLeft: constants.space(2) }}>
                                     safe psyc
                                 </Title>
                             </View>

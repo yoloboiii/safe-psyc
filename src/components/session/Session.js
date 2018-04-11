@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, ScrollView, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
+import { View, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import { QuestionComponent } from './questions/Question.js';
 import { SessionReport } from './report/SessionReport.js';
 import { VerticalSpace } from '../lib/VerticalSpace.js';

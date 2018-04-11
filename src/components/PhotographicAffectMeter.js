@@ -3,7 +3,7 @@
 // TODO: Allow the user to change their mind even after submitting the emotion
 
 import React from 'react';
-import { View, Image, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, Image, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
 import { StandardText } from './lib/Texts.js';
 import { StandardButton, SecondaryButton } from './lib/Buttons.js';
 import { VerticalSpace } from './lib/VerticalSpace.js';
@@ -136,58 +136,60 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
         const apa = <StandardText>
                     </StandardText>
         return (
-            <View style={styles.container}>
-                <View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <StandardText style={{ maxWidth: '90%' }}>
-                            Please choose the image that best illustrates how you are feeling right now.
-                        </StandardText>
-
-                        <TouchableOpacity onPress={ () => this._showHelp() }>
-                            <Image
-                                // $FlowFixMe
-                                source={require('../../images/help.png')}
-                                style={{
-                                    tintColor: constants.defaultTextColor,
-                                    width: 30,
-                                    height: 30,
-                                }} />
-                        </TouchableOpacity>
-                    </View>
-                    <VerticalSpace multiplier={3} />
-
-                    <PhotoGrid
-                        emotionImages={this.state.selectedImages}
-                        onSelect={emotion => this.setState( s => ({
-                            selectedEmotion: emotion,
-                            submissionState: 'not-started',
-                        }))}
-                        selectedEmotion={this.state.selectedEmotion}
-                        submittedEmotion={this.state.submittedEmotion}
-                        disabled={this.state.submissionState === 'submitting'}
-                    />
-                    <VerticalSpace />
-                    <SecondaryButton
-                        testName='newImages'
-                        title="shuffle images"
-                        textStyle={{ textAlign: 'right' }}
-                        onPress={ () => this.setState({
-                            selectedImages: this._selectImages(),
-                        })}
-                    />
-                </View>
-
-                <View>
-                    { this._createConfirmationText() }
-                    <View style={styles.buttonRowStyle}>
-                        {skipButton}
+            <ScrollView>
+                <View style={styles.container}>
+                    <View>
                         <View style={{ flexDirection: 'row' }}>
-                            {doNotChangeButton}
-                            {submitButton}
+                            <StandardText style={{ maxWidth: '90%' }}>
+                                Please choose the image that best illustrates how you are feeling right now.
+                            </StandardText>
+
+                            <TouchableOpacity onPress={ () => this._showHelp() }>
+                                <Image
+                                    // $FlowFixMe
+                                    source={require('../../images/help.png')}
+                                    style={{
+                                        tintColor: constants.defaultTextColor,
+                                        width: 30,
+                                        height: 30,
+                                    }} />
+                            </TouchableOpacity>
+                        </View>
+                        <VerticalSpace multiplier={3} />
+
+                        <PhotoGrid
+                            emotionImages={this.state.selectedImages}
+                            onSelect={emotion => this.setState( s => ({
+                                selectedEmotion: emotion,
+                                submissionState: 'not-started',
+                            }))}
+                            selectedEmotion={this.state.selectedEmotion}
+                            submittedEmotion={this.state.submittedEmotion}
+                            disabled={this.state.submissionState === 'submitting'}
+                        />
+                        <VerticalSpace />
+                        <SecondaryButton
+                            testName='newImages'
+                            title="shuffle images"
+                            textStyle={{ textAlign: 'right' }}
+                            onPress={ () => this.setState({
+                                selectedImages: this._selectImages(),
+                            })}
+                        />
+                    </View>
+
+                    <View>
+                        { this._createConfirmationText() }
+                        <View style={styles.buttonRowStyle}>
+                            {skipButton}
+                            <View style={{ flexDirection: 'row' }}>
+                                {doNotChangeButton}
+                                {submitButton}
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
+        </ScrollView>
         );
     }
 

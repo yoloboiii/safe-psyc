@@ -64,7 +64,7 @@ class FirebaseLogger {
     analytics: Object;
 
     constructor() {
-        this.crashlytics = firebase.fabric.crashlytics();
+        this.crashlytics = firebase.crashlytics();
         this.analytics = firebase.analytics();
 
         this.analytics.setAnalyticsCollectionEnabled(true);

@@ -6,9 +6,7 @@ jest.mock('react-native-firebase', () => ({
             onAuthStateChanged: () => {},
         }),
         database: () => {},
-        fabric: {
-            crashlytics: () => {},
-        },
+        crashlytics: () => {},
         analytics: () => ({
             setAnalyticsCollectionEnabled: () => {},
         }),

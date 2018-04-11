@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from './lib/ImageBackground.js';
 import { HeroButton } from './lib/Buttons.js';
 import { VerticalSpace } from './lib/VerticalSpace.js';
@@ -67,7 +67,7 @@ export class DebugScreen extends React.Component<Props, State> {
                             <Image style={{ width: 40, height: 40 }} source={cogwheel} />
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <ScrollView>
                         <HeroButton
                             title={'Emotion details'}
                             onPress={() =>
@@ -104,7 +104,7 @@ export class DebugScreen extends React.Component<Props, State> {
                             style={{ height: 90 }}
                         />
                         <VerticalSpace />
-                    </View>
+                    </ScrollView>
                 </View>
             </ImageBackground>
         );
