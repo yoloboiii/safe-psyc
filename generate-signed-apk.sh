@@ -31,7 +31,8 @@ function cleanup {
 
 function getShortestAPKPath {
     if command -v realpath >/dev/null 2>&1; then
-        realpath --relative-to="$ABS_WD" "$APK_PATH"
+        path=$(realpath --relative-to="$ABS_WD" "$APK_PATH")
+        echo "./$path"
     else
         echo "$APK_PATH"
     fi
@@ -69,10 +70,10 @@ command -v xclip >/dev/null 2>&1 && {
 
 echo
 echo "You can install the apk by running"
-echo "adb install -r ./$SHORTEST_APK_PATH"
+echo "adb install -r $SHORTEST_APK_PATH"
 echo
 echo "You can upload it to testfairy by running"
-echo "./testfairy-uploader.sh $TESTFAIRY_API_KEY ./$SHORTEST_APK_PATH"
+echo "./testfairy-uploader.sh $TESTFAIRY_API_KEY $SHORTEST_APK_PATH"
 echo
 echo "Please make sure there is no .keystore file in android/app"
 echo "and no RELEASE_ keys in android/gradle.properties"
