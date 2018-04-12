@@ -55,6 +55,10 @@ export class UserBackendFacade {
 
     login(email: string, password: string): Promise<void> {
         email = email.trim();
+
+        if (email.length === 0) return Promise.reject(new Error("Empty email"));
+        if (password.length === 0) return Promise.reject(new Error("Empty password"));
+
         return firebase
             .auth()
             .signInAndRetrieveDataWithEmailAndPassword(email, password)
