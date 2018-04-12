@@ -52,40 +52,16 @@ export class HomeScreen extends React.Component<Props, State> {
     render() {
         const sessionButtonContent = this.state.loading ? <ActivityIndicator /> : 'Start session';
 
-        // $FlowFixMe
-        const cogwheel = require('../../images/settings.png');
         return (
             <ImageBackground>
                 <View style={constants.colApart}>
                     <View style={{ alignItems: 'flex-end', margin: constants.space() }}>
-                        <TouchableOpacity onPress={this._openSettings.bind(this)}>
-                            <Image style={{
-                                width: 30,
-                                height: 30,
-                                tintColor: constants.defaultTextColor,
-                            }} source={cogwheel} />
-                        </TouchableOpacity>
+                        <SettingsButton onPress={this._openSettings.bind(this)} />
                     </View>
 
                     <View style={constants.colApart}>
-                        <View>
-                            <View style={{ marginTop: 100 }}>
-                                <View style={{
-                                    position: 'absolute',
-                                    top: 2,
-
-                                    width: 320,
-                                    height: 0,
-                                    borderTopWidth: 91, // the height of the thing
-                                    borderTopColor: constants.primaryColor,
-
-                                    borderRightWidth: 20,
-                                    borderRightColor: 'transparent',
-                                }}/>
-                                <Title style={{ paddingLeft: constants.space(2) }}>
-                                    safe psyc
-                                </Title>
-                            </View>
+                        <View style={{ marginTop: 140 }}>
+                            <LogoBanner />
                         </View>
                         <View style={constants.padding}>
                             { /*<HeroButton
@@ -105,4 +81,39 @@ export class HomeScreen extends React.Component<Props, State> {
             </ImageBackground>
         );
     }
+}
+
+function SettingsButton(props) {
+    // $FlowFixMe
+    const cogwheel = require('../../images/settings.png');
+
+    return <TouchableOpacity onPress={props.onPress}>
+        <Image style={{
+            width: 30,
+            height: 30,
+            tintColor: constants.defaultTextColor,
+        }} source={cogwheel} />
+    </TouchableOpacity>
+}
+
+function LogoBanner() {
+    return <View>
+        <View style={{
+            position: 'absolute',
+            top: 2,
+
+            width: 310,
+            height: 0,
+            borderTopWidth: 91, // the height of the thing
+            borderTopColor: constants.primaryColor,
+
+            borderRightWidth: 20,
+            borderRightColor: 'transparent',
+        }}/>
+        <Title style={{ paddingLeft: constants.space(2) }}>
+            safe{"\n"}
+            psyc
+        </Title>
+    </View>
+
 }
