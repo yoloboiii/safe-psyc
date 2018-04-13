@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
-from subprocess import call
 import os
 import sys
 import shutil
+import re
 
 def chdir_to_script_dir():
     os.chdir(os.path.dirname(__file__))
@@ -134,6 +134,22 @@ def print_install_help():
     print "You can install the apk by running"
     print "adb install -r {}".format(rel_apk_path)
 
+    package_name = read_package_name()
+    print
+    print "You might need to uninstall the debug version first,"
+    print "adb uninstall {}".format(package_name)
+
+def read_package_name():
+    app_gradle = os.path.abspath("./android/app/build.gradle")
+    with open(app_gradle, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if line.startswith("applicationId"):
+                return line.split()[1].strip("\"")
+
+    return None
+
 def print_testfairy_instructions():
     testfairy_script = rel_to_call_path('./testfairy-uploader.sh')
     api_key_file = "./SECRETS/testfairy-api-key"
@@ -174,7 +190,6 @@ try:
     print
 
     build_apk()
-
 
     print
     print
