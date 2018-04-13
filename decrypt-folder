@@ -1,10 +1,13 @@
 set -eux
 
+ABS_WD="$( cd "$(dirname "$0")" ; pwd -P )"
+cd "$ABS_WD"
+trap "cd -" EXIT
+
 filename="$1"
-archivename="${filename%.*}"
-foldername="${filename%.*}"
+localfilename=$(basename "$filename")
 
 mkdir -p "SECRETS"
 
-echo "DECRYPTING $1 as $foldername"
-gpg2 --decrypt $1 | tar -xvf -
+echo "DECRYPTING $filename"
+gpg2 --decrypt "$localfilename" | tar -xvf -
