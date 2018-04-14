@@ -8,6 +8,10 @@ import re
 def chdir_to_script_dir():
     os.chdir(os.path.dirname(__file__))
 
+def rel_to_call_path(path):
+    return "./{}".format(os.path.relpath(path, call_path))
+
+
 
 # We're using a bunch of paths relative to the script dir, so
 # make sure to use the script dir as the cwd
@@ -98,9 +102,6 @@ def build_apk():
     finally:
         os.chdir('..')
 
-
-def rel_to_call_path(path):
-    return "./{}".format(os.path.relpath(path, call_path))
 
 def print_apk_path():
     print "The APK can be found at {}".format(abs_apk_path)
