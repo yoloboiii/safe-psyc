@@ -3,11 +3,11 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
-import { HeroButton } from '~/src/components/lib/Buttons.js';
+import { HeroButton, SecondaryButton } from '~/src/components/lib/Buttons.js';
 import { Title, StandardText } from '~/src/components/lib/Texts.js';
 import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
-import { startRandomSession, openSettings } from '~/src/navigation-actions.js';
+import { startRandomSession, openSettings, navigateToRegister } from '~/src/navigation-actions.js';
 import { statusBarHeight } from '~/src/styles/status-bar-height.js';
 import { constants } from '~/src/styles/constants.js';
 import { log } from '~/src/services/logger.js';
@@ -70,6 +70,10 @@ export class HomeScreen extends React.Component<Props, State> {
                                 style={{ height: 90 }}
                             />
                             <VerticalSpace /> */ }
+
+                            <RegisterLink />
+                            <VerticalSpace />
+
                             <HeroButton
                                 title={sessionButtonContent}
                                 onPress={this._startSession.bind(this)}
@@ -116,4 +120,21 @@ function LogoBanner() {
         </Title>
     </View>
 
+}
+
+function RegisterLink() {
+    const textStyle = {
+        textAlign: 'right',
+    };
+    return <View>
+        { /* TODO: This text should not be frightening the user... */ }
+        <StandardText style={textStyle}>
+            You are not logged in, data will not survive app restarts
+        </StandardText>
+        <SecondaryButton
+            title={'Register'}
+            onPress={navigateToRegister}
+            textStyle={textStyle}
+        />
+    </View>
 }

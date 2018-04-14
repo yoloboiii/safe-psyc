@@ -104,6 +104,13 @@ export class DebugScreen extends React.Component<Props, State> {
                             style={{ height: 90 }}
                         />
                         <VerticalSpace />
+
+                        <HeroButton
+                            title={'Welcome'}
+                            onPress={() => UNSAFE_navigateTo('Welcome')}
+                            style={{ height: 90 }}
+                        />
+                        <VerticalSpace />
                     </ScrollView>
                 </View>
             </ImageBackground>

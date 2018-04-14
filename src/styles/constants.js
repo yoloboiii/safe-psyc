@@ -46,6 +46,10 @@ export const constants = {
         lineHeight: 26 * 1.5,
     },
     boldWeight: '800',
+    textShadow: {
+        textShadowColor: 'rgba(0, 0, 0, 0.2)',
+        textShadowOffset: {width: 0, height: 1},
+    },
 
     flex1,
     padding,

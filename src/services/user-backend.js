@@ -7,23 +7,18 @@ import { removeFrom } from '~/src/utils/array-utils.js';
 //////////////////////////////////////////////////////////
 //////////////////// AUTH LISTENERS //////////////////////
 //////////////////////////////////////////////////////////
-let loggedInUser = null;
 const onLoggedInListeners = [];
 const onLoggedOutListeners = [];
 
 
 let listenersRegistered = false;
 function registerAuthListeners() {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             log.debug('onAuthStateChange - user logged in');
-            loggedInUser = user;
-
             onLoggedInListeners.forEach(l => l());
         } else {
             log.debug('onAuthStateChange - user logged out');
-            loggedInUser = null;
-
             onLoggedOutListeners.forEach(l => l());
         }
     });
@@ -35,10 +30,51 @@ function registerAuthListeners() {
 
 export type User = {
     uid: string,
-    email: string,
+    email: ?string,
+    isAnonymous: bool,
 };
 export class UserBackendFacade {
-    createNewUser(email: string, password: string): Promise<{ email: string }> {
+
+    createNewAnonymousUser(): Promise<void> {
+        return firebase
+            .auth()
+            .signInAnonymouslyAndRetrieveData()
+            .then(user => {
+                log.debug('Created anonymous user %j', user);
+                return undefined;
+            })
+            .catch(function(error) {
+                log.error('Failed creating anonymous user, %s', error);
+                throw error;
+            });
+    }
+
+    promoteAnonymousToNamed(email: string, password: string): Promise<User> {
+        email = email.trim();
+
+        // I should be creating the credential with
+        //     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+        // but firebase.auth doesn't have an EmailAuthProvider :(, so instead I copied it from
+        // https://github.com/invertase/react-native-firebase/blob/24d16e4853151f92590fb24aebbc3b69927ecf96/lib/modules/auth/providers/EmailAuthProvider.js#L20
+        const credential = {
+            token: email,
+            secret: password,
+            providerId: 'password',
+        };
+
+        return firebase
+            .auth()
+            .currentUser
+            .linkAndRetrieveDataWithCredential(credential)
+            .then( user => {
+                log.debug("Anonymous account successfully upgraded, %j", user);
+            })
+            .catch( error => {
+                log.error("Error upgrading anonymous account %s", error);
+            });
+    }
+
+    createNewUser(email: string, password: string): Promise<User> {
         email = email.trim();
         return firebase
             .auth()
@@ -48,7 +84,7 @@ export class UserBackendFacade {
                 return user;
             })
             .catch(function(error) {
-                log.error('Failed creating user, %j', error);
+                log.error('Failed creating user, %s', error);
                 throw error;
             });
     }
@@ -66,7 +102,7 @@ export class UserBackendFacade {
                 log.debug('Login successful');
             })
             .catch(function(error) {
-                log.error('Failed logging in, %j', error);
+                log.error('Failed logging in, %s', error);
                 throw error;
             });
     }
@@ -79,7 +115,7 @@ export class UserBackendFacade {
                 log.debug('User logged out');
             })
             .catch(e => {
-                log.error('Failed logging out, %j', e);
+                log.error('Failed logging out, %s', e);
                 throw e;
             });
     }
@@ -93,9 +129,16 @@ export class UserBackendFacade {
                 log.debug('Password reset sent');
             })
             .catch(e => {
-                log.error('Failed sending password reset, %j', e);
+                log.error('Failed sending password reset, %s', e);
                 throw e;
             });
+    }
+
+    onceAuthStateChange(callback: (bool) => void) {
+        const unregister = firebase.auth().onAuthStateChanged( user => {
+            callback(!!user);
+            unregister();
+        });
     }
 
     onUserLoggedIn(callback: () => void): () => void {
@@ -135,7 +178,7 @@ export class UserBackendFacade {
     }
 
     getLoggedInUser(): ?User {
-        return loggedInUser;
+        return firebase.auth().currentUser;;
     }
 
     getUserOrThrow(component: string): User {

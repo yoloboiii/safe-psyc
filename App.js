@@ -12,6 +12,7 @@ import { SessionReportScreen } from './src/components/session/report/SessionRepo
 import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
 import { CurrentFeelingScreen } from './src/components/CurrentFeelingScreen.js';
 import { LoginScreen } from './src/components/LoginScreen.js';
+import { EmailAuthScreen } from './src/components/EmailAuthScreen.js';
 import { DebugScreen } from './src/components/DebugScreen.js';
 
 import { setNavigation } from './src/navigation-actions.js';
@@ -30,6 +31,7 @@ const App = StackNavigator({
     Loading: { screen: LoadingScreen },
     Pitch: { screen: PitchScreen },
     Login: { screen: LoginScreen },
+    EmailAuth: { screen: EmailAuthScreen },
     Home: { screen: __DEV__ ? DebugScreen : HomeScreen },
 
     Welcome: { screen: WelcomeScreen },

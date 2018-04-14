@@ -96,23 +96,31 @@ const secondaryButtonStyles = {
         padding: constants.space(),
     },
 };
+type SecondaryButtonContext = {
+    buttonContainerStyle?: Object,
+    textStyle?: Object,
+};
 type SecondaryButtonProps = {
     onPress: () => *,
     title: string,
     containerStyle?: Object,
     textStyle?: Object,
 };
-export function SecondaryButton(props: SecondaryButtonProps) {
+export function SecondaryButton(props: SecondaryButtonProps, context: SecondaryButtonContext) {
     const { title, onPress, containerStyle, textStyle } = props;
     return <TouchableOpacity
         onPress={onPress}
-        style={[ secondaryButtonStyles.container, containerStyle ]}
+        style={[ secondaryButtonStyles.container, context.buttonContainerStyle, containerStyle ]}
     >
-        <Text style={[ secondaryButtonStyles.text, textStyle ]}>
+        <Text style={[ secondaryButtonStyles.text, context.textStyle, textStyle ]}>
             {title}
         </Text>
     </TouchableOpacity>
 }
+SecondaryButton.contextTypes = {
+    buttonContainerStyle: PropTypes.object,
+    textStyle: PropTypes.object,
+};
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -120,11 +128,12 @@ const largeTextButtonStyle = {
     ...constants.largeText,
     color: constants.notReallyWhite,
     alignSelf: 'center',
+    textAlign: 'center',
 };
 
 type LargeButtonProps = {
     title: string,
-    containerStyle?: Object,
+    containerStyle?: ?Object | Array<mixed>,
     textStyle?: Object,
 };
 export function LargeButton(props: LargeButtonProps) {
@@ -186,3 +195,33 @@ export function HeroButton(props: HeroButtonProps) {
         </TouchableOpacity>
     );
 }
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+const squarePrimaryDefaultStyle = {
+    borderWidth: constants.space(0.5),
+    borderColor: 'transparent',
+};
+export function SquarePrimaryButton(props: LargeButtonProps) {
+    const { containerStyle, ...rest } = props;
+
+    return <LargeButton
+        containerStyle={[squarePrimaryDefaultStyle, containerStyle]}
+        {...rest}
+    />
+}
+
+const squareSecondaryDefaultStyle = {
+    borderColor: constants.primaryColor,
+    borderWidth: constants.space(0.5),
+    backgroundColor: 'transparent',
+};
+export function SquareSecondaryButton(props: LargeButtonProps) {
+    const { containerStyle, ...rest } = props;
+
+    return <LargeButton
+        containerStyle={[squareSecondaryDefaultStyle, containerStyle]}
+        {...rest}
+    />
+}
+

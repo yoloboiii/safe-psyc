@@ -143,10 +143,8 @@ export function openSettings() {
     navigate('Settings');
 }
 
-export function onUserRegistered(username: string) {
-    navigate('Welcome', {
-        username: username,
-    });
+export function onUserRegistered() {
+    navigate('Welcome');
 }
 
 export function onUserLoggedIn() {
@@ -187,6 +185,18 @@ export function resetToHome() {
 
 export function resetToLogin() {
     resetTo('Login');
+}
+
+export function navigateToEmailLogIn() {
+    navigate('EmailAuth', {
+        primaryAction: 'login',
+    });
+}
+
+export function navigateToRegister() {
+    navigate('EmailAuth', {
+        primaryAction: 'register',
+    });
 }
 
 export function UNSAFE_navigateTo(screen: string, params?: Object) {

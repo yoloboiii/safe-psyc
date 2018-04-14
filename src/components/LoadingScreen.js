@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
 import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
 import { userBackendFacade } from '~/src/services/user-backend.js';
@@ -21,7 +21,8 @@ export class LoadingScreen extends React.Component<Props, {}> {
     componentDidMount() {
         this._startLoading().catch(e => {
             log.error('Failed loading the app, %s', e);
-            // TODO: Show error message
+
+            Alert.alert('Failed loading the app', e.message);
         });
     }
 
@@ -68,16 +69,14 @@ function checkIfLoggedIn(backend, state): Promise<boolean> {
     });
 
     function listenForLoginEvent(resolve) {
-        backend.onceUserLoggedIn(() => {
+        backend.onceAuthStateChange( userLoggedIn => {
             clearTimer();
-            log.debug('Got logged in event, redirecting to home');
-            resolve(true);
-        });
-
-        backend.onceUserLoggedOut(() => {
-            clearTimer();
-            log.debug('Got logged out event, redirecting to login screen');
-            resolve(false);
+            if (userLoggedIn) {
+                log.debug('Got logged in event, redirecting to home');
+            } else {
+                log.debug('Got logged out event, redirecting to login screen');
+            }
+            resolve(userLoggedIn);
         });
     }
 
@@ -97,10 +96,12 @@ function checkIfLoggedIn(backend, state): Promise<boolean> {
 
 function registerLoginRedirecter(backend) {
     backend.onUserLoggedIn(() => {
+        log.debug('User logged in - resetting to home');
         resetToHome();
     });
 
     backend.onUserLoggedOut(() => {
+        log.debug('User logged out - redirection to login screen');
         onUserLoggedOut();
     });
 }
