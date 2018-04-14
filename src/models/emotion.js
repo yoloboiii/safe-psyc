@@ -1,9 +1,9 @@
 // @flow
 
-export type Coordinates = {
+export type Coordinates = {|
     intensity: number,
     polar: number,
-};
+|};
 export class Emotion {
     name: string;
     description: string;

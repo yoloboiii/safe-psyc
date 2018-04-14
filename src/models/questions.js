@@ -8,24 +8,24 @@ export type IncorrectAnswer =
     | IncorrectEyeAnswer
     | IncorrectIntensityAnswer
     | IncorrectWordAnswer;
-export type IncorrectEyeAnswer = {
+export type IncorrectEyeAnswer = {|
     questionType: 'eye-question',
     answer: Emotion,
     when: moment$Moment,
-};
-export type IncorrectIntensityAnswer = {
+|};
+export type IncorrectIntensityAnswer = {|
     questionType: 'intensity',
     answer: number,
     when: moment$Moment,
-};
-export type IncorrectWordAnswer = {
+|};
+export type IncorrectWordAnswer = {|
     questionType: 'word',
     answer: Emotion,
     when: moment$Moment,
-};
+|};
 
 export type Question = EyeQuestion | WordQuestion | IntensityQuestion;
-export type EyeQuestion = {
+export type EyeQuestion = {|
     type: 'eye-question',
     correctAnswer: Emotion,
     answers: Array<Emotion>,
@@ -37,11 +37,11 @@ export type WordQuestion = {|
     correctAnswer: Emotion,
     answers: Array<Emotion>,
 |};
-export type IntensityQuestion = {
+export type IntensityQuestion = {|
     type: 'intensity',
     correctAnswer: Emotion,
     referencePoints: Map<number, Emotion>,
-};
+|};
 
 // Place the emotion in a grid or something where the
 // axes are e.g. activation and pleasure. Anger being high in
