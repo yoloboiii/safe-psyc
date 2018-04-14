@@ -11,6 +11,7 @@ import { startRandomSession, openSettings, navigateToRegister } from '~/src/navi
 import { statusBarHeight } from '~/src/styles/status-bar-height.js';
 import { constants } from '~/src/styles/constants.js';
 import { log } from '~/src/services/logger.js';
+import { userBackendFacade } from '~/src/services/user-backend.js';
 
 type Props = {
 };
@@ -123,6 +124,11 @@ function LogoBanner() {
 }
 
 function RegisterLink() {
+    const user = userBackendFacade.getLoggedInUser();
+    if (!user || !user.isAnonymous) {
+        return null;
+    }
+
     const textStyle = {
         textAlign: 'right',
     };
