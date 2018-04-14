@@ -14,12 +14,12 @@ const defaultProps = {
     onWrongAnswer: () => {},
 };
 
-it('contains the question text', () => {
+it('contains the answer description', () => {
     const question = randomWordQuestion();
     const component = render(EmotionWordQuestionComponent, { question: question }, defaultProps);
 
     const questionTextComponent = findFirstByTestId(component, 'question-text');
-    expect(questionTextComponent).toContainString(question.questionText);
+    expect(questionTextComponent).toContainString(question.correctAnswer.description);
 });
 
 it('contains the answer', () => {

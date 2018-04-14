@@ -31,14 +31,12 @@ export type EyeQuestion = {
     answers: Array<Emotion>,
 
     image: string,
-};
-export type WordQuestion = {
+|};
+export type WordQuestion = {|
     type: 'word-question',
     correctAnswer: Emotion,
     answers: Array<Emotion>,
-
-    questionText: string,
-};
+|};
 export type IntensityQuestion = {
     type: 'intensity',
     correctAnswer: Emotion,

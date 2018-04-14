@@ -42,13 +42,11 @@ export function randomWordQuestions(numberOfQuestions:number = 10): Array<WordQu
 
 export function randomWordQuestion(c?: string): WordQuestion {
     c = c === undefined ? uuid.v4() : c;
-    const uniqueString = 'THIS IS THE QUESTION TEXT '+c;
-    const answer = randomEmotion('ans' + uniqueString);
+    const answer = randomEmotion('ans-name-' + c, 'ans-desc-' + c);
     const answers = randomEmotions(2);
     answers.push(answer);
     return {
         type: 'word-question',
-        questionText: uniqueString,
         correctAnswer: answer,
         answers: answers,
     };

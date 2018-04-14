@@ -158,22 +158,6 @@ it('gives some answers to the word question', () => {
         });
 });
 
-it('phrases the word questions reasonably', () => {
-    return getWordQuestion('foo')
-        .then( wordQuestion => {
-
-            // ends with a question mark
-            expect(wordQuestion.questionText).toEqual(expect.stringMatching(/\?$/));
-
-            // contains the description of the correct answer, this is what the user is supposed to connect to
-            // the emotion name
-            expect(wordQuestion.questionText).toEqual(expect.stringContaining(wordQuestion.correctAnswer.description));
-
-            // it does not contain the correct answer in the question text
-            expect(wordQuestion.questionText).not.toEqual(expect.stringContaining(wordQuestion.correctAnswer.name));
-        });
-});
-
 function serviceWithConfig(config: $Shape<Config>) {
 
     const pool = randomEmotionsWithAll(10);

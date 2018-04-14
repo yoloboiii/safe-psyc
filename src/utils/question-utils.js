@@ -40,7 +40,5 @@ export function generateWordQuestion(emotion: Emotion, answerService: AnswerServ
         type: 'word-question',
         correctAnswer: emotion,
         answers: answerService.getAnswersTo(emotion, 3),
-
-        questionText: 'Which alternative best describes ' + emotion.description + '?',
     };
 }
