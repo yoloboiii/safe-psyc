@@ -29,16 +29,40 @@ it('contains all images of eye-questions', () => {
     expect(images).toEqual(expect.arrayContaining(questionImages));
 });
 
-it('contains the question text of word-questions', () => {
+it('contains the answer name in word-questions', () => {
     const wordQuestions = randomWordQuestions(5);
     const report = createReportWithNoWrongAnswers(wordQuestions.concat(randomEyeQuestions(1)));
 
     const component = render(SessionReport, { report: report });
 
-    const questionTexts = wordQuestions.map(q => q.questionText);
     const renderedTexts = getAllRenderedStrings(component);
 
-    expect(renderedTexts.sort()).toEqual(expect.arrayContaining(questionTexts.sort()));
+    expect(renderedTexts.sort()).toEqual(
+        expect.arrayContaining(
+            wordQuestions
+                .map(q => q.correctAnswer.name)
+                .sort()
+                .map(name => expect.stringContaining(name))
+        )
+    );
+});
+
+it('contains the answer description of word-questions', () => {
+    const wordQuestions = randomWordQuestions(5);
+    const report = createReportWithNoWrongAnswers(wordQuestions.concat(randomEyeQuestions(1)));
+
+    const component = render(SessionReport, { report: report });
+
+    const renderedTexts = getAllRenderedStrings(component);
+
+    expect(renderedTexts.sort()).toEqual(
+        expect.arrayContaining(
+            wordQuestions
+                .map(q => q.correctAnswer.description)
+                .sort()
+                .map(desc => expect.stringContaining(desc))
+        )
+    );
 });
 
 it('navigates to the question details when clicking the row', () => {

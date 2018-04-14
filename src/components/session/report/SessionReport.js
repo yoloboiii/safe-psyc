@@ -2,12 +2,15 @@
 
 import React from 'react';
 import { SectionList, View, Modal } from 'react-native';
+
 import { EyeQuestionRow } from './SessionReport.EyeRow.js';
 import { IntensityQuestionRow } from './SessionReport.IntensityRow.js';
+
 import { EmotionDetails } from '~/src/components/EmotionDetails.js';
 import { StandardText } from '~/src/components/lib/Texts.js';
 import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { navigateToEmotionDetails } from '~/src/navigation-actions.js';
+import { constants } from '~/src/styles/constants.js';
 
 import type {
     Question,
@@ -95,7 +98,16 @@ function renderRow(item, onPress) {
 function WordQuestionRow(props) {
     return (
         <View>
-            <StandardText>{props.question.questionText}</StandardText>
+            <StandardText>{props.question.correctAnswer.description}</StandardText>
+            <StandardText style={{
+                ...constants.smallText,
+
+                alignSelf: 'flex-end',
+                marginTop: constants.space(1),
+                maxWidth: '50%',
+            }}>
+                {props.question.correctAnswer.name}
+            </StandardText>
         </View>
     );
 }
