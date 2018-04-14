@@ -43,8 +43,8 @@ export function EmotionDetails(props: Props) {
         undefined
     );
 
-    const stats =
-        props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4 ? (
+    const stats = props.dataPoints.correct.length + props.dataPoints.incorrect.length < 4
+        ? (
             <StandardText style={[constants.smallText, { textAlign: 'right' }]}>
                 As you practice more you will be able to see some statistics about the emotion here.
             </StandardText>
@@ -129,7 +129,7 @@ function ConfusionList(props: ConfusionListProps) {
     }> = filterOldAndEyeAnswers(incorrect);
 
     if (incorrectEmotions.length < 4) {
-        return <View />;
+        return <View {...props} />;
     }
 
     const data = toFlatListData(incorrectEmotions);
