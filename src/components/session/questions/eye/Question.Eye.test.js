@@ -21,7 +21,6 @@ import {
     stringifyComponent,
 } from '~/tests/component-tree-utils.js';
 
-import { MockSessionService } from '~/tests/MockSessionService.js';
 import { mockNavigation } from '~/tests/navigation-utils.js';
 
 import type { Question } from '~/src/models/questions.js';
