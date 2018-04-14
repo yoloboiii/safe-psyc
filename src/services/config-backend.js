@@ -22,8 +22,13 @@ export class ConfigBackendFacade {
     }
 
     _getDefaults() {
+        // TODO: cache this object :(
         return {
             numQuestionsPerSession: 10,
+
+            eyeQuestionsFactor: 8,
+            intensityQuestionsFactor: 1,
+            wordQuestionsFactor: 1,
         };
     }
 
@@ -44,19 +49,37 @@ export class ConfigBackendFacade {
     }
 
     getNumberOfQuestionsPerSession(): Promise<number> {
-        return this._getValue('numQuestionsPerSession').then(rawNumber => {
-            const n = Number(rawNumber);
-            if (Number.isNaN(n)) {
-                log.warn(
-                    "Unable to parse number of questions per session, '%s' was not a number",
-                    rawNumber
-                );
+        return this._getNumber('numQuestionsPerSession', 'number of questions per session');
+    }
 
-                return this._getDefaults().numQuestionsPerSession;
-            }
+    getEyeQuestionsFactor(): Promise<number> {
+        return this._getNumber('eyeQuestionsFactor', 'eye questions factor');
+    }
 
-            return n;
-        });
+    getIntensityQuestionsFactor(): Promise<number> {
+        return this._getNumber('intensityQuestionsFactor', 'intensity questions factor');
+    }
+
+    getWordQuestionsFactor(): Promise<number> {
+        return this._getNumber('wordQuestionsFactor', 'word questions factor');
+    }
+
+    _getNumber(key: string, description: string): Promise<number> {
+        return this._getValue(key)
+            .then(rawNumber => {
+                const n = Number(rawNumber);
+                if (Number.isNaN(n)) {
+                    log.warn(
+                        "Unable to parse %s, '%s' was not a number",
+                        description,
+                        rawNumber,
+                    );
+
+                    return this._getDefaults()[key];
+                }
+
+                return n;
+            });
     }
 
     _getValue(key: string): Promise<string> {

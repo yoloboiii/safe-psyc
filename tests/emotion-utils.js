@@ -13,6 +13,23 @@ export function randomEmotions(num: number): Array<Emotion> {
     return es;
 }
 
+export function randomEmotionsWithAll(num: number): Array<Emotion> {
+    const es = [];
+    for (let i = 0; i < num; i++) {
+        const builder =  baseBuilder();
+
+        const emotion = builder
+            .withImage('image' + builder.name)
+            .withCoordinates({
+                intensity: Math.floor(Math.random() * 10),
+                polar: Math.floor(Math.random() * 10),
+            }).build();
+
+        es.push(emotion);
+    }
+    return es;
+}
+
 export function randomEmotion(name?: string, description?: string): Emotion {
     return baseBuilder(name, description).build();
 }

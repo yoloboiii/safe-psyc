@@ -4,6 +4,7 @@ import { knuthShuffle } from 'knuth-shuffle';
 
 import { answerService } from '~/src/services/answer-service.js';
 import { emotionService } from '~/src/services/emotion-service.js';
+import { numberOfQuestionsService } from '~/src/services/number-of-questions-service.js';
 import { ReferencePointService } from '~/src/services/reference-point-service.js';
 import { generateEyeQuestion, generateIntensityQuestion, generateWordQuestion } from '~/src/utils/question-utils.js';
 
@@ -11,32 +12,46 @@ import type { Emotion } from '~/src/models/emotion.js';
 import type { Question, EyeQuestion, IntensityQuestion, WordQuestion } from '~/src/models/questions.js';
 import type { AnswerService } from '~/src/services/answer-service.js';
 import type { EmotionService } from '~/src/services/emotion-service.js';
+import type { NumberOfQuestionsService } from '~/src/services/number-of-questions-service.js';
 
 export class RandomSessionService {
     _answerService: AnswerService;
     _emotionService: EmotionService;
     _referencePointService: ReferencePointService;
+    _numQuestionsService: NumberOfQuestionsService;
 
-    constructor(answerService: AnswerService, emotionService: EmotionService) {
+    constructor(
+        answerService: AnswerService,
+        emotionService: EmotionService,
+        numQuestionsService: NumberOfQuestionsService,
+    ) {
         this._answerService = answerService;
 
         this._emotionService = emotionService;
         this._referencePointService = new ReferencePointService(this.getEmotionPool());
 
+        this._numQuestionsService = numQuestionsService;
+
         this._answerService.setAnswerPool(this.getEmotionPool());
     }
 
-    getRandomQuestions(numQuestions: number): Array<Question> {
-        const numWordQuestions = Math.min(numQuestions, 1);
-        const numIntensityQuestions = Math.min(numQuestions - numWordQuestions, 1);
-        const numEyeQuestions = numQuestions - numIntensityQuestions - numWordQuestions;
+    getRandomQuestions(): Promise<Array<Question>> {
+        return this._numQuestionsService.getNumberOfQuestionsPerType()
+            .then( nums => {
+                const {
+                    eye,
+                    intensity,
+                    word,
+                } = nums;
 
-        const questions = [];
-        questions.push(...this._getEyeQuestions(numEyeQuestions));
-        questions.push(...this._getIntensityQuestions(numIntensityQuestions));
-        questions.push(...this._getWordQuestions(numWordQuestions));
+                const questions = [
+                    ...this._getEyeQuestions(eye),
+                    ...this._getIntensityQuestions(intensity),
+                    ...this._getWordQuestions(word),
+                ];
 
-        return knuthShuffle(questions);
+                return knuthShuffle(questions);
+            });
     }
 
     getEmotionPool(): Array<Emotion> {
@@ -44,17 +59,11 @@ export class RandomSessionService {
     }
 
     _getEyeQuestions(numEyeQuestions): Array<EyeQuestion> {
-        const emotionsWithImage = getRandomElementsFromArray(
-            numEyeQuestions,
-            this.getEmotionPool().filter(e => !!e.image)
-        );
-
-        const questions = [];
-        for (const emotion of emotionsWithImage) {
-            questions.push(generateEyeQuestion(emotion, this._answerService));
-        }
-
-        return questions;
+        return getRandomElementsFromArray(
+                numEyeQuestions,
+                this.getEmotionPool().filter(e => !!e.image)
+            )
+            .map( emotion => generateEyeQuestion(emotion, this._answerService));
     }
 
     _getIntensityQuestions(numIntensityQuestions): Array<IntensityQuestion> {
@@ -62,7 +71,10 @@ export class RandomSessionService {
         const emotionsWithCoordinates = knuthShuffle(this.getEmotionPool().filter(e => !!e.coordinates));
 
         for (let i=0; i<emotionsWithCoordinates.length && questions.length < numIntensityQuestions; i++) {
-            const { question, isValid } = generateIntensityQuestion(emotionsWithCoordinates[i], this._referencePointService);
+            const { question, isValid } = generateIntensityQuestion(
+                emotionsWithCoordinates[i],
+                this._referencePointService,
+            );
 
             if (isValid) {
                 questions.push(question);
@@ -93,4 +105,8 @@ function getRandomElementsFromArray<T>(numElements: number, array: Array<T>): Ar
     return elements;
 }
 
-export const randomSessionService = new RandomSessionService(answerService, emotionService);
+export const randomSessionService = new RandomSessionService(
+    answerService,
+    emotionService,
+    numberOfQuestionsService,
+);

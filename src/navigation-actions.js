@@ -4,7 +4,6 @@ import { InteractionManager, Alert, AsyncStorage } from 'react-native';
 import moment from 'moment';
 // $FlowFixMe
 import { NavigationActions } from 'react-navigation';
-import { configBackendFacade } from '~/src/services/config-backend.js';
 import { randomSessionService } from '~/src/services/random-session-service.js';
 import { log } from '~/src/services/logger.js';
 
@@ -41,21 +40,18 @@ export function paramsOr<T, S>(navigation: Navigation<T>, or: S): T | S {
 
 export function startRandomSession(onDataLoaded?: () => void): Promise<{}> {
     log.event("START_RANDOM_SESSION");
-    return configBackendFacade.getNumberOfQuestionsPerSession().then(numQuestions => {
-        return doStartRandomSession(numQuestions, onDataLoaded);
-    });
-}
-
-function doStartRandomSession(numQuestions, onDataLoaded) {
     return new Promise(resolve => {
         InteractionManager.runAfterInteractions(() => {
-            const questions = randomSessionService.getRandomQuestions(numQuestions);
-            onDataLoaded && onDataLoaded();
-            navigate('Session', {
-                questions: questions,
-            });
 
-            resolve();
+            randomSessionService.getRandomQuestions()
+                .then( questions => {
+                    onDataLoaded && onDataLoaded();
+                    navigate('Session', {
+                        questions: questions,
+                    });
+
+                    resolve();
+                });
         });
     });
 }

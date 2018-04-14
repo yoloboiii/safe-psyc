@@ -1,37 +1,68 @@
 // @flow
 
 import { AnswerService } from '~/src/services/answer-service.js';
+import { NumberOfQuestionsService } from '~/src/services/number-of-questions-service.js';
+import { EmotionService } from '~/src/services/emotion-service.js';
 
 import { randomSessionService, RandomSessionService } from './random-session-service.js';
 
 import { randomQuestion } from '~/tests/question-utils.js';
-import { randomEmotionWithCoordinates, randomEmotions } from '~/tests/emotion-utils.js';
+import { randomEmotionWithCoordinates, randomEmotions, randomEmotionsWithAll } from '~/tests/emotion-utils.js';
+import { newConfigBackendMock } from '~/tests/MockConfigBackendFacade.js';
 
 import type { WordQuestion } from '~/src/models/questions.js';
+import type { Config } from '~/src/services/number-of-questions-service.js';
 
 it('returns the correct number of random questions', () => {
-    expect(randomSessionService.getRandomQuestions(0).length).toBe(0);
-    expect(randomSessionService.getRandomQuestions(1).length).toBe(1);
-    expect(randomSessionService.getRandomQuestions(10).length).toBe(10);
+    return Promise.all([
+        serviceWithConfig({
+                numberOfQuestionsPerSession: 0,
+        }).getRandomQuestions()
+            .then( questions => {
+                expect(questions.length).toBe(0);
+            }),
+
+        serviceWithConfig({
+                numberOfQuestionsPerSession: 1,
+        }).getRandomQuestions()
+            .then( questions => {
+                expect(questions.length).toBe(1);
+            }),
+
+        serviceWithConfig({
+                numberOfQuestionsPerSession: 10,
+        }).getRandomQuestions()
+            .then( questions => {
+                expect(questions.length).toBe(10);
+            }),
+    ]);
 });
 
 it('includes each random question only once', () => {
+    const promises = [];
     for (let i = 0; i < 100; i++) {
-        const questions = randomSessionService.getRandomQuestions(10);
-        expect(questions).not.toContainDuplicates();
+        const promise = randomSessionService.getRandomQuestions()
+            .then( questions => {
+                expect(questions).not.toContainDuplicates();
+            });
+
+        promises.push(promises);
     }
+
+    return Promise.all(promises);
 });
 
 it('converts image paths to something that can be shown in the app', () => {
-    const questions = randomSessionService.getRandomQuestions(10);
+    return randomSessionService.getRandomQuestions()
+        .then( questions => {
+            expect(questions.some(q => q.type === 'eye-question')).toBe(true);
 
-    expect(questions.some(q => q.type === 'eye-question')).toBe(true);
-
-    for (const question of questions) {
-        if (question.type === 'eye-question') {
-            expect(question.image).toEqual(expect.stringMatching(/^data\:image\//));
-        }
-    }
+            for (const question of questions) {
+                if (question.type === 'eye-question') {
+                    expect(question.image).toEqual(expect.stringMatching(/^data\:image\//));
+                }
+            }
+        });
 });
 
 it('generates three reference points to intensity questions', () => {
@@ -52,29 +83,15 @@ it('generates three reference points to intensity questions', () => {
 
     const service = serviceWithEmotionPool(pool);
 
-    const questions = service.getRandomQuestions(10).filter(q => q.type === 'intensity');
-    expect(questions.length).toBeGreaterThan(0);
-    for (const question of questions) {
-        // $FlowFixMe
-        expect(question.referencePoints.size).toBe(3);
-    }
-});
-
-it('contains more eye questions than intensity questions', () => {
-    for (let i = 0; i < 100; i++) {
-        const questions = randomSessionService.getRandomQuestions(10);
-
-        const eyeCount = questions.filter(q => q.type === 'eye-question').reduce(acc => acc + 1, 0);
-
-        const intensityCount = questions
-            .filter(q => q.type === 'intensity')
-            .reduce(acc => acc + 1, 0);
-
-        expect(eyeCount).toBeGreaterThan(0);
-        expect(intensityCount).toBeGreaterThan(0);
-
-        expect(eyeCount).toBeGreaterThan(intensityCount);
-    }
+    return service.getRandomQuestions()
+        .then( questions => {
+            const intensityQuestions = questions.filter(q => q.type === 'intensity');
+            expect(intensityQuestions.length).toBeGreaterThan(0);
+            for (const question of intensityQuestions) {
+                // $FlowFixMe
+                expect(question.referencePoints.size).toBe(3);
+            }
+        });
 });
 
 it('doesn\'t include intensity questions with bad reference points', () => {
@@ -86,77 +103,108 @@ it('doesn\'t include intensity questions with bad reference points', () => {
     ];
 
     const service = serviceWithEmotionPool(pool);
-    const intensityQuestions = service.getRandomQuestions(10).filter(q => q.type === 'intensity');
 
-    expect(intensityQuestions).toEqual([]);
+    return service.getRandomQuestions()
+        .then( questions => {
+            const intensityQuestions = questions.filter(q => q.type === 'intensity');
+            expect(intensityQuestions).toEqual([]);
+        });
 });
 
 it('shuffles the questions', () => {
     const numberOfQuestionTypes = 3;
 
-    let passed = false;
+    const promises = [];
     for(let i=0; i < 100; i++) {
-        const questions = randomSessionService.getRandomQuestions(10);
 
-        let lastType = questions[0].type;
-        let changes = 0;
-        for (const q of questions) {
-            if (q.type !== lastType) {
-                changes++;
-            }
-            lastType = q.type;
-        }
+        const promise = randomSessionService.getRandomQuestions()
+            .then( questions => {
 
-        if (changes > numberOfQuestionTypes - 1) {
-            passed = true;
-        }
+                let lastType = questions[0].type;
+                let changes = 0;
+                for (const q of questions) {
+                    if (q.type !== lastType) {
+                        changes++;
+                    }
+                    lastType = q.type;
+                }
+
+                return changes > numberOfQuestionTypes - 1
+            });
+
+        promises.push(promise)
     }
 
-    if (!passed) throw new Error('The questions were not shuffled');
+    // as long as one test iteration passed we're good!
+    return Promise.all(promises)
+        .then( results => results.reduce((a,b) => a || b, false))
+        .then( passed => {
+            if (!passed) throw new Error('The questions were not shuffled');
+        });
 });
 
 it('includes word questions in the session', () => {
-    const questions = serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions(10);
-    const types = questions.map(q => q.type);
-
-    expect(types).toContain('word-question');
+    return serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions()
+        .then( questions => {
+            const types = questions.map(q => q.type);
+            expect(types).toContain('word-question');
+        });
 });
 
 it('gives some answers to the word question', () => {
-    const wordQuestion = getWordQuestion();
-
-    expect(wordQuestion.answers.length).toBeGreaterThan(0);
+    return getWordQuestion('foo')
+        .then( wordQuestion => {
+            expect(wordQuestion.answers.length).toBeGreaterThan(0);
+        });
 });
 
 it('phrases the word questions reasonably', () => {
-    const wordQuestion = getWordQuestion('foo');
+    return getWordQuestion('foo')
+        .then( wordQuestion => {
 
-    // ends with a question mark
-    expect(wordQuestion.questionText).toEqual(expect.stringMatching(/\?$/));
+            // ends with a question mark
+            expect(wordQuestion.questionText).toEqual(expect.stringMatching(/\?$/));
 
-    // contains the description of the correct answer, this is what the user is supposed to connect to
-    // the emotion name
-    expect(wordQuestion.questionText).toEqual(expect.stringContaining(wordQuestion.correctAnswer.description));
+            // contains the description of the correct answer, this is what the user is supposed to connect to
+            // the emotion name
+            expect(wordQuestion.questionText).toEqual(expect.stringContaining(wordQuestion.correctAnswer.description));
 
-    // it does not contain the correct answer in the question text
-    expect(wordQuestion.questionText).not.toEqual(expect.stringContaining(wordQuestion.correctAnswer.name));
+            // it does not contain the correct answer in the question text
+            expect(wordQuestion.questionText).not.toEqual(expect.stringContaining(wordQuestion.correctAnswer.name));
+        });
 });
+
+function serviceWithConfig(config: $Shape<Config>) {
+
+    const pool = randomEmotionsWithAll(10);
+    const answerService = new AnswerService(pool);
+    const emotionService: EmotionService = ({
+        getEmotionPool: () => pool,
+    }: any);
+    const configBackend = newConfigBackendMock(config);
+    const numQuestionsService = new NumberOfQuestionsService(configBackend);
+
+    return new RandomSessionService(answerService, emotionService, numQuestionsService);
+}
 
 function serviceWithEmotionPool(pool) {
 
     const answerService = new AnswerService(pool);
-    const emotionService = {
+    const emotionService: EmotionService = ({
         getEmotionPool: () => pool,
-    };
+    }: any);
+    const configBackend = newConfigBackendMock();
+    const numQuestionsService = new NumberOfQuestionsService(configBackend);
 
-    // $FlowFixMe
-    return new RandomSessionService(answerService, emotionService);
+    return new RandomSessionService(answerService, emotionService, numQuestionsService);
 }
 
-function getWordQuestion(name?: string): WordQuestion {
-    const questions = serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions(10);
-    const wordQuestion = questions.find(q => q.type === 'word-question');
-    if (!wordQuestion) throw new Error("Found no word questions");
+function getWordQuestion(name?: string): Promise<WordQuestion> {
+    return serviceWithEmotionPool(randomEmotions(10)).getRandomQuestions()
+        .then( questions => {
+            const wordQuestion = questions.find(q => q.type === 'word-question');
+            if (!wordQuestion) throw new Error("Found no word questions");
 
-    return ((wordQuestion:any): WordQuestion);
+            return ((wordQuestion:any): WordQuestion);
+        });
 }
