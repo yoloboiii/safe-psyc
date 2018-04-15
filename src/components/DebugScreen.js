@@ -93,11 +93,6 @@ export class DebugScreen extends React.Component<Props, State> {
                         />
                         <VerticalSpace />
 
-                        <StandardButton
-                            title={'Welcome'}
-                            onPress={() => UNSAFE_navigateTo('Welcome')}
-                        />
-                        <VerticalSpace />
                     </ScrollView>
                 </View>
             </ImageBackground>

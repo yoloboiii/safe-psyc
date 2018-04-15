@@ -7,6 +7,8 @@ import { HeroButton, SecondaryButton } from '~/src/components/lib/Buttons.js';
 import { Title, StandardText } from '~/src/components/lib/Texts.js';
 import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { LogoBanner } from '~/src/components/lib/LogoBanner.js';
+
 import { startRandomSession, openSettings, navigateToRegister } from '~/src/navigation-actions.js';
 import { statusBarHeight } from '~/src/styles/status-bar-height.js';
 import { constants } from '~/src/styles/constants.js';
@@ -99,32 +101,6 @@ function SettingsButton(props) {
             tintColor: constants.defaultTextColor,
         }} source={cogwheel} />
     </TouchableOpacity>
-}
-
-function LogoBanner() {
-    return <View>
-        <View style={{
-            position: 'absolute',
-            top: 2,
-
-            width: 310,
-            height: 0,
-            borderTopWidth: 91, // the height of the thing
-            borderTopColor: constants.primaryColor,
-
-            borderRightWidth: 20,
-            borderRightColor: 'transparent',
-        }}/>
-            <Title style={{
-                paddingLeft: constants.space(2),
-                color: constants.notReallyWhite,
-                textShadowColor: 'transparent',
-            }}>
-                safe{"\n"}
-                psyc
-            </Title>
-    </View>
-
 }
 
 function RegisterLink() {

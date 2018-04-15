@@ -7,7 +7,8 @@ const flex1 = {
     flex: 1,
 };
 const padding = {
-    paddingHorizontal: space(2),
+    paddingLeft: space(2),
+    paddingRight: space(2),
     paddingTop: space(1),
     paddingBottom: space(2),
 };

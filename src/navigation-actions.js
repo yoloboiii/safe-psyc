@@ -144,7 +144,7 @@ export function openSettings() {
 }
 
 export function onUserRegistered() {
-    navigate('Welcome');
+    navigate('Home');
 }
 
 export function onUserLoggedIn() {

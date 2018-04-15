@@ -6,7 +6,6 @@ import { PitchScreen } from './src/components/PitchScreen.js';
 import { HomeScreen } from './src/components/HomeScreen.js';
 import { SettingsScreen } from './src/components/SettingsScreen.js';
 import { ResetPasswordScreen } from './src/components/ResetPasswordScreen.js';
-import { WelcomeScreen } from './src/components/WelcomeScreen.js';
 import { SessionScreen } from './src/components/session/SessionScreen.js';
 import { SessionReportScreen } from './src/components/session/report/SessionReportScreen.js';
 import { EmotionDetailsScreen } from './src/components/EmotionDetailsScreen.js';
@@ -34,7 +33,6 @@ const App = StackNavigator({
     EmailAuth: { screen: EmailAuthScreen },
     Home: { screen: __DEV__ ? DebugScreen : HomeScreen },
 
-    Welcome: { screen: WelcomeScreen },
     Settings: { screen: SettingsScreen, ...defaultScreenProps },
     ResetPassword: { screen: ResetPasswordScreen, ...defaultScreenProps },
 

@@ -7,6 +7,7 @@ import { SquarePrimaryButton, SquareSecondaryButton } from '~/src/components/lib
 import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { StandardText } from '~/src/components/lib/Texts.js';
 import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
+import { LogoBanner } from '~/src/components/lib/LogoBanner.js';
 
 import { constants } from '~/src/styles/constants.js';
 import { navigateToEmailLogIn } from '~/src/navigation-actions.js';
@@ -42,17 +43,19 @@ export class LoginScreen extends React.Component<{}, State> {
     render() {
         return (
             <ImageBackground>
-                <View style={styles.container}>
-                    <StandardText>hihihi, press stuff...</StandardText>
-                    <VerticalSpace />
+                <View style={constants.colApart}>
+                    <View style={{ paddingTop: constants.padding.paddingTop }} />
+                    <LogoBanner />
+                    <View style={styles.container}>
 
-                    { this._renderLoginButton() }
-                    <VerticalSpace />
+                        { this._renderLoginButton() }
+                        <VerticalSpace />
 
-                    <SquareSecondaryButton
-                        title={'Already a user'}
-                        onPress={navigateToEmailLogIn}
-                    />
+                        <SquareSecondaryButton
+                            title={'Have an account?'}
+                            onPress={navigateToEmailLogIn}
+                        />
+                    </View>
                 </View>
             </ImageBackground>
         )
@@ -64,7 +67,7 @@ export class LoginScreen extends React.Component<{}, State> {
 
         } else {
             return <SquarePrimaryButton
-                title={'Get started'}
+                title={'Improve your EQ!'}
                 onPress={this._anonymousLogin.bind(this)}
             />
         }
