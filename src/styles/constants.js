@@ -10,8 +10,9 @@ const padding = {
     paddingHorizontal: space(2),
     paddingVertical: space(1),
 };
-const defaultTextColor = '#666';
+const darkTextColor = '#666';
 const lightTextColor = '#CCC';
+const defaultTextColor = darkTextColor;
 const defaultFontFamily = 'Lato';
 export const constants = {
     space,
@@ -25,6 +26,7 @@ export const constants = {
 
     notReallyWhite: '#FAFAFF',
     defaultTextColor,
+    darkTextColor,
     lightTextColor,
 
     smallText: {

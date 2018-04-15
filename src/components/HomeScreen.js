@@ -115,10 +115,14 @@ function LogoBanner() {
             borderRightWidth: 20,
             borderRightColor: 'transparent',
         }}/>
-        <Title style={{ paddingLeft: constants.space(2) }}>
-            safe{"\n"}
-            psyc
-        </Title>
+            <Title style={{
+                paddingLeft: constants.space(2),
+                color: constants.notReallyWhite,
+                textShadowColor: 'transparent',
+            }}>
+                safe{"\n"}
+                psyc
+            </Title>
     </View>
 
 }
@@ -131,6 +135,8 @@ function RegisterLink() {
 
     const textStyle = {
         textAlign: 'right',
+        alignSelf: 'flex-end',
+        maxWidth: '70%',
     };
     return <View>
         { /* TODO: This text should not be frightening the user... */ }

@@ -24,7 +24,7 @@ export class ImageBackground extends React.Component<Props, {}> {
     getChildContext() {
         return {
             textStyle: {
-                color: constants.notReallyWhite,
+                color: constants.darkTextColor,
                 ...constants.textShadow,
             },
         };
