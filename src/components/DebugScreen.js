@@ -3,7 +3,7 @@
 import React from 'react';
 import { View, ScrollView, Image, TouchableOpacity, Text } from 'react-native';
 import { ImageBackground } from '~/src/components/lib/ImageBackground.js';
-import { HeroButton } from '~/src/components/lib/Buttons.js';
+import { StandardButton } from '~/src/components/lib/Buttons.js';
 import { VerticalSpace } from '~/src/components/lib/VerticalSpace.js';
 import { ActivityIndicator } from '~/src/components/lib/ActivityIndicator.js';
 import { startRandomSession, openSettings } from '~/src/navigation-actions.js';
@@ -43,20 +43,10 @@ export class DebugScreen extends React.Component<Props, State> {
     }
 
     _startSession() {
-        const onNavDataLoaded = () => {
-            this.setState({ loading: false });
-        };
-
-        const onStateUpdated = () => {
-            startRandomSession(onNavDataLoaded);
-        };
-
-        this.setState({ loading: true }, onStateUpdated);
+        startRandomSession();
     }
 
     render() {
-        const buttonContent = this.state.loading ? <ActivityIndicator /> : 'Start session';
-
         // $FlowFixMe
         const cogwheel = require('../../images/settings.png');
         return (
@@ -68,7 +58,7 @@ export class DebugScreen extends React.Component<Props, State> {
                         </TouchableOpacity>
                     </View>
                     <ScrollView>
-                        <HeroButton
+                        <StandardButton
                             title={'Emotion details'}
                             onPress={() =>
                                 navigateToEmotionDetails(
@@ -80,35 +70,33 @@ export class DebugScreen extends React.Component<Props, State> {
                         />
                         <VerticalSpace />
 
-                        <HeroButton
+                        <StandardButton
                             title={'How are you feeling right now?'}
                             onPress={() => UNSAFE_navigateTo('CurrentFeeling', { skippable: true })}
                         />
                         <VerticalSpace />
 
-                        <HeroButton
+                        <StandardButton
                             title={'Pitch'}
                             onPress={() => UNSAFE_navigateTo('Pitch')}
                         />
                         <VerticalSpace />
 
-                        <HeroButton
+                        <StandardButton
                             title={'Real home'}
                             onPress={() => UNSAFE_navigateTo('AlwaysHome')}
                         />
                         <VerticalSpace />
 
-                        <HeroButton
-                            title={buttonContent}
+                        <StandardButton
+                            title={'Start session'}
                             onPress={this._startSession.bind(this)}
-                            style={{ height: 90 }}
                         />
                         <VerticalSpace />
 
-                        <HeroButton
+                        <StandardButton
                             title={'Welcome'}
                             onPress={() => UNSAFE_navigateTo('Welcome')}
-                            style={{ height: 90 }}
                         />
                         <VerticalSpace />
                     </ScrollView>
