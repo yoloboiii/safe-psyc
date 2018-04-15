@@ -84,7 +84,7 @@ export class QuestionComponent extends React.Component<Props, State> {
         const resultOverlay = this._createResultOverLay();
         return (
             <View style={constants.flex1}>
-                <View style={[constants.flex1, { padding: constants.space(1) }]}>{questionView}</View>
+                <View style={constants.padflex}>{questionView}</View>
                 {resultOverlay}
             </View>
         );

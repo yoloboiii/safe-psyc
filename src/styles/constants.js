@@ -8,7 +8,8 @@ const flex1 = {
 };
 const padding = {
     paddingHorizontal: space(2),
-    paddingVertical: space(1),
+    paddingTop: space(1),
+    paddingBottom: space(2),
 };
 const darkTextColor = '#666';
 const lightTextColor = '#CCC';

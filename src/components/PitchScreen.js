@@ -72,7 +72,8 @@ export class PitchScreen extends React.Component<Props, State> {
     }
 
     render() {
-        const skipButton = this.state.showSkipButton && <StandardButton
+        const skipButton = this.state.showSkipButton
+            ? <StandardButton
                 containerStyle={{
                     backgroundColor: constants.hilightColor2,
                 }}
@@ -80,6 +81,7 @@ export class PitchScreen extends React.Component<Props, State> {
                 onPress={this._skip.bind(this)}
                 testID="skipButton"
             />
+            : <View style={{ height: 64 }} />
 
         return (
             <LinearGradient
@@ -88,7 +90,7 @@ export class PitchScreen extends React.Component<Props, State> {
                 end={{x: 0.3, y: 0.18}}
                 style={{
                     flex: 1,
-                    padding: constants.space(),
+                    ...constants.padding,
                     justifyContent: 'space-between',
                     backgroundColor: 'red', //constants.primaryColor,
                 }}
@@ -97,6 +99,7 @@ export class PitchScreen extends React.Component<Props, State> {
                     style={constants.flex1}
                     dotColor={'rgba(255,255,255, 0.2)'}
                     activeDotColor={constants.hilightColor2}
+                    showsPagination={this.state.showSkipButton}
                     loop={false}
 
                     showsButtons={false}
@@ -225,7 +228,7 @@ function ItIsImportantForYou() {
 function ItIsImportantForTheTeam() {
     return (
         <TitledSlide
-            title="Social intelligence directly impacts your team's performance"
+            title="Social intelligence impacts your team"
         >
             {/* Required for the tests, the tag=10 thing */}
             <View style={constants.flex1}>
@@ -283,7 +286,7 @@ function ItCanBeImproved() {
                         textAlign: 'right',
                         marginTop: constants.space(),
                         marginRight: constants.space(),
-                        maxWidth: '50%',
+                        maxWidth: '70%',
                     }}
                 >
                     and safe-psyc will help you do just that!

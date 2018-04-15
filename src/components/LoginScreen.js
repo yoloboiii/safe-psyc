@@ -73,8 +73,7 @@ export class LoginScreen extends React.Component<{}, State> {
 
 const styles = {
     container: {
-        flex: 1,
-        padding: constants.space(),
+        ...constants.padflex,
         justifyContent: 'center',
     },
 };

@@ -16,8 +16,7 @@ import { log } from '~/src/services/logger.js';
 
 const contentStyle = {
     paddingTop: statusBarHeight + constants.space(),
-    padding: constants.space(),
-    flex: 1,
+    ...constants.padflex,
     flexDirection: 'column',
     justifyContent: 'space-between',
 };

@@ -200,8 +200,7 @@ function AnonymousLinkDescription() {
 
 const styles = {
     container: {
-        flex: 1,
-        padding: constants.space(),
+        ...constants.padflex,
         justifyContent: 'center',
     },
     buttonContainer: {

@@ -10,27 +10,27 @@ import { constants } from '~/src/styles/constants.js';
 const standardButtonDefaultStyles = {
     enabled: {
         container: {
-            borderRadius: constants.mediumRadius,
+            borderRadius: 5000,
             backgroundColor: constants.primaryColor,
         },
         text: {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space(),
+            padding: constants.space(2),
         },
     },
 
     disabled: {
         container: {
-            borderRadius: constants.mediumRadius,
+            borderRadius: 5000,
             backgroundColor: constants.disabledColor,
         },
         text: {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space(),
+            padding: constants.space(2),
         },
     },
 };
