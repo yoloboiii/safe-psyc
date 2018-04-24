@@ -46,7 +46,7 @@ function AnonymousSettings(props) {
         />
 
         <VerticalSpace />
-        <LogoutButton title='Log out - all your data will be lost'/>
+        { __DEV__ && <LogoutButton title='Log out - all data will be lost'/> }
     </View>
 }
 

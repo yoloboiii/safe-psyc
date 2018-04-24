@@ -191,7 +191,7 @@ function AnonymousLinkDescription() {
     const user = userBackendFacade.getLoggedInUser();
     if (user && user.isAnonymous) {
         return <StandardText>
-            You can register now and make sure all you data is accessible when you want
+            You can register and make sure all you data is accessible when you want.
         </StandardText>
     } else {
         return null;

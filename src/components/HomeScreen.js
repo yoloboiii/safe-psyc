@@ -117,7 +117,7 @@ function RegisterLink() {
     return <View>
         { /* TODO: This text should not be frightening the user... */ }
         <StandardText style={textStyle}>
-            You are not logged in, data will not survive app restarts
+            If you create an account your data can be saved across devices
         </StandardText>
         <SecondaryButton
             title={'Register'}

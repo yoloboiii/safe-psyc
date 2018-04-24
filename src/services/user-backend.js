@@ -12,8 +12,8 @@ const onLoggedOutListeners = [];
 
 
 let listenersRegistered = false;
-function registerAuthListeners() {
-    firebase.auth().onAuthStateChanged((user) => {
+function registerAuthListeners(auth) {
+    auth.onAuthStateChanged((user) => {
         if (user) {
             log.debug('onAuthStateChange - user logged in');
             onLoggedInListeners.forEach(l => l());
@@ -35,9 +35,14 @@ export type User = {
 };
 export class UserBackendFacade {
 
+    _auth: Object;
+
+    constructor(auth: Object) {
+        this._auth = auth;
+    }
+
     createNewAnonymousUser(): Promise<void> {
-        return firebase
-            .auth()
+        return this._auth
             .signInAnonymouslyAndRetrieveData()
             .then(user => {
                 log.debug('Created anonymous user %j', user);
@@ -53,7 +58,7 @@ export class UserBackendFacade {
         email = email.trim();
 
         // I should be creating the credential with
-        //     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+        //     const credential = this._auth.EmailAuthProvider.credential(email, password);
         // but firebase.auth doesn't have an EmailAuthProvider :(, so instead I copied it from
         // https://github.com/invertase/react-native-firebase/blob/24d16e4853151f92590fb24aebbc3b69927ecf96/lib/modules/auth/providers/EmailAuthProvider.js#L20
         const credential = {
@@ -62,8 +67,7 @@ export class UserBackendFacade {
             providerId: 'password',
         };
 
-        return firebase
-            .auth()
+        return this._auth
             .currentUser
             .linkAndRetrieveDataWithCredential(credential)
             .then( user => {
@@ -76,8 +80,7 @@ export class UserBackendFacade {
 
     createNewUser(email: string, password: string): Promise<User> {
         email = email.trim();
-        return firebase
-            .auth()
+        return this._auth
             .createUserAndRetrieveDataWithEmailAndPassword(email, password)
             .then(user => {
                 log.debug('Created user');
@@ -95,8 +98,7 @@ export class UserBackendFacade {
         if (email.length === 0) return Promise.reject(new Error("Empty email"));
         if (password.length === 0) return Promise.reject(new Error("Empty password"));
 
-        return firebase
-            .auth()
+        return this._auth
             .signInAndRetrieveDataWithEmailAndPassword(email, password)
             .then(function() {
                 log.debug('Login successful');
@@ -108,8 +110,7 @@ export class UserBackendFacade {
     }
 
     logOut(): Promise<void> {
-        return firebase
-            .auth()
+        return this._auth
             .signOut()
             .then(() => {
                 log.debug('User logged out');
@@ -122,8 +123,7 @@ export class UserBackendFacade {
 
     resetPassword(email: string): Promise<void> {
         email = email.trim();
-        return firebase
-            .auth()
+        return this._auth
             .sendPasswordResetEmail(email)
             .then(() => {
                 log.debug('Password reset sent');
@@ -135,7 +135,7 @@ export class UserBackendFacade {
     }
 
     onceAuthStateChange(callback: (bool) => void) {
-        const unregister = firebase.auth().onAuthStateChanged( user => {
+        const unregister = this._auth.onAuthStateChanged( user => {
             callback(!!user);
             unregister();
         });
@@ -144,7 +144,7 @@ export class UserBackendFacade {
     onUserLoggedIn(callback: () => void): () => void {
         onLoggedInListeners.push(callback);
         if (!listenersRegistered) {
-            registerAuthListeners();
+            registerAuthListeners(this._auth);
         }
 
         return () => {
@@ -162,7 +162,7 @@ export class UserBackendFacade {
     onUserLoggedOut(callback: () => void) {
         onLoggedOutListeners.push(callback);
         if (!listenersRegistered) {
-            registerAuthListeners();
+            registerAuthListeners(this._auth);
         }
 
         return () => {
@@ -178,7 +178,7 @@ export class UserBackendFacade {
     }
 
     getLoggedInUser(): ?User {
-        return firebase.auth().currentUser;;
+        return this._auth.currentUser;;
     }
 
     getUserOrThrow(component: string): User {
@@ -201,4 +201,4 @@ export class UserBackendFacade {
     }
 }
 
-export const userBackendFacade = new UserBackendFacade();
+export const userBackendFacade = new UserBackendFacade(firebase.auth());
