@@ -12,12 +12,14 @@ const standardButtonDefaultStyles = {
         container: {
             borderRadius: 5000,
             backgroundColor: constants.primaryColor,
+            justifyContent: 'center',
+            alignItems: 'center',
         },
         text: {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space(2),
+            padding: constants.space(1),
         },
     },
 
@@ -25,12 +27,14 @@ const standardButtonDefaultStyles = {
         container: {
             borderRadius: 5000,
             backgroundColor: constants.disabledColor,
+            justifyContent: 'center',
+            alignItems: 'center',
         },
         text: {
             ...constants.normalText,
             color: constants.notReallyWhite,
             textAlign: 'center',
-            padding: constants.space(2),
+            padding: constants.space(1),
         },
     },
 };

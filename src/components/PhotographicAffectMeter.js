@@ -167,7 +167,6 @@ export class PhotographicAffectMeter extends React.Component<Props, State> {
                             submittedEmotion={this.state.submittedEmotion}
                             disabled={this.state.submissionState === 'submitting'}
                         />
-                        <VerticalSpace />
                         <SecondaryButton
                             testName='newImages'
                             title="shuffle images"
