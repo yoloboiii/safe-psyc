@@ -4017,6 +4017,10 @@ md5@^2.1.0:
     crypt "~0.0.1"
     is-buffer "~1.1.1"
 
+mdurl@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
+
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
@@ -4851,11 +4855,12 @@ react-native-firebase@^4.0.5:
     postinstall-build "^5.0.1"
     prop-types "^15.6.1"
 
-react-native-hyperlink@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/react-native-hyperlink/-/react-native-hyperlink-0.0.12.tgz#07fcd81bdc23da35dafde0546073347398adcaff"
+react-native-hyperlink@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/react-native-hyperlink/-/react-native-hyperlink-0.0.13.tgz#db07f9084de74553b23685c6bfb0cd431f9f6df8"
   dependencies:
     linkify-it "^1.2.0"
+    mdurl "^1.0.0"
 
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"
