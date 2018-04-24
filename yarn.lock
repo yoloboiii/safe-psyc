@@ -4892,9 +4892,9 @@ react-native-swiper@^1.5.13:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-testfairy@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-testfairy/-/react-native-testfairy-2.9.0.tgz#a1411da1b34c71cec6de8b95ffccd9073f231f4f"
+react-native-testfairy@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-testfairy/-/react-native-testfairy-2.10.0.tgz#ecdb9dadfc4a1eed25394ffec97a672b17577ee6"
 
 react-native-textinput-effects@^0.4.2:
   version "0.4.2"
